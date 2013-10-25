@@ -15,6 +15,9 @@ var datea = angular.module( 'dateaWebApp', [ 'ngResource' ] )
 
 	} ] );
 
+
+// Using a validation directive
+
 // datea.directive( 'formText', function () {
 // 	var ret
 // 	  , link
@@ -42,18 +45,19 @@ var datea = angular.module( 'dateaWebApp', [ 'ngResource' ] )
 
 // } );
 
-// datea.factory( 'User', [ '$http', '$resource', '$log' , function ( $http, $resource, $log ) {
-// 	var url
-// 	  , post
-// 	  ;
+datea.factory( 'User', [ '$http', '$resource', '$log',
+	function ( $http, $resource, $log ) {
+	var url
+	  , defaults
+	  , actions
+	  ;
 
-// 	url = 'http://192.168.1.37:8000/api/v2/create_user/';
+	url = 'http://192.168.1.37:8000/api/v2/create_user/:Bio';
 
-// 	save = { method: 'POST'
-// 	       , params: {}
-// 	       , format: 'json'
-// 	       }
+	defaults = { bio: '@Bio' }
 
-// 	return $resource( url, {}, post )
+	actions = { 'update': { method: 'PUT' } }
 
-// } ] )
+	return $resource( url, defaults, actions )
+
+} ] )
