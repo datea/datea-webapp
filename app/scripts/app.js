@@ -15,6 +15,33 @@ var datea = angular.module( 'dateaWebApp', [ 'ngResource' ] )
 
 	} ] );
 
+// datea.directive( 'formText', function () {
+// 	var ret
+// 	  , link
+// 	  ;
+
+// 	link = function ( scope, elm, attrs, ctrl ) {
+// 		ctrl.$parsers.unshift( function ( val ) {
+// 			scope.formText = /[A-z]/.test( val ) ? 'valid' : undefined;
+
+// 			if ( scope.formText ) {
+// 				ctrl.$setValidity( 'text', true );
+// 				return val;
+// 			} else {
+// 				ctrl.$setValidity( 'text', false );
+// 				return undefined;
+// 			}
+
+// 		} );
+// 	}
+
+// 	ret = { require: 'ngModel'
+// 	      , link   : link }
+
+// 	return ret;
+
+// } );
+
 // datea.factory( 'User', [ '$http', '$resource', '$log' , function ( $http, $resource, $log ) {
 // 	var url
 // 	  , post

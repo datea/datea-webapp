@@ -10,18 +10,29 @@ angular.module( 'dateaWebApp' )
 		$scope.datea.name = 'Datea.pe';
 
 		$scope.auth.save = function () {
-			var data;
+			var data
+			  , isValid
+			  ;
 
 			data = { bio        : $scope.auth.bio
 			       , email      : $scope.auth.email
 			       , password   : $scope.auth.password
 			       , twitter_id : $scope.auth.twitterId }
 
+			isValid = data.bio && data.email && (function ( pwd ) {
+				return pwd && /(.{4,})/.test( pwd );
+			})( data.password ) && data.twitter_id;
 
-			$http.post( $scope.auth.url, data )
-			.success( function ( response ) {
-				console.log( response );
-			} );
+			if ( isValid ) {
+				$scope.auth.message = null;
+			} else {
+				$scope.auth.message = 'please check your inputs';
+			}
+
+			// $http.post( $scope.auth.url, data )
+			// .success( function ( response ) {
+			// 	console.log( response );
+			// } );
 		}
 
 	} ] );
