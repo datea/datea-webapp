@@ -1,1 +1,0 @@
-"use strict";angular.module("dateaWebApp",[]).config(["$routeProvider",function(a){a.when("/",{templateUrl:"views/main.html",controller:"MainCtrl"}).otherwise({redirectTo:"/"})}]),angular.module("dateaWebApp").controller("MainCtrl",["$scope",function(a){a.datea={},a.datea.name="Datea.pe"}]);
