@@ -1,23 +1,26 @@
 <h1>{{datea.name}}</h1>
 
 <h2>Basic Auth</h2>
-<form role="form" ng-submit="auth.save()">
+<form role="form" name="form" ng-submit="auth.save()">
 	<div class="form-group">
-		<label for="bio">bio</label>
-		<input type="text" class="form-control" id="bio" required formText ng-model="auth.bio">
+		<label for="bio">username – <small>6 to 10 alphanumeric characters</small></label>
+		<input type="text" class="form-control" id="bio" wx-validate="username" pattern="^[A-Za-z0-9]{6,10}$" required formText ng-model="auth.bio">
 	</div>
 	<div class="form-group">
-		<label for="email">email</label>
+		<label for="email">email – <small>valid email</small></label>
 		<input type="email" class="form-control" id="email" required ng-model="auth.email">
 	</div>
 	<div class="form-group">
-		<label for="twitterId">twitter id</label>
-		<input type="text" class="form-control" id="twitterId" required ng-model="auth.twitterId">
+		<label for="twitterId">twitter id – <small>valid twitter id</small></label>
+		<input type="text" class="form-control" id="twitterId" wx-validate="twitter" pattern="^[A-Za-z0-9_]{1,15}$" required ng-model="auth.twitterId">
 	</div>
 	<div class="form-group">
-		<label for="password">password</label>
-		<input type="password" class="form-control" id="password" required pattern=".{4,}" ng-model="auth.password">
+		<label for="password">password – <small>6 to 32 uppercase, lowercase, number/specialchar (at least one numeric char needed)</small></label>
+		<input type="password" class="form-control" id="password" wx-validate="password" required pattern="^(?=.*\d)(?=.*[a-z])(?!.*\s).{6,32}$" ng-model="auth.password">
 	</div>
-	<input type="submit" class="btn btn-info" value="Registrarse">
-	<span ng-bind="auth.message" ></span>
+	<input type="submit" class="btn btn-info" value="Sign up">
+	<button class="btn btn-info" disabled>Sign up</button>
+	<span ng-bind="auth.message"></span>
 </form>
+<hr>
+<pre>Validation: {{form.$error|json}}</pre>

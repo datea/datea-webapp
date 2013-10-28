@@ -15,18 +15,16 @@ angular.module( 'dateaWebApp' )
 			  , isValid
 			  ;
 
+			isValid = $scope.form.$valid;
+
 			data = { bio        : $scope.auth.bio
 			       , email      : $scope.auth.email
 			       , password   : $scope.auth.password
 			       , twitter_id : $scope.auth.twitterId }
 
-			// Weak validation, TODO fix with a directive
-			isValid = data.bio && data.email && (function ( pwd ) {
-				return pwd && /(.{4,})/.test( pwd );
-			})( data.password ) && data.twitter_id;
-
 			if ( isValid ) {
 				$scope.auth.message = null;
+				$scope.auth.message = "call api";
 				User.post( data, function ( response ) {
 					console.log( response );
 					$scope.auth.message = 'api called';

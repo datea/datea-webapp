@@ -9,3 +9,13 @@
 	border-color: @state-danger-text;
 	background-color: @state-danger-bg;
 }
+
+form.ng-invalid input[type="submit"],
+form.ng-valid .btn[disabled] {
+	display: none;
+}
+
+form.ng-valid input[type="submit"],
+form.ng-invalid .btn[disabled] {
+	display: inline-block;
+}
