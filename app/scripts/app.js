@@ -1,6 +1,6 @@
 'use strict';
 
-var datea = angular.module( 'dateaWebApp', [ 'ngResource' ] )
+var datea = angular.module( 'dateaWebApp', [ 'ngResource', 'LocalStorageModule', 'wxBirdangularModule' ] )
 	.config( [ '$routeProvider', '$httpProvider',
 	function ( $routeProvider, $httpProvider ) {
 
@@ -11,6 +11,12 @@ var datea = angular.module( 'dateaWebApp', [ 'ngResource' ] )
 		.when( '/' , { templateUrl : 'views/main.html'
 		             , controller  : 'MainCtrl'
 		             } )
+		.when( '/signup' , { templateUrl : 'views/signup.html'
+	                     , controller  : 'SignupCtrl'
+	                     } )
+		.when( '/twitter-callback' , { templateUrl : 'views/twitter-callback.html'
+		                             , controller  : 'TwitterCallbackCtrl'
+		                             } )
 		.otherwise( { redirectTo : '/' } );
 
 	} ] );
@@ -22,7 +28,7 @@ datea.factory( 'User', [ '$http', '$resource', '$log',
 	  , actions
 	  ;
 
-	url = 'http://192.168.1.37:8000/api/v2/create_user/:Bio';
+	url = 'http://api.datea.pe/api/v2/create_user/:Bio';
 
 	defaults = { bio: '@Bio' }
 

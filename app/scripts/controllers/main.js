@@ -1,43 +1,42 @@
 'use strict';
 
 angular.module( 'dateaWebApp' )
-	.controller( 'MainCtrl', [ 'User', '$scope', '$http',
-		function ( User, $scope, $http ) {
+.controller( 'MainCtrl'
+, [ 'User'
+	, '$scope'
+	, '$http'
+	, '$location'
+	, 'wxBirdangularService'
+	, 'localStorageService'
+	, '$window'
+, function ( User
+	, $scope
+	, $http
+	, $location
+	, wxBirdangularService
+	, localStorageService
+	, $window
+	) {
 
-		$scope.datea = {};
-		$scope.auth  = {};
-		// datea-api endpoint -- now called from User service
-		// $scope.auth.url   = 'http://192.168.1.37:8000/api/v2/create_user/';
-		$scope.datea.name = 'Datea.pe';
+	var ba = wxBirdangularService
+	  , ls = localStorageService
+	  ;
 
-		$scope.auth.save = function () {
-			var data
-			  , isValid
-			  ;
+	$scope.flow = {};
 
-			isValid = $scope.form.$valid;
+	$scope.flow.withTwitter = function () {
+		ba.requestToken();
+		$window.$windowScope = $scope;
+	}
 
-			data = { bio        : $scope.auth.bio
-			       , email      : $scope.auth.email
-			       , password   : $scope.auth.password
-			       , twitter_id : $scope.auth.twitterId }
+	$scope.flow.withEmail = function () {
+		$location.path('/signup');
+	}
 
-			if ( isValid ) {
-				$scope.auth.message = null;
-				$scope.auth.message = "call api";
-				User.post( data, function ( response ) {
-					console.log( response );
-					$scope.auth.message = 'api called';
-				} );
-			} else {
-				$scope.auth.message = 'please check your inputs';
-			}
+	$scope.flow.onCallback = function () {
+		$scope.$apply( function () {
+			$location.path('/signup');
+		} );
+	}
 
-			// Now in User service
-			// $http.post( $scope.auth.url, data )
-			// .success( function ( response ) {
-			// 	console.log( response );
-			// } );
-		}
-
-	} ] );
+} ] );

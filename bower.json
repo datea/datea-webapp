@@ -11,7 +11,9 @@
     "angular-cookies": "~1.0.7",
     "angular-sanitize": "~1.0.7",
     "bootstrap": "~3.0.0",
-    "angular-bootstrap": "~0.6.0"
+    "angular-bootstrap": "~0.6.0",
+    "birdangular": "*",
+    "angular-local-storage": "*"
   },
   "devDependencies": {
     "angular-mocks": "~1.0.7",
