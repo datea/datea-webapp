@@ -13,9 +13,11 @@ angular.module('dateaWebApp')
 
 	var ls = localStorageService
 	  , twitterKeys
+	  , facebookKeys
 	  ;
 
-	twitterKeys = ls.get( 'twitter-keys' );
+	twitterKeys = ls.get( 'keys-twitter' );
+	facebookKeys = ls.get( 'keys-facebook' );
 
 	$scope.datea = {};
 	$scope.auth  = {};
@@ -25,10 +27,13 @@ angular.module('dateaWebApp')
 	$scope.datea.name = 'Datea.pe';
 	$scope.auth.passwordRequired = true;
 
-	$scope.auth.twitterToken  = twitterKeys && twitterKeys.oauth_token;
-	$scope.auth.twitterSecret = twitterKeys && twitterKeys.oauth_token_secret;
 	if ( twitterKeys && twitterKeys.oauth_token && twitterKeys.oauth_token_secret ) {
 		$scope.auth.twitterId = twitterKeys.user_id;
+		$scope.auth.passwordRequired = false;
+	}
+
+	if ( facebookKeys ) {
+		$scope.auth.facebookId = facebookKeys.authResponse.userID;
 		$scope.auth.passwordRequired = false;
 	}
 

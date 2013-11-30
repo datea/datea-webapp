@@ -13,7 +13,8 @@
     "bootstrap": "~3.0.0",
     "angular-bootstrap": "~0.6.0",
     "birdangular": "*",
-    "angular-local-storage": "*"
+    "angular-local-storage": "*",
+    "angular-facebook": "~0.2.1"
   },
   "devDependencies": {
     "angular-mocks": "~1.0.7",

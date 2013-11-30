@@ -9,6 +9,7 @@ angular.module( 'dateaWebApp' )
 	, 'wxBirdangularService'
 	, 'localStorageService'
 	, '$window'
+	, 'Facebook'
 , function ( User
 	, $scope
 	, $http
@@ -16,6 +17,7 @@ angular.module( 'dateaWebApp' )
 	, wxBirdangularService
 	, localStorageService
 	, $window
+	, Facebook
 	) {
 
 	var ba = wxBirdangularService
@@ -24,9 +26,28 @@ angular.module( 'dateaWebApp' )
 
 	$scope.flow = {};
 
+	$scope.$watch( function () {
+		return Facebook.isReady();
+	}, function ( val ) {
+		$scope.flow.facebookReady = true;
+	} )
+
 	$scope.flow.withTwitter = function () {
 		ba.requestToken();
 		$window.$windowScope = $scope;
+	}
+
+	$scope.flow.withFacebook = function () {
+		Facebook.getLoginStatus( function ( response ) {
+			if ( response.status === 'connected' ) {
+				$location.path( '/signup' );
+			} else {
+				Facebook.login( function ( response ) {
+					ls.set( 'keys-facebook', response );
+					$location.path( '/signup' );
+				} );
+			}
+		} );
 	}
 
 	$scope.flow.withEmail = function () {

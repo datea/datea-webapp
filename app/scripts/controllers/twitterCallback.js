@@ -24,7 +24,7 @@ function ( wxBirdangularService, $location, localStorageService, $window, $scope
 	ba
 	.accessToken( query[1].split('=')[1].split('#')[0] )
 	.then( function ( data ) {
-		ls.set( 'twitter-keys', data );
+		ls.set( 'keys-twitter', data );
 		$window.opener.oauth_token        = null;
 		$window.opener.oauth_token_secret = null;
 		$window.opener.$windowScope.flow.onCallback();

@@ -1,11 +1,15 @@
 'use strict';
 
-var datea = angular.module( 'dateaWebApp', [ 'ngResource', 'LocalStorageModule', 'wxBirdangularModule' ] )
-	.config( [ '$routeProvider', '$httpProvider',
-	function ( $routeProvider, $httpProvider ) {
+var datea = angular.module( 'dateaWebApp', [ 'ngResource', 'LocalStorageModule', 'wxBirdangularModule', 'facebook' ] )
+	.config( [ '$routeProvider', '$httpProvider', 'FacebookProvider',
+	function ( $routeProvider, $httpProvider, FacebookProvider ) {
+		// var fbAppId = '240185656082013';
+		var fbAppId = '203191529863567';
 
 		$httpProvider.defaults.useXDomain = true;
 		delete $httpProvider.defaults.headers.common['X-Requested-With'];
+
+		FacebookProvider.init( fbAppId );
 
 		$routeProvider
 		.when( '/' , { templateUrl : 'views/main.html'
