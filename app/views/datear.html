@@ -1,0 +1,31 @@
+<div class="modal-header">
+	<button type="button" class="close" data-dismiss="modal" aria-hidden="true" ng-click="datear.cancel()">&times;</button>
+	<h3>Datea!</h3>
+</div>
+<div class="modal-body">
+	<ul class="nav nav-tabs">
+		<li class="active"><a href="#">Contenido</a></li>
+		<li><a href="#">Ubicación</a></li>
+		<li><a href="#">Etiquetas</a></li>
+	</ul>
+	<div class="tab-content">
+		<div class="tab-pane active">
+			<div class="datear-form-holder">
+				<form role="form" name="form">
+					<div class="form-group">
+						<label for="message">Ingrese el contenido de su dateo</label>
+						<textarea id="message" class="form-control" rows="3"></textarea>
+						<span class="help-block">Introduce el contenido. Si puedes propón una solución</span>
+					</div>
+				</form>
+			</div>
+		</div>
+		<div class="tab-pane">..</div>
+		<div class="tab-pane">..</div>
+		<div class="tab-pane">..</div>
+	</div>
+</div>
+<div class="modal-footer">
+	<button class="btn btn-success" ng-click="datear.ok()">OK</button>
+	<button class="btn btn-default" ng-click="datear.cancel()">Cancel</button>
+</div>

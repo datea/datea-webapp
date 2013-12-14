@@ -15,54 +15,96 @@
 	<link rel="stylesheet" type="text/css" href="styles/main.css">
 	<!-- endbuild -->
 </head>
-  <body ng-app="dateaWebApp">
-    <!--[if lt IE 7]>
-      <p class="browsehappy">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> to improve your experience.</p>
-    <![endif]-->
+<body ng-app="dateaWebApp">
+	<!--[if lt IE 7]>
+	<p class="browsehappy">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> to improve your experience.</p>
+	<![endif]-->
 
-    <!--[if lt IE 9]>
-      <script src="bower_components/es5-shim/es5-shim.js"></script>
-      <script src="bower_components/json3/lib/json3.min.js"></script>
-    <![endif]-->
+	<!--[if lt IE 9]>
+	<script src="bower_components/es5-shim/es5-shim.js"></script>
+	<script src="bower_components/json3/lib/json3.min.js"></script>
+	<![endif]-->
 
-    <!-- Add your site or application content here -->
-    <div class="container" ng-view=""></div>
+	<!-- Add your site or application content here -->
+	<div class="slide" ng-controller="NavCtrl">
+		<nav class="navbar navbar-default" role="navigation" ng-show="nav.visible">
+			<div class="navbar-header">
+				<button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse" ng-click="nav.isCollapsed = !nav.isCollapsed">
+					<span class="sr-only">Toggle navigation</span>
+					<span class="icon-bar"></span>
+					<span class="icon-bar"></span>
+					<span class="icon-bar"></span>
+				</button>
+				<a class="navbar-brand" href="#"><img height="20px" ng-src="http://datea.pe/static/img/datea/logo_header2.png" alt=""></a>
+			</div>
+			<div class="navbar-collapse collapse" collapse="nav.isCollapsed">
+				<ul class="nav navbar-nav navbar-right">
+					<li><a href="#/">Inicio</a></li>
+					<li><a href="#/dateos">Dateos</a></li>
+					<li><a href="#/iniciativas">Iniciativas</a></li>
+					<li><a href="#/acerca">Acerca</a></li>
+					<li><a href="#/ayuda">Ayuda</a></li>
+					<li><button type="button" class="btn btn-success navbar-btn" ng-click="nav.datear()">Datea</button></li>
+					<li class="dropdown">
+						<a href="#" class="dropdown-toggle" data-toggle="dropdown">
+						<img ng-src="http://static.tvtropes.org/pmwiki/pub/images/myles-avatar-awesome-face.png_100.jpeg" alt="" height="25px">
+						Fulanito
+						<b class="caret"></b></a>
+						<ul class="dropdown-menu">
+							<li><a href="#">Acción 1</a></li>
+							<li><a href="#" ng-click="nav.signOut()" >Salir</a></li>
+						</ul>
+					</li>
+				</ul>
+			</div>
+		</nav>
+		<div class="alert alert-success alert-dismissable" ng-show="nav.visible">
+			<button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+			<strong>Bienvenido Datero!</strong> acá reciba una calurosa bienvenida
+		</div>
+	</div>
 
-    <!-- Google Analytics: change UA-XXXXX-X to be your site's ID -->
-     <script>
-       (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
-       (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
-       m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
-       })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+	<div class="container" ng-view=""></div>
 
-       ga('create', 'UA-XXXXX-X');
-       ga('send', 'pageview');
-    </script>
+	<!-- Google Analytics: change UA-XXXXX-X to be your site's ID -->
+	<script>
+	(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+	(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+	m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+	})(window,document,'script','//www.google-analytics.com/analytics.js','ga');
 
-    <script src="bower_components/jquery/jquery.js"></script>
-    <script src="bower_components/angular/angular.js"></script>
+	ga('create', 'UA-XXXXX-X');
+	ga('send', 'pageview');
+	</script>
 
-        <!-- build:js scripts/plugins.js -->
-		    <script src="bower_components/birdangular/sha1.js"></script>
-				<script src="bower_components/birdangular/codebird.js"></script>
-				<script src="bower_components/birdangular/birdangular.js"></script>
-				<script src="bower_components/angular-facebook/lib/angular-facebook.js"></script>
+	<script src="bower_components/jquery/jquery.js"></script>
+	<script src="bower_components/angular/angular.js"></script>
 
-				<script src="bower_components/angular-local-storage/angular-local-storage.js"></script>
-        <!-- endbuild -->
+	<!-- build:js scripts/plugins.js -->
+	<script src="bower_components/birdangular/sha1.js"></script>
+	<script src="bower_components/birdangular/codebird.js"></script>
+	<script src="bower_components/birdangular/birdangular.js"></script>
+	<script src="bower_components/angular-facebook/lib/angular-facebook.js"></script>
+	<!-- endbuild -->
 
-        <!-- build:js scripts/modules.js -->
-        <script src="bower_components/angular-resource/angular-resource.js"></script>
-        <script src="bower_components/angular-cookies/angular-cookies.js"></script>
-        <script src="bower_components/angular-sanitize/angular-sanitize.js"></script>
-        <!-- endbuild -->
+	<!-- build:js scripts/modules.js -->
+	<script src="bower_components/angular-local-storage/angular-local-storage.js"></script>
+	<script src="bower_components/angular-bootstrap/ui-bootstrap.js"></script>
+	<script src="bower_components/angular-resource/angular-resource.js"></script>
+	<script src="bower_components/angular-cookies/angular-cookies.js"></script>
+	<script src="bower_components/angular-sanitize/angular-sanitize.js"></script>
+	<!-- endbuild -->
 
-        <!-- build:js({.tmp,app}) scripts/scripts.js -->
-        <script src="scripts/app.js"></script>
-        <script src="scripts/controllers/main.js"></script>
-        <script src="scripts/directives/wxValidate.js"></script>
-        <script src="scripts/controllers/twitterCallback.js"></script>
-        <script src="scripts/controllers/signup.js"></script>
-        <!-- endbuild -->
+	<!-- build:js({.tmp,app}) scripts/scripts.js -->
+	<script src="scripts/app.js"></script>
+	<script src="scripts/controllers/main.js"></script>
+	<script src="scripts/directives/wxValidate.js"></script>
+	<script src="scripts/controllers/twitterCallback.js"></script>
+	<script src="scripts/controllers/signup.js"></script>
+<script src="scripts/controllers/nav.js"></script>
+<script src="scripts/services/user.js"></script>
+<script src="scripts/controllers/signupForm.js"></script>
+<script src="scripts/controllers/datear.js"></script>
+	<!-- endbuild -->
 </body>
 </html>
