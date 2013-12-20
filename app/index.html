@@ -11,8 +11,8 @@
 	<meta name="viewport" content="width=device-width">
 	<!-- Place favicon.ico and apple-touch-icon.png in the root directory -->
 
-	<!-- buildk:css(.tmp) styles/main.css -->
-	<link rel="stylesheet" type="text/css" href="styles/main.css">
+	<!-- build:css(.tmp) styles/main.css -->
+	<link rel="stylesheet" href="styles/main.css">
 	<!-- endbuild -->
 </head>
 <body ng-app="dateaWebApp">
@@ -63,7 +63,6 @@
 			<strong>Bienvenido Datero!</strong> acá reciba una calurosa bienvenida
 		</div>
 	</div>
-
 	<div class="container" ng-view=""></div>
 
 	<!-- Google Analytics: change UA-XXXXX-X to be your site's ID -->
@@ -77,34 +76,31 @@
 	ga('send', 'pageview');
 	</script>
 
-	<script src="bower_components/jquery/jquery.js"></script>
+
 	<script src="bower_components/angular/angular.js"></script>
 
-	<!-- build:js scripts/plugins.js -->
+	<!-- build:js scripts/modules.js -->
 	<script src="bower_components/birdangular/sha1.js"></script>
 	<script src="bower_components/birdangular/codebird.js"></script>
 	<script src="bower_components/birdangular/birdangular.js"></script>
 	<script src="bower_components/angular-facebook/lib/angular-facebook.js"></script>
-	<!-- endbuild -->
-
-	<!-- build:js scripts/modules.js -->
 	<script src="bower_components/angular-local-storage/angular-local-storage.js"></script>
 	<script src="bower_components/angular-bootstrap/ui-bootstrap.js"></script>
 	<script src="bower_components/angular-resource/angular-resource.js"></script>
 	<script src="bower_components/angular-cookies/angular-cookies.js"></script>
 	<script src="bower_components/angular-sanitize/angular-sanitize.js"></script>
+	<script src="bower_components/angular-route/angular-route.js"></script>
 	<!-- endbuild -->
 
 	<!-- build:js({.tmp,app}) scripts/scripts.js -->
 	<script src="scripts/app.js"></script>
 	<script src="scripts/controllers/main.js"></script>
-	<script src="scripts/directives/wxValidate.js"></script>
-	<script src="scripts/controllers/twitterCallback.js"></script>
 	<script src="scripts/controllers/signup.js"></script>
-<script src="scripts/controllers/nav.js"></script>
-<script src="scripts/services/user.js"></script>
-<script src="scripts/controllers/signupForm.js"></script>
-<script src="scripts/controllers/datear.js"></script>
+	<script src="scripts/services/user.js"></script>
+	<script src="scripts/controllers/signupform.js"></script>
+	<script src="scripts/controllers/twitterCallback.js"></script>
+	<script src="scripts/controllers/nav.js"></script>
+	<script src="scripts/controllers/datear.js"></script>
 	<!-- endbuild -->
 </body>
 </html>

@@ -2,23 +2,24 @@
 
 angular.module('dateaWebApp')
 .controller('SignupCtrl'
-, [ 'User'
-  , '$scope'
+, [ '$scope'
+  , 'User'
   , '$http'
   , '$location'
   , 'wxBirdangularService'
   , 'localStorageService'
   , '$window'
   , 'Facebook'
-, function ( User
-  , $scope
+, function (
+    $scope
+  , User
   , $http
   , $location
   , wxBirdangularService
   , localStorageService
   , $window
   , Facebook
-	) {
+) {
 
 	var ba = wxBirdangularService
 	  , ls = localStorageService

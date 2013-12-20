@@ -1,8 +1,19 @@
 'use strict';
 
 angular.module('dateaWebApp')
-.controller('TwitterCallbackCtrl', [ 'wxBirdangularService', '$location', 'localStorageService', '$window', '$scope',
-function ( wxBirdangularService, $location, localStorageService, $window, $scope ) {
+.controller('TwitterCallbackCtrl'
+, [ 'wxBirdangularService'
+  , '$location'
+  , 'localStorageService'
+  , '$window'
+  , '$scope'
+, function (
+    wxBirdangularService
+  , $location
+  , localStorageService
+  , $window
+  , $scope
+) {
 	var ls = localStorageService
 	  , ba = wxBirdangularService
 	  , url

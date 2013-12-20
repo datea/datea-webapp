@@ -16,7 +16,7 @@ angular.module('dateaWebApp')
 	  , facebookKeys
 	  ;
 
-	twitterKeys = ls.get( 'keys-twitter' );
+	twitterKeys  = ls.get( 'keys-twitter' );
 	facebookKeys = ls.get( 'keys-facebook' );
 
 	$scope.datea = {};

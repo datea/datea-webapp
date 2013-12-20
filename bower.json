@@ -1,25 +1,22 @@
 {
-  "name": "dateaWeb",
+  "name": "datea-web",
   "version": "0.0.0",
   "dependencies": {
-    "angular": "~1.0.7",
+    "angular": "~1.2.0",
     "json3": "~3.2.4",
-    "jquery": "~1.9.1",
-    "bootstrap-sass": "~2.3.1",
-    "es5-shim": "~2.0.8",
-    "angular-resource": "~1.0.7",
-    "angular-cookies": "~1.0.7",
-    "angular-sanitize": "~1.0.7",
-    "bootstrap": "https://github.com/angular-ui/bootstrap.git#bootstrap3_bis2_modalPatch",
-    "angular-bootstrap": "~0.6.0",
+    "es5-shim": "~2.1.0",
+    "angular-resource": "~1.2.0",
+    "angular-cookies": "~1.2.0",
+    "angular-sanitize": "~1.2.0",
+    "angular-route": "~1.2.0",
+    "bootstrapless": "~3.0.3",
+    "angular-facebook": "~0.2.2",
     "birdangular": "*",
     "angular-local-storage": "*",
-    "angular-facebook": "~0.2.1",
-    "bootstrapless": "~3.0.3",
-    "bootstrap3_bis2_modalPatch": "https://github.com/angular-ui/bootstrap/tree/bootstrap3_bis2_modalPatch"
+    "angular-bootstrap": "~0.7.0"
   },
   "devDependencies": {
-    "angular-mocks": "~1.0.7",
-    "angular-scenario": "~1.0.7"
+    "angular-mocks": "~1.2.0",
+    "angular-scenario": "~1.2.0"
   }
 }

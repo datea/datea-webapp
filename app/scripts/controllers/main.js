@@ -2,26 +2,18 @@
 
 angular.module( 'dateaWebApp' )
 .controller( 'MainCtrl'
-, [ 'User'
-  , '$scope'
+, [ '$scope'
+  , 'User'
   , '$http'
   , '$location'
-  , 'wxBirdangularService'
-  , 'localStorageService'
   , '$rootScope'
 , function (
-	  User
-  , $scope
+    $scope
+  , User
   , $http
   , $location
-  , wxBirdangularService
-  , localStorageService
   , $rootScope
-	) {
-
-	var ba = wxBirdangularService
-	  , ls = localStorageService
-	  ;
+) {
 
 	$scope.flow = {};
 
