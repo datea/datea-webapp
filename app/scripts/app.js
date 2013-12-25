@@ -9,6 +9,8 @@ angular.module( 'dateaWebApp'
   , 'wxBirdangularModule'
   , 'facebook'
   , 'ui.bootstrap'
+  , 'leaflet-directive'
+  , 'geolocation'
 ])
 .config(
 [ '$routeProvider'

@@ -3,27 +3,62 @@
 	<h3>Datea!</h3>
 </div>
 <div class="modal-body">
-	<ul class="nav nav-tabs">
-		<li class="active"><a href="#">Contenido</a></li>
-		<li><a href="#">Ubicación</a></li>
-		<li><a href="#">Etiquetas</a></li>
-	</ul>
-	<div class="tab-content">
-		<div class="tab-pane active">
-			<div class="datear-form-holder">
-				<form role="form" name="form">
-					<div class="form-group">
-						<label for="message">Ingrese el contenido de su dateo</label>
-						<textarea id="message" class="form-control" rows="3"></textarea>
-						<span class="help-block">Introduce el contenido. Si puedes propón una solución</span>
-					</div>
-				</form>
+	<div class="datear-form-holder">
+		<form role="form" name="form">
+			<h4>1. Describe tu dateo</h4>
+			<div class="form-group">
+				<label for="message">Ingrese el contenido de su dateo</label>
+				<textarea id="message" class="form-control" rows="3"></textarea>
+				<span class="help-block">Introduce el contenido. Si puedes propón una solución</span>
 			</div>
-		</div>
-		<div class="tab-pane">..</div>
-		<div class="tab-pane">..</div>
-		<div class="tab-pane">..</div>
+			<hr>
+			<h4>2. Ayúdanos a ubicar tu dateo</h4>
+			<div class="form-group">
+				<label for="address">Dirección o descripción de la ubicación</label>
+				<input type="text" class="form-control" id="address" ng-model="dateo.address">
+			</div>
+			<div class="form-group">
+				<label for="map">Arrastre el marcador hasta la ubicación exacta</label>
+				<input type="text" class="form-control" id="lng" ng-model="markers.draggy.lng" placeholder="lng hidden">
+				<input type="text" class="form-control" id="lat" ng-model="markers.draggy.lat" placeholder="lat hidden">
+			</div>
+			<leaflet defaults="defaults" markers="markers" center="center" height="400px" width="550px"></leaflet>
+			<hr>
+			<h4>3. Etiqueta tu dateo</h4>
+			<h5>etiquetas sugeridas</h5>
+			<div class="btn-group">
+				<button type="button" class="btn btn-default">#laterGram</button>
+				<button type="button" class="btn btn-default">#selfie</button>
+				<button type="button" class="btn btn-default">#sorryNotSorry</button>
+			</div>
+			<h5>buscar / agregar etiquetas</h5>
+			<div class="form-group">
+				<div class="input-group col-sm-6">
+					<input type="text" class="form-control">
+					<span class="input-group-btn">
+						<button class="btn btn-default" type="button">+</button>
+					</span>
+				</div>
+			</div>
+			<div class="well">
+				<h5>Etiquetas seleccionadas</h5>
+				<span class="label label-default"><a href="#">[x]</a>#noFilter</span>
+				<span class="label label-default"><a href="#">[x]</a>#trending</span>
+				<span class="label label-default"><a href="#">[x]</a>#hashtag</span>
+			</div>
+		</form>
 	</div>
+<!-- 	<tabset>
+		<tab heading="Contenido">
+			<div ng-include="'views/datear-1.html'"></div>
+		</tab>
+		<tab heading="Ubicación">
+			<div ng-include="'views/datear-2.html'"></div>
+		</tab>
+		<tab heading="Etiquetas">
+			<div ng-include="'views/datear-3.html'"></div>
+		</tab>
+	</tabset> -->
 </div>
 <div class="modal-footer">
 	<button class="btn btn-success" ng-click="datear.ok()">OK</button>

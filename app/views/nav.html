@@ -1,1 +1,32 @@
-<p>This is the nav view.</p>
+		<nav class="navbar navbar-default" role="navigation" ng-show="nav.visible">
+			<div class="navbar-header">
+				<button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse" ng-click="nav.isCollapsed = !nav.isCollapsed">
+					<span class="sr-only">Toggle navigation</span>
+					<span class="icon-bar"></span>
+					<span class="icon-bar"></span>
+					<span class="icon-bar"></span>
+				</button>
+				<a class="navbar-brand" href="#"><img height="20px" ng-src="http://datea.pe/static/img/datea/logo_header2.png" alt=""></a>
+			</div>
+			<div class="navbar-collapse collapse" collapse="nav.isCollapsed">
+				<ul class="nav navbar-nav navbar-right">
+					<li><a href="#/">Inicio</a></li>
+					<li><a href="#/dateos">Dateos</a></li>
+					<li><a href="#/iniciativas">Iniciativas</a></li>
+					<li><a href="#/acerca">Acerca</a></li>
+					<li><a href="#/ayuda">Ayuda</a></li>
+					<li><button type="button" class="btn btn-success navbar-btn" ng-click="nav.datear()">Datea</button></li>
+					<li class="dropdown">
+						<a href="#" class="dropdown-toggle" data-toggle="dropdown">
+						<img ng-src="http://static.tvtropes.org/pmwiki/pub/images/myles-avatar-awesome-face.png_100.jpeg" alt="" height="25px">
+						Fulanito
+						<b class="caret"></b></a>
+						<ul class="dropdown-menu">
+							<li><a href="#">Acción 1</a></li>
+							<li><a href="#" ng-click="nav.signOut()" >Salir</a></li>
+						</ul>
+					</li>
+				</ul>
+			</div>
+		</nav>
+		<alert ng-repeat="alert in alerts" type="alert.type" close="closeAlert($index)">{{alert.msg}}</alert>

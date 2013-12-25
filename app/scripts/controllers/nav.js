@@ -17,6 +17,14 @@ angular.module('dateaWebApp')
 	$scope.nav.visible = User.isSignedIn;
 
 	$scope.nav.isCollapsed = true;
+	$scope.alerts = [ { type : 'success'
+	                  , msg  : 'Bienvenido usuario, hoy es ' + new Date()
+	                  }
+	                ]
+
+	$scope.closeAlert = function(index) {
+		$scope.alerts.splice(index, 1);
+	};
 
 	$rootScope.$on( 'user:signedIn', function ( event, error ) {
 		$scope.nav.visible = User.isSignedIn;
