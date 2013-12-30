@@ -1,5 +1,24 @@
 @import "app/bower_components/bootstrapless/less/bootstrap.less";
 
+*, *:before, *:after {
+  -moz-box-sizing: border-box; -webkit-box-sizing: border-box; box-sizing: border-box;
+ }
+
+[ng\:cloak], [ng-cloak], .ng-cloak {
+  display: none;
+}
+
+// globals
+
+.block {
+	display: block;
+}
+
+.part {
+	display: inline-block;
+	vertical-align: top;
+}
+
 form.ng-invalid input[type="submit"],
 form.ng-valid .btn[disabled] {
 	display: none;
@@ -8,11 +27,6 @@ form.ng-valid .btn[disabled] {
 form.ng-valid input[type="submit"],
 form.ng-invalid .btn[disabled] {
 	display: inline-block;
-}
-
-.cta-holder {
-	margin: 0 auto 0;
-	width: 250px;
 }
 
 .signup-cta {
@@ -27,4 +41,43 @@ form.ng-invalid .btn[disabled] {
 
 .datear-form-holder {
 	margin: 20px 0 0;
+}
+
+// dateo
+
+.dateo-user {
+
+	.img-holder {
+		height: 62px;
+		margin: 0 10px 0 0;
+	}
+
+	img {
+		position: relative;
+		top: 10px;
+	}
+}
+
+.dateo-content {
+	.part-1 {
+		padding: 10px;
+		width: 60%;
+	}
+	.part-2 {
+		padding: 10px;
+		width: 39%;
+	}
+
+	.social-holder {
+		.cta-holder-3 {
+			width: 250px;
+		}
+	}
+}
+
+.dateo-detailImg {
+	.img-holder,
+	img {
+		width: 100%;
+	}
 }

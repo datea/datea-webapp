@@ -58,11 +58,6 @@ angular.module( 'dateaWebApp' )
 			console.log( 'Calling api.datea.pe: ', response );
 		} )
 
-		// $http
-		// .post( url, data )
-		// .then( function ( response ) {
-		// 	console.log( 'Calling api.datea.pe: ', response );
-		// } )
 	}
 
 	$scope.flow.signIn = function () {

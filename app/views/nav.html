@@ -1,4 +1,4 @@
-		<nav class="navbar navbar-default" role="navigation" ng-show="nav.visible">
+		<nav class="navbar navbar-default" role="navigation" >
 			<div class="navbar-header">
 				<button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse" ng-click="nav.isCollapsed = !nav.isCollapsed">
 					<span class="sr-only">Toggle navigation</span>
@@ -10,13 +10,14 @@
 			</div>
 			<div class="navbar-collapse collapse" collapse="nav.isCollapsed">
 				<ul class="nav navbar-nav navbar-right">
-					<li><a href="#/">Inicio</a></li>
+					<li ng-show="nav.visible"><a href="#/">Inicio</a></li>
 					<li><a href="#/dateos">Dateos</a></li>
 					<li><a href="#/iniciativas">Iniciativas</a></li>
 					<li><a href="#/acerca">Acerca</a></li>
 					<li><a href="#/ayuda">Ayuda</a></li>
-					<li><button type="button" class="btn btn-success navbar-btn" ng-click="nav.datear()">Datea</button></li>
-					<li class="dropdown">
+					<li ng-show="nav.visible"><button type="button" class="btn btn-success navbar-btn" ng-click="nav.datear()">Datea</button></li>
+					<li ng-show="!nav.visible"><button type="button" class="btn btn-success navbar-btn" ng-click="nav.datear()">Ingresa</button></li>
+					<li ng-show="nav.visible" class="dropdown">
 						<a href="#" class="dropdown-toggle" data-toggle="dropdown">
 						<img ng-src="http://static.tvtropes.org/pmwiki/pub/images/myles-avatar-awesome-face.png_100.jpeg" alt="" height="25px">
 						Fulanito
@@ -29,4 +30,4 @@
 				</ul>
 			</div>
 		</nav>
-		<alert ng-repeat="alert in alerts" type="alert.type" close="closeAlert($index)">{{alert.msg}}</alert>
+		<alert ng-repeat="alert in alerts" type="alert.type" close="alertMngr.closeAlert($index)">{{alert.msg}}</alert>

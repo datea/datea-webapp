@@ -47,6 +47,10 @@ angular.module( 'dateaWebApp'
 	  , { templateUrl : 'views/twitter-callback.html'
 	    , controller  : 'TwitterCallbackCtrl'
 	    } )
+	.when( '/:userName/dateos/:dateoId'
+	  , { templateUrl: 'views/dateo-detail.html'
+	    , controller : 'DateoCtrl'
+	    } )
 	.otherwise( { redirectTo: '/' } );
 
 } ] );

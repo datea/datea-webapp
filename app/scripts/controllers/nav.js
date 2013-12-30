@@ -34,6 +34,10 @@ angular.module('dateaWebApp')
 		$scope.nav.visible = User.isSignedIn;
 	} )
 
+	$scope.nav.signIn = function () {
+		User.signIn();
+	}
+
 	$scope.nav.signOut = function () {
 		User.signOut();
 	}
