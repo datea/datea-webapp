@@ -1,7 +1,27 @@
-<div class="cta-holder">
-	Regístrate con:
-
-	<button class="btn btn-default signup-cta" ng-click="flow.withTwitter()">Twitter</button>
-	<button class="btn btn-default signup-cta" ng-click="flow.withFacebook()" ng-enabled="flow.facebookReady">Facebook</button>
-	<button class="btn btn-default signup-cta" ng-click="flow.withEmail()">Email</button>
+<div class="sign-up">
+	<div class="part part-1">
+		<h3>Regístrate</h3>
+		<p>Regístrate con tus cuentas de </p>
+		<button class="btn btn-default signup-cta" ng-click="flow.withTwitter()">Twitter</button>
+		<button class="btn btn-default signup-cta" ng-click="flow.withFacebook()">Facebook</button>
+		<p>( no publicamos en tus cuentas sin tu permiso )</p>
+		<p> o crea una cuenta en Datea:</p>
+		<button class="btn btn-default signup-cta" ng-click="flow.withEmail()">Email</button>
+	</div><div class="part part-2">
+		<div class="sign-in-cta">
+			<p>Ya eres dater@?</p>
+			<button class="btn btn-default signin-cta" ng-click="flow.signIn()">Ingresa</button>
+		</div>
+		<div class="extra">
+			<a href="/">
+				<p>¿Por qué registrar una cuenta en Datea?</p>
+			</a>
+			<a href="/">
+				<p>¿A quién le pertenece la información que publico en datea?</p>
+			</a>
+			<a href="/">
+				<p>Información sobre privacidad</p>
+			</a>
+		</div>
+	</div>
 </div>

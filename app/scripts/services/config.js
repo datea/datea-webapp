@@ -3,7 +3,10 @@
 angular
 .module('dateaWebApp')
 .constant('config',
-	{ api     : { url : 'http://api.datea.pe/api/v2/' }
+	{ app     : { name : 'Datea.pe'
+	            , url  : 'http://localhost:9000/#/' }
+	, api     : { url    : 'http://api.datea.pe/api/v2/'
+	            , imgUrl : 'http://api.datea.pe/' }
   , dateo   : { sizeImgMax    : 35000
 	            , sizeImgMaxMsg : 'Su archivo es muy grande'
 	            }

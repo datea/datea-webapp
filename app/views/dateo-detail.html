@@ -1,4 +1,4 @@
-<div class="dateo-user" ng-show="dateo.id">
+<div class="dateo-user" ng-show="!dateo.message">
 	<div class="part part-1 img-holder">
 		<img ng-show="dateo.user" ng-src="{{dateo.user.image_small | imgFromApi}}" alt="{{dateo.user.username}}">
 	</div><div class="part part-2 data-holder">
@@ -8,7 +8,7 @@
 	<div class="next-holder pull-right">
 		<button class="btn btn-default" ng-click="dateo.nextDateo()">ver {{ dateo.messageNext }} dateo de {{dateo.user.username}} ></button>
 	</div>
-</div><div class="dateo-content" ng-cloak>
+</div><div class="dateo-content" ng-show="!dateo.message">
 	<div class="part part-1">
 		<a ng-repeat="tag in dateo.tags" href="#/tags/{{tag.id}}">#{{tag.tag}}</a>
 		<p>{{dateo.content}}</p>
@@ -41,20 +41,32 @@
 		<div class="comments-holder">
 			<h3>Comentarios</h3>
 			<div class="comment-holder" ng-repeat="comment in dateo.comments">
-				{{comment.title}}
+				<div class="user">
+					<img ng-src="{{comment.user.image_small | imgFromApi}}" alt="{{comment.user.username}}">
+					<a href="{{comment.user.id}}">
+						<span>{{comment.user.username}}</span>
+					</a>
+					<span>el {{comment.created | date:'fullDate'}}</span>
+				</div>
+				<p>{{comment.comment}}</p>
+				<div class="comment-social-holder">
+					<a class="denounce" href="#/denunciar">denunciar</a>
+<!-- 					<button class="btn btn-default pull-right">responder</button>
+					<button class="btn btn-default pull-right">apoyar</button> -->
+				</div>
 			</div>
 			<div class="comment-form-holder">
 				<form role="form" name="form">
 					<div class="form-group">
 						<label for="message">Tu comentario</label>
-						<textarea id="message" class="form-control" rows="3"></textarea>
+						<textarea id="message" class="form-control" rows="3" ng-model="dateo.form.comment"></textarea>
 					</div>
-					<button type="submit" class="btn btn-success" ng-click="">Comentar</button>
+					<button type="submit" class="btn btn-success" ng-click="dateo.postComment()">Comentar</button>
 				</form>
 			</div>
 		</div>
 	</div>
-	<div class="part part-2 map-holder">
+	<div class="part part-2 map-holder" ng-show="!dateo.message">
 		<h3>Ubicación</h3>
 		<leaflet defaults="defaults" markers="markers" center="center" height="260px" width="425px"></leaflet>
 		<p>{{dateo.address || 'una dirección por defecto'}}</p>

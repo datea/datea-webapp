@@ -29,6 +29,7 @@
 	<!-- Add your site or application content here -->
 	<div class="slide" ng-controller="NavCtrl" ng-include="'views/nav.html'">
 	</div>
+	<div class="messagesList" app-messages></div>
 	<div class="container" ng-view=""></div>
 
 	<!-- Google Analytics: change UA-XXXXX-X to be your site's ID -->
@@ -45,16 +46,22 @@
 
 	<script src="bower_components/angular/angular.js"></script>
 	<script src="http://cdn.leafletjs.com/leaflet-0.7/leaflet.js"></script>
+	<script src="http://api.datea.pe:6284/download/latest/oauth.js"></script>
 
-	<!-- build:js scripts/modules.js -->
+<!--
 	<script src="bower_components/birdangular/sha1.js"></script>
 	<script src="bower_components/birdangular/codebird.js"></script>
 	<script src="bower_components/birdangular/birdangular.js"></script>
 	<script src="bower_components/angular-facebook/lib/angular-facebook.js"></script>
+ -->
+
+	<!-- build:js scripts/modules.js -->
+	<script src="bower_components/jquery/jquery.js"></script>
 	<script src="bower_components/angular-local-storage/angular-local-storage.js"></script>
 	<script src="bower_components/bootstrap3/dist/ui-bootstrap-0.7.0.js"></script>
 	<script src="bower_components/angular-leaflet-directive/dist/angular-leaflet-directive.min.js"></script>
 	<script src="bower_components/angularjs-geolocation/dist/angularjs-geolocation.min.js"></script>
+	<script src="bower_components/wxGlobalErrors/wxGlobalErrors.js"></script>
 	<script src="bower_components/angular-i18n/angular-locale_es-pe.js"></script>
 	<script src="bower_components/angular-resource/angular-resource.js"></script>
 	<script src="bower_components/angular-cookies/angular-cookies.js"></script>
@@ -77,6 +84,10 @@
 <script src="scripts/services/api.js"></script>
 <script src="scripts/filters/imgFromApi.js"></script>
 <script src="scripts/controllers/dateoImg.js"></script>
+<script src="scripts/controllers/signIn.js"></script>
+<script src="scripts/directives/wxPasswordMatch.js"></script>
+<script src="scripts/controllers/profile.js"></script>
+<script src="scripts/controllers/updateUser.js"></script>
 	<!-- endbuild -->
 
 

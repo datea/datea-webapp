@@ -6,20 +6,17 @@ angular.module( 'dateaWebApp'
   , 'ngSanitize'
   , 'ngRoute'
   , 'LocalStorageModule'
-  , 'wxBirdangularModule'
-  , 'facebook'
   , 'ui.bootstrap'
   , 'leaflet-directive'
   , 'geolocation'
+  , 'wxGlobalErrors'
 ])
 .config(
 [ '$routeProvider'
 , '$httpProvider'
-, 'FacebookProvider'
 , function (
   $routeProvider
 , $httpProvider
-, FacebookProvider
 ) {
 
 	// var fbAppId = '240185656082013';
@@ -27,8 +24,11 @@ angular.module( 'dateaWebApp'
 
 	$httpProvider.defaults.useXDomain = true;
 	delete $httpProvider.defaults.headers.common['X-Requested-With'];
-
-	FacebookProvider.init( fbAppId );
+	$httpProvider.defaults.headers.patch = {
+	  'Content-Type': 'application/json;charset=utf-8'
+	}
+	// FacebookProvider.init( fbAppId );
+	OAuth.initialize('rT1wbk04eERCkSCMnA7vvdm5UcY');
 
 	$routeProvider
 	.when('/'
@@ -51,6 +51,18 @@ angular.module( 'dateaWebApp'
 	  , { templateUrl: 'views/dateo-detail.html'
 	    , controller : 'DateoCtrl'
 	    } )
+	.when('/signin'
+	  , { templateUrl: 'views/signIn.html'
+	    , controller : 'SigninCtrl'
+	    } )
+	.when('/perfil'
+	  , { templateUrl: 'views/profile.html'
+	    , controller : 'ProfileCtrl'
+	    } )
+	.when('/updateUser'
+	  , { templateUrl: 'views/updateUser.html'
+	    , controller: 'UpdateuserCtrl'
+			} )
 	.otherwise( { redirectTo: '/' } );
 
 } ] );

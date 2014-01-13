@@ -28,63 +28,50 @@ angular.module('dateaWebApp')
 	  ;
 
 	$scope.dateo = {};
+	$scope.dateo.form = {};
 	$scope.dateo.messageNext = '';
 
 	hasNext = function () {
-		var idx = dateosId.indexOf( +dateo.id );
-		return !!~idx && dateosId.length - 1 > idx;
+		return dateo.id < dateo.next_by_user;
 	}
 
 	buildDateo = function ( response ) {
-		dateos = response.objects;
-		console.log( 'otros dateosId:' )
-		angular.forEach( dateos, function ( value, key ) {
-			console.log( value.id );
-			dateosId.push( value.id );
-		} );
-		// find in response
-		angular.forEach( dateos, function ( value, key ) {
-			var leaflet = {};
-			if ( value.id === +$routeParams.dateoId ) {
-
-				leaflet.center = { lat  : value.position.coordinates[1]
-				                 , lng  : value.position.coordinates[0]
-				                 , zoom : 14
-				                 }
-				leaflet.markers = { staticy : { lat       : value.position.coordinates[1]
-				                              , lng       : value.position.coordinates[0]
-				                              , draggable : false
-				                              } }
-				dateo = value;
-				angular.extend( $scope.dateo, value );
-				angular.extend( $scope, leaflet )
-				$scope.dateo.messageNext = hasNext() ? 'siguiente' : 'primer';
-			}
-		});
-		// not found
-		if ( !$scope.dateo.content ) {
-			$scope.dateo.message = 'no encontrado';
+		var leaflet = {};
+		if( response.objects[0] ) {
+			dateo   = response.objects[0];
+			leaflet.center = { lat  : dateo.position.coordinates[1]
+			                 , lng  : dateo.position.coordinates[0]
+			                 , zoom : 14
+			                 }
+			leaflet.markers = { staticy : { lat       : dateo.position.coordinates[1]
+			                              , lng       : dateo.position.coordinates[0]
+			                              , draggable : false
+			                              } }
+			$scope.dateo.messageNext = hasNext() ? 'siguiente' : 'primer';
+			angular.extend( $scope.dateo, dateo );
+			angular.extend( $scope, leaflet );
+		} else {
+			$scope.dateo.message = 'error no encontrado';
 		}
 	}
 
 	$scope.dateo.nextDateo = function () {
-		var idx = dateosId.indexOf( +dateo.id );
-		if ( !!~idx && dateosId.length - 1 > idx ) {
-			$location.path( '/' + $routeParams.userName + '/dateos/' + dateosId[ idx + 1 ] );
-		} else {
-			$location.path( '/' + $routeParams.userName + '/dateos/' + dateosId[ 0 ] );
-		}
+		$location.path( '/' + $routeParams.userName + '/dateos/' + dateo.next_by_user );
 	}
 
 	$scope.dateo.imgDetail = function ( img ) {
-		$modal.open( { templateUrl : 'views/dateo-detail-img.html'
-		             , controller  : 'DateoimgCtrl'
-		             , resolve     : {
-		                 img : function () {
-		                   return img;
-		                 }
-		               }
-		             } )
+		var givens;
+
+		givens = { templateUrl : 'views/dateo-detail-img.html'
+		         , controller  : 'DateoimgCtrl'
+		         , resolve     : {
+		             img : function () {
+		               return img;
+		             }
+		           }
+		         }
+
+		$modal.open( givens );
 	}
 
 	$scope.dateo.print = function () {
@@ -92,9 +79,25 @@ angular.module('dateaWebApp')
 	}
 
 	Api.dateo
-	.getDateoByUsername( $routeParams.userName )
+	.getDateoByUsernameAndDateoId(
+	{ user : $routeParams.userName
+	, id   : +$routeParams.dateoId
+	} )
 	.then( buildDateo );
+
+	$scope.dateo.postComment = function () {
+		var comment = {};
+		comment.comment      = $scope.dateo.form.comment;
+		comment.object_id    = $scope.dateo.id;
+		comment.content_type = 'dateo';
+		Api.comment
+		.postCommentByDateoId( comment )
+		.then( function ( response ) {
+			console.log( response )
+			// update view
+		} )
+	}
 
 	angular.extend( $scope, config.defaultMap );
 
-}]);
+} ] );

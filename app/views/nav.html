@@ -16,11 +16,11 @@
 					<li><a href="#/acerca">Acerca</a></li>
 					<li><a href="#/ayuda">Ayuda</a></li>
 					<li ng-show="nav.visible"><button type="button" class="btn btn-success navbar-btn" ng-click="nav.datear()">Datea</button></li>
-					<li ng-show="!nav.visible"><button type="button" class="btn btn-success navbar-btn" ng-click="nav.datear()">Ingresa</button></li>
+					<li ng-show="!nav.visible"><button type="button" class="btn btn-success navbar-btn" ng-click="nav.signIn()">Ingresa</button></li>
 					<li ng-show="nav.visible" class="dropdown">
 						<a href="#" class="dropdown-toggle" data-toggle="dropdown">
 						<img ng-src="http://static.tvtropes.org/pmwiki/pub/images/myles-avatar-awesome-face.png_100.jpeg" alt="" height="25px">
-						Fulanito
+						{{ user.username }}
 						<b class="caret"></b></a>
 						<ul class="dropdown-menu">
 							<li><a href="#">Acción 1</a></li>
@@ -30,4 +30,4 @@
 				</ul>
 			</div>
 		</nav>
-		<alert ng-repeat="alert in alerts" type="alert.type" close="alertMngr.closeAlert($index)">{{alert.msg}}</alert>
+		<alert ng-repeat="alert in alerts" type="alert.type" close="closeAlert($index)">{{alert.msg}}</alert>

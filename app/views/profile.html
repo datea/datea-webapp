@@ -1,0 +1,44 @@
+<h3>Editar usuario</h3>
+<form role="form" name="form" ng-submit="profile.save()">
+	<h4>Cuenta de usuario</h4>
+	<div class="form-group">
+		<label for="username">Nombre de usuario</label>
+		<input type="text" class="form-control" id="username" ng-model="profile.username">
+	</div>
+	<div class="form-group">
+		<label for="email">Correo electrónico</label>
+		<input type="email" class="form-control" id="email" ng-model="profile.email">
+	</div>
+	<hr>
+	<h4>Personalizar Perfil</h4>
+	<div class="form-group">
+		<label for="fullname">Nombre completo</label>
+		<input type="text" class="form-control" id="fullname" ng-model="profile.fullname">
+	</div>
+	<div class="form-group">
+		<label for="message">Mensaje / Slogan</label>
+		<input type="text" class="form-control" id="message" ng-model="profile.message">
+	</div>
+	<div class="form-group">
+		<label for="url">URL personal o de tu organización</label>
+		<input type="text" class="form-control" id="url" ng-model="profile.url">
+	</div>
+	<p>Los siguiente campos son para los iconos de "sígueme en..."</p>
+	<div class="form-group">
+		<label for="facebookUrl">URL en facebook</label>
+		<input type="text" class="form-control" id="facebookUrl" ng-model="profile.facebookUrl">
+	</div>
+	<div class="form-group">
+		<label for="twitterUrl">URL en twitter</label>
+		<input type="text" class="form-control" id="twitterUrl" ng-model="profile.twitterUrl">
+	</div>
+	<div class="form-group">
+		<label for="youtubeUrl">Canal de youtube</label>
+		<input type="text" class="form-control" id="youtubeUrl" ng-model="profile.youtubeUrl">
+	</div>
+	<input type="submit" class="btn btn-info" value="Sign up">
+	<button type="submit" class="btn btn-info" disabled>Sign up</button>
+	<span ng-bind="auth.message"></span>
+</form>
+<hr>
+<pre>Validation: {{form.$error|json}}</pre>

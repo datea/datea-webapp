@@ -6,63 +6,58 @@ angular.module('dateaWebApp')
   , 'User'
   , '$http'
   , '$location'
-  , 'wxBirdangularService'
   , 'localStorageService'
   , '$window'
-  , 'Facebook'
+  , 'Api'
 , function (
     $scope
   , User
   , $http
   , $location
-  , wxBirdangularService
   , localStorageService
   , $window
-  , Facebook
+  , Api
 ) {
 
-	var ba = wxBirdangularService
-	  , ls = localStorageService
-	  ;
+	var ls = localStorageService;
 
 	$scope.flow = {};
 
-	$scope.$watch( function () {
-		return Facebook.isReady();
-	}, function ( val ) {
-		$scope.flow.facebookReady = true;
-	} );
-
 	$scope.flow.signIn = function () {
-		User.signIn();
-	}
-
-	$scope.flow.withTwitter = function () {
-		ba.requestToken();
-		$window.$windowScope = $scope;
+		$location.path( '/signin' );
 	}
 
 	$scope.flow.withFacebook = function () {
-		Facebook.getLoginStatus( function ( response ) {
-			if ( response.status === 'connected' ) {
-				$location.path( '/signup' );
-			} else {
-				Facebook.login( function ( response ) {
-					ls.set( 'keys-facebook', response );
-					$location.path( '/signup' );
-				} );
-			}
-		} );
+		OAuth.popup('facebook', function ( error, result ) {
+			var partyGivens = {};
+			partyGivens.access_token = result.access_token;
+			partyGivens.party = 'facebook';
+			User.signInBy3rdParty( partyGivens )
+			.then( function ( response ) {
+				$location.path( '/#' );
+			}, function ( reason ) {
+				console.log( '$scope.flow.withFacebook', reason );
+			} );
+		});
+	}
+
+	$scope.flow.withTwitter = function () {
+		OAuth.popup('twitter', function ( error, result ) {
+			var partyGivens = {};
+			partyGivens.party = 'twitter';
+			partyGivens.oauth_token = result.oauth_token;
+			partyGivens.oauth_token_secret = result.oauth_token_secret;
+			User.signInBy3rdParty( partyGivens )
+			.then( function ( response ) {
+				$location.path( '/#' );
+			}, function ( reason ) {
+				console.log( '$scope.flow.withTwitter', reason );
+			} );
+		});
 	}
 
 	$scope.flow.withEmail = function () {
 		$location.path('/signup');
-	}
-
-	$scope.flow.onCallback = function () {
-		$scope.$apply( function () {
-			$location.path('/signup');
-		} );
 	}
 
 } ] );
