@@ -17,7 +17,8 @@
     "angular-leaflet-directive": "~0.7.1",
     "angularjs-geolocation": "~0.1.0",
     "angular-i18n": "~1.2.6",
-    "leaflet-dist": "~0.7.1"
+    "leaflet-dist": "~0.7.1",
+    "wxGlobalErrors": "*"
   },
   "devDependencies": {
     "angular-mocks": "~1.2.0",
