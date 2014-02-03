@@ -31,6 +31,7 @@ angular.module( 'dateaWebApp' )
 		if ( isValid ) {
 			User.signIn( data )
 			.then( function ( response ) {
+				User.updateUserDataFromStorage();
 				$location.path('/');
 			} );
 		}

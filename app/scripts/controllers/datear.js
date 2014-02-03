@@ -8,6 +8,7 @@ angular.module('dateaWebApp')
 , '$http'
 , '$rootScope'
 , 'config'
+, 'Api'
 , function (
   $scope
 , $modalInstance
@@ -15,99 +16,25 @@ angular.module('dateaWebApp')
 , $http
 , $rootScope
 , config
+, Api
 ) {
 	var headers
 	  , dateo = {}
 	  , alertIndexes = {}
+	  // fn declarations
+	  , onGeolocation
+	  , onGeolocationError
 	  ;
 
-headers = { 'Authorization'  : 'Apikey root:106b7be6c0028671fa6e2d57209f53ad42e14a20'
-          }
-
-$scope.datear = {};
+// Object to be sent
 $scope.dateo  = {};
+$scope.datear = {};
+$scope.datear.autocomplete = {};
+$scope.flow   = {};
 
 $scope.alerts = [];
 
-$scope.closeAlert = function ( index ) {
-	$scope.alerts.splice(index, 1);
-}
-
-$scope.addAlert = function ( givens ) {
-	return $scope.alerts.push( givens ) - 1;
-}
-
-$rootScope.$on( 'dateo:imgLoaded', function ( ev, givens ) {
-	if ( givens.data.size > config.dateo.sizeImgMax ) {
-		alertIndexes.imgSize !== void 0 && $scope.closeAlert( alertIndexes.imgSize );
-		alertIndexes.imgSize = $scope.addAlert( { type: 'danger', msg: config.dateo.sizeImgMaxMsg } );
-	} else {
-		alertIndexes.imgSize !== void 0 && $scope.closeAlert( alertIndexes.imgSize );
-	}
-} );
-
-// /* Static alert close */
-// $scope.closeAlert = function ( ev ) {
-// 	var $this = angular.element( ev.srcElement );
-
-// 	$this.parent().remove();
-// }
-
-// /* Harcoded data*/
-
-// dateo.address   = 'Calle x 546';
-// dateo.category  = '/api/v2/category/1/';
-// dateo.content   = 'this is a test take six';
-// dateo.position  = { coordinates : [ -77.027772, -12.121937 ]
-//                   , type        : 'Point'
-//                   }
-// dateo.tags      = [ { tag : 'testTag' }
-//                   , { tag          : 'Aaaa'
-//                     , title        : 'aaaa'
-//                     , dateo_count  : 0
-//                     , description  : 'aaaa'
-//                     , follow_count : 0
-//                     , id           : 3
-//                     , resource_uri : '/api/v2/tag/3/'
-//                     }
-//                   ]
-// dateo.date      = new Date();
-// dateo.user      = 1;
-
-// $scope.dateo = dateo;
-
-$scope.datear.ok = function () {
-	// $modalInstance.close($scope.selected.item);
-	$modalInstance.dismiss('cancel');
-};
-
-$scope.datear.cancel = function () {
-	$modalInstance.dismiss('cancel');
-};
-
-$scope.datear.img = function () {
-	var url = 'http://api.datea.pe/api/v2/dateo/?format=json';
-	console.log( $scope.dateo.img );
-	console.log( $scope.dateo.imgData )
-
-	// dateo.images = [ { image : { name     : $scope.dateo.imgData.name
-	//                            , data_uri : $scope.dateo.img
-	//                            }
-	//                  , order : 0
-	//                  }
-	//                ];
-
-	// $http( { method  : 'post'
-	//        , url     : url
-	//        , headers : headers
-	//        , data    : dateo
-	//        } )
-	// .then( function ( response ) {
-	// 	console.log( 'Calling api.datea.pe: ', response );
-	// } )
-}
-
-geo.getLocation().then( function ( data ) {
+onGeolocation = function ( data ) {
 	var leaflet;
 	leaflet = { center : { lat  : data.coords.latitude
 	                     , lng  : data.coords.longitude
@@ -121,13 +48,142 @@ geo.getLocation().then( function ( data ) {
 	          }
 
 	angular.extend( $scope, leaflet );
+}
 
+onGeolocationError = function ( reason ) {
+	var leaflet = {}
+	  , draggy
+	  ;
+	// default center
+	draggy = { lat: -12.05
+	         , lng: -77.06
+	         , draggable: true
+	         }
+	leaflet.markers = {};
+	leaflet.markers.draggy = draggy;
+
+	angular.extend( $scope, leaflet );
+}
+
+$scope.closeAlert = function ( index ) {
+	$scope.alerts.splice(index, 1);
+}
+
+$scope.addAlert = function ( givens ) {
+	return $scope.alerts.push( givens ) - 1;
+}
+
+$rootScope.$on( 'dateo:imgLoaded', function ( ev, givens ) {
+	if ( givens.data.size > config.dateo.sizeImgMax ) {
+		$scope.dateo.img = null;
+		alertIndexes.imgSize !== void 0 && $scope.closeAlert( alertIndexes.imgSize );
+		alertIndexes.imgSize = $scope.addAlert( { type: 'danger', msg: config.dateo.sizeImgMaxMsg } );
+	} else {
+		alertIndexes.imgSize !== void 0 && $scope.closeAlert( alertIndexes.imgSize );
+	}
 } );
 
-angular.extend( $scope, { center   : { lat: -12.05, lng: -77.06, zoom: 10 }
-                        , defaults : { scrollWheelZoom: false }
-                        // , markers  : { draggy : { lat: -12.05, lng: -77.06, draggable: true } }
-                        , markers  : {}
-                        } );
+// Date picker
+$scope.flow.today = function() {
+	$scope.flow.dt = new Date();
+};
+$scope.flow.today();
+
+$scope.flow.minDate = null;
+
+$scope.flow.dateOptions = {
+	'year-format': "'yy'",
+	'starting-day': 1
+};
+
+// Time picker
+$scope.flow.timeNow = new Date();
+
+$scope.flow.hstep = 1;
+$scope.flow.mstep = 1;
+
+// Datetime sum
+$scope.$watch( 'flow.dt + flow.timeNow', function () {
+	var datetime = {}
+	if ( $scope.flow.dt && $scope.flow.timeNow ) {
+		datetime.year     = $scope.flow.dt.getUTCFullYear();
+		datetime.month    = $scope.flow.dt.getUTCMonth();
+		datetime.day      = $scope.flow.dt.getDate();
+		datetime.hour     = $scope.flow.timeNow.getHours();
+		datetime.minutes  = $scope.flow.timeNow.getUTCMinutes();
+		$scope.dateo.date = new Date( datetime.year
+		, datetime.month
+		, datetime.day
+		, datetime.hour
+		, datetime.minutes
+		, '00' );
+		console.log( 'datetime', $scope.dateo.date );
+	}
+} );
+
+// /* Static alert close */
+// $scope.closeAlert = function ( ev ) {
+// 	var $this = angular.element( ev.srcElement );
+
+// 	$this.parent().remove();
+// }
+
+
+$scope.datear.ok = function () {
+	var tags = [];
+	$scope.dateo.position = { coordinates : [ $scope.markers.draggy.lng, $scope.markers.draggy.lat ]
+	                        , type : 'Point'
+	                        }
+	angular.forEach( $scope.datear.selectedTags, function ( value, key ){
+		tags.push( { 'tag' : value } );
+	});
+	$scope.dateo.tags = tags;
+	$scope.dateo.images = [ { image : { name     : $scope.datear.imgData.name
+	                                  , data_uri : $scope.datear.img
+	                                  }
+	                        , order : 0
+	                        }
+	                      ];
+	// Some validation and then
+	Api.dateo.postDateo( $scope.dateo )
+	.then( function ( response ) {
+		$scope.datear.onFinished = true;
+	}
+	, function ( reason ) {
+		console.log( reason )
+	} )
+};
+
+$scope.datear.cancel = function () {
+	$modalInstance.dismiss('cancel');
+};
+
+$scope.datear.autocompleteTag = function ( val ) {
+	return Api.tag.getAutocompleteByKeyword( { q: val } )
+	.then( function ( response ) {
+		var tags = [];
+		angular.forEach( response.suggestions, function( item ){
+			tags.push( item );
+		});
+		return tags;
+	} );
+}
+
+$scope.datear.selectedTags = [];
+$scope.datear.addTag = function ( tag ) {
+	$scope.dateo.nextTag = null;
+	if ( !~$scope.datear.selectedTags.indexOf( tag )
+	&& $scope.datear.selectedTags.length < config.dateo.tagsMax ) {
+		$scope.datear.selectedTags.push( tag );
+	}
+}
+$scope.datear.removeTag = function ( idx ) {
+	$scope.datear.selectedTags.splice( idx, 1 );
+}
+
+// Map defaults
+angular.extend( $scope, config.defaultMap );
+
+geo.getLocation( {timeout:10000} ).then( onGeolocation, onGeolocationError );
 
 } ] );

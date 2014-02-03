@@ -20,7 +20,7 @@ angular.module( 'dateaWebApp'
 ) {
 
 	// var fbAppId = '240185656082013';
-	var fbAppId = '203191529863567';
+	// var fbAppId = '203191529863567';
 
 	$httpProvider.defaults.useXDomain = true;
 	delete $httpProvider.defaults.headers.common['X-Requested-With'];

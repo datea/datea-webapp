@@ -8,6 +8,8 @@
   display: none;
 }
 
+.nav, .pagination, .carousel, .panel-title a { cursor: pointer; }
+
 // globals
 
 .block {
@@ -29,10 +31,6 @@ form.ng-invalid .btn[disabled] {
 	display: inline-block;
 }
 
-.main-holder {
-	text-align: center;
-}
-
 .datear-form-holder {
 	margin: 20px 0 0;
 }
@@ -49,6 +47,42 @@ form.ng-invalid .btn[disabled] {
 	.part-2 {
 		width: 39%;
 	}
+}
+
+// home
+// home signedIn
+.signed-home-holder {
+	.part-1 {
+		width: 60%;
+
+		.campaigns-holder {
+			.campaign {
+				display: inline-block;
+				vertical-align: top;
+				width: 170px;
+
+				.campaign-img {
+					height: 160px;
+					width: 160px;
+				}
+			}
+		}
+	}
+	.part-2 {
+		width: 39%;
+
+		.weekly-dateo {
+			.user-img {
+				height: 30px;
+				width: 30px;
+			}
+			.weekly-dateo-img {
+				height: 90px;
+				width: 90px;
+			}
+		}
+	}
+
 }
 
 // dateo
@@ -88,4 +122,29 @@ form.ng-invalid .btn[disabled] {
 	img {
 		width: 100%;
 	}
+}
+
+
+// datear
+
+.datear-form-holder {
+
+	.date-picker-holder {
+		display: inline-block;
+		min-height: 290px;
+	}
+
+	.datepicker-holder-fix {
+		padding: 0;
+	}
+
+	.timepicker-holder {
+		position: relative;
+		top: -12px;
+	}
+
+	.uploaded-img {
+		padding: 10px;
+	}
+
 }

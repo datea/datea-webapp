@@ -7,6 +7,6 @@ angular.module('dateaWebApp')
   config
 ) {
 	return function (input) {
-		return input && config.api.imgUrl + input;
+		return input ? config.api.imgUrl + input : 'http://placekitten.com/160/150';
 	};
 }]);

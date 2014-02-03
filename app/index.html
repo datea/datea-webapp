@@ -14,7 +14,7 @@
 	<!-- build:css(.tmp) styles/main.css -->
 	<link rel="stylesheet" href="styles/main.css">
 	<!-- endbuild -->
-	<link rel="stylesheet" href="http://cdn.leafletjs.com/leaflet-0.7/leaflet.css" />
+	<link rel="stylesheet" href="bower_components/leaflet-dist/leaflet.css" />
 </head>
 <body ng-app="dateaWebApp">
 	<!--[if lt IE 7]>
@@ -45,7 +45,7 @@
 
 
 	<script src="bower_components/angular/angular.js"></script>
-	<script src="http://cdn.leafletjs.com/leaflet-0.7/leaflet.js"></script>
+	<script src="bower_components/leaflet-dist/leaflet.js"></script>
 	<script src="http://api.datea.pe:6284/download/latest/oauth.js"></script>
 
 <!--
@@ -58,9 +58,10 @@
 	<!-- build:js scripts/modules.js -->
 	<script src="bower_components/jquery/jquery.js"></script>
 	<script src="bower_components/angular-local-storage/angular-local-storage.js"></script>
-	<script src="bower_components/bootstrap3/dist/ui-bootstrap-0.7.0.js"></script>
+	<script src="bower_components/angular-ui-bootstrap-bower/ui-bootstrap.js"></script>
+	<script src="bower_components/angular-ui-bootstrap-bower/ui-bootstrap-tpls.js"></script>
 	<script src="bower_components/angular-leaflet-directive/dist/angular-leaflet-directive.min.js"></script>
-	<script src="bower_components/angularjs-geolocation/dist/angularjs-geolocation.min.js"></script>
+	<script src="bower_components/angularjs-geolocation/src/geolocation.js"></script>
 	<script src="bower_components/wxGlobalErrors/wxGlobalErrors.js"></script>
 	<script src="bower_components/angular-i18n/angular-locale_es-pe.js"></script>
 	<script src="bower_components/angular-resource/angular-resource.js"></script>
@@ -88,6 +89,7 @@
 <script src="scripts/directives/wxPasswordMatch.js"></script>
 <script src="scripts/controllers/profile.js"></script>
 <script src="scripts/controllers/updateUser.js"></script>
+<script src="scripts/directives/bgFromApi.js"></script>
 	<!-- endbuild -->
 
 

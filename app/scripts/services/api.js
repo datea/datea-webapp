@@ -20,6 +20,9 @@ angular.module('dateaWebApp')
 	  , comment  = {}
 	  , account  = {}
 	  , user     = {}
+	  , tag      = {}
+	  , campaign = {}
+	  , activityLog = {}
 	  // fn declarations
 	  , reconfigUserRsrc
 	  ;
@@ -31,7 +34,10 @@ angular.module('dateaWebApp')
 	account.social.facebook = {};
 	account.register        = {};
 	account.signIn          = {};
-	account.password   = {};
+	account.password        = {};
+
+	tag.autocomplete = {};
+	tag.trending     = {};
 
 	reconfigUserRsrc = function () {
 		user.rsrc = $resource( config.api.url + 'user/:id', {},
@@ -44,8 +50,11 @@ angular.module('dateaWebApp')
 	}
 
 	dateo.rsrc   = $resource( config.api.url + 'dateo/'  , {},
-	{'query': { method: 'GET' } }
-	);
+	{ 'query': { method: 'GET' }
+	, 'post' : { method  : 'POST'
+	           , headers : headers || ls.get('token')
+	           }
+	} );
 	comment.rsrc = $resource( config.api.url + 'comment/', {},
 	{ 'query': { method : 'GET' }
 	, 'post' : { method  : 'POST'
@@ -69,13 +78,26 @@ angular.module('dateaWebApp')
 	)
 	user.rsrc = $resource( config.api.url + 'user/:id', {},
 	{ 'get'  : { method  : 'GET'
-	           , params : { id: '@id' }
+	           , params  : { id: '@id' }
 	           , headers : headers || ls.get('token') }
 	, 'patch': { method : 'PATCH'
 	           , params : { id: '@id' }
 	           , headers: headers || ls.get('token')
 	           } }
 	)
+	tag.autocomplete.rsrc = $resource( config.api.url + 'tag/autocomplete/', {},
+	{ 'get' : { method : 'GET' } }
+	)
+	tag.trending.rsrc = $resource( config.api.url + 'tag/trending/', {},
+	{ 'get' : { method : 'GET' } }
+	)
+	campaign.rsrc = $resource( config.api.url + 'campaign/', {},
+	{ 'query': { method : 'GET' } }
+	)
+	activityLog.rsrc = $resource( config.api.url + 'activity_log/', {},
+	{ 'query': { method : 'GET' } }
+	)
+
 console.log( 'api', headers );
 	// User
 	user.getUserByUserIdOrUsername = function ( givens ) {
@@ -166,6 +188,16 @@ console.log( 'user.getUserByUserIdOrUsername token', token );
 	}
 
 	// Dateo
+	dateo.getDateos = function ( givens ) {
+		var dfd = $q.defer();
+		dateo.rsrc.query( givens, function ( response ) {
+			dfd.resolve( response );
+		}, function ( error ) {
+			dfd.reject( error );
+		} );
+		return dfd.promise;
+	}
+
 	dateo.getDateosByUsername = function ( username ) {
 		var dfd = $q.defer();
 		dateo.rsrc.query( { user: username }, function ( response ) {
@@ -179,6 +211,16 @@ console.log( 'user.getUserByUserIdOrUsername token', token );
 	dateo.getDateoByUsernameAndDateoId = function ( givens ) {
 		var dfd = $q.defer();
 		dateo.rsrc.query( givens, function ( response ) {
+			dfd.resolve( response );
+		}, function ( error ) {
+			dfd.reject( error );
+		} );
+		return dfd.promise;
+	}
+
+	dateo.postDateo = function ( givens ) {
+		var dfd = $q.defer();
+		dateo.rsrc.post( givens, function ( response ) {
 			dfd.resolve( response );
 		}, function ( error ) {
 			dfd.reject( error );
@@ -201,10 +243,72 @@ console.log( 'user.getUserByUserIdOrUsername token', token );
 		return dfd.promise;
 	}
 
-	return { dateo    : dateo
-	       , comment  : comment
-	       , account  : account
-	       , user     : user
+	// Tags
+	tag.getAutocompleteByKeyword = function ( givens ) {
+		var dfd = $q.defer();
+		tag.autocomplete.rsrc.get( givens, {}
+		, function ( response ) {
+			dfd.resolve( response );
+		}
+		, function ( error ) {
+			dfd.reject( error );
+		} );
+		return dfd.promise;
+	}
+
+	tag.getTrendingTags = function ( givens ) {
+		var dfd = $q.defer();
+		tag.trending.rsrc.get( givens, {}
+		, function ( response ) {
+			dfd.resolve( response );
+		}
+		, function ( error ) {
+			dfd.reject( error );
+		} );
+		return dfd.promise;
+	}
+
+	// Campaign
+
+	campaign.getCampaigns = function ( givens ) {
+		var dfd = $q.defer();
+		campaign.rsrc.query( givens, function ( response ) {
+			dfd.resolve( response );
+		}, function ( error ) {
+			dfd.reject( error );
+		} );
+		return dfd.promise;
+	}
+
+	campaign.getCampaignsByDate = function ( givens ) {
+		var dfd = $q.defer();
+		campaign.rsrc.query( givens, function ( response ) {
+			dfd.resolve( response );
+		}, function ( error ) {
+			dfd.reject( error );
+		} );
+		return dfd.promise;
+	}
+
+	// ActivityLog
+
+	activityLog.getActivityOfUserByUserId = function ( givens ) {
+		var dfd = $q.defer();
+		activityLog.rsrc.query( givens, function ( response ) {
+			dfd.resolve( response );
+		}, function ( error ) {
+			dfd.reject( error );
+		} );
+		return dfd.promise;
+	}
+
+	return { dateo       : dateo
+	       , comment     : comment
+	       , account     : account
+	       , user        : user
+	       , tag         : tag
+	       , campaign    : campaign
+	       , activityLog :activityLog
 	       };
 
 } ] );

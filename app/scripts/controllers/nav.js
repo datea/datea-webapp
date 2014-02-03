@@ -113,4 +113,6 @@ console.log( 'updateUserDataFromApi', 'status === 0' );
 		onSignIn();
 	}
 
+	// $scope.nav.datear();
+
 }]);

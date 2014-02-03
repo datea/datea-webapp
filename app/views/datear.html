@@ -4,19 +4,27 @@
 	<alert ng-repeat="alert in alerts" type="alert.type" close="closeAlert($index)">{{alert.msg}}</alert>
 </div>
 <div class="modal-body">
-	<div class="datear-form-holder">
-		<form role="form" name="form">
+	<div class="datear-form-holder" ng-hide="datear.onFinished">
+		<form role="form" name="form" ng-submit="datear.send()">
 			<h4>1. Describe tu dateo</h4>
 			<div class="form-group">
 				<label for="message">Ingrese el contenido de su dateo</label>
-				<textarea id="message" class="form-control" rows="3"></textarea>
+				<textarea id="message" class="form-control" rows="3" ng-model="dateo.content"></textarea>
 				<span class="help-block">Introduce el contenido. Si puedes propón una solución</span>
 			</div>
 			<div class="form-group">
 				<label for="image">Suba una imagen</label>
-				<input type="file" id="image" fileread="dateo.img" filedata="dateo.imgData" accept="image/*">
-				<img ng-show="dateo.img" ng-src="{{dateo.img}}" alt="{{dateo.imgData.name}}" width="200px">
-				<button class="btn btn-default" ng-click="datear.img()">img</button>
+				<input type="file" id="image" fileread="datear.img" filedata="datear.imgData" accept="image/*">
+				<img class="uploaded-img" ng-show="datear.img" ng-src="{{datear.img}}" alt="{{datear.imgData.name}}" width="200px">
+			</div>
+			<div class="form-group">
+				<div class="col-xs-6 datepicker-holder-fix">
+					<label for="datepicker">Fecha y hora del suceso (opcional)</label>
+					<input type="text" class="form-control" id="datepicker" datepicker-popup="{{format}}" ng-model="flow.dt" is-open="flow.opened" min="flow.minDate" max="'2015-06-22'" datepicker-options="flow.dateOptions" date-disabled="flow.disabled(date, mode)" ng-required="true" close-text="Cerrar">
+				</div>
+				<div class="timepicker-holder col-xs-6" ng-model="flow.timeNow" ng-change="flow.changed()">
+					<timepicker hour-step="flow.hstep" minute-step="flow.mstep" show-meridian="flow.ismeridian"></timepicker>
+				</div>
 			</div>
 			<hr>
 			<h4>2. Ayúdanos a ubicar tu dateo</h4>
@@ -32,28 +40,32 @@
 			<leaflet defaults="defaults" markers="markers" center="center" height="400px" width="550px"></leaflet>
 			<hr>
 			<h4>3. Etiqueta tu dateo</h4>
-			<h5>etiquetas sugeridas</h5>
+<!-- 			<h5>etiquetas sugeridas</h5>
 			<div class="btn-group">
 				<button type="button" class="btn btn-default">#laterGram</button>
 				<button type="button" class="btn btn-default">#selfie</button>
 				<button type="button" class="btn btn-default">#sorryNotSorry</button>
-			</div>
+			</div> -->
 			<h5>buscar / agregar etiquetas</h5>
 			<div class="form-group">
 				<div class="input-group col-sm-6">
-					<input type="text" class="form-control">
+					<input type="text" ng-model="dateo.nextTag" ng-model="asyncSelected"  typeahead="tags for tags in datear.autocompleteTag($viewValue) | filter:$viewValue" typeahead-loading="loadingLocations" class="form-control">
+					<i ng-show="loadingLocations" class="glyphicon glyphicon-refresh"></i>
 					<span class="input-group-btn">
-						<button class="btn btn-default" type="button">+</button>
+						<button class="btn btn-default" type="button" ng-click="datear.addTag( dateo.nextTag )">+</button>
 					</span>
 				</div>
 			</div>
 			<div class="well">
 				<h5>Etiquetas seleccionadas</h5>
-				<span class="label label-default"><a href="#">[x]</a>#noFilter</span>
-				<span class="label label-default"><a href="#">[x]</a>#trending</span>
-				<span class="label label-default"><a href="#">[x]</a>#hashtag</span>
+				<span class="label label-default" ng-repeat="tag in datear.selectedTags">
+					<a href ng-click="datear.removeTag($index)">[x]</a> #{{ tag }}
+				</span>
 			</div>
 		</form>
+	</div>
+	<div class="onFinished-holder" ng-show="datear.onFinished">
+		<h3>gracias tu dateo ha sido publicado</h3>
 	</div>
 </div>
 <div class="modal-footer">

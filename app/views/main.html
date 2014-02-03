@@ -1,12 +1,6 @@
 <div class="main-holder">
-	<h1 class="brand" ng-show="flow.visible">datea.pe</h1>
 
-	<div class="flow-holder">
-		<button class="btn btn-default" ng-show="flow.visible" ng-click="flow.signIn()">Ingresar</button>
-
-		<button class="btn btn-default" ng-show="flow.visible" ng-click="flow.signUp()">Registrarse</button>
-	</div>
-
-	<h4 ng-show="user">Bienvenido {{user.username}}</h4>
+	<div class="visitor-home-holder" ng-include="'views/homeVisitor.html'" ng-show="flow.isSignedIn"></div>
+	<div class="signed-home-holder" ng-include="'views/homeSignedIn.html'" ng-show="!flow.isSignedIn"></div>
 
 </div>
