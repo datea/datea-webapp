@@ -3,8 +3,7 @@
 		<div class="map-frame-top map-frame">
 			<h5>viendo:</h5>
 			<div class="form-group col-sm-2">
-				<select class="form-control">
-					<option value="1">1</option>
+				<select class="form-control" ng-model="homeSI.selectedMarker" ng-options="marker for marker in homeSI.markers" >
 				</select>
 			</div>
 			<div class="form-group">
@@ -21,8 +20,8 @@
 		</div>
 		<leaflet defaults="defaults" markers="markers" center="center" width="600px" height="450px"></leaflet>
 		<div class="map-frame-bottom map-frame">
-			<button class="btn btn-default" type="button"><i class="glyphicon glyphicon-chevron-left"></i>anterior</button>
-			<button class="btn btn-default" type="button">siguiente<i class="glyphicon glyphicon-chevron-right"></i></button>
+			<button class="btn btn-default" type="button" ng-click="flow.nextMarker( { direction : 0 } )"><i class="glyphicon glyphicon-chevron-left"></i>anterior</button>
+			<button class="btn btn-default" type="button" ng-click="flow.nextMarker( { direction : 1 } )">siguiente<i class="glyphicon glyphicon-chevron-right"></i></button>
 			<button class="btn btn-default" type="button"><i class="glyphicon glyphicon-share"></i></button>
 			<button class="btn btn-default" type="button"><i class="glyphicon glyphicon-fullscreen"></i></button>
 		</div>

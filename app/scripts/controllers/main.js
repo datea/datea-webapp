@@ -30,7 +30,12 @@ angular.module( 'dateaWebApp' )
 	  , ls    = localStorageService
 	  , dateo = {}
 	  , campaigns = []
+	  , sessionMarkers 		= {}
+	  , sessionMarkersIdx = 0
+	  , lastMarkerWithFocus
 	  // fn declarations
+	  , getMarkerWithFocusIdx
+	  , isMarkerDup
 	  , onSignIn
 	  , onSignUp
 	  , onSignOut
@@ -173,6 +178,18 @@ angular.module( 'dateaWebApp' )
 		buildMarkers( dateosGivens );
 	}
 
+	isMarkerDup = function ( givens ) {
+		var marker = givens && givens.marker
+		  , isDup
+		  ;
+		angular.forEach( sessionMarkers , function ( value, key ) {
+			if ( value._id === marker.id ) {
+				isDup = true;
+			}
+		});
+		return isDup ? true : false;
+	}
+
 	buildMarkers = function ( givens ) {
 		var map     = {}
 		  , markers = {}
@@ -181,15 +198,23 @@ angular.module( 'dateaWebApp' )
 		Api.dateo.getDateos( givens )
 		.then( function ( response ) {
 			angular.forEach( response.objects, function ( value, key ){
-				if ( value.position ) {
-					markers['marker'+key] = { lat : value.position.coordinates[1]
-					                        , lng : value.position.coordinates[0]
-					                        , message : value.content
-					                        , draggable : false
-					                        }
+				if ( value.position && !isMarkerDup( { marker : value } ) ) {
+					markers['marker'+sessionMarkersIdx] = {
+					  lat       : value.position.coordinates[1]
+					, lng       : value.position.coordinates[0]
+					, message   : value.extract
+					, draggable : false
+					, focus     : false
+					, _id       : value.id
+					}
+					sessionMarkersIdx += 1;
 				}
 			});
-			map.markers = markers;
+			console.log( 'sessionMarkers', sessionMarkers );
+			angular.extend( sessionMarkers, markers );
+			map.markers = sessionMarkers;
+			$scope.homeSI.markers = Object.keys( sessionMarkers );
+			$scope.homeSI.selectedMarker = 'sup';
 			angular.extend( $scope, map );
 		}, function ( reason ) {
 			console.log( reason );
@@ -238,6 +263,33 @@ angular.module( 'dateaWebApp' )
 		             , controller  : 'DatearCtrl'
 		             } );
 	}
+
+	getMarkerWithFocusIdx = function ( ) {
+		return lastMarkerWithFocus ? +lastMarkerWithFocus.replace('marker','') : 0;
+	}
+
+	$scope.flow.nextMarker = function ( givens ) {
+		var idx
+		  , markerName
+		  , direction = givens && givens.direction
+		  ;
+		// If there is no next valid Marker
+		if ( ( getMarkerWithFocusIdx() === 0 && direction === 0 )
+		|| ( getMarkerWithFocusIdx() === Object.keys($scope.markers).length && direction === 1) ) {
+			lastMarkerWithFocus = 'marker0';
+			$scope.markers[lastMarkerWithFocus].focus = true;
+			return;
+		}
+		idx = direction ? getMarkerWithFocusIdx() + 1 : getMarkerWithFocusIdx() - 1;
+		markerName = 'marker'+idx;
+		$scope.markers[markerName] && ( $scope.markers[markerName].focus = true );
+		$scope.$broadcast( 'leafletDirectiveMarker.click', { markerName : markerName } );
+	}
+
+	$scope.$on( 'leafletDirectiveMarker.click', function ( ev, args ) {
+		console.log( 'focus event', args.markerName );
+		lastMarkerWithFocus = args.markerName;
+	} )
 
 	$rootScope.$on( 'user:signedIn', function () {
 		onSignIn();
