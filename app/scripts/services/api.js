@@ -308,7 +308,7 @@ console.log( 'user.getUserByUserIdOrUsername token', token );
 	       , user        : user
 	       , tag         : tag
 	       , campaign    : campaign
-	       , activityLog :activityLog
+	       , activityLog : activityLog
 	       };
 
 } ] );

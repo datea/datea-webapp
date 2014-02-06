@@ -19,7 +19,8 @@
     "angular-i18n": "~1.2.6",
     "leaflet-dist": "~0.7.1",
     "wxGlobalErrors": "*",
-    "angular-ui-bootstrap-bower": "~0.10.0"
+    "angular-ui-bootstrap-bower": "~0.10.0",
+    "wxAngularFullscreen": "*"
   },
   "devDependencies": {
     "angular-mocks": "~1.2.0",

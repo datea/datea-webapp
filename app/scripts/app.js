@@ -10,6 +10,7 @@ angular.module( 'dateaWebApp'
   , 'leaflet-directive'
   , 'geolocation'
   , 'wxGlobalErrors'
+  , 'FSAngular'
 ])
 .config(
 [ '$routeProvider'
