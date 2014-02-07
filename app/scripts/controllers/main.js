@@ -13,6 +13,9 @@ angular.module( 'dateaWebApp' )
   , 'Api'
   , '$modal'
   , '$interpolate'
+  , 'leafletData'
+  , '$q'
+  , 'Fullscreen'
 , function (
     $scope
   , User
@@ -25,22 +28,30 @@ angular.module( 'dateaWebApp' )
   , Api
   , $modal
   , $interpolate
+  , leafletData
+  , $q
+  , Fullscreen
 ) {
 	var data
-	  , ls    = localStorageService
-	  , dateo = {}
-	  , campaigns = []
+	  , ls = localStorageService
+	  , dateo             = {}
+	  , campaigns 				= []
 	  , sessionMarkers 		= {}
 	  , sessionMarkersIdx = 0
 	  , lastMarkerWithFocus
+	  , lastBounds
+	  , dontCheckCenterOutOfBounds
 	  // fn declarations
+	  , geolocateAndBuildMap
 	  , getMarkerWithFocusIdx
 	  , isMarkerDup
+	  , isCenterOutOfBounds
+	  , resetMarkers
 	  , onSignIn
 	  , onSignUp
 	  , onSignOut
-	  , onGeolocation
-	  , onGeolocationError
+	  // , onGeolocation
+	  // , onGeolocationError
 	  , buildMap
 	  , buildMarkers
 	  , buildCampaigns
@@ -147,7 +158,7 @@ angular.module( 'dateaWebApp' )
 	}
 
 	buildMap = function ( givens ) {
-		var dateosGivens = {}
+		var dateosGivens = givens && givens.dateosGivens || {}
 			, center       = {}
 			, map
 			;
@@ -156,26 +167,51 @@ angular.module( 'dateaWebApp' )
 		center.lng = givens && givens.center && givens.center.coords.longitude;
 
 		map = config.defaultMap;
-		map.center.zoom = 15;
 		if ( center.lat && center.lng ) {
 			map.center.lat = center.lat;
 			map.center.lng = center.lng
 		}
 
-		dateosGivens.latitude  = center.lat || config.defaultMap.center.lat;
-		dateosGivens.longitude = center.lng || config.defaultMap.center.lng;
-		dateosGivens.distance  = 2000;
+		if ( !Object.keys( dateosGivens ).length ) {
+			dateosGivens.latitude  = center.lat || config.defaultMap.center.lat;
+			dateosGivens.longitude = center.lng || config.defaultMap.center.lng;
+			dateosGivens.distance  = 2000;
+			dontCheckCenterOutOfBounds = false;
+			// Only make a request if new the center is outside the map boundaries
+			leafletData.getMap()
+			.then( function ( map ) {
+				lastBounds = map.getBounds();
+
+				$scope.$watch( 'center.lat+center.lng', function () {
+					isCenterOutOfBounds();
+				} );
+			} );
+		} else {
+			dontCheckCenterOutOfBounds = true;
+			dateosGivens.updateCenter  = true;
+		}
 
 		angular.extend( $scope, map );
 
-		$scope.$watch( 'center.lat+center.lng', function () {
-			buildMarkers( { latitude : $scope.center.lat
-			              , longitude: $scope.center.lng
-			              , distance : 2000
-			              }	)
-		} )
-
 		buildMarkers( dateosGivens );
+	}
+
+	isCenterOutOfBounds = function () {
+		if ( !dontCheckCenterOutOfBounds ) {
+			leafletData.getMap()
+			.then( function ( map ) {
+				var bounds = lastBounds;
+				if ( $scope.center.lat >= bounds._northEast.lat || $scope.center.lat < bounds._southWest.lat
+				|| $scope.center.lng <= bounds._southWest.lng || $scope.center.lng < bounds._southWest.lng ) {
+					console.log('out of bounds');
+					buildMarkers( { latitude : $scope.center.lat
+					              , longitude: $scope.center.lng
+					              , distance : 2000
+					              }	);
+					lastBounds = map.getBounds();
+				}
+			} );
+		}
 	}
 
 	isMarkerDup = function ( givens ) {
@@ -194,7 +230,7 @@ angular.module( 'dateaWebApp' )
 		var map     = {}
 		  , markers = {}
 		  ;
-		givens.limit = 50;
+		givens.limit = config.homeSI.dateosLimitByRequest;
 		Api.dateo.getDateos( givens )
 		.then( function ( response ) {
 			angular.forEach( response.objects, function ( value, key ){
@@ -214,25 +250,43 @@ angular.module( 'dateaWebApp' )
 			angular.extend( sessionMarkers, markers );
 			map.markers = sessionMarkers;
 			$scope.homeSI.markers = Object.keys( sessionMarkers );
-			$scope.homeSI.selectedMarker = 'sup';
+			if ( givens && givens && givens.updateCenter ) {
+				map.center = {};
+				map.center.lat = map.markers[ 'marker'+0 ].lat;
+				map.center.lng = map.markers[ 'marker'+0 ].lng;
+				map.center.zoom = config.homeSI.mapZoomOverride;
+			}
 			angular.extend( $scope, map );
 		}, function ( reason ) {
 			console.log( reason );
 		} );
 	}
 
-	onSignIn =function () {
-		$scope.flow.isSignedIn = false;
-		$scope.user = User.data;
-
-		angular.extend( $scope, config.defaultMap );
+	geolocateAndBuildMap = function () {
 		geo.getLocation( { timeout:10000 } )
 		.then( function ( data ) {
 			buildMap( { center : data } )
 		}, function () {
 			buildMap();
-		} )
+		} );
+	}
 
+	resetMarkers = function () {
+		$scope.markers    = {};
+		sessionMarkers    = {};
+		sessionMarkersIdx = 0;
+	}
+
+	onSignIn =function () {
+		var map;
+
+		$scope.flow.isSignedIn = false;
+		$scope.user = User.data;
+		map = config.defaultMap;
+		map.center.zoom = config.homeSI.mapZoomOverride;
+		angular.extend( $scope, map );
+
+		geolocateAndBuildMap();
 		// buildMap();
 		buildCampaigns();
 		buildActivityLog();
@@ -246,6 +300,11 @@ angular.module( 'dateaWebApp' )
 
 	onSignOut = function () {
 		$scope.flow.isSignedIn = true;
+	}
+
+	$scope.homeSI.geolocate = function () {
+		resetMarkers();
+		geolocateAndBuildMap();
 	}
 
 	$scope.flow.isSignedIn = !User.isSignedIn();
@@ -264,11 +323,24 @@ angular.module( 'dateaWebApp' )
 		             } );
 	}
 
-	getMarkerWithFocusIdx = function ( ) {
+	$scope.homeSI.search = function () {
+		resetMarkers();
+		buildMap( { dateosGivens : { q: $scope.homeSI.searchKeyword } } );
+	}
+
+	$scope.homeSI.fullscreen = function () {
+		if ( Fullscreen.isEnabled() ) {
+			Fullscreen.cancel();
+		} else {
+			Fullscreen.enable( document.getElementById('homeSI-map-holder') );
+		}
+	}
+
+	getMarkerWithFocusIdx = function () {
 		return lastMarkerWithFocus ? +lastMarkerWithFocus.replace('marker','') : 0;
 	}
 
-	$scope.flow.nextMarker = function ( givens ) {
+	$scope.homeSI.focusNextMarker = function ( givens ) {
 		var idx
 		  , markerName
 		  , direction = givens && givens.direction
@@ -284,6 +356,7 @@ angular.module( 'dateaWebApp' )
 		markerName = 'marker'+idx;
 		$scope.markers[markerName] && ( $scope.markers[markerName].focus = true );
 		$scope.$broadcast( 'leafletDirectiveMarker.click', { markerName : markerName } );
+		isCenterOutOfBounds();
 	}
 
 	$scope.$on( 'leafletDirectiveMarker.click', function ( ev, args ) {
@@ -306,6 +379,5 @@ angular.module( 'dateaWebApp' )
 	if( User.isSignedIn() ) {
 		onSignIn();
 	}
-
 
 } ] );

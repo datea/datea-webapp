@@ -17,6 +17,7 @@ angular
 	               , markers  : {}
 	               }
 	, homeSI : { campaignsOffset : 12
+	           , mapZoomOverride : 15
 	           , activityVerbs : [ 'dateo', 'commented', 'voted' ]
 	           , activityContentMsg : { onUser : { 'dateo'     : 'dateó en #{{action_object.tags[0].tag}}'
 	                                             , 'commented' : 'comentó tu dateo en #{{action_object.tags[0].tag}}'
@@ -26,7 +27,9 @@ angular
 	                                             , 'commented' : 'comentaste el dateo de {{target_user.username}} en #{{target_object.tags[0].tag}}'
 	                                             , 'voted'     : 'apoyaste el dateo de {{target_user.username}}'
 	                                             }
-	                                  } }
+	                                  }
+	            , dateosLimitByRequest : 100
+	            }
 	}
 );
 

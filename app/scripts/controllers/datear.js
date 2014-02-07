@@ -174,6 +174,7 @@ $scope.datear.addTag = function ( tag ) {
 	$scope.dateo.nextTag = null;
 	if ( !~$scope.datear.selectedTags.indexOf( tag )
 	&& $scope.datear.selectedTags.length < config.dateo.tagsMax ) {
+		tag = tag.replace('#','');
 		$scope.datear.selectedTags.push( tag );
 	}
 }
