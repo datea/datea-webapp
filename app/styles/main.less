@@ -1,5 +1,32 @@
-@import "app/bower_components/bootstrapless/less/bootstrap.less";
+/*
+	Project Name: Datea WebApp
+	URI: http://datea.pe/
+	Author: Team Datea
+	Author URI: 
+	Description: Main CSS for Datea.pe
+	Version: 1.0
+	Tags: datea, información, participación ciudadana, comparte...
+*/
 
+
+/* ==========================================================================
+   Import Less
+========================================================================== */
+@import "app/bower_components/bootstrapless/less/bootstrap.less";
+@import "app/styles/modules.less";
+
+
+
+/* ==========================================================================
+   Variables
+========================================================================== */
+@property: all;
+
+
+
+/* ==========================================================================
+   Base styles
+========================================================================== */
 *, *:before, *:after {
   -moz-box-sizing: border-box; -webkit-box-sizing: border-box; box-sizing: border-box;
  }
@@ -8,17 +35,31 @@
   display: none;
 }
 
-.nav, .pagination, .carousel, .panel-title a { cursor: pointer; }
-
-// globals
-
-.block {
-	display: block;
+::-moz-selection {
+  background: #b3d4fc;
+  text-shadow: none;
 }
 
-.part {
-	display: inline-block;
-	vertical-align: top;
+::selection {
+  background: #b3d4fc;
+  text-shadow: none;
+}
+
+body {
+  font-family: sans-serif;
+  overflow-x: hidden;
+  -webkit-font-smoothing: antialiased;
+
+  a {
+  	text-decoration: none;
+  }
+}
+
+ /*Remove default fieldset styles. */
+fieldset {
+  border: 0;
+  margin: 0;
+  padding: 0;
 }
 
 form.ng-invalid input[type="submit"],
@@ -31,12 +72,174 @@ form.ng-invalid .btn[disabled] {
 	display: inline-block;
 }
 
+ /*A better looking default horizontal rule */
+hr {
+  display: block;
+  height: 1px;
+  border: 0;
+  border-top: 1px solid #ccc;
+  margin: 1em 0;
+  padding: 0;
+}
+
+
+ /*Remove the gap between images and the bottom of their containers: h5bp.com/i/440 */
+img {vertical-align: middle;}
+
+ /*Allow only vertical resizing of textareas. */
+textarea { resize: vertical; }
+
+ /* Absolute layers */
+.absolute-BottomLeft,
+.absolute-BottomRight,
+.absolute-TopLeft,
+.absolute-TopRight {
+    position: absolute;}
+
+.absolute-BottomLeft {
+  bottom: 0;
+  left: 0;
+}
+
+.absolute-BottomRight {
+  bottom: 0;
+  right: 0;
+}
+
+.absolute-TopLeft {
+  left: 0;
+  top: 0;
+}
+
+.absolute-TopRight {
+  right: 0;
+  top: 0;
+}
+
+.block {
+	display: block;
+}
+
+.clearfix,
+.clearfix:after  {
+  clear: both;
+}
+
 .datear-form-holder {
 	margin: 20px 0 0;
 }
 
-// sign up
+.hidden { 
+	display: none; 
+}
 
+.invisible { 
+	visibility: hidden; 
+}
+
+/* Limit inside layer */
+.limiter {
+  margin: 0 auto;
+  position: relative;
+  max-width: 1200px; /* 75em */
+}
+
+.nav, .pagination, .carousel, .panel-title a { cursor: pointer; }
+
+.part {
+	display: inline-block;
+	vertical-align: top;
+}
+
+.relative {
+	position: relative;
+}
+
+ /* Float side */
+.side-left { float: left; }
+.side-right { float: right; }
+
+.transition {
+	-webkit-transition: @property .25s 'ease-in-out';
+	   -moz-transition: @property .25s 'ease-in-out';
+	    -ms-transition: @property .25s 'ease-in-out';
+	        transition: @property .25s 'ease-in-out';
+}
+
+.underlined { text-decoration: underline; }
+
+
+
+/* ==========================================================================
+   Structure
+========================================================================== */
+footer.colophon {
+	background-color: #231F20;
+	color: #FFFFFF;
+	margin-top: 30px;
+	min-height: 120px;
+
+	.datea-rights {
+		padding-top: 20px;
+		text-align: right;
+	}
+}
+
+
+header.branding {
+	background-color: #EDFF00;
+
+	.navbar {
+		background-color: #EDFF00;
+		border: 0 none;
+		border-radius: 0;
+		min-height: 70px;
+	}
+
+	.navbar-collapse { 
+		width: 100%; 
+		margin-top: 15px;
+	}
+}
+
+
+section#body {
+	position: relative;
+}
+
+
+
+/* ==========================================================================
+   Header
+========================================================================== */
+header.branding {
+	
+	.navbar-brand, .navbar-nav {
+		float: none;
+	}
+
+	.navbar-toggle {
+		margin-top: 15px;
+		margin-bottom: 5px;
+	}
+
+	.navbar-nav > li {
+		text-transform: uppercase;
+
+		a {
+			color: #333333;
+
+			&:hover {
+				border-bottom: 2px solid #333;
+			}
+		}
+		
+	}
+}
+
+
+
+// sign up
 .sign-up {
 	.part {
 		padding: 10px;
@@ -48,6 +251,7 @@ form.ng-invalid .btn[disabled] {
 		width: 39%;
 	}
 }
+
 
 // home
 // home signedIn
@@ -86,7 +290,6 @@ form.ng-invalid .btn[disabled] {
 }
 
 // dateo
-
 .dateo-user {
 
 	.img-holder {
@@ -126,7 +329,6 @@ form.ng-invalid .btn[disabled] {
 
 
 // datear
-
 .datear-form-holder {
 
 	.date-picker-holder {
@@ -145,6 +347,18 @@ form.ng-invalid .btn[disabled] {
 
 	.uploaded-img {
 		padding: 10px;
+	}
+
+}
+
+
+/* ==========================================================================
+   Media Queries
+========================================================================== */
+@media (min-width: 768px) {
+	
+	header.branding .navbar-collapse {
+		width: auto;
 	}
 
 }
