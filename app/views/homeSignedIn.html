@@ -1,7 +1,7 @@
 <div class="part part-1">
 	<div class="homeSI-map-holder" id="homeSI-map-holder">
 		<div class="map-frame-top map-frame">
-			<h5>viendo:</h5>
+			<!--<h5>viendo:</h5>-->
 			<div class="form-group col-sm-2">
 				<select class="form-control" ng-model="homeSI.selectedMarker" ng-options="marker for marker in homeSI.markers" >
 				</select>
@@ -14,6 +14,7 @@
 					</span>
 				</div>
 			</div>
+
 			<button class="btn btn-default" type="button"><i class="glyphicon glyphicon-th-list"></i></button>
 			<button class="btn btn-default" type="button" ng-click="homeSI.geolocate()"><i class="glyphicon glyphicon-map-marker"></i></button>
 			<button class="btn btn-default" type="button"><i class="glyphicon glyphicon-camera"></i></button>
