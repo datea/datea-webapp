@@ -13,6 +13,8 @@
 
 	<!-- build:css(.tmp) styles/main.css -->
 	<link rel="stylesheet" href="styles/main.css">
+	<link href='http://fonts.googleapis.com/css?family=Oswald' rel='stylesheet' type='text/css'>
+	<link href='http://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400' rel='stylesheet' type='text/css'>
 	<!-- endbuild -->
 	<link rel="stylesheet" href="bower_components/leaflet-dist/leaflet.css" />
 </head>
@@ -27,11 +29,19 @@
 	<![endif]-->
 
 	<!-- Add your site or application content here -->
-	<div class="slide" ng-controller="NavCtrl" ng-include="'views/nav.html'">
-	</div>
-	<div class="messagesList" app-messages></div>
-	<div class="container" ng-view=""></div>
+	<header class="branding">
+		<div class="slide limiter" ng-controller="NavCtrl" ng-include="'views/nav.html'"></div>
+	</header>
 
+	<div class="messagesList" app-messages></div>
+
+	<section class="body">
+		<div class="container" ng-view=""></div>
+	</section>
+
+	<footer class="colophon">
+		<div class="datea-rights" ng-include="'views/footer.html'"></div>
+	</footer>
 	<!-- Google Analytics: change UA-XXXXX-X to be your site's ID -->
 	<script>
 	(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
@@ -75,27 +85,25 @@
 	<script src="scripts/controllers/main.js"></script>
 	<script src="scripts/controllers/signup.js"></script>
 	<script src="scripts/services/user.js"></script>
-	<script src="scripts/controllers/signupform.js"></script>
+	<script src="scripts/controllers/signupForm.js"></script>
 	<script src="scripts/controllers/twitterCallback.js"></script>
 	<script src="scripts/controllers/nav.js"></script>
 	<script src="scripts/controllers/datear.js"></script>
-<script src="scripts/directives/fileread.js"></script>
-<script src="scripts/services/config.js"></script>
-<script src="scripts/controllers/dateo.js"></script>
-<script src="scripts/services/api.js"></script>
-<script src="scripts/filters/imgFromApi.js"></script>
-<script src="scripts/controllers/dateoImg.js"></script>
-<script src="scripts/controllers/signIn.js"></script>
-<script src="scripts/directives/wxPasswordMatch.js"></script>
-<script src="scripts/controllers/account.js"></script>
-<script src="scripts/controllers/profile.js"></script>
-<script src="scripts/controllers/updateUser.js"></script>
-<script src="scripts/directives/bgFromApi.js"></script>
-<script src="scripts/services/activityUrl.js"></script>
-<script src="scripts/controllers/campaign.js"></script>
+	<script src="scripts/directives/fileread.js"></script>
+	<script src="scripts/services/config.js"></script>
+	<script src="scripts/controllers/dateo.js"></script>
+	<script src="scripts/services/api.js"></script>
+	<script src="scripts/filters/imgFromApi.js"></script>
+	<script src="scripts/controllers/dateoImg.js"></script>
+	<script src="scripts/controllers/signIn.js"></script>
+	<script src="scripts/directives/wxPasswordMatch.js"></script>
+	<script src="scripts/controllers/account.js"></script>
+	<script src="scripts/controllers/profile.js"></script>
+	<script src="scripts/controllers/updateUser.js"></script>
+	<script src="scripts/directives/bgFromApi.js"></script>
+	<script src="scripts/services/activityUrl.js"></script>
+	<script src="scripts/controllers/campaign.js"></script>
 	<!-- endbuild -->
-
-
 
 </body>
 </html>

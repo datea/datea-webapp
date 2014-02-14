@@ -1,4 +1,6 @@
 		<nav class="navbar navbar-default" role="navigation" >
+			<a class="navbar-brand absolute-TopLeft" href="#"><img height="38px" ng-src="http://datea.pe/static/img/datea/logo_header2.png" alt="Logo datea.pe">
+			</a>
 			<div class="navbar-header">
 				<button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse" ng-click="nav.isCollapsed = !nav.isCollapsed">
 					<span class="sr-only">Toggle navigation</span>
@@ -6,10 +8,9 @@
 					<span class="icon-bar"></span>
 					<span class="icon-bar"></span>
 				</button>
-				<a class="navbar-brand" href="#"><img height="20px" ng-src="http://datea.pe/static/img/datea/logo_header2.png" alt=""></a>
 			</div>
-			<div class="navbar-collapse collapse" collapse="nav.isCollapsed">
-				<ul class="nav navbar-nav navbar-right">
+			<div class="navbar-collapse collapse pull-right" collapse="nav.isCollapsed">
+				<ul class="nav navbar-nav">
 					<li ng-show="nav.visible"><a href="#/">Inicio</a></li>
 					<li><a href="#/dateos">Dateos</a></li>
 					<li><a href="#/iniciativas">Iniciativas</a></li>
