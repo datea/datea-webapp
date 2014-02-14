@@ -37,4 +37,10 @@ This repo is specifically for the Web App, current technologies are listed below
 * less
 * leaflet
 
+#Coding Style
+
+* Smart Tabs - http://www.emacswiki.org/SmartTabs
+* Comma first
+Please reffer to the editorconfig dotfile for further information
+
 TODO: finish this doc :)

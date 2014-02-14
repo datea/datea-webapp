@@ -1,44 +1,85 @@
-<h3>Editar usuario</h3>
-<form role="form" name="form" ng-submit="profile.save()">
-	<h4>Cuenta de usuario</h4>
-	<div class="form-group">
-		<label for="username">Nombre de usuario</label>
-		<input type="text" class="form-control" id="username" ng-model="profile.username">
+<div class="profile-holder">
+	<div class="well profile-card" bg-from-api="">
+		<div class="user-img" bg-from-api="{{ targetUser.image }}"></div>
+		<h2>{{targetUser.username}}</h2>
+		<span class="message">{{targetUser.message}}</span>
+		<span class="dateo-count">{{targetUser.dateo_count}} dateos</span>
+		<span class="votes-count">{{targetUser.votes.length}} apoyos</span>
+		<span class="url">url: {{targetUser.url}}</span>
+		<div class="social-share">
+			<div class="form-group">
+				<div class="input-group col-sm-2">
+					<input type="text" class="form-control" ng-model="targetUser.url">
+					<span class="input-group-btn">
+						<button class="btn btn-default" type="button"><i class="glyphicon glyphicon-share"></i></button>
+					</span>
+				</div>
+			</div>
+		</div>
 	</div>
-	<div class="form-group">
-		<label for="email">Correo electrónico</label>
-		<input type="email" class="form-control" id="email" ng-model="profile.email">
+	<div class="part part-1">
+		<tabset>
+			<tab heading="dateos">
+				<div class="dateo" ng-repeat="dateo in targetUser.dateos">
+					<div class="parts-holder">
+						<div class="user-img part part-1" bg-from-api="dateo.user.image_small"></div>
+						<div class="part part-2">
+							<h4>{{dateo.user.username}}</h4>
+							<span class="date">{{dateo.created | date:'fullDate'}}</span>
+						</div>
+					</div>
+					<p>{{dateo.content}}</p>
+					<div class="social-holder">
+						<div class="part part-1">
+							<span class="glyphicon glyphicon-thumbs-up"></span> {{dateo.vote_count}}
+							<span class="glyphicon glyphicon-comment"></span> {{dateo.comment_count}}
+						</div>
+						<div class="part part-2">
+							<a class="btn btn-default" href="#/{{dateo.user.username}}/dateos/{{dateo.id}}">ver detalle</a>
+						</div>
+					</div>
+					<hr>
+				</div>
+				<pagination boundary-links="true" items-per-page="paginationDateos.itemsPerPage" total-items="paginationDateos.totalItems" page="paginationDateos.currentPage" class="pagination-sm" previous-text="&lsaquo;" next-text="&rsaquo;" first-text="&laquo;" last-text="&raquo;"></pagination>
+			</tab>
+			<tab heading="iniciativas">
+				<div class="campaign" ng-repeat="campaign in targetUser.campaigns">
+					<div class="parts-holder">
+						<div class="user-img part part-1" bg-from-api="campaign.user.image_small"></div>
+						<div class="part part-2">
+							<h4>{{campaign.user.username}}</h4>
+							<span class="date">{{campaign.created | date:'fullDate'}}</span>
+						</div>
+					</div>
+					<p>{{campaign.short_description}}</p>
+					<div class="social-holder">
+						<div class="part part-1">
+							<span class="glyphicon glyphicon-thumbs-up"></span> {{campaign.follow_count}}
+							<span class="glyphicon glyphicon-thumbs-up"></span> {{campaign.vote_count}}
+							<span class="glyphicon glyphicon-comment"></span> {{campaign.comment_count}}
+						</div>
+						<div class="part part-2">
+							<a class="btn btn-default" href="#/{{campaign.user.username}}/{{campaign.main_tag.tag}}" target="_blank">ver detalle</a>
+						</div>
+					</div>
+					<hr>
+				</div>
+				<pagination boundary-links="true" items-per-page="paginationCampaigns.itemsPerPage" total-items="paginationCampaigns.totalItems" page="paginationCampaigns.currentPage" class="pagination-sm" previous-text="&lsaquo;" next-text="&rsaquo;" first-text="&laquo;" last-text="&raquo;"></pagination>
+			</tab>
+		</tabset>
 	</div>
-	<hr>
-	<h4>Personalizar Perfil</h4>
-	<div class="form-group">
-		<label for="fullname">Nombre completo</label>
-		<input type="text" class="form-control" id="fullname" ng-model="profile.fullname">
+	<div class="well part part-2">
+		<h4>{{targetUser.username}} sigue:</h4>
+		<span class="user-tag" ng-repeat="tag in targetUser.follows">
+			<a href="/tag/{{tag.tag}}">{{tag.tag}}</a>
+		</span>
+		<hr>
+		<h4>últimas acciones:</h4>
+		<ul class="user-history">
+			<li class="user-history-item" ng-repeat="item in targetUser.history">
+				<a href="#{{item._url}}" >{{item._message}}</a>
+				<p>{{item.data.extract}}</p>
+			</li>
+		</ul>
 	</div>
-	<div class="form-group">
-		<label for="message">Mensaje / Slogan</label>
-		<input type="text" class="form-control" id="message" ng-model="profile.message">
-	</div>
-	<div class="form-group">
-		<label for="url">URL personal o de tu organización</label>
-		<input type="text" class="form-control" id="url" ng-model="profile.url">
-	</div>
-	<p>Los siguiente campos son para los iconos de "sígueme en..."</p>
-	<div class="form-group">
-		<label for="facebookUrl">URL en facebook</label>
-		<input type="text" class="form-control" id="facebookUrl" ng-model="profile.facebookUrl">
-	</div>
-	<div class="form-group">
-		<label for="twitterUrl">URL en twitter</label>
-		<input type="text" class="form-control" id="twitterUrl" ng-model="profile.twitterUrl">
-	</div>
-	<div class="form-group">
-		<label for="youtubeUrl">Canal de youtube</label>
-		<input type="text" class="form-control" id="youtubeUrl" ng-model="profile.youtubeUrl">
-	</div>
-	<input type="submit" class="btn btn-info" value="Sign up">
-	<button type="submit" class="btn btn-info" disabled>Sign up</button>
-	<span ng-bind="auth.message"></span>
-</form>
-<hr>
-<pre>Validation: {{form.$error|json}}</pre>
+</div>

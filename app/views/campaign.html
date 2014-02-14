@@ -1,0 +1,97 @@
+<div class="campaign-holder">
+	<div class="campaign-card" bg-from-api="{{campaign.image.image}}">
+		<div class="part part-1">
+			<h1>{{campaign.name}}</h1>
+			<h2>#{{campaign.main_tag.tag}}</h2>
+			<p>{{campaign.short_description}}</p>
+			<span class="dateo-count">{{campaign.dateo_count}} dateos</span>
+			<div class="votes-count">{{campaign.vote_count}} apoyos</div>
+			<span class="follow-count">{{campaign.follow_count}} participantes</span>
+			<button class="btn btn-default">+seguir</button>
+		</div>
+		<div class="part part-2">
+			<button class="btn btn-default">Datea <i class="glyphicon glyphicon-comment"></i></button><span class="time-left" ng-show="campaign.end_date">{{campaign._timeLeft | date:time }}</span>
+			<div class="form-group">
+				<div class="input-group col-sm-2">
+					<input type="text" class="form-control" ng-model="campaign.url">
+					<span class="input-group-btn">
+						<button class="btn btn-default" type="button"><i class="glyphicon glyphicon-share"></i></button>
+					</span>
+				</div>
+			</div>
+		</div>
+	</div>
+	<div class="map-holder">
+		<div class="form-group">
+			<div class="input-group col-sm-2">
+				<input type="text" class="form-control" ng-model="campaign.searchMapKeyword">
+				<span class="input-group-btn">
+					<button class="btn btn-default" type="button"><i class="glyphicon glyphicon-search"></i></button>
+				</span>
+			</div>
+		</div>
+		<tabset>
+			<tab heading="location">
+				<div class="dateos-holder part part-1">
+					<div class="dateo-description" ng-repeat="dateo in campaign.dateos">
+						<div class="parts-holder">
+							<div class="user-img part part-1" bg-from-api="{{ dateo.user.image_small }}"></div>
+							<div class="part part-2">
+								<a ng-href="#/{{dateo.user.username}}">
+									<h4>{{ dateo.user.username }}</h4>
+								</a>
+								<span class="date">el {{ dateo.created | date:'fullDate' }}</span>
+							</div>
+						</div>
+						<span class="tags" ng-repeat="tag in dateo.tags">#{{tag.tag}}</span>
+						<p>{{dateo.extract}}</p>
+						<a ng-href="#/{{dateo.user.username}}/dateos/{{dateo.id}}" target="_blank">leer más</a>
+						<span class="glyphicon glyphicon-thumbs-up"></span> {{dateo.vote_count}}
+						<span class="glyphicon glyphicon-comment"></span> {{dateo.comment_count}}
+						<button class="btn btn-default" ng-show="dateo.position" ng-click="campaign.focusDateo($index)">ver en mapa</button>
+					</div>
+				</div>
+				<div class="part part-2">
+					<leaflet defaults="campaign.leaflet.defaults" markers="campaign.leaflet.markers" center="campaign.leaflet.center" width="600px" height="450px"></leaflet>
+				</div>
+			</tab>
+			<tab heading="photos"></tab>
+		</tabset>
+	</div>
+	<div class="extra-info-holder">
+		<div class="description part part-1">
+			<div class="user-info">
+				<div class="parts-holder">
+					<div class="part part-1">
+						<div class="user-img" bg-from-api="{{campaign.user.image}}"></div>
+					</div>
+					<div class="part part-2">
+						<p>dater@</p>
+						<h3>{{campaign.user.username}}</h3>
+					</div>
+				</div>
+				<h4>#{{campaign.main_tag.tag}}</h4>
+				<p>¿Qué buscamos con esta acción?</p>
+				<p>{{campaign.mission}}</p>
+				<p>¿Qué pasa con la info?</p>
+				<p>{{campaign.information_destiny}}</p>
+			</div>
+		</div>
+		<div class="social part part-2 well">
+			<div class="parts-holder">
+				<div class="part part-1">
+					<h5>{{campaign.follow_count}} participantes</h5>
+					<button class="btn btn-default">invita a tus amigos</button>
+					<button class="btn btn-default">ver todos</button>
+					<h5>iniciativas relacionadas</h5>
+					<span class="tags" ng-repeat="tag in campaign.dateo.tags">#{{tag.tag}}</span>
+				</div>
+				<div class="part part-2">
+					<h5>boletines / reportes</h5>
+					<button class="btn btn-default">imprimir reporte</button>
+					<button class="btn btn-default">dateos en csv</button>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
