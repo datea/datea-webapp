@@ -2,15 +2,134 @@
 	Project Name: Datea WebApp
 	URI: http://datea.pe/
 	Author: Team Datea
-	Author URI: 
+	Author URI:
 	Description: Module CSS for Datea.pe
 	Version: 1.0
 	Tags: datea, información, participación ciudadana, comparte...
 */
 
 
+/* ==========================================================================
+   Variables
+========================================================================== */
+@property: all;
+@bodyColor: #F3F5F4;
+@fontTitle: 'Oswald';
+@fontText: 'Source Sans Pro';
+
 
 /* ==========================================================================
    Buttons
 ========================================================================== */
-section.body .btn { text-transform: uppercase; }
+section.body .btn {
+	font-family: 'oswald';
+	text-transform: uppercase;
+}
+
+.view-more {
+	font-size: 0.9em;
+	background-color: #231F20;
+	color: #FFFFFF;
+	padding: 5px 10px;
+
+	&:hover {
+		background-color: #79575F;
+		color: #FFFFFF;
+	}
+}
+
+
+/* ==========================================================================
+   Maps
+========================================================================== */
+.map-frame {
+	background-color: #DDDDDD;
+	padding: 5px 0;
+
+	.form-group {
+		margin-bottom: 0px;
+		padding-left: 5px;
+	}
+}
+
+.map-frame-bottom,
+.map-frame-top {
+	max-width: 600px;
+}
+
+
+/* ==========================================================================
+   Tabs
+========================================================================== */
+.campaign {
+	border: 1px solid #DDDDDD;
+	box-shadow: 1px 0 2px rgba(0, 0, 0, 0.05);
+	display: inline-block;
+	margin: 0 0 10px 10px;
+	min-height: 250px;
+	padding: 5px;
+	vertical-align: top;
+	width: 180px;
+
+	h4 {
+		font-family: sans-serif !important;
+		font-size: 1.1em;
+		overflow: hidden;
+		text-overflow: ellipsis;
+		white-space: nowrap;
+		width: 100%;
+	}
+
+	.campaign-img {
+		height: 170px;
+		width: 168px;
+	}
+}
+
+.nav-tabs {
+	li {
+		margin-left: 12px;
+
+		a {
+			background-color: #ECEFEE;
+			border: 1px solid #dddddd;
+			font-family: @fontTitle;
+			text-transform: uppercase;
+		}
+	}
+}
+
+.tabbable {
+	margin-top: 30px;
+}
+
+.tab-content {
+	background-color: #FFFFFF;
+	border: 1px solid #DDD;
+	border-top: none;
+	border-radius: 0 0 4px 4px;
+	padding: 20px;
+}
+
+
+
+/* ==========================================================================
+   Tags
+========================================================================== */
+.tag {
+	border-radius: 3px;
+	color: #42C35C;
+	display: inline-block;
+	margin-right: 5px;
+	padding: 3px 5px;
+	-webkit-transition: all .25s ease-in-out;
+	   -moz-transition: all .25s ease-in-out;
+	    -ms-transition: all .25s ease-in-out;
+	        transition: all .25s ease-in-out;
+
+	&:hover {
+		background-color: #5E6E65;
+		color: #FFFFFF;
+		text-decoration: none;
+	}
+}

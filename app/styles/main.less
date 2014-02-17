@@ -21,7 +21,9 @@
    Variables
 ========================================================================== */
 @property: all;
-
+@bodyColor: #F3F5F4;
+@fontTitle: 'Oswald';
+@fontText: 'Source Sans Pro';
 
 
 /* ==========================================================================
@@ -46,7 +48,8 @@
 }
 
 body {
-  font-family: sans-serif;
+  font-family: @fontText, sans-serif;
+  font-weight: 300;
   overflow-x: hidden;
   -webkit-font-smoothing: antialiased;
 
@@ -81,6 +84,8 @@ hr {
   margin: 1em 0;
   padding: 0;
 }
+
+html { font-size: 100%; }
 
 
  /*Remove the gap between images and the bottom of their containers: h5bp.com/i/440 */
@@ -151,21 +156,51 @@ textarea { resize: vertical; }
 	position: relative;
 }
 
-
 .transition {
-	-webkit-transition: @property .25s 'ease-in-out';
-	   -moz-transition: @property .25s 'ease-in-out';
-	    -ms-transition: @property .25s 'ease-in-out';
-	        transition: @property .25s 'ease-in-out';
+	-webkit-transition: @property .25s ease-in-out;
+	   -moz-transition: @property .25s ease-in-out;
+	    -ms-transition: @property .25s ease-in-out;
+	        transition: @property .25s ease-in-out;
 }
 
 .underlined { text-decoration: underline; }
+
+/* Reset ul, ol styles and children li */
+.unstyled, .unstyled-list {
+    list-style: none;
+    margin: 0;
+    overflow: hidden;
+    padding: 0; }
+
+.unstyled-list li {
+    float: left;
+    list-style: none; }
 
 
 
 /* ==========================================================================
    Structure
 ========================================================================== */
+aside.part-2 {
+	float: right;
+	width: 60%;
+
+	h3, h4 {
+		color: #5E6E65;
+	}
+
+	h4 {
+		font-size: 1.1em;
+		letter-spacing: 0.5px;
+		text-transform: uppercase;
+	}
+}
+
+div.part-1 {
+	max-width: 620px;
+	width: 39%;
+}
+
 footer.colophon {
 	background-color: #231F20;
 	color: #FFFFFF;
@@ -186,6 +221,7 @@ header.branding {
 		background-color: #EDFF00;
 		border: 0 none;
 		border-radius: 0;
+		margin-bottom: 10px;
 		min-height: 70px;
 	}
 
@@ -197,7 +233,13 @@ header.branding {
 
 
 section.body {
+	background-color: @bodyColor;
+	padding-top: 20px;
 	position: relative;
+
+	h1, h2, h3, h4, h5, h6 {
+		font-family: @fontTitle, sans-serif;
+	}
 }
 
 
@@ -217,6 +259,8 @@ header.branding {
 	}
 
 	.navbar-nav > li {
+		font-family: @fontTitle, sans-serif;
+		font-size: 1.15em;
 		text-transform: uppercase;
 
 		a {
@@ -237,12 +281,6 @@ header.branding {
 	.part {
 		padding: 10px;
 	}
-	.part-1 {
-		width: 60%;
-	}
-	.part-2 {
-		width: 39%;
-	}
 }
 
 
@@ -251,33 +289,10 @@ header.branding {
 .signed-home-holder {
 	.part-1 {
 		width: 60%;
-
-		.campaigns-holder {
-			.campaign {
-				display: inline-block;
-				vertical-align: top;
-				width: 170px;
-
-				.campaign-img {
-					height: 160px;
-					width: 160px;
-				}
-			}
-		}
 	}
+
 	.part-2 {
 		width: 39%;
-
-		.weekly-dateo {
-			.user-img {
-				height: 30px;
-				width: 30px;
-			}
-			.weekly-dateo-img {
-				height: 90px;
-				width: 90px;
-			}
-		}
 	}
 
 }
@@ -343,6 +358,104 @@ header.branding {
 	}
 
 }
+
+
+
+/* ==========================================================================
+   Aside
+========================================================================== */
+.block-user {
+	background-color: #FDFDFD;
+	border-radius: 4px 4px 0 0;
+	margin-bottom: 20px;
+	padding: 10px;
+
+	.user-follows, .trending-tags-holder {
+		margin-bottom: 30px;
+	}
+}
+
+.user-history {
+	p {
+		color: #999999;
+		font-size: 0.85em;
+	}
+}
+
+.user-info {
+	padding: 0;
+
+	h4 {
+		background-color: #EDFF00;
+		border-radius: 4px 4px 0 0;
+		color: #5E6E65;
+		margin: 0;
+		padding: 5px 15px;
+		text-transform: lowercase;
+	}
+
+	.body-user-info {
+		padding: 10px;
+	}
+}
+
+.weekly-dateo {
+	background-color: #EDFF00;
+	border-radius: 4px;
+	padding: 15px;
+
+	h3 {
+		font-size: 1.5em;
+		margin: 0;
+		text-transform: uppercase;
+	}
+
+	.description-dateo {
+		background-color: #FFFFFF;
+		border-radius: 4px;
+		margin-top: 15px;
+		padding: 10px;
+		position: relative;
+
+		.btn {
+			border: none 0px;
+			margin-top: 5px;
+
+			.glyphicon {
+				color: #3DB33D;
+			}
+		}
+
+		.view-more {
+			bottom: 10px;
+			right: 10px;
+		}
+	}
+
+	.user-dateo {
+		clear: both;
+		margin-bottom: 5px;
+		overflow: hidden;
+
+		h4 {
+			margin: 5px 0 2px 0;
+		}
+	}
+
+	.user-img {
+		border-radius: 35px;
+		height: 50px;
+		margin-right: 10px;
+		width: 50px;
+	}
+
+	.weekly-dateo-img {
+		height: 90px;
+		width: 90px;
+	}
+}
+
+
 
 
 /* ==========================================================================
