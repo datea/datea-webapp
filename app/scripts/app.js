@@ -52,18 +52,26 @@ angular.module( 'dateaWebApp'
 	  , { templateUrl: 'views/dateo-detail.html'
 	    , controller : 'DateoCtrl'
 	    } )
-	.when('/signin'
+	.when( '/signin'
 	  , { templateUrl: 'views/signIn.html'
 	    , controller : 'SigninCtrl'
 	    } )
-	.when('/perfil'
+	.when( '/updateUser'
+	  , { templateUrl: 'views/updateUser.html'
+	    , controller: 'UpdateuserCtrl'
+	    } )
+	.when( '/configuracion'
+	  , { templateUrl: 'views/account.html'
+	    , controller: 'AccountCtrl'
+	    } )
+	.when( '/:username/:campaignName'
+	, { templateUrl: 'views/campaign.html'
+	  , controller: 'CampaignCtrl'
+	  } )
+	.when( '/:username'
 	  , { templateUrl: 'views/profile.html'
 	    , controller : 'ProfileCtrl'
 	    } )
-	.when('/updateUser'
-	  , { templateUrl: 'views/updateUser.html'
-	    , controller: 'UpdateuserCtrl'
-			} )
 	.otherwise( { redirectTo: '/' } );
 
 } ] );

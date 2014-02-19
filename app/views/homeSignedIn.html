@@ -6,7 +6,7 @@
 				<div class="input-group">
 					<input type="text" class="form-control" placeholder="Buscar" ng-model="homeSI.searchKeyword">
 					<span class="input-group-btn">
-						<button class="btn btn-default" type="button" ng-click="homeSI.search()"><i class="glyphicon glyphicon-search"></i></button>
+						<button class="btn btn-default" type="button" ng-click="homeSI.searchDateos()"><i class="glyphicon glyphicon-search"></i></button>
 					</span>
 				</div>
 			</div>
@@ -28,31 +28,32 @@
 			<button class="btn btn-default" type="button" ng-click="homeSI.fullscreen()"><i class="glyphicon glyphicon-fullscreen"></i></button>
 		</div>
 	</div>
+
 	<tabset>
-		<tab heading="Iniciativas">
+		<tab heading="iniciativas">
 			<div class="campaigns-holder">
 				<div class="form-group">
 					<div class="input-group col-sm-4 pull-right">
-						<input type="text" class="form-control">
+						<input type="text" class="form-control" ng-model="homeSI.searchCampaignsKeyword">
 						<span class="input-group-btn">
-							<button class="btn btn-default" type="button"><i class="glyphicon glyphicon-search"></i></button>
+							<button class="btn btn-default" type="button" ng-click="homeSI.searchCampaigns()"><i class="glyphicon glyphicon-search"></i></button>
 						</span>
 					</div>
 				</div>
 				<h3>Iniciativas destacadas</h3>
 				<button class="btn btn-default">Crear iniciativa</button>
 				<hr>
-				<div class="campaign" ng-repeat="campaign in homeSI.campaigns">
-					<div class="campaign-img" bg-from-api="{{campaign.image.image}}" ></div>
+				<a class="campaign" ng-href="#/{{campaign.user.username}}/{{campaign.main_tag.tag}}" ng-repeat="campaign in homeSI.campaigns">
+					<figure class="campaign-img" bg-from-api="{{campaign.image.image}}" ></figure>
 					<h4 title="{{campaign.name}}">{{campaign.name}}</h4>
 					<span class="dateo-count"><strong>{{campaign.dateo_count}}</strong> dateos</span>
 					<span class="status text-success">{{campaign.is_active && 'activo' || 'inactivo'}}</span>
-				</div>
+				</a>
 				<hr>
 				<pagination boundary-links="true" items-per-page="pagination.itemsPerPage" total-items="pagination.totalItems" page="pagination.currentPage" class="pagination-sm" previous-text="&lsaquo;" next-text="&rsaquo;" first-text="&laquo;" last-text="&raquo;"></pagination>
 			</div>
 		</tab>
-		<tab heading="Novedades">
+		<tab heading="novedades">
 			Acá irán las novedades
 		</tab>
 	</tabset>
@@ -72,6 +73,7 @@
 				<a href>Mis dateos</a>
 			</div>
 		</div>
+
 		<div class="user-follows">
 			<h4>{{user.username}} sigue</h4>
 			<span class="user-tag">
@@ -81,6 +83,7 @@
 				<a class="tag" href="/tag/{{tag.tag}}">{{tag.tag}}</a>
 			</span>
 		</div>
+
 		<div class="trending-tags-holder">
 			<h4>mas dateado en este momento:</h4>
 			<ul class="trending-tags unstyled-list">
@@ -89,6 +92,7 @@
 				</li>
 			</ul>
 		</div>
+
 		<div class="user-history-holder">
 			<h4>historial</h4>
 			<ul class="user-history unstyled-list">
@@ -99,6 +103,7 @@
 			</ul>
 			<a class="view-more btn" href="#">ver más</a>
 		</div>
+
 	</div>
 
 	<hr>

@@ -16,6 +16,7 @@ angular.module( 'dateaWebApp' )
   , 'leafletData'
   , '$q'
   , 'Fullscreen'
+  , 'ActivityUrl'
 , function (
     $scope
   , User
@@ -31,12 +32,13 @@ angular.module( 'dateaWebApp' )
   , leafletData
   , $q
   , Fullscreen
+  , ActivityUrl
 ) {
 	var data
 	  , ls = localStorageService
 	  , dateo             = {}
-	  , campaigns 				= []
-	  , sessionMarkers 		= {}
+	  , campaigns         = []
+	  , sessionMarkers    = {}
 	  , sessionMarkersIdx = 0
 	  , lastMarkerWithFocus
 	  , lastBounds
@@ -99,47 +101,31 @@ angular.module( 'dateaWebApp' )
 				return !!~config.homeSI.activityVerbs.indexOf( value.verb );
 			} );
 			angular.forEach( activityLog, function ( value, key ){
-				value._url = buildActivityUrl( value );
+				value._url = ActivityUrl.parse( value );
 				value._message = $interpolate( config.homeSI.activityContentMsg.byUser[ value.verb ] )(value);
 				$scope.homeSI.history.push( value );
 			});
 		} )
 	}
 
-	buildActivityUrl = function ( givens ) {
-		var url;
-		if ( givens.verb === 'dateo' ) {
-			if ( givens.action_object.user.username ) {
-				url = '/' + givens.action_object.user.username + '/dateos/' + givens.action_object.id;
-			} else {
-				url = '/' + givens.target_object.user.username + '/dateos/' + givens.target_object.id;
-			}
-		} else if ( givens.verb === 'commented' ) {
-			if ( givens.target_object.user.username ) {
-				url = '/' + givens.target_object.user.username + '/dateos/' + givens.target_object.id;
-			}
-		} else if ( givens.verb === 'voted' ) {
-			if ( givens.target_object.user.username ) {
-				url = '/' + givens.target_object.user.username + '/dateos/' + givens.target_object.id;
-			}
-		}
-		return url;
-	}
-
 	buildCampaigns = function ( givens ) {
 		var totalCount
 		  , index
+		  , query
+		  , defaultQuery
 		  ;
 
 		index = givens && givens.index * config.homeSI.campaignsOffset;
+		defaultQuery = { order_by: '-featured,-created'
+		               , limit   : 12
+		               , offset  : index || 0
+		               }
+		query = givens && givens.query || defaultQuery;
 
 		Api.campaign
-		.getCampaigns(
-		{ order_by: '-featured,-created'
-		, limit   : 12
-		, offset  : index || 0 }
-		)
+		.getCampaigns( query )
 		.then( function ( response ) {
+			console.log( response.objects );
 			$scope.homeSI.campaigns = response.objects;
 			buildPagination( response );
 		}, function ( reason ) {
@@ -154,14 +140,14 @@ angular.module( 'dateaWebApp' )
 
 	buildPagination = function ( response ) {
 		$scope.pagination.totalItems   = response.meta.total_count;
-		$scope.pagination.itemsPerPage = 12;
+		$scope.pagination.itemsPerPage = config.homeSI.paginationLimit;
 	}
 
 	buildMap = function ( givens ) {
 		var dateosGivens = givens && givens.dateosGivens || {}
-			, center       = {}
-			, map
-			;
+		  , center       = {}
+		  , map
+		  ;
 
 		center.lat = givens && givens.center && givens.center.coords.latitude;
 		center.lng = givens && givens.center && givens.center.coords.longitude;
@@ -323,9 +309,9 @@ angular.module( 'dateaWebApp' )
 		             } );
 	}
 
-	$scope.homeSI.search = function () {
+	$scope.homeSI.searchDateos = function () {
 		resetMarkers();
-		buildMap( { dateosGivens : { q: $scope.homeSI.searchKeyword } } );
+		buildMap( { dateosGivens : { q: $scope.homeSI.searchDateosKeyword } } );
 	}
 
 	$scope.homeSI.fullscreen = function () {
@@ -333,6 +319,18 @@ angular.module( 'dateaWebApp' )
 			Fullscreen.cancel();
 		} else {
 			Fullscreen.enable( document.getElementById('homeSI-map-holder') );
+		}
+	}
+
+	$scope.homeSI.searchCampaigns = function () {
+		if ( $scope.homeSI.searchCampaignsKeyword ) {
+			buildCampaigns( { query :
+			{ q      : $scope.homeSI.searchCampaignsKeyword
+			, limit  : config.homeSI.campaignOffset
+			, offset : 0 } }
+			);
+		} else {
+			buildCampaigns();
 		}
 	}
 

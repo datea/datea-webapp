@@ -47,7 +47,7 @@ angular.module('dateaWebApp')
 
 			if ( User.data.status === 0 ) {
 console.log( 'updateUserDataFromApi', 'status === 0' );
-				$location.path( '/perfil' );
+				$location.path( '/configuracion' );
 				$scope.addAlert( { type : 'danger'
 				                 , msg  : 'Por favor revise su correo para terminar el registro'
 				                 } )

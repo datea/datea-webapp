@@ -62,7 +62,7 @@ angular.module( 'dateaWebApp' )
 			.then( function ( response ) {
 				console.log( 'auth.withTwitter', 'updateUserDataFromStorage' );
 				if ( response.status === 0 ) {
-					$location.path( '/perfil' );
+					$location.path( '/configuracion' );
 				} else {
 					$location.path( '/' );
 				}
