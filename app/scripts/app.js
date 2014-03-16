@@ -11,6 +11,7 @@ angular.module( 'dateaWebApp'
   , 'geolocation'
   , 'wxGlobalErrors'
   , 'FSAngular'
+  , 'monospaced.elastic'
 ])
 .config(
 [ '$routeProvider'
@@ -48,7 +49,7 @@ angular.module( 'dateaWebApp'
 	  , { templateUrl : 'views/twitter-callback.html'
 	    , controller  : 'TwitterCallbackCtrl'
 	    } )
-	.when( '/:userName/dateos/:dateoId'
+	.when( '/:username/dateos/:dateoId'
 	  , { templateUrl: 'views/dateo-detail.html'
 	    , controller : 'DateoCtrl'
 	    } )
@@ -63,6 +64,14 @@ angular.module( 'dateaWebApp'
 	.when( '/configuracion'
 	  , { templateUrl: 'views/account.html'
 	    , controller: 'AccountCtrl'
+	    } )
+	.when('/panel'
+	  , { templateUrl: 'views/campaign-dashboard.html'
+	    , controller: 'CampaignDashboardCtrl'
+	    } )
+	.when('/nuevaIniciativa'
+	  , { templateUrl: 'views/campaign-dashboard.html'
+	    , controller: 'CampaignDashboardCtrl'
 	    } )
 	.when( '/:username/:campaignName'
 	, { templateUrl: 'views/campaign.html'

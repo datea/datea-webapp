@@ -19,6 +19,8 @@ angular.module( 'dateaWebApp' )
 	$scope.flow = {};
 	$scope.reset = {};
 
+	User.isSignedIn() && $location.path( '/' );
+
 	$scope.auth.signIn = function () {
 		var isValid
 		  , data
@@ -45,7 +47,7 @@ angular.module( 'dateaWebApp' )
 			User.signInBy3rdParty( partyGivens )
 			.then( function ( response ) {
 				console.log( response );
-				$location.path( '/#' );
+				$location.path( '/' );
 			}, function ( reason ) {
 				console.log( reason );
 			} );

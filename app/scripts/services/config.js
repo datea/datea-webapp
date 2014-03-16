@@ -4,10 +4,24 @@ angular
 .module('dateaWebApp')
 .constant('config',
 	{ app     : { name : 'Datea.pe'
-	            , url  : 'http://localhost:9000/#/' }
-	, api     : { url    : 'http://api.datea.pe/api/v2/'
-	            , imgUrl : 'http://api.datea.pe/' }
-  , dateo   : { sizeImgMax    : 35000
+	            , url  : 'http://localhost:9000/#/'
+	            }
+	, api     : { url    : 'http://173.255.200.68/api/v2/'
+	            , imgUrl : 'http://173.255.200.68/' }
+	, marker  : ['<div class="marker-holder">'
+	              ,'<img src="http://api.datea.pe/{{user.image_small}}" alt="user image">'
+	              ,'<h5>por {{user.username}}</h5>'
+	              ,'<span class="date">{{_prettyDate}}</span>'
+	              ,'<span class="tag">#{{tags[0].tag}}</span>'
+	              ,'<p>{{extract}}</p>'
+	              ,'<a href="#{{user.username}}/dateos/{{id}}" target="_blank">Leer más</a>'
+	            ,'</div>'
+	            ].join('')
+	, selectFilter : { 'last'          : ''
+	                 , 'mostVoted'     : '-vote_count,-created'
+	                 , 'mostCommented' : '-comment_count,-created'
+	                 }
+	, dateo   : { sizeImgMax    : 35000
 	            , sizeImgMaxMsg : 'Su archivo es muy grande'
 	            , tagsMax       : 7
 	            }
@@ -15,8 +29,10 @@ angular
 	               , defaults : { scrollWheelZoom: false }
 	               , markers  : {}
 	               }
-	, homeSI : { campaignsOffset : 12
-	           , paginationLimit : 12
+	, defaultImgProfile : 'static/images/globals/user-profile-default.png'
+	, defaultImgBackground : 'static/images/globals/campaign-default.jpg'
+	, homeSI : { campaignsOffset : 6
+	           , paginationLimit : 6
 	           , mapZoomOverride : 15
 	           , activityVerbs : [ 'dateo', 'commented', 'voted' ]
 	           , activityContentMsg : { onUser : { 'dateo'     : 'dateó en #{{action_object.tags[0].tag}}'
@@ -29,6 +45,7 @@ angular
 	                                             }
 	                                  }
 	            , dateosLimitByRequest : 100
+	            , defaultMarkersImage : '/static/images/globals/'
 	            }
 	, profile : { dateosOffset    : 3
 	            , campaignsOffset : 3

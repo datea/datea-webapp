@@ -68,7 +68,7 @@
 	</div>
 	<div class="part part-2 map-holder" ng-show="!dateo.message">
 		<h3>Ubicación</h3>
-		<leaflet defaults="defaults" markers="markers" center="center" height="260px" width="425px"></leaflet>
+		<leaflet defaults="dateo.leaflet.defaults" markers="dateo.leaflet.markers" center="dateo.leaflet.center" height="260px" width="425px"></leaflet>
 		<p>{{dateo.address || 'una dirección por defecto'}}</p>
 		<hr>
 		<h3>Iniciativas relacionadas</h3>

@@ -9,6 +9,7 @@ angular.module('dateaWebApp')
 , '$rootScope'
 , 'config'
 , 'Api'
+// , 'leafletEvents'
 , function (
   $scope
 , $modalInstance
@@ -17,9 +18,10 @@ angular.module('dateaWebApp')
 , $rootScope
 , config
 , Api
+// , leafletEvents
 ) {
 	var headers
-	  , dateo = {}
+	  , dateo        = {}
 	  , alertIndexes = {}
 	  // fn declarations
 	  , onGeolocation
@@ -27,27 +29,37 @@ angular.module('dateaWebApp')
 	  ;
 
 // Object to be sent
-$scope.dateo  = {};
-$scope.datear = {};
+$scope.dateo               = {};
+$scope.datear              = {};
+$scope.datear.leaflet      = {};
 $scope.datear.autocomplete = {};
-$scope.flow   = {};
+$scope.flow                = {};
 
 $scope.alerts = [];
+
+$scope.$on( 'leafletDirectiveMarker.dragend', function ( event ){
+	if ( $scope.datear.leaflet.center.zoom <= 16 ) {
+		$scope.datear.leaflet.center.lat  = $scope.datear.leaflet.markers.draggy.lat;
+		$scope.datear.leaflet.center.lng  = $scope.datear.leaflet.markers.draggy.lng;
+		$scope.datear.leaflet.center.zoom = $scope.datear.leaflet.center.zoom + 1;
+	}
+} );
 
 onGeolocation = function ( data ) {
 	var leaflet;
 	leaflet = { center : { lat  : data.coords.latitude
 	                     , lng  : data.coords.longitude
-	                     , zoom : 10
+	                     , zoom : 14
 	                     }
 	          , markers : { draggy : { lat : data.coords.latitude
 	                                 , lng : data.coords.longitude
 	                                 , draggable : true
 	                                 }
 	                      }
+	          , events : 'dragend'
 	          }
 
-	angular.extend( $scope, leaflet );
+	angular.extend( $scope.datear.leaflet, leaflet );
 }
 
 onGeolocationError = function ( reason ) {
@@ -62,7 +74,7 @@ onGeolocationError = function ( reason ) {
 	leaflet.markers = {};
 	leaflet.markers.draggy = draggy;
 
-	angular.extend( $scope, leaflet );
+	angular.extend( $scope.datear.leaflet, leaflet );
 }
 
 $scope.closeAlert = function ( index ) {
@@ -129,9 +141,9 @@ $scope.$watch( 'flow.dt + flow.timeNow', function () {
 // }
 
 
-$scope.datear.ok = function () {
+$scope.datear.doDatear = function () {
 	var tags = [];
-	$scope.dateo.position = { coordinates : [ $scope.markers.draggy.lng, $scope.markers.draggy.lat ]
+	$scope.dateo.position = { coordinates : [ $scope.datear.leaflet.markers.draggy.lng, $scope.datear.leaflet.markers.draggy.lat ]
 	                        , type : 'Point'
 	                        }
 	angular.forEach( $scope.datear.selectedTags, function ( value, key ){
@@ -148,6 +160,7 @@ $scope.datear.ok = function () {
 	Api.dateo.postDateo( $scope.dateo )
 	.then( function ( response ) {
 		$scope.datear.onFinished = true;
+		$rootScope.$broadcast( 'user:hasDateado' );
 	}
 	, function ( reason ) {
 		console.log( reason )
@@ -183,7 +196,7 @@ $scope.datear.removeTag = function ( idx ) {
 }
 
 // Map defaults
-angular.extend( $scope, config.defaultMap );
+angular.extend( $scope.datear.leaflet, config.defaultMap );
 
 geo.getLocation( {timeout:10000} ).then( onGeolocation, onGeolocationError );
 

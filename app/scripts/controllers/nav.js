@@ -26,11 +26,7 @@ angular.module('dateaWebApp')
 	$scope.nav.visible = User.isSignedIn();
 
 	$scope.nav.isCollapsed = true;
-	$scope.alerts = [
-	                  // { type : 'success'
-	                  // , msg  : 'Bienvenido usuario, hoy es ' + new Date()
-	                  // }
-	                ]
+	$scope.alerts = []
 
 	updateUserDataFromApi = function () {
 		var ls = localStorageService
@@ -44,13 +40,13 @@ angular.module('dateaWebApp')
 			angular.extend(currentData, updatedData);
 			ls.set( 'user', currentData );
 			User.updateUserDataFromStorage();
-
+console.log( 'updateUserDataFromApi', response );
 			if ( User.data.status === 0 ) {
 console.log( 'updateUserDataFromApi', 'status === 0' );
 				$location.path( '/configuracion' );
 				$scope.addAlert( { type : 'danger'
-				                 , msg  : 'Por favor revise su correo para terminar el registro'
-				                 } )
+				                 , msg  : 'Por favor indique su correo para terminar el registro'
+				                 } );
 			} else {
 				$location.path( '/' );
 			}
@@ -74,18 +70,23 @@ console.log( 'updateUserDataFromApi', 'status === 0' );
 	};
 
 	$scope.addAlert = function ( givens ) {
+		$scope.alerts = [];
 		$scope.alerts.push( givens );
 	}
 
 	$rootScope.$on( 'user:signedIn', function ( event, error ) {
 		onSignIn();
-	} )
+	} );
 
 	$rootScope.$on( 'user:signedOut', function ( event, error ) {
 		$scope.nav.visible = User.isSignedIn();
-	} )
+	} );
 
-	$scope.$on('$locationChangeStart', function(scope, next, current){
+	$rootScope.$on( 'user:hasDateado', function ( event, error ) {
+		updateUserDataFromApi();
+	} );
+
+	$scope.$on( '$locationChangeStart', function ( scope, next, current ){
 		User.updateUserDataFromStorage();
 		onSignIn();
 	});
@@ -106,6 +107,7 @@ console.log( 'updateUserDataFromApi', 'status === 0' );
 	$scope.nav.datear = function () {
 		$modal.open( { templateUrl : 'views/datear.html'
 		             , controller  : 'DatearCtrl'
+		             , windowClass : 'datear-modal'
 		             } )
 	}
 

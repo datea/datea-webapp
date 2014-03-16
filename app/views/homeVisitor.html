@@ -1,7 +1,61 @@
-	<h1 class="brand" ng-show="flow.isSignedIn">datea.pe</h1>
-
-	<div class="flow-holder">
-		<button class="btn btn-default" ng-show="flow.isSignedIn" ng-click="flow.signIn()">Ingresar</button>
-
-		<button class="btn btn-success" ng-show="flow.isSignedIn" ng-click="flow.signUp()">Registrarse</button>
+<div class="landing-holder">
+	<div class="section-holder section-holder-1">
+		<div class="container section section-1">
+			<div class="social-holder pull-right ff1">
+				Síguenos <a href="//facebook.com/somosdateros" target="_blank"><i class="fa fa-facebook-square fa-2x"></i></a> <a href="//twitter.com/somosdateros" target="_blank"><i class="fa fa-twitter-square fa-2x"></i></a>
+			</div>
+			<h1 class="main-heading ff2"> <img src="static/images/logo.png" alt="datea"> todos somos dateros </h1>
+			<div class="slogan ff1">tu sitio para compartir info útil con tu comunidad</div>
+		</div>
 	</div>
+	<div class="section-holder section-holder-2">
+		<div class="container section section-2">
+			<div class="part-holder">
+				<div class="part part-1">
+					<div class="dateros ff1">
+						<img src="static/images/landing/dateros-count.png" alt="dateros"> <span class="number">1533</span> dateros
+					</div>
+					<p class="question">¿No eres dater@?</p>
+					<a href="#/signup" class="btn datea-btn ff1">
+						regístrate
+					</a>
+				</div>
+				<div class="part part-2">
+					<div class="dateos ff1">
+						<img src="static/images/landing/dateo-count.png" alt="dateos"> <span class="number">2169</span> dateos
+					</div>
+					<p class="question">¿Ya tienes cuenta?</p>
+					<a href="#/signin" class="btn datea-btn ff1">
+						ingresa
+					</a>
+				</div>
+			</div>
+		</div>
+	</div>
+	<div class="section-holder section-holder-3 ff1">
+		<div class="container section section-3">
+			<h3 class="ff1">datear</h3>
+			<div class="parts-holder">
+				<div class="part part-1">
+					<div class="icon icon-1"></div>
+					Es al toque
+				</div>
+				<div class="part part-2">
+					<div class="icon icon-2"></div>
+					Visualiza temas y soluciones desde diversos puntos de vista.
+				</div>
+				<div class="part part-3">
+					<div class="icon icon-3"></div>
+					Te conecta con tu comunidad y los que quieren mejorar la ciudad
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+<h1 class="brand" ng-show="flow.isSignedIn">datea.pe</h1>
+
+<div class="flow-holder">
+	<button class="btn btn-default" ng-show="flow.isSignedIn" ng-click="flow.signIn()">Ingresar</button>
+
+	<button class="btn btn-success" ng-show="flow.isSignedIn" ng-click="flow.signUp()">Registrarse</button>
+</div>

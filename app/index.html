@@ -13,10 +13,16 @@
 
 	<!-- build:css(.tmp) styles/main.css -->
 	<link rel="stylesheet" href="styles/main.css">
+<!--
 	<link href='http://fonts.googleapis.com/css?family=Oswald' rel='stylesheet' type='text/css'>
 	<link href='http://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400' rel='stylesheet' type='text/css'>
+	 -->
 	<!-- endbuild -->
-	<link rel="stylesheet" href="bower_components/leaflet-dist/leaflet.css" />
+	<link rel="stylesheet" href="bower_components/leaflet-dist/leaflet.css">
+	<link rel="stylesheet" href="//netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.min.css">
+	<link rel="stylesheet" href="bower_components/Leaflet.label/dist/leaflet.label.css">
+	<link rel="stylesheet" href="bower_components/leaflet.markerclusterer/dist/MarkerCluster.css">
+	<link rel="stylesheet" href="bower_components/leaflet.markerclusterer/dist/MarkerCluster.Default.css">
 </head>
 <body ng-app="dateaWebApp">
 	<!--[if lt IE 7]>
@@ -29,15 +35,11 @@
 	<![endif]-->
 
 	<!-- Add your site or application content here -->
-	<header class="branding">
-		<div class="slide limiter" ng-controller="NavCtrl" ng-include="'views/nav.html'"></div>
-	</header>
+	<div ng-controller="NavCtrl" ng-include="'views/nav.html'"></div>
 
 	<div class="messagesList" app-messages></div>
 
-	<section class="body">
-		<div class="container" ng-view=""></div>
-	</section>
+	<div class="container page" ng-view=""></div>
 
 	<footer class="colophon">
 		<div class="datea-rights" ng-include="'views/footer.html'"></div>
@@ -52,8 +54,10 @@
 	ga('create', 'UA-XXXXX-X');
 	ga('send', 'pageview');
 	</script>
-
+<!-- 
 	<script src="bower_components/angular/angular.js"></script>
+	 -->
+	 <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.2.13/angular.min.js"></script>
 	<script src="bower_components/leaflet-dist/leaflet.js"></script>
 	<script src="http://api.datea.pe:6284/download/latest/oauth.js"></script>
 
@@ -69,7 +73,9 @@
 	<script src="bower_components/angular-local-storage/angular-local-storage.js"></script>
 	<script src="bower_components/angular-ui-bootstrap-bower/ui-bootstrap.js"></script>
 	<script src="bower_components/angular-ui-bootstrap-bower/ui-bootstrap-tpls.js"></script>
-	<script src="bower_components/angular-leaflet-directive/dist/angular-leaflet-directive.min.js"></script>
+	<script src="bower_components/angular-leaflet-directive/dist/angular-leaflet-directive.js"></script>
+	<script src="bower_components/leaflet.markerclusterer/dist/leaflet.markercluster.js"></script>
+	<script src="bower_components/Leaflet.label/dist/leaflet.label.js"></script>
 	<script src="bower_components/angularjs-geolocation/src/geolocation.js"></script>
 	<script src="bower_components/wxGlobalErrors/wxGlobalErrors.js"></script>
 	<script src="bower_components/wxAngularFullscreen/angular-fullscreen.js"></script>
@@ -78,6 +84,7 @@
 	<script src="bower_components/angular-cookies/angular-cookies.js"></script>
 	<script src="bower_components/angular-sanitize/angular-sanitize.js"></script>
 	<script src="bower_components/angular-route/angular-route.js"></script>
+	<script src="bower_components/angular-elastic/elastic.js"></script>
 	<!-- endbuild -->
 
 	<!-- build:js({.tmp,app}) scripts/scripts.js -->
@@ -103,6 +110,9 @@
 	<script src="scripts/directives/bgFromApi.js"></script>
 	<script src="scripts/services/activityUrl.js"></script>
 	<script src="scripts/controllers/campaign.js"></script>
+	<script src="scripts/directives/scrollto.js"></script>
+<script src="scripts/directives/scrollspy.js"></script>
+<script src="scripts/controllers/campaign-dashboard.js"></script>
 	<!-- endbuild -->
 
 </body>

@@ -8,6 +8,7 @@ angular.module('dateaWebApp')
 , 'Api'
 , 'config'
 , '$location'
+, 'User'
 , function (
   $scope
 , $http
@@ -15,6 +16,7 @@ angular.module('dateaWebApp')
 , Api
 , config
 , $location
+, User
 ) {
 
 	var ls = localStorageService
@@ -22,7 +24,8 @@ angular.module('dateaWebApp')
 
 	$scope.datea = {};
 	$scope.auth  = {};
-	$scope.datea.name = 'Datea.pe';
+
+	User.isSignedIn() && $location.path( '/' );
 
 	$scope.auth.save = function () {
 		var data

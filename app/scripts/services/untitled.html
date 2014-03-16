@@ -1,0 +1,18 @@
+<div class="marker-holder">
+	<img ng-src="http://api.datea.pe/{{user.image_small}}" alt="user image">
+	<h5>por {{user.username}}</h5>
+	<span class="date">{{date}}</span>
+	<span class="tag">#{{tags[0].tag}}</span>
+	<p>{{extract}}</p>
+	<a ng-href="/{{user.usernam}}/dateos/{{id}}">Leer más</a>
+</div>
+
+['<div class="marker-holder">'
+,'<img ng-src="http://api.datea.pe/{{user.image_small}}" alt="user image">'
+,'<h5>por {{user.username}}</h5>'
+,'<span class="date">{{date}}</span>'
+,'<span class="tag">#{{tags[0].tag}}</span>'
+,'<p>{{extract}}</p>'
+,'<a ng-href="/{{user.usernam}}/dateos/{{id}}">Leer más</a>'
+,'</div>'
+].join();

@@ -14,13 +14,13 @@ angular.module('dateaWebApp')
 			  ;
 
 			setImg = function () {
-				img = attrs.bgFromApi ? config.api.imgUrl + attrs.bgFromApi : 'http://lorempixel.com/160/150/cats/';
+				img = attrs.bgFromApi ? config.api.imgUrl + attrs.bgFromApi : config.defaultImgBackground;
 			}
 
 			attrs.$observe( 'bgFromApi', function () {
 				// img = attrs.bgFromApi ? config.api.imgUrl + attrs.bgFromApi : 'http://lorempixel.com/160/150/cats/';
 				setImg();
-				element.css( { 'background': 'url('+img+') no-repeat'
+				element.css( { 'background': 'url('+img+') no-repeat center center'
 				             , 'background-size': 'cover'
 				             } );
 			} )

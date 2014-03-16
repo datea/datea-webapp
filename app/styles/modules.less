@@ -8,9 +8,84 @@
 	Tags: datea, información, participación ciudadana, comparte...
 */
 
+.datea-button-variant(@color; @background; @border; @hover) {
+  color: @color;
+  background-color: @background;
+  border-color: @border;
 
+  &:hover,
+  &:focus,
+  &:active,
+  &.active,
+  .open .dropdown-toggle& {
+    color: @color;
+    background-color: @hover;
+        border-color: darken(@hover, 12%);
+  }
+  &:active,
+  &.active,
+  .open .dropdown-toggle& {
+    background-image: none;
+  }
+  &.disabled,
+  &[disabled],
+  fieldset[disabled] & {
+    &,
+    &:hover,
+    &:focus,
+    &:active,
+    &.active {
+      background-color: @background;
+          border-color: @border;
+    }
+  }
+
+  .badge {
+    color: @background;
+    background-color: #fff;
+  }
+}
 
 /* ==========================================================================
    Buttons
 ========================================================================== */
-section.body .btn { text-transform: uppercase; }
+
+@datea-brand-btn:  #151415;
+@datea-datear-btn: #8B00A4;
+
+@datea-btn-hover:  #28BC45;
+@datea-btn-color:  #fff;
+@datea-btn-bg:     @datea-brand-btn;
+@datea-btn-border: darken(@datea-btn-bg, 5%);
+
+@datea-datear-btn-hover: darken(@datea-datear-btn, 10%);
+@datea-datear-btn-color: #fff;
+@datea-datear-btn-bg: @datea-datear-btn-bg;
+@datea-datear-btn-border: darken(@datea-datear-btn-bg, 5%);
+
+.datea-btn {
+  .datea-button-variant(@datea-btn-color; @datea-btn-bg; @datea-btn-border; @datea-btn-hover);
+	padding-top: 10px;
+	text-transform: uppercase;
+}
+
+// .datea-datear-btn {
+// 	.datea-button-variant(@datea-datear-btn-color; @datea-datear-btn-bg; @datea-datear-btn-border; @datea-datear-btn-hover);
+// 	padding-top: 10px;
+// 	text-transform: uppercase;
+// }
+
+.datea-btn-xs {
+	height: 17px;
+	padding-top: 0;
+}
+
+.well-after( @top; @left ) {
+	background: url('@{imgUrl}globals/well-after-bg.png') no-repeat;
+	content: "";
+	height: 24px;
+	left: @left;
+	position: absolute;
+	top: @top;
+	width: 26px;
+}

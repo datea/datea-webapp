@@ -7,7 +7,6 @@ angular.module('dateaWebApp')
   , '$http'
   , '$location'
   , 'localStorageService'
-  , '$window'
   , 'Api'
 , function (
     $scope
@@ -15,13 +14,14 @@ angular.module('dateaWebApp')
   , $http
   , $location
   , localStorageService
-  , $window
   , Api
 ) {
 
 	var ls = localStorageService;
 
 	$scope.flow = {};
+
+	User.isSignedIn() && $location.path( '/' );
 
 	$scope.flow.signIn = function () {
 		$location.path( '/signin' );
@@ -34,7 +34,7 @@ angular.module('dateaWebApp')
 			partyGivens.party = 'facebook';
 			User.signInBy3rdParty( partyGivens )
 			.then( function ( response ) {
-				$location.path( '/#' );
+				$location.path( '/' );
 			}, function ( reason ) {
 				console.log( '$scope.flow.withFacebook', reason );
 			} );
@@ -49,7 +49,7 @@ angular.module('dateaWebApp')
 			partyGivens.oauth_token_secret = result.oauth_token_secret;
 			User.signInBy3rdParty( partyGivens )
 			.then( function ( response ) {
-				$location.path( '/#' );
+				$location.path( '/configuracion' );
 			}, function ( reason ) {
 				console.log( '$scope.flow.withTwitter', reason );
 			} );

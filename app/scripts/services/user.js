@@ -6,11 +6,15 @@ angular.module('dateaWebApp')
 , '$rootScope'
 , 'Api'
 , '$q'
+, '$timeout'
+, '$location'
 , function User(
   localStorageService
 , $rootScope
 , Api
 , $q
+, $timeout
+, $location
 ) {
 	var user = {}
 	  , ls   = localStorageService
@@ -29,11 +33,12 @@ angular.module('dateaWebApp')
 
 	user.updateUserDataFromStorage = function () {
 		console.log( 'user.updateUserDataFromStorage()', user.isSignedIn(), !Object.keys( user.data ).length );
-		// if ( user.isSignedIn() && !Object.keys( user.data ).length ) {
-	  if ( user.isSignedIn() ) {
-			user.data = ls.get('user');
+		if ( user.isSignedIn() ) {
+			angular.extend( user.data, ls.get('user') );
+			// user.data = ls.get('user');
 		}
-		Api.user.getToken();
+		Api.user.getToken( { fromTwitter: true } );
+		$rootScope.$broadcast( 'user:updated' );
 	}
 
 	user.updateTokenOnTwitterSignup = function () {
@@ -51,7 +56,7 @@ angular.module('dateaWebApp')
 		  , id       = givens && givens.id
 		  , dfd      = $q.defer()
 		  ;
-console.log( 'getUserData givens', givens );
+
 		Api.user.getToken();
 		if ( user.isSignedIn() && username ) {
 			Api.user.getUserByUserIdOrUsername( { username: username } )
@@ -77,14 +82,62 @@ console.log( 'getUserData givens', givens );
 
 	user.getData = getUserData;
 
+	// user.updateUserDataFromApiDeep = function () {
+	// 	var ls = localStorageService
+	// 	  , updatedData
+	// 	  , currentData = ls.get('user')
+	// 	  ;
+
+	// 	Api.user.getToken( { fromTwitter: true } );
+	// 	Api.user.getUserByUserIdOrUsername( { username: currentData.username } )
+	// 	.then( function ( response ) {
+	// 		updatedData = response;
+	// 		angular.extend( currentData, updatedData );
+	// 		ls.set( 'user', currentData );
+	// 		user.updateUserDataFromStorage();
+
+	// 	}, function ( reason ) {
+	// 		console.log( reason );
+	// 	} );
+	// }
+
+	user.updateUserDataFromApi = function ( callback ) {
+		var ls = localStorageService
+		  , updatedData
+		  , currentData = ls.get('user')
+		  ;
+
+		getUserData( { username: currentData.username } )
+		.then( function ( response ) {
+			updatedData = response;
+console.log( '!! updateUserDataFromApi !!', response );
+			angular.extend( currentData, updatedData );
+			ls.set( 'user', currentData );
+			user.updateUserDataFromStorage();
+			if ( user.data.status === 0 ) {
+				$location.path( '/configuracion' );
+				$scope.addAlert( { type : 'danger'
+				                 , msg  : 'Por favor indique su correo para terminar el registro'
+				                 } );
+			}
+
+			callback && callback();
+
+		}, function ( reason ) {
+			console.log( reason );
+		} );
+	}
+
 	user.updateUser = function ( givens ) {
 		var dfd = $q.defer();
 		Api.user.updateUserByUserId( givens )
 		.then( function ( response ) {
-			var updatedData
+			var updatedData = response
 			  , currentData = ls.get('user')
 			  ;
-			console.log( response );
+			angular.extend( currentData, updatedData );
+			ls.set( 'user', currentData );
+			user.updateUserDataFromStorage();
 			dfd.resolve( response );
 		}, function ( error ) {
 			console.log( 'error', error );

@@ -15,14 +15,16 @@ angular.module('dateaWebApp')
 , $http
 ) {
 	var headers
-	  , ls       = localStorageService
-	  , dateo    = {}
-	  , comment  = {}
-	  , account  = {}
-	  , user     = {}
-	  , tag      = {}
-	  , campaign = {}
+	  , ls          = localStorageService
+	  , dateo       = {}
+	  , comment     = {}
+	  , account     = {}
+	  , user        = {}
+	  , tag         = {}
+	  , campaign    = {}
 	  , activityLog = {}
+	  , category    = {}
+	  , follow      = {}
 	  // fn declarations
 	  , reconfigUserRsrc
 	  ;
@@ -41,7 +43,8 @@ angular.module('dateaWebApp')
 
 	reconfigUserRsrc = function () {
 		user.rsrc = $resource( config.api.url + 'user/:id', {},
-		{ 'get'  : { method : 'GET' }
+		{ 'get'  : { method : 'GET'
+		           , headers: headers || ls.get('token') }
 		, 'patch': { method : 'PATCH'
 		           , params : { id: '@id' }
 		           , headers: headers || ls.get('token')
@@ -92,10 +95,22 @@ angular.module('dateaWebApp')
 	{ 'get' : { method : 'GET' } }
 	)
 	campaign.rsrc = $resource( config.api.url + 'campaign/', {},
-	{ 'query': { method : 'GET' } }
-	)
+	{ 'query': { method : 'GET' }
+	, 'post' : { method  : 'POST'
+	           , headers : headers || ls.get('token')
+	           }
+	} );
 	activityLog.rsrc = $resource( config.api.url + 'activity_log/', {},
 	{ 'query': { method : 'GET' } }
+	)
+	category.rsrc = $resource( config.api.url + 'category/', {},
+	{ 'query': { method : 'GET' } }
+	)
+	follow.rsrc = $resource( config.api.url + 'follow/', {},
+	{ 'query': { method : 'GET' }
+	, 'post' : { method : 'POST'
+	           , headers : headers || ls.get('token')
+	           } }
 	)
 
 console.log( 'api', headers );
@@ -105,8 +120,9 @@ console.log( 'api', headers );
 		  , dfd   = $q.defer()
 		  ;
 		givens.id = givens && givens.username ? givens.username : givens.id;
+		reconfigUserRsrc();
 console.log( 'user.getUserByUserIdOrUsername token', token );
-		user.rsrc.get( {} , givens
+		user.rsrc.get( givens
 		, function ( response ) {
 			dfd.resolve( response );
 		}
@@ -290,11 +306,55 @@ console.log( 'user.getUserByUserIdOrUsername token', token );
 		return dfd.promise;
 	}
 
+	campaign.postCampaign = function ( givens ) {
+		var dfd = $q.defer();
+		campaign.rsrc.post( givens, function ( response ) {
+			dfd.resolve( response );
+		}, function ( error ) {
+			dfd.reject( error );
+		} );
+		return dfd.promise;
+	}
+
 	// ActivityLog
 
 	activityLog.getActivityOfUserByUserId = function ( givens ) {
 		var dfd = $q.defer();
 		activityLog.rsrc.query( givens, function ( response ) {
+			dfd.resolve( response );
+		}, function ( error ) {
+			dfd.reject( error );
+		} );
+		return dfd.promise;
+	}
+
+	// Category
+
+	category.getCategories = function ( givens ) {
+		var dfd = $q.defer();
+		category.rsrc.query( givens, function ( response ) {
+			dfd.resolve( response );
+		}, function ( error ) {
+			dfd.reject( error );
+		} );
+		return dfd.promise;
+	}
+
+	// Follow
+
+	follow.getFollows = function ( givens ) {
+		var dfd = $q.defer();
+		follow.rsrc.query( givens, function ( response ) {
+			dfd.resolve( response );
+		}, function ( error ) {
+			dfd.reject( error );
+		} );
+		return dfd.promise;
+	}
+
+	follow.doFollow = function ( givens ) {
+		var dfd = $q.defer();
+		follow.rsrc.post( givens, function ( response ) {
 			dfd.resolve( response );
 		}, function ( error ) {
 			dfd.reject( error );
@@ -309,6 +369,8 @@ console.log( 'user.getUserByUserIdOrUsername token', token );
 	       , tag         : tag
 	       , campaign    : campaign
 	       , activityLog : activityLog
+	       , category    : category
+	       , follow      : follow
 	       };
 
 } ] );

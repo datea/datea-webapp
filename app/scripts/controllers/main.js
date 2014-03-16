@@ -17,6 +17,8 @@ angular.module( 'dateaWebApp' )
   , '$q'
   , 'Fullscreen'
   , 'ActivityUrl'
+  , '$filter'
+  , '$timeout'
 , function (
     $scope
   , User
@@ -33,6 +35,8 @@ angular.module( 'dateaWebApp' )
   , $q
   , Fullscreen
   , ActivityUrl
+  , $filter
+  , $timeout
 ) {
 	var data
 	  , ls = localStorageService
@@ -48,6 +52,7 @@ angular.module( 'dateaWebApp' )
 	  , getMarkerWithFocusIdx
 	  , isMarkerDup
 	  , isCenterOutOfBounds
+	  , isTagFollowable
 	  , resetMarkers
 	  , onSignIn
 	  , onSignUp
@@ -60,21 +65,58 @@ angular.module( 'dateaWebApp' )
 	  , buildPagination
 	  , buildActivityLog
 	  , buildActivityUrl
+	  , buildFollowingTags
 	  , buildTrendingTags
 	  , buildWeeklyDateo
 	  ;
 	$scope.flow       = {};
 	$scope.pagination = {};
 	$scope.homeSI     = {};
+	$scope.homeSI.leaflet = {};
 	$scope.homeSI.history = [];
 
-	buildTrendingTags = function () {
-		Api.tag
-		.getTrendingTags( { limit: 5 } )
+	$scope.homeSI.selectedMarker = 'last';
+
+	buildFollowingTags = function () {
+		Api.follow
+		.getFollows( { user__id: User.data.id } )
 		.then( function ( response ) {
-			console.log( 'trending', response );
-			$scope.homeSI.trendingTags = response.objects;
+			console.log( 'followingTags', response );
+			$scope.homeSI.followingTags = response.objects;
+		}, function ( reason ) {
+			console.log( reason );
 		} )
+	}
+
+	buildTrendingTags = function () {
+		$scope.homeSI.trendingTags = [];
+		Api.tag
+		.getTrendingTags( { limit: 5, days: 20 } )
+		.then( function ( response ) {
+			angular.forEach( response.objects , function ( value, key ){
+				// if ( !~$scope.homeSI.followingTags.map( function ( e ) { return e.id; } ).indexOf( value.id ) ) {
+				// 	value._followable = true;
+				// }
+				if ( isTagFollowable( { id: value.id, tags: $scope.homeSI.followingTags } ) ) {
+					value._followable = true;
+				}
+				$scope.homeSI.trendingTags.push( value );
+			} );
+		} );
+	}
+
+	isTagFollowable = function ( givens ) {
+		var id
+		  , tags
+		  ;
+
+		id   = givens && givens.id;
+		tags = givens && givens.tags;
+
+		if ( !~tags.map( function ( e ) { return e.id; } ).indexOf( id ) ) {
+			return true;
+		}
+		return false;
 	}
 
 	buildWeeklyDateo = function () {
@@ -117,7 +159,7 @@ angular.module( 'dateaWebApp' )
 
 		index = givens && givens.index * config.homeSI.campaignsOffset;
 		defaultQuery = { order_by: '-featured,-created'
-		               , limit   : 12
+		               , limit   : 6
 		               , offset  : index || 0
 		               }
 		query = givens && givens.query || defaultQuery;
@@ -125,7 +167,7 @@ angular.module( 'dateaWebApp' )
 		Api.campaign
 		.getCampaigns( query )
 		.then( function ( response ) {
-			console.log( response.objects );
+			// console.log( response.objects );
 			$scope.homeSI.campaigns = response.objects;
 			buildPagination( response );
 		}, function ( reason ) {
@@ -135,8 +177,10 @@ angular.module( 'dateaWebApp' )
 	}
 
 	$scope.$watch( 'pagination.currentPage', function () {
-		buildCampaigns( { index : $scope.pagination.currentPage - 1 } );
-	} )
+		if ( User.isSignedIn() ) {
+			buildCampaigns( { index : $scope.pagination.currentPage - 1 } );
+		}
+	} );
 
 	buildPagination = function ( response ) {
 		$scope.pagination.totalItems   = response.meta.total_count;
@@ -157,7 +201,7 @@ angular.module( 'dateaWebApp' )
 			map.center.lat = center.lat;
 			map.center.lng = center.lng
 		}
-
+console.log( 'dateosGivens', dateosGivens );
 		if ( !Object.keys( dateosGivens ).length ) {
 			dateosGivens.latitude  = center.lat || config.defaultMap.center.lat;
 			dateosGivens.longitude = center.lng || config.defaultMap.center.lng;
@@ -168,7 +212,7 @@ angular.module( 'dateaWebApp' )
 			.then( function ( map ) {
 				lastBounds = map.getBounds();
 
-				$scope.$watch( 'center.lat+center.lng', function () {
+				$scope.$watch( 'homeSI.leaflet.center.lat+homeSI.leaflet.center.lng', function () {
 					isCenterOutOfBounds();
 				} );
 			} );
@@ -177,7 +221,7 @@ angular.module( 'dateaWebApp' )
 			dateosGivens.updateCenter  = true;
 		}
 
-		angular.extend( $scope, map );
+		angular.extend( $scope.homeSI.leaflet, map );
 
 		buildMarkers( dateosGivens );
 	}
@@ -187,11 +231,11 @@ angular.module( 'dateaWebApp' )
 			leafletData.getMap()
 			.then( function ( map ) {
 				var bounds = lastBounds;
-				if ( $scope.center.lat >= bounds._northEast.lat || $scope.center.lat < bounds._southWest.lat
-				|| $scope.center.lng <= bounds._southWest.lng || $scope.center.lng < bounds._southWest.lng ) {
+				if ( $scope.homeSI.leaflet.center.lat >= bounds._northEast.lat || $scope.homeSI.leaflet.center.lat < bounds._southWest.lat
+				|| $scope.homeSI.leaflet.center.lng <= bounds._southWest.lng || $scope.homeSI.leaflet.center.lng < bounds._southWest.lng ) {
 					console.log('out of bounds');
-					buildMarkers( { latitude : $scope.center.lat
-					              , longitude: $scope.center.lng
+					buildMarkers( { latitude : $scope.homeSI.leaflet.center.lat
+					              , longitude: $scope.homeSI.leaflet.center.lng
 					              , distance : 2000
 					              }	);
 					lastBounds = map.getBounds();
@@ -213,18 +257,39 @@ angular.module( 'dateaWebApp' )
 	}
 
 	buildMarkers = function ( givens ) {
-		var map     = {}
-		  , markers = {}
+		var map          = {}
+		  , markers      = {}
+		  , givens       = givens || {}
+		  , updateCenter
 		  ;
+
+		updateCenter = givens.updateCenter;
+		delete givens.updateCenter;
 		givens.limit = config.homeSI.dateosLimitByRequest;
+
+		if ( $scope.homeSI.selectedMarker !== 'last' ) {
+			givens.order_by            = config.selectFilter[ $scope.homeSI.selectedMarker ];
+			dontCheckCenterOutOfBounds = true;
+			givens.updateCenter        = true;
+		}
+		if ( $scope.homeSI.searchDateosKeyword ){
+			givens.q                   = $scope.homeSI.searchDateosKeyword;
+			dontCheckCenterOutOfBounds = true;
+			givens.updateCenter        = true;
+		}
+
 		Api.dateo.getDateos( givens )
 		.then( function ( response ) {
 			angular.forEach( response.objects, function ( value, key ){
 				if ( value.position && !isMarkerDup( { marker : value } ) ) {
+					// default image for markers
+					value.user.image_small = value.user.image_small ? value.user.image_small : config.defaultImgProfile;
+					value._prettyDate = $filter('date')( value.date, 'fullDate' );
 					markers['marker'+sessionMarkersIdx] = {
 					  lat       : value.position.coordinates[1]
 					, lng       : value.position.coordinates[0]
-					, message   : value.extract
+					, label     : { message: '#' + value.tags[0].tag }
+					, message   : $interpolate( config.marker )( value )
 					, draggable : false
 					, focus     : false
 					, _id       : value.id
@@ -236,29 +301,33 @@ angular.module( 'dateaWebApp' )
 			angular.extend( sessionMarkers, markers );
 			map.markers = sessionMarkers;
 			$scope.homeSI.markers = Object.keys( sessionMarkers );
-			if ( givens && givens && givens.updateCenter ) {
-				map.center = {};
-				map.center.lat = map.markers[ 'marker'+0 ].lat;
-				map.center.lng = map.markers[ 'marker'+0 ].lng;
+			// console.log( 'updateCenter', givens, givens.updateCenter );
+			if ( updateCenter ) {
+				map.center      = {};
+				map.center.lat  = map.markers[ 'marker'+0 ].lat;
+				map.center.lng  = map.markers[ 'marker'+0 ].lng;
 				map.center.zoom = config.homeSI.mapZoomOverride;
+				map.markers[ 'marker'+0 ].focus = true;
 			}
-			angular.extend( $scope, map );
+			angular.extend( $scope.homeSI.leaflet, map );
 		}, function ( reason ) {
 			console.log( reason );
 		} );
 	}
 
-	geolocateAndBuildMap = function () {
-		geo.getLocation( { timeout:10000 } )
-		.then( function ( data ) {
-			buildMap( { center : data } )
-		}, function () {
-			buildMap();
-		} );
+	geolocateAndBuildMap = function ( givens ) {
+		buildMap( givens );
+		// /*no spam*/
+		// geo.getLocation( { timeout:10000 } )
+		// .then( function ( data ) {
+		// 	buildMap( { center : data } )
+		// }, function () {
+		// 	buildMap();
+		// } );
 	}
 
 	resetMarkers = function () {
-		$scope.markers    = {};
+		$scope.homeSI.leaflet.markers    = {};
 		sessionMarkers    = {};
 		sessionMarkersIdx = 0;
 	}
@@ -268,9 +337,11 @@ angular.module( 'dateaWebApp' )
 
 		$scope.flow.isSignedIn = false;
 		$scope.user = User.data;
+		$scope.homeSI.followingTags = User.data.tags_followed;
+		console.log( '$scope.homeSI.followingTags', $scope.homeSI.followingTags );
 		map = config.defaultMap;
 		map.center.zoom = config.homeSI.mapZoomOverride;
-		angular.extend( $scope, map );
+		angular.extend( $scope.homeSI.leaflet, map );
 
 		geolocateAndBuildMap();
 		// buildMap();
@@ -278,6 +349,7 @@ angular.module( 'dateaWebApp' )
 		buildActivityLog();
 		buildWeeklyDateo();
 		buildTrendingTags();
+		// buildFollowingTags();
 	}
 
 	onSignUp = function () {
@@ -290,7 +362,10 @@ angular.module( 'dateaWebApp' )
 
 	$scope.homeSI.geolocate = function () {
 		resetMarkers();
-		geolocateAndBuildMap();
+		$scope.homeSI.selectedMarker      = 'last';
+		$scope.homeSI.searchDateosKeyword = '';
+		dontCheckCenterOutOfBounds        = false;
+		geolocateAndBuildMap( { dateosGivens : { updateCenter : true } } );
 	}
 
 	$scope.flow.isSignedIn = !User.isSignedIn();
@@ -306,12 +381,23 @@ angular.module( 'dateaWebApp' )
 	$scope.flow.datear = function () {
 		$modal.open( { templateUrl : 'views/datear.html'
 		             , controller  : 'DatearCtrl'
+		             , windowClass : 'datear-modal'
 		             } );
 	}
 
 	$scope.homeSI.searchDateos = function () {
 		resetMarkers();
 		buildMap( { dateosGivens : { q: $scope.homeSI.searchDateosKeyword } } );
+	}
+
+	$scope.homeSI.searchDateosWithImages = function () {
+		var dateosGivens = {};
+		resetMarkers();
+		if ( $scope.homeSI.searchDateosKeyword ) {
+			dateosGivens.q = $scope.homeSI.searchDateosKeyword;
+		}
+		dateosGivens.has_images = 1;
+		buildMap( { dateosGivens : dateosGivens } );
 	}
 
 	$scope.homeSI.fullscreen = function () {
@@ -342,19 +428,48 @@ angular.module( 'dateaWebApp' )
 		var idx
 		  , markerName
 		  , direction = givens && givens.direction
+		  , center = {}
 		  ;
 		// If there is no next valid Marker
 		if ( ( getMarkerWithFocusIdx() === 0 && direction === 0 )
-		|| ( getMarkerWithFocusIdx() === Object.keys($scope.markers).length && direction === 1) ) {
+		|| ( getMarkerWithFocusIdx() === Object.keys($scope.homeSI.leaflet.markers).length && direction === 1) ) {
 			lastMarkerWithFocus = 'marker0';
-			$scope.markers[lastMarkerWithFocus].focus = true;
+			$scope.homeSI.leaflet.markers[lastMarkerWithFocus].focus = true;
 			return;
 		}
 		idx = direction ? getMarkerWithFocusIdx() + 1 : getMarkerWithFocusIdx() - 1;
 		markerName = 'marker'+idx;
-		$scope.markers[markerName] && ( $scope.markers[markerName].focus = true );
+		center.lat = $scope.homeSI.leaflet.markers[markerName].lat;
+		center.lng = $scope.homeSI.leaflet.markers[markerName].lng;
+		center.zoom = $scope.homeSI.leaflet.center.zoom;
+		angular.extend( $scope.homeSI.leaflet.center, center );
+		$scope.homeSI.leaflet.markers[markerName] && ( $scope.homeSI.leaflet.markers[markerName].focus = true );
 		$scope.$broadcast( 'leafletDirectiveMarker.click', { markerName : markerName } );
 		isCenterOutOfBounds();
+	}
+
+	$scope.homeSI.onSelectFilterChange = function () {
+		resetMarkers();
+		buildMarkers();
+	}
+
+	$scope.homeSI.followTag = function ( idx ) {
+		var id  = $scope.homeSI.trendingTags[idx].id
+		  , tag = $scope.homeSI.trendingTags[idx]
+		  ;
+		if ( tag._followable ) {
+			Api.follow
+			.doFollow( { content_type: 'tag', object_id: id } )
+			.then( function ( response ) {
+				$scope.homeSI.trendingTags[idx]._followable = false;
+				User.updateUserDataFromApi();
+				$timeout( function () {
+					$scope.homeSI.followingTags = ls.get('user').tags_followed;
+				}, 1000 );
+			}, function ( reason ) {
+				console.log( reason );
+			} );
+		}
 	}
 
 	$scope.$on( 'leafletDirectiveMarker.click', function ( ev, args ) {
@@ -372,6 +487,10 @@ angular.module( 'dateaWebApp' )
 
 	$rootScope.$on( 'user:signedUp', function () {
 		onSignUp();
+	} );
+
+	$rootScope.$on( 'user:updated', function () {
+		$scope.user = User.data;
 	} );
 
 	if( User.isSignedIn() ) {

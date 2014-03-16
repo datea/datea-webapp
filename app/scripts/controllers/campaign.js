@@ -6,14 +6,23 @@ angular.module('dateaWebApp')
   , 'Api'
   , '$routeParams'
   , 'config'
+  , '$interpolate'
+  , 'leafletData'
+  , '$timeout'
+  , '$filter'
 , function (
     $scope
   , Api
   , $routeParams
   , config
+  , $interpolate
+  , leafletData
+  , $timeout
+  , $filter
 ) {
 
 	var sessionMarkersIdx = 0
+	  , markersBounds     = []
 	  // fn declarations
 	  , buildCampaign
 	  , buildDateos
@@ -32,24 +41,33 @@ angular.module('dateaWebApp')
 		  ;
 
 		angular.forEach( dateos, function ( value, key ) {
-			// if ( value.position ) {
-				markers['marker'+sessionMarkersIdx] = {
-				  lat       : value.position.coordinates[1]
-				, lng       : value.position.coordinates[0]
-				, message   : value.extract
-				, draggable : false
-				, focus     : false
-				, _id       : value.id
-				};
-				sessionMarkersIdx += 1;
-			// }
+			// default image for markers
+			value.user.image_small = value.user.image_small
+			? value.user.image_small
+			: '/media/cache/31/36/313627847f2e243cf7d5106a76daa486.jpg';
+			value._prettyDate = $filter('date')( value.date, 'fullDate' );
+			markers['marker'+sessionMarkersIdx] = {
+			  lat       : value.position.coordinates[1]
+			, lng       : value.position.coordinates[0]
+			, group			: value.admin_level3
+			, label     : { message: '#' + value.tags[0].tag }
+			, message   : $interpolate( config.marker )(value)
+			, draggable : false
+			, focus     : false
+			, _id       : value.id
+			};
+			sessionMarkersIdx += 1;
+			markersBounds.push( [ value.position.coordinates[1], value.position.coordinates[0] ] );
 		} );
 		center.lat  = markers.marker0.lat;
 		center.lng  = markers.marker0.lng;
 		center.zoom = config.campaign.mapZoomFocus;
 		angular.extend( $scope.campaign.leaflet.markers, markers );
 		angular.extend( $scope.campaign.leaflet.center, center );
-		$scope.campaign.leaflet.markers.marker0.focus = true;
+		leafletData.getMap().then( function ( map ) {
+			map.fitBounds( markersBounds );
+		} )
+		// $scope.campaign.leaflet.markers.marker0.focus = true;
 	}
 
 	buildCampaign = function () {
@@ -61,11 +79,12 @@ angular.module('dateaWebApp')
 		Api.campaign
 		.getCampaigns( campaignGivens )
 		.then( function ( response ) {
-			angular.extend( $scope.campaign , response.objects[0] );
+			angular.extend( $scope.campaign, response.objects[0] );
 			buildDateos();
 		}, function ( reason ) {
 			console.log( reason );
 		} );
+
 	}
 
 	getTagsString = function ( givens ) {
@@ -106,13 +125,16 @@ angular.module('dateaWebApp')
 		  , center = {}
 		  ;
 		markerName  = 'marker'+idx;
-		console.log( 'focusDateo', idx, $scope.campaign.leaflet.markers );
-		center.lat  = $scope.campaign.leaflet.markers[markerName].lat;
-		center.lng  = $scope.campaign.leaflet.markers[markerName].lng;
-		center.zoom = config.campaign.mapZoomFocus;
-		angular.extend( $scope.campaign.leaflet.center, center );
-		$scope.campaign.leaflet.markers[markerName] &&
-		( $scope.campaign.leaflet.markers[markerName].focus = true );
+		if ( $scope.campaign.leaflet.markers[markerName] ) {
+			center.lat  = $scope.campaign.leaflet.markers[markerName].lat;
+			center.lng  = $scope.campaign.leaflet.markers[markerName].lng;
+			center.zoom = $scope.campaign.leaflet.center.zoom < 15 ? 15 : $scope.campaign.leaflet.center.zoom;
+			angular.extend( $scope.campaign.leaflet.center, center );
+			$timeout( function () {
+				$scope.campaign.leaflet.markers[markerName].focus = true;
+			}, 1000 );
+		}
+		console.log( 'focusDateo', idx, $scope.campaign.leaflet.markers[markerName].focus );
 	}
 
 	if ( $routeParams.username && $routeParams.campaignName ) {

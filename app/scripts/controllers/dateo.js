@@ -24,11 +24,13 @@ angular.module('dateaWebApp')
 	  , staticMap
 	  // fn declarations
 	  , buildDateo
+	  , updateComments
 	  , hasNext
 	  ;
 
 	$scope.dateo = {};
 	$scope.dateo.form = {};
+	$scope.dateo.leaflet = {};
 	$scope.dateo.messageNext = '';
 
 	hasNext = function () {
@@ -49,14 +51,21 @@ angular.module('dateaWebApp')
 			                              } }
 			$scope.dateo.messageNext = hasNext() ? 'siguiente' : 'primer';
 			angular.extend( $scope.dateo, dateo );
-			angular.extend( $scope, leaflet );
+			angular.extend( $scope.dateo.leaflet, leaflet );
 		} else {
 			$scope.dateo.message = 'error no encontrado';
 		}
 	}
 
+	updateComments = function ( response ) {
+		if ( !$scope.dateo.comments ) {
+			$scope.dateo.comments = {};
+		}
+		angular.extend( $scope.dateo.comments, response.objects[0].comments );
+	}
+
 	$scope.dateo.nextDateo = function () {
-		$location.path( '/' + $routeParams.userName + '/dateos/' + dateo.next_by_user );
+		$location.path( '/' + $routeParams.username + '/dateos/' + dateo.next_by_user );
 	}
 
 	$scope.dateo.imgDetail = function ( img ) {
@@ -78,13 +87,6 @@ angular.module('dateaWebApp')
 		$window.print();
 	}
 
-	Api.dateo
-	.getDateoByUsernameAndDateoId(
-	{ user : $routeParams.userName
-	, id   : +$routeParams.dateoId
-	} )
-	.then( buildDateo );
-
 	$scope.dateo.postComment = function () {
 		var comment = {};
 		comment.comment      = $scope.dateo.form.comment;
@@ -94,10 +96,23 @@ angular.module('dateaWebApp')
 		.postCommentByDateoId( comment )
 		.then( function ( response ) {
 			console.log( response )
-			// update view
+			Api.dateo
+			.getDateoByUsernameAndDateoId(
+			{ user : $routeParams.username
+			, id   : +$routeParams.dateoId
+			} )
+			.then( updateComments );
 		} )
 	}
 
-	angular.extend( $scope, config.defaultMap );
+	if ( $routeParams.username && $routeParams.dateoId ) {
+			Api.dateo
+			.getDateoByUsernameAndDateoId(
+			{ user : $routeParams.username
+			, id   : +$routeParams.dateoId
+			} )
+			.then( buildDateo );
+			angular.extend( $scope.dateo.leaflet, config.defaultMap );
+	}
 
 } ] );
