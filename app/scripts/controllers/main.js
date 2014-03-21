@@ -316,14 +316,14 @@ console.log( 'dateosGivens', dateosGivens );
 	}
 
 	geolocateAndBuildMap = function ( givens ) {
-		buildMap( givens );
+		// buildMap( givens );
 		// /*no spam*/
-		// geo.getLocation( { timeout:10000 } )
-		// .then( function ( data ) {
-		// 	buildMap( { center : data } )
-		// }, function () {
-		// 	buildMap();
-		// } );
+		geo.getLocation( { timeout:10000 } )
+		.then( function ( data ) {
+			buildMap( { center : data } )
+		}, function () {
+			buildMap();
+		} );
 	}
 
 	resetMarkers = function () {
@@ -382,7 +382,22 @@ console.log( 'dateosGivens', dateosGivens );
 		$modal.open( { templateUrl : 'views/datear.html'
 		             , controller  : 'DatearCtrl'
 		             , windowClass : 'datear-modal'
+		             , resolve     : {
+		                datearModalGivens : function () {
+		                 	return {};
+		                 }
+		               }
 		             } );
+	}
+
+	$scope.flow.share = function () {
+		$modal.open( { templateUrl : 'views/share.html'
+		             , controller  : 'ShareCtrl'
+		             , resolve		 : {
+		                 shareModalGivens : function () {
+		                 	return {}
+		                 }
+		             } } );
 	}
 
 	$scope.homeSI.searchDateos = function () {

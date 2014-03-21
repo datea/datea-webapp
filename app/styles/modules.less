@@ -46,6 +46,16 @@
   }
 }
 
+.datea-label-variant(@color) {
+  background-color: @color;
+  &[href] {
+    &:hover,
+    &:focus {
+      background-color: darken(@color, 10%);
+    }
+  }
+}
+
 /* ==========================================================================
    Buttons
 ========================================================================== */
@@ -58,27 +68,43 @@
 @datea-btn-bg:     @datea-brand-btn;
 @datea-btn-border: darken(@datea-btn-bg, 5%);
 
-@datea-datear-btn-hover: darken(@datea-datear-btn, 10%);
-@datea-datear-btn-color: #fff;
-@datea-datear-btn-bg: @datea-datear-btn-bg;
+@datea-datear-btn-hover:  darken(@datea-datear-btn, 10%);
+@datea-datear-btn-color:  #fff;
+@datea-datear-btn-bg:     @datea-datear-btn;
 @datea-datear-btn-border: darken(@datea-datear-btn-bg, 5%);
 
 .datea-btn {
   .datea-button-variant(@datea-btn-color; @datea-btn-bg; @datea-btn-border; @datea-btn-hover);
+  padding-top: 10px;
+  text-transform: uppercase;
+}
+
+.datea-datear-btn {
+	.datea-button-variant(@datea-datear-btn-color; @datea-datear-btn-bg; @datea-datear-btn-border; @datea-datear-btn-hover);
 	padding-top: 10px;
 	text-transform: uppercase;
 }
-
-// .datea-datear-btn {
-// 	.datea-button-variant(@datea-datear-btn-color; @datea-datear-btn-bg; @datea-datear-btn-border; @datea-datear-btn-hover);
-// 	padding-top: 10px;
-// 	text-transform: uppercase;
-// }
 
 .datea-btn-xs {
 	height: 17px;
 	padding-top: 0;
 }
+
+/* ==========================================================================
+   Labels
+========================================================================== */
+
+@datea-label-bg: @datea-btn-hover;
+
+.datea-label {
+	.datea-label-variant(@datea-label-bg);
+	padding-top: 5px;
+	text-transform: lowercase;
+}
+
+/* ==========================================================================
+   Wells
+========================================================================== */
 
 .well-after( @top; @left ) {
 	background: url('@{imgUrl}globals/well-after-bg.png') no-repeat;

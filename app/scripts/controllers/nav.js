@@ -108,6 +108,11 @@ console.log( 'updateUserDataFromApi', 'status === 0' );
 		$modal.open( { templateUrl : 'views/datear.html'
 		             , controller  : 'DatearCtrl'
 		             , windowClass : 'datear-modal'
+		             , resolve     : {
+		                datearModalGivens : function () {
+		                 	return {};
+		                 }
+		               }
 		             } )
 	}
 

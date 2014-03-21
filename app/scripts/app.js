@@ -12,6 +12,7 @@ angular.module( 'dateaWebApp'
   , 'wxGlobalErrors'
   , 'FSAngular'
   , 'monospaced.elastic'
+  , 'ngSocial'
 ])
 .config(
 [ '$routeProvider'

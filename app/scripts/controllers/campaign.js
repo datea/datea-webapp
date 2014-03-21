@@ -10,6 +10,9 @@ angular.module('dateaWebApp')
   , 'leafletData'
   , '$timeout'
   , '$filter'
+  , 'User'
+  , '$window'
+  , '$modal'
 , function (
     $scope
   , Api
@@ -19,6 +22,9 @@ angular.module('dateaWebApp')
   , leafletData
   , $timeout
   , $filter
+  , User
+  , $window
+  , $modal
 ) {
 
 	var sessionMarkersIdx = 0
@@ -27,6 +33,7 @@ angular.module('dateaWebApp')
 	  , buildCampaign
 	  , buildDateos
 	  , buildMarkers
+	  , buildFollowersList
 	  , getTagsString
 	  ;
 
@@ -34,17 +41,23 @@ angular.module('dateaWebApp')
 	$scope.campaign.leaflet = {};
 	$scope.campaign.dateos  = {};
 
+
+	$scope.campaign.selectedMarker = 'last';
+
 	buildMarkers = function ( givens ) {
 		var dateos  = givens && givens.dateos
 		  , markers = {}
 		  , center  = {}
 		  ;
+		// Cleaning
+		sessionMarkersIdx = 0;
+		$scope.campaign.leaflet.markers = {};
 
 		angular.forEach( dateos, function ( value, key ) {
 			// default image for markers
 			value.user.image_small = value.user.image_small
 			? value.user.image_small
-			: '/media/cache/31/36/313627847f2e243cf7d5106a76daa486.jpg';
+			: config.defaultImgProfile;
 			value._prettyDate = $filter('date')( value.date, 'fullDate' );
 			markers['marker'+sessionMarkersIdx] = {
 			  lat       : value.position.coordinates[1]
@@ -70,6 +83,18 @@ angular.module('dateaWebApp')
 		// $scope.campaign.leaflet.markers.marker0.focus = true;
 	}
 
+	buildFollowersList = function () {
+		$scope.campaign.followers = [];
+		Api.user
+		.getUsers( { follow_key: 'tag.'+$scope.campaign.main_tag.id } )
+		.then( function ( response ) {
+			console.log( 'buildFollowersList', response.objects );
+			angular.extend( $scope.campaign.followers, response.objects );
+		}, function ( reason ) {
+			console.log( reason );
+		} );
+	}
+
 	buildCampaign = function () {
 		var campaignGivens = {};
 
@@ -80,7 +105,13 @@ angular.module('dateaWebApp')
 		.getCampaigns( campaignGivens )
 		.then( function ( response ) {
 			angular.extend( $scope.campaign, response.objects[0] );
+			$scope.campaign.followable = !$scope.campaign.isUserFollowing();
+			console.log( '$scope.campaign', $scope.campaign )
+			$scope.campaign.shareableUrl = config.app.url
+				                             + $scope.campaign.user.username + '/'
+			                               + $scope.campaign.main_tag.tag;
 			buildDateos();
+			buildFollowersList();
 		}, function ( reason ) {
 			console.log( reason );
 		} );
@@ -98,11 +129,18 @@ angular.module('dateaWebApp')
 		return !secondaryTags.length ? mainTag.tag : mainTag.tag + ',' + secondaryTagsArray.join(',');
 	}
 
-	buildDateos = function () {
+	buildDateos = function ( givens ) {
 		var dateoGivens = {}
-		  , dateos = []
+		  , dateos      = []
+		  , q           = givens && givens.q
+		  , withMedia   = givens && givens.withMedia
 		  ;
+
 		dateoGivens.tags = getTagsString( $scope.campaign );
+		dateoGivens.q    = q;
+		if ( $scope.campaign.selectedMarker !== 'last' ) {
+			dateoGivens.order_by = config.selectFilter[ $scope.campaign.selectedMarker ];
+		}
 		if ( $scope.campaign ) {
 			Api.dateo
 			.getDateos( dateoGivens )
@@ -117,6 +155,18 @@ angular.module('dateaWebApp')
 			}, function ( reason ) {
 				console.log( reason );
 			} );
+		}
+	}
+
+	$scope.campaign.isUserFollowing = function () {
+		return !!~User.data.tags_followed.map( function ( t ) { return t.id; } ).indexOf( $scope.campaign.main_tag.id );
+	};
+
+	$scope.campaign.searchDateos = function () {
+		if ( $scope.campaign.searchDateosKeyword ) {
+			buildDateos( { q : $scope.campaign.searchDateosKeyword } );
+		} else {
+			buildDateos();
 		}
 	}
 
@@ -135,6 +185,54 @@ angular.module('dateaWebApp')
 			}, 1000 );
 		}
 		console.log( 'focusDateo', idx, $scope.campaign.leaflet.markers[markerName].focus );
+	}
+
+	$scope.campaign.onSelectFilterChange = function () {
+		buildDateos();
+	}
+
+	$scope.campaign.followTag = function () {
+		var id = $scope.campaign.main_tag.id;
+		console.log( 'followTag' );
+		if ( $scope.campaign.followable ) {
+			Api.follow
+			.doFollow( { content_type: 'tag', object_id: id } )
+			.then( function ( response ) {
+				$scope.campaign.followable = false;
+				User.updateUserDataFromApi();
+			}, function ( reason ) {
+				console.log( reason );
+			} );
+		}
+	}
+
+	$scope.campaign.print = function () {
+		$window.print();
+	}
+
+	$scope.campaign.datear = function () {
+		$modal.open( { templateUrl : 'views/datear.html'
+		             , controller  : 'DatearCtrl'
+		             , windowClass : 'datear-modal'
+		             , resolve     : {
+		                datearModalGivens : function () {
+		                 	return { defaultTag : $scope.campaign.main_tag.tag };
+		                 }
+		               }
+		             } );
+	}
+
+	$scope.campaign.share = function () {
+		$modal.open( { templateUrl : 'views/share.html'
+		             , controller  : 'ShareCtrl'
+		             , resolve		 : {
+		                 shareModalGivens : function () {
+		                 	return { url         : $scope.campaign.shareableUrl
+		                         , title       : $scope.campaign.name
+		                         , description : $scope.campaign.short_description
+		                         , image       : $filter('imgFromApi')($scope.campaign.image_thumb) }
+		                 }
+		             } } );
 	}
 
 	if ( $routeParams.username && $routeParams.campaignName ) {

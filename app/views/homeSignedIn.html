@@ -22,12 +22,12 @@
 				<button class="btn btn-default pull-right" type="button" ng-click="homeSI.searchDateosWithImages()"><i class="glyphicon glyphicon-camera"></i></button>
 				<button class="btn btn-default pull-right" type="button" ng-click="homeSI.geolocate()"><i class="glyphicon glyphicon-map-marker"></i></button>
 			</div>
-			<leaflet class="leaflet-map" defaults="homeSI.leaflet.defaults" markers="homeSI.leaflet.markers" center="homeSI.leaflet.center" width="100%" height="450px"></leaflet>
+			<leaflet class="leaflet-map" id="leafletHomeSI" defaults="homeSI.leaflet.defaults" markers="homeSI.leaflet.markers" center="homeSI.leaflet.center" width="100%" height="450px"></leaflet>
 			<div class="map-frame-bottom map-frame">
 				<button class="btn btn-default fix-center" type="button" ng-click="homeSI.focusNextMarker( { direction : 0 } )"><i class="glyphicon glyphicon-chevron-left"></i></button>
 				<button class="btn btn-default" type="button" ng-click="homeSI.focusNextMarker( { direction : 1 } )"><i class="glyphicon glyphicon-chevron-right"></i></button>
 				<button class="btn btn-default pull-right" type="button" ng-click="homeSI.fullscreen()"><i class="glyphicon glyphicon-fullscreen"></i></button>
-				<button class="btn btn-default pull-right" type="button"><i class="glyphicon glyphicon-share"></i></button>
+				<button class="btn btn-default pull-right" type="button" ng-click="flow.share()"><i class="glyphicon glyphicon-share"></i></button>
 			</div>
 		</div>
 		<tabset class="datea-tabset ff1">
@@ -65,11 +65,13 @@
 					</div>
 					<div class="part part-2">
 						<h3>{{user.username}}</h3>
-						<span class="dateos-count">{{user.dateo_count}} dateos</span>
-						<span class="votes-count">{{user.votes.length}} apoyos</span>
+						<span class="dateos-count">{{user.dateo_count}} <ng-pluralize count="user.dateo_count" when="{'one':
+						'dateo','other':'dateos'}"></ng-pluralize> </span>
+						<span class="votes-count">{{user.votes.length}} <ng-pluralize count="user.votes.length" when="{'one':
+						'apoyo','other':'apoyos'}"></span>
 					</div>
 				</div>
-				<button class="btn datea-datear-btn" ng-click="flow.datear()">Datea<i class="glyphicon glyphicon-comment"></i></button>
+				<button class="btn datea-datear-btn" ng-click="flow.datear()">Datea<i class="glyphicon glyphicon-map-marker"></i></button>
 				<a href="#/{{user.username}}">Mi perfil</a>
 				<a href>Mis dateos</a>
 			</div>

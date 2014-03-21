@@ -371,6 +371,12 @@ footer.colophon {
 ========================================================================== */
 
 .homeSI-holder {
+	.part-1 {
+		width: 60%;
+	}
+	.part-2 {
+		width: 39%;
+	}
 	.homeSI-map-holder {
 		margin: 0 0 45px;
 		width: 600px;
@@ -525,7 +531,7 @@ footer.colophon {
 				}
 			}
 
-			.datea-btn {
+			.datea-datear-btn {
 				margin: 0 0 0 12px;
 			}
 		}
@@ -676,6 +682,246 @@ footer.colophon {
 	width: 100%;
 }
 
+/* ==========================================================================
+	Campaign
+========================================================================== */
+
+.campaign-holder {
+	.campaign-card {
+		background-color: @color-9!important;
+		background-size: 35% 100%!important;
+		background-position: 100% 0!important;
+		color: white;
+		padding: 35px 0 40px 38px;
+
+		.part-1 {
+			width: 340px;
+
+			h1 {
+				margin-bottom: 5px;
+				font-size: 27px;
+				font-weight: bold;
+			}
+			h2 {
+				margin: 0 0 5px 0;
+				font-size: 18px;
+				font-weight: bold;
+			}
+		}
+		.part-2 {
+			width: 200px;
+
+			.form-group {
+				position: relative;
+				top: 75px;
+			}
+		}
+	}
+	.map-holder {
+		position: relative;
+
+		.form-group {
+			color: black;
+			padding: 5px 0 5px 35px;
+		}
+		.nav-tabs {
+			border: none;
+			left: 250px;
+			position: absolute;
+			top: 12px;
+			width: 500px;
+		}
+		.tab-content {
+			position: relative;
+			top: -15px;
+
+			.dateos-holder {
+				background: white;
+				height: 450px;
+				padding: 0 22px 30px 30px;
+				position: relative;
+				width: 40%;
+
+				.order-by-holder {
+					left: 200px;
+					position: absolute;
+					width: 250px;
+
+					.form-group {
+						left: 110px;
+						padding: 0;
+						position: absolute;
+						width: 200px;
+						top: 0px;
+
+						select {
+							width: 120px
+						}
+					}
+					.order-by {
+						border: none;
+						box-shadow: none;
+						cursor: pointer;
+						-webkit-appearance: none;
+						-moz-appearance:    none;
+						appearance:         none;
+					}
+					.order-by-label {
+						position: relative;
+						top: 7px;
+					}
+					.select-arrow-down {
+						left: 220px;
+						position: absolute;
+						top: 13px;
+					}
+				}
+
+				.dateo-description-holder {
+					height: 380px;
+					position: relative;
+					overflow: scroll;
+					top: 30px;
+
+					.dateo-description {
+						h4 {
+							font-weight: bold;
+							font-size: 15px;
+							margin: 0 0 8px 0;
+						}
+						.user-img {
+							height: 36px;
+							width: 36px;
+						}
+						.part-2 {
+							margin: 0 0 0 10px;
+							font-size: 10px;
+						}
+						.tag {
+							margin: 0 2px;
+						}
+						p {
+							margin: 10px 0 5px;
+						}
+						.glyphicon {
+							margin: 0 0 0 10px;
+						}
+					}
+				}
+			}
+			.leaflet-map-holder {
+				width: 59%;
+			}
+		}
+	}
+	.datea-glyphtab-fix {
+		font-size: 20px;
+		height: 25px;
+		margin: 0 10px 0 0;
+		position: relative;
+		top: -16px;
+		width: 25px;
+
+		a {
+			background-color: transparent!important;
+			border: none!important;
+		}
+		.active {
+			background-color: @color-8!important;
+		}
+	}
+	.datea-glyphtab-fix:before {
+		position: relative;
+		top: 16px;
+	}
+	.extra-info-holder {
+		padding: 15px 0;
+
+		.description {
+			padding: 0 30px;
+			width: 430px;
+
+			.user-info {
+
+				.parts-holder {
+					.part-1 {
+						padding: 0;
+						width: 52px;
+					}
+					.part-2 {
+						width: 150px;
+
+						p {
+							margin: 5px 0 5px;
+						}
+						h3 {
+							margin: 5px 0 0;
+							font-weight: bold;
+						}
+					}
+					.user-img {
+						height: 52px;
+						width: 52px;
+					}
+				}
+
+				h4 {
+					color: @color-5;
+					font-size: 18px;
+				}
+				.question {
+					color: @color-6;
+				}
+			}
+		}
+		.social {
+			background: white;
+			border-radius: 3px;
+			padding: 15px;
+			width: 600px;
+
+			h5 {
+				font-weight: bold;
+				text-transform: uppercase;
+			}
+			.part-1 {
+				border-right: 1px @color-7 solid;
+				width: 250px;
+
+				.followers-holder {
+					margin: 20px 0;
+				}
+				.follower-image {
+					display: inline-block;
+					height: 36px;
+					margin: 0 4px 4px 0;
+					vertical-align: top;
+					width: 36px;
+
+					span {
+						display: block;
+						height: 100%;
+						width: 100%;
+					}
+				}
+				.see-more-peers {
+					left: 140px;
+					position: relative;
+				}
+			}
+			.part-2 {
+				padding: 20px;
+
+				img {
+					cursor: pointer;
+					margin: 0 10px 0 0;
+				}
+			}
+		}
+
+	}
+}
+
 // sign up
 .sign-up {
 	.part {
@@ -687,20 +933,6 @@ footer.colophon {
 	.part-2 {
 		width: 39%;
 	}
-}
-
-
-// home
-// home signedIn
-.signed-home-holder {
-	.part-1 {
-		width: 60%;
-	}
-	.part-2 {
-		width: 39%;
-
-	}
-
 }
 
 // dateo
@@ -767,15 +999,6 @@ footer.colophon {
 		margin-bottom: 200px;
 	}
 
-}
-
-// campaign
-.campaign-holder {
-	.dateos-holder {
-		height: 450px;
-		overflow: scroll;
-		width: 40%;
-	}
 }
 
 

@@ -9,6 +9,7 @@ angular.module('dateaWebApp')
 , '$rootScope'
 , 'config'
 , 'Api'
+, 'datearModalGivens'
 // , 'leafletEvents'
 , function (
   $scope
@@ -18,6 +19,7 @@ angular.module('dateaWebApp')
 , $rootScope
 , config
 , Api
+, datearModalGivens
 // , leafletEvents
 ) {
 	var headers
@@ -35,6 +37,7 @@ $scope.datear.leaflet      = {};
 $scope.datear.autocomplete = {};
 $scope.flow                = {};
 
+$scope.datear.selectedTags = [];
 $scope.alerts = [];
 
 $scope.$on( 'leafletDirectiveMarker.dragend', function ( event ){
@@ -182,7 +185,6 @@ $scope.datear.autocompleteTag = function ( val ) {
 	} );
 }
 
-$scope.datear.selectedTags = [];
 $scope.datear.addTag = function ( tag ) {
 	$scope.dateo.nextTag = null;
 	if ( !~$scope.datear.selectedTags.indexOf( tag )
@@ -197,7 +199,9 @@ $scope.datear.removeTag = function ( idx ) {
 
 // Map defaults
 angular.extend( $scope.datear.leaflet, config.defaultMap );
-
+if ( datearModalGivens.defaultTag ) {
+	$scope.datear.selectedTags.push( datearModalGivens.defaultTag );
+}
 geo.getLocation( {timeout:10000} ).then( onGeolocation, onGeolocationError );
 
 } ] );

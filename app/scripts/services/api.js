@@ -25,6 +25,7 @@ angular.module('dateaWebApp')
 	  , activityLog = {}
 	  , category    = {}
 	  , follow      = {}
+	  , userFollow  = {}
 	  // fn declarations
 	  , reconfigUserRsrc
 	  ;
@@ -78,15 +79,20 @@ angular.module('dateaWebApp')
 	);
 	account.password.rsrc = $resource( config.api.url + 'account/reset-password/', {},
 	{ 'save': { method : 'POST' } }
-	)
+	);
 	user.rsrc = $resource( config.api.url + 'user/:id', {},
 	{ 'get'  : { method  : 'GET'
 	           , params  : { id: '@id' }
 	           , headers : headers || ls.get('token') }
+	// , 'query': { method : 'GET'
+	//            , params : {} }
 	, 'patch': { method : 'PATCH'
 	           , params : { id: '@id' }
 	           , headers: headers || ls.get('token')
 	           } }
+	);
+	userFollow.rsrc = $resource( config.api.url + 'user/', {},
+	{ 'query' : { method : 'GET' } }
 	)
 	tag.autocomplete.rsrc = $resource( config.api.url + 'tag/autocomplete/', {},
 	{ 'get' : { method : 'GET' } }
@@ -127,6 +133,16 @@ console.log( 'user.getUserByUserIdOrUsername token', token );
 			dfd.resolve( response );
 		}
 		, function ( error ) {
+			dfd.reject( error );
+		} );
+		return dfd.promise;
+	}
+
+	user.getUsers = function ( givens ) {
+		var dfd = $q.defer();
+		userFollow.rsrc.query( givens, function ( response ) {
+			dfd.resolve( response );
+		}, function ( error ) {
 			dfd.reject( error );
 		} );
 		return dfd.promise;
