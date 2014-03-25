@@ -112,11 +112,16 @@ angular.module('dateaWebApp')
 	category.rsrc = $resource( config.api.url + 'category/', {},
 	{ 'query': { method : 'GET' } }
 	)
-	follow.rsrc = $resource( config.api.url + 'follow/', {},
+	follow.rsrc = $resource( config.api.url + 'follow/:id', {},
 	{ 'query': { method : 'GET' }
 	, 'post' : { method : 'POST'
 	           , headers : headers || ls.get('token')
-	           } }
+	           }
+	, 'delete' : { method : 'DELETE'
+	             // , params : { id: '@i' }
+	             , headers : headers || ls.get('token')
+	           }
+	}
 	)
 
 console.log( 'api', headers );
@@ -371,6 +376,16 @@ console.log( 'user.getUserByUserIdOrUsername token', token );
 	follow.doFollow = function ( givens ) {
 		var dfd = $q.defer();
 		follow.rsrc.post( givens, function ( response ) {
+			dfd.resolve( response );
+		}, function ( error ) {
+			dfd.reject( error );
+		} );
+		return dfd.promise;
+	}
+
+	follow.doUnfollow = function ( givens ) {
+		var dfd = $q.defer();
+		follow.rsrc.delete( givens, function ( response ) {
 			dfd.resolve( response );
 		}, function ( error ) {
 			dfd.reject( error );

@@ -19,6 +19,7 @@ angular.module( 'dateaWebApp' )
   , 'ActivityUrl'
   , '$filter'
   , '$timeout'
+  // , '$compile'
 , function (
     $scope
   , User
@@ -37,6 +38,7 @@ angular.module( 'dateaWebApp' )
   , ActivityUrl
   , $filter
   , $timeout
+  // , $compile
 ) {
 	var data
 	  , ls = localStorageService
@@ -69,9 +71,9 @@ angular.module( 'dateaWebApp' )
 	  , buildTrendingTags
 	  , buildWeeklyDateo
 	  ;
-	$scope.flow       = {};
-	$scope.pagination = {};
-	$scope.homeSI     = {};
+	$scope.flow           = {};
+	$scope.pagination     = {};
+	$scope.homeSI         = {};
 	$scope.homeSI.leaflet = {};
 	$scope.homeSI.history = [];
 
@@ -91,7 +93,7 @@ angular.module( 'dateaWebApp' )
 	buildTrendingTags = function () {
 		$scope.homeSI.trendingTags = [];
 		Api.tag
-		.getTrendingTags( { limit: 5, days: 20 } )
+		.getTrendingTags( { limit: 5, days: 40 } )
 		.then( function ( response ) {
 			angular.forEach( response.objects , function ( value, key ){
 				// if ( !~$scope.homeSI.followingTags.map( function ( e ) { return e.id; } ).indexOf( value.id ) ) {
@@ -208,7 +210,7 @@ console.log( 'dateosGivens', dateosGivens );
 			dateosGivens.distance  = 2000;
 			dontCheckCenterOutOfBounds = false;
 			// Only make a request if new the center is outside the map boundaries
-			leafletData.getMap()
+			leafletData.getMap('leafletHomeSI')
 			.then( function ( map ) {
 				lastBounds = map.getBounds();
 
@@ -228,7 +230,7 @@ console.log( 'dateosGivens', dateosGivens );
 
 	isCenterOutOfBounds = function () {
 		if ( !dontCheckCenterOutOfBounds ) {
-			leafletData.getMap()
+			leafletData.getMap('leafletHomeSI')
 			.then( function ( map ) {
 				var bounds = lastBounds;
 				if ( $scope.homeSI.leaflet.center.lat >= bounds._northEast.lat || $scope.homeSI.leaflet.center.lat < bounds._southWest.lat
@@ -316,14 +318,14 @@ console.log( 'dateosGivens', dateosGivens );
 	}
 
 	geolocateAndBuildMap = function ( givens ) {
-		// buildMap( givens );
+		buildMap( givens );
 		// /*no spam*/
-		geo.getLocation( { timeout:10000 } )
-		.then( function ( data ) {
-			buildMap( { center : data } )
-		}, function () {
-			buildMap();
-		} );
+		// geo.getLocation( { timeout:10000 } )
+		// .then( function ( data ) {
+		// 	buildMap( { center : data } )
+		// }, function () {
+		// 	buildMap();
+		// } );
 	}
 
 	resetMarkers = function () {
@@ -485,6 +487,51 @@ console.log( 'dateosGivens', dateosGivens );
 				console.log( reason );
 			} );
 		}
+	}
+
+	$scope.flow.goToDetail = function ( tag ) {
+		if ( tag.campaigns[0].username ) {
+			$location.path('#/'+tag.campaigns[0].username+'/'+tag.tag );
+		}
+
+	}
+
+	$scope.flow.followTag = function ( tag ) {
+		var id = tag.id;
+		Api.follow
+		.doFollow( { content_type: 'tag', object_id: id } )
+		.then( function ( response ) {
+			$scope.homeSI.followingTags.push( tag );
+		}, function ( reason ) {
+			console.log( reason );
+		} );
+	};
+
+	$scope.flow.unfollowTag = function ( tag ) {
+		var id = tag.id;
+		Api.follow
+		.doUnfollow( { id: id } )
+		.then( function ( response ) {
+			var idx = $scope.homeSI.followingTags.map( function ( e ) { return e.id; } ).indexOf( id );
+			$scope.homeSI.followingTags.split( idx, 1 );
+			console.log( 'flow.unfollowTag', $scope.homeSI.followingTags );
+		}, function ( reason ) {
+			console.log( reason );
+		} );
+	}
+
+	$scope.flow.showFollow = function ( id ) {
+		if ( id ) {
+			return isTagFollowable( { id: id, tags: $scope.homeSI.followingTags } );
+		}
+		return false;
+	}
+
+	$scope.flow.showUnfollow = function ( id ) {
+		if ( id ) {
+			return !isTagFollowable( { id: id, tags: $scope.homeSI.followingTags } );
+		}
+		return false;
 	}
 
 	$scope.$on( 'leafletDirectiveMarker.click', function ( ev, args ) {

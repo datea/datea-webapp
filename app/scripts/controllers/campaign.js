@@ -77,7 +77,8 @@ angular.module('dateaWebApp')
 		center.zoom = config.campaign.mapZoomFocus;
 		angular.extend( $scope.campaign.leaflet.markers, markers );
 		angular.extend( $scope.campaign.leaflet.center, center );
-		leafletData.getMap().then( function ( map ) {
+		leafletData.getMap("leafletCampaign")
+		.then( function ( map ) {
 			map.fitBounds( markersBounds );
 		} )
 		// $scope.campaign.leaflet.markers.marker0.focus = true;
