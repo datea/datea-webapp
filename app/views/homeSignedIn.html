@@ -77,16 +77,16 @@
 			</div>
 			<div class="user-follows ff1">
 				<h5>{{user.username}} sigue:</h5>
-				<button class="datea-tag-btn user-tag" ng-repeat="tag in homeSI.followingTags" popover-template="views/tagPopover.html" popover-trigger="focus">
-					<a href>#{{tag.tag}}</a>
-				</button>
+				<a class="datea-tag-btn user-tag" ng-href="#/tag/{{tag.tag}}" ng-repeat="tag in homeSI.followingTags">
+					#{{tag.tag}}
+				</a>
 			</div>
 			<div class="trending-tags-holder ff1">
 				<h5>mas dateado en este momento:</h5>
 				<ul class="trending-tags">
-					<button class="datea-tag-btn trending-tag" ng-class="{followable: tag._followable}" ng-repeat="tag in homeSI.trendingTags" popover-template="views/tagPopover.html" popover-trigger="focus">
-						<a href>#{{tag.tag}}</a>
-					</button>
+					<a class="datea-tag-btn trending-tag" ng-href="#/tag/{{tag.tag}}" ng-class="{followable: tag._followable}" ng-repeat="tag in homeSI.trendingTags">
+						#{{tag.tag}}
+					</a>
 				</ul>
 			</div>
 			<div class="user-history-holder ff1">

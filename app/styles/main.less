@@ -809,6 +809,46 @@ footer.colophon {
 					}
 				}
 			}
+			.dateos-with-images-holder {
+				height: 830px;
+
+				.dateo-with-image {
+					height: 181px;
+					position: relative;
+					width: 16%;
+
+					.info-holder {
+						display: none;
+						padding: 5px;
+						position: relative;
+						z-index: 1;
+
+						h5 {
+							font-size: 14px;
+						}
+						p {
+							font-size: 12px;
+						}
+					}
+					.info-bg {
+						background: rgba(255,255,255,0.5);
+						display: none;
+						height: 100%;
+						position: absolute;
+						width: 100%;
+						z-index: 0;
+					}
+				}
+				.dateo-with-image:hover {
+
+					.info-holder {
+						display: block;
+					}
+					.info-bg {
+						display: block;
+					}
+				}
+			}
 			.leaflet-map-holder {
 				width: 59%;
 			}

@@ -496,44 +496,6 @@ console.log( 'dateosGivens', dateosGivens );
 
 	}
 
-	$scope.flow.followTag = function ( tag ) {
-		var id = tag.id;
-		Api.follow
-		.doFollow( { content_type: 'tag', object_id: id } )
-		.then( function ( response ) {
-			$scope.homeSI.followingTags.push( tag );
-		}, function ( reason ) {
-			console.log( reason );
-		} );
-	};
-
-	$scope.flow.unfollowTag = function ( tag ) {
-		var id = tag.id;
-		Api.follow
-		.doUnfollow( { id: id } )
-		.then( function ( response ) {
-			var idx = $scope.homeSI.followingTags.map( function ( e ) { return e.id; } ).indexOf( id );
-			$scope.homeSI.followingTags.split( idx, 1 );
-			console.log( 'flow.unfollowTag', $scope.homeSI.followingTags );
-		}, function ( reason ) {
-			console.log( reason );
-		} );
-	}
-
-	$scope.flow.showFollow = function ( id ) {
-		if ( id ) {
-			return isTagFollowable( { id: id, tags: $scope.homeSI.followingTags } );
-		}
-		return false;
-	}
-
-	$scope.flow.showUnfollow = function ( id ) {
-		if ( id ) {
-			return !isTagFollowable( { id: id, tags: $scope.homeSI.followingTags } );
-		}
-		return false;
-	}
-
 	$scope.$on( 'leafletDirectiveMarker.click', function ( ev, args ) {
 		console.log( 'focus event', args.markerName );
 		lastMarkerWithFocus = args.markerName;

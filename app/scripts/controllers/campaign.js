@@ -32,6 +32,7 @@ angular.module('dateaWebApp')
 	  // fn declarations
 	  , buildCampaign
 	  , buildDateos
+	  , buildDateosWithImages
 	  , buildMarkers
 	  , buildFollowersList
 	  , getTagsString
@@ -112,6 +113,7 @@ angular.module('dateaWebApp')
 				                             + $scope.campaign.user.username + '/'
 			                               + $scope.campaign.main_tag.tag;
 			buildDateos();
+			buildDateosWithImages();
 			buildFollowersList();
 		}, function ( reason ) {
 			console.log( reason );
@@ -157,6 +159,25 @@ angular.module('dateaWebApp')
 				console.log( reason );
 			} );
 		}
+	}
+
+	buildDateosWithImages = function () {
+		var dateos = [];
+		Api.dateo
+		.getDateos( { has_images: 1, tags: getTagsString( $scope.campaign ) } )
+		.then( function ( response ) {
+			angular.forEach( response.objects, function ( value, key ){
+				if ( value.position ) {
+					dateos.push( value );
+				}
+			} );
+			$scope.campaign.dateosWithImages = dateos;
+			$scope.campaign.dateosWithImagesHolderHeight = { height : ( Math.ceil( $scope.campaign.dateosWithImages.length / 6 ) * 181 ) + 'px' };
+			console.log( 'buildDateosWithImages', dateos );
+		}, function ( reason ) {
+			console.log( reason );
+			}
+		);
 	}
 
 	$scope.campaign.isUserFollowing = function () {
