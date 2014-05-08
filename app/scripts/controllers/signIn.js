@@ -7,17 +7,26 @@ angular.module( 'dateaWebApp' )
   , 'localStorageService'
   , 'User'
   , '$location'
+  , 'State'
 , function (
     $scope
   , Api
   , localStorageService
   , User
   , $location
+  , State
 ) {
 	var ls = localStorageService;
+
+	State.isLanding = false;
 	$scope.auth = {};
 	$scope.flow = {};
 	$scope.reset = {};
+	$scope.nav = {};
+
+	$scope.nav.visible = true;
+
+	$scope.auth.passwordRequired = true;
 
 	User.isSignedIn() && $location.path( '/' );
 

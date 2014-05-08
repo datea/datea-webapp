@@ -202,6 +202,9 @@ angular.extend( $scope.datear.leaflet, config.defaultMap );
 if ( datearModalGivens.defaultTag ) {
 	$scope.datear.selectedTags.push( datearModalGivens.defaultTag );
 }
+if ( datearModalGivens.suggestedTags ) {
+	$scope.datear.suggestedTags = datearModalGivens.suggestedTags;
+}
 geo.getLocation( {timeout:10000} ).then( onGeolocation, onGeolocationError );
 
 } ] );

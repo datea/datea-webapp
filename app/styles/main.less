@@ -9,37 +9,43 @@
 */
 
 
-/* ==========================================================================
-   Import Less
-========================================================================== */
+//
+// Import Less
+//
+
 // @import "app/bower_components/bootstrapless/less/mixins.less";
 @import "app/bower_components/bootstrapless/less/bootstrap.less";
 @import "app/styles/modules.less";
+// @import "app/bower_components/bootstrap-social/bootstrap-social.less";
 
-/* ==========================================================================
-   Variables
-========================================================================== */
+//
+// Variables
+//
 
 @property: all;
 
 // Colors
-@color-selection: #b3d4fc; // light blue
-@color-1: #EDFF00; // yellow
-@color-2: #8B00A4; // purple
-@color-3: #D3DAD7; // map frame grey
-@color-4: #EFF2F0; // bg grey
-@color-5: #28BC45; // green
-@color-6: #5E6E66; // text grey
-@color-7: #E9EDEB; // well grey
-@color-8: #EAFF74; // well important
-@color-9: #5E6E66; // followable tag hover
+// @color-selection: #b3d4fc; // light blue
+// @color-1: #EDFF00; // yellow
+// @color-2: #8B00A4; // purple
+// @color-3: #D3DAD7; // map frame grey
+// @color-4: #EFF2F0; // bg grey
+// @color-5: #28BC45; // green
+// @color-6: #5E6E66; // text grey
+// @color-7: #E9EDEB; // well grey
+// @color-8: #EAFF74; // well important
+// @color-9: #5E6E66; // followable tag hover
+// @color-10: #909E97; // signin signup grey bg
+// @color-11: #231F20; // footer brown
+// @color-12: #28BC45; // green
+
 
 // URLS
 @imgUrl      : '../static/images/';
 
-/* ==========================================================================
-   Base styles
-========================================================================== */
+//
+// Base styles
+//
 *, *:before, *:after {
   -moz-box-sizing: border-box; -webkit-box-sizing: border-box; box-sizing: border-box;
  }
@@ -162,16 +168,26 @@ textarea { resize: vertical; }
 
 .page {
 	background: @color-4;
-	padding: 20px;
+	padding: 0;
 	position: relative;
-	top: -20px;
 }
 
-/* ==========================================================================
-	Navbar
-========================================================================== */
+.datea-loading:after {
+	content: " ";
+	background: rgba(255,255,255,.5) url('@{imgUrl}/globals/loading.gif') no-repeat center center;
+	position: absolute;
+	top: 0;
+	bottom: 0;
+	right: 0;
+	left: 0;
+}
+
+//
+// Navbar
+//
 .datea-navbar {
 	background: @color-1;
+	margin: 0;
 
 	.navbar-brand {
 		padding: 10px 15px;
@@ -188,14 +204,14 @@ textarea { resize: vertical; }
 }
 
 
-/* ==========================================================================
-	Structure
-========================================================================== */
-footer.colophon {
+//
+// Structure
+//
+.colophon {
 	background-color: #231F20;
-	color: #FFFFFF;
-	margin-top: 30px;
+	color: white;
 	min-height: 120px;
+	position: relative;
 
 	.datea-rights {
 		padding-top: 20px;
@@ -203,14 +219,111 @@ footer.colophon {
 	}
 }
 
-/* ==========================================================================
-	Home visitor / landing
-========================================================================== */
+//
+// Sign In
+//
+
+.signin-holder {
+	@sectionImgUrl : 'signin/';
+
+	background: @color-10 url('@{imgUrl}/signin/bg.png') no-repeat center 20px;
+	height: 790px;
+	// position: absolute;
+	width: 100%;
+
+	.signin {
+		background: white;
+		border-radius: 5px;
+		padding: 40px;
+		position: relative;
+		top: 187px;
+
+		h1 {
+			color: @color-5;
+			font-weight: bold;
+		}
+
+		.subheading {
+			font-weight: bold;
+		}
+
+		.part-1 {
+			width: 65%;
+		}
+		.part-2 {
+			width: 34%;
+		}
+	}
+}
+
+//
+// Signup
+//
+
+.signup-holder {
+	@sectionImgUrl: 'signup/';
+
+	background: @color-10 url('@{imgUrl}/signin/bg.png') no-repeat center 20px;
+	height: 682px;
+	width: 100%;
+
+	.signup {
+		background: white;
+		border-radius: 5px;
+		padding: 40px;
+		position: relative;
+		top: 187px;
+
+		h1 {
+			color: @color-5;
+			font-weight: bold;
+		}
+		.subheading {
+			font-weight: bold;
+		}
+
+		.part-1 {
+			width: 65%;
+		}
+		.part-2 {
+			width: 34%;
+		}
+	}
+}
+
+//
+// Signupform
+//
+
+.signup-form-holder {
+	@sectionImgUrl: 'signup-form/';
+
+	background: @color-10 url('@{imgUrl}/signin/bg.png') no-repeat center 20px;
+	height: 790px;
+	width: 100%;
+
+	.signup-form {
+		background: white;
+		border-radius: 5px;
+		padding: 40px;
+		position: relative;
+		top: 187px;
+
+		h1 {
+			color: @color-5;
+			font-weight: bold;
+		}
+	}
+}
+
+//
+// Home visitor / landing
+//
 .landing-holder {
 	@sectionImgUrl : 'landing/';
 
 	left: 0;
-	position: absolute;
+	// position: absolute;
 	top: 0;
 	width: 100%;
 
@@ -332,12 +445,77 @@ footer.colophon {
 	}
 }
 
-/* ==========================================================================
-	Datear modal
-========================================================================== */
+//
+// Datear modal
+//
+.datea-custom-imgUL::-webkit-file-upload-button {
+	height: 0;
+	visibility: hidden;
+	width: 0;
+}
 .datear-modal {
 
-	height: 100%;
+	height: 470px;
+
+	.modal-header {
+		h3 {
+			color: @color-12;
+			font-weight: bold;
+			margin-top: 5px;
+			margin-bottom: 0;
+		}
+	}
+
+	.datear-breadcrumb {
+		background-color: transparent;
+		left: 100px;
+		position: absolute;
+		top: 14px;
+		width: 160px;
+
+		.scroll-title {
+			cursor: pointer;
+			padding: 0 0 0 12px;
+			position: relative;
+			width: 32px;
+		}
+		.scroll-active {
+			color: white;
+			background: @color-12!important;
+		}
+		.scroll-inactive {
+			color: white;
+			background: @color-7;
+		}
+	}
+
+	.datear-breadcrumb > li + li:before {
+		border-top: 10px solid transparent;
+		border-bottom: 10px solid transparent;
+		border-left: 10px solid white;
+		content: " ";
+		height: 0;
+		left: 0;
+		position: absolute;
+		width: 0;
+		z-index: 0;
+	}
+
+	.datear-breadcrumb > li:after {
+		border-top: 10px solid transparent;
+		border-bottom: 10px solid transparent;
+		border-left: 10px solid @color-7;
+		content: " ";
+		height: 0;
+		left: 31px;
+		position: absolute;
+		width: 0;
+		z-index: 1;
+	}
+
+	.datear-breadcrumb > li.scroll-active:after {
+		border-left: 10px solid @color-12!important;
+	}
 
 	.modal-dialog {
 		height: 100%;
@@ -351,26 +529,78 @@ footer.colophon {
 	}
 
 	.modal-body {
-		height: 80%;
+		height: 87%;
 		overflow: scroll;
+
+		.datea-no-margin-bottom {
+			margin-bottom: 0px;
+		}
+
+		.part-1 {
+			width: 50%;
+
+
+			input[type="file"] {
+				color: transparent;
+				cursor: pointer;
+				width: 35px;
+				height: 35px;
+			}
+
+			.datea-custom-imgUL:before {
+				background: url('@{imgUrl}/datear/img-ul.png') no-repeat;
+				content: " ";
+				cursor: pointer;
+				display: block;
+				height: 35px;
+				width: 35px;
+				-webkit-user-select: none;
+			}
+		}
+		.part-2 {
+			width: 49%;
+		}
+
+		.datear-form-holder {
+
+			.date-picker-holder {
+				display: inline-block;
+				min-height: 290px;
+			}
+
+			.datepicker-holder-fix {
+				padding: 0;
+				position: relative;
+				top: 25px;
+			}
+
+			.timepicker-holder {
+				position: relative;
+				top: -12px;
+			}
+
+			.uploaded-img {
+				display: block;
+				margin: 0 auto 0;
+			}
+
+			.datear-form {
+				margin-bottom: 200px;
+
+			}
+
+		}
 	}
 
-	.scroll-title {
-		cursor: pointer;
-	}
-	.scroll-active {
-		color: black!important;
-	}
-	.scroll-inactive {
-		color: #ccc;
-	}
 }
 
-/* ==========================================================================
-	Home Signed In
-========================================================================== */
+//
+// Home Signed In
+//
 
 .homeSI-holder {
+	padding: 20px;
+
 	.part-1 {
 		width: 60%;
 	}
@@ -379,7 +609,8 @@ footer.colophon {
 	}
 	.homeSI-map-holder {
 		margin: 0 0 45px;
-		width: 600px;
+		position: relative;
+		width: 90%;
 
 		.map-frame {
 			padding: 5px;
@@ -439,6 +670,7 @@ footer.colophon {
 		border-color: #fff #ddd #ddd;
 		border-radius: 3px;
 		padding: 15px 25px;
+		position: relative;
 		width: 590px;
 
 		.search-box {
@@ -682,9 +914,9 @@ footer.colophon {
 	width: 100%;
 }
 
-/* ==========================================================================
-	Campaign
-========================================================================== */
+//
+// Campaign
+//
 
 .campaign-holder {
 	.campaign-card {
@@ -810,28 +1042,55 @@ footer.colophon {
 				}
 			}
 			.dateos-with-images-holder {
-				height: 830px;
+				height: 600px;
 
 				.dateo-with-image {
-					height: 181px;
+					height: 200px;
 					position: relative;
-					width: 16%;
+					width: 230px;
 
 					.info-holder {
 						display: none;
-						padding: 5px;
+						padding: 10px;
 						position: relative;
 						z-index: 1;
 
-						h5 {
-							font-size: 14px;
-						}
-						p {
+						.extract {
 							font-size: 12px;
+							height: 100px;
+							overflow: none;
+						}
+						.part-1 {
+							width: 38px;
+						}
+						.part-2 {
+							width: 130px;
+
+							h5 {
+								font-size: 14px;
+								font-weight: bold;
+								margin: 3px 0 0;
+							}
+							.date {
+								color: @color-6;
+								font-size: 11px;
+							}
+						}
+						.user-img {
+							height: 35px;
+							width: 35px;
+						}
+						.cta-holder {
+							span {
+								color: @color-12;
+							}
+							span+span {
+								margin: 0 0 0 20px;
+							}
 						}
 					}
 					.info-bg {
-						background: rgba(255,255,255,0.5);
+						background: rgba(255,255,255,0.7);
 						display: none;
 						height: 100%;
 						position: absolute;
@@ -850,6 +1109,7 @@ footer.colophon {
 				}
 			}
 			.leaflet-map-holder {
+				position: relative;
 				width: 59%;
 			}
 		}
@@ -962,46 +1222,432 @@ footer.colophon {
 	}
 }
 
-// sign up
-.sign-up {
-	.part {
-		padding: 10px;
-	}
-	.part-1 {
-		width: 60%;
-	}
-	.part-2 {
-		width: 39%;
-	}
-}
+//
+// Tag
+//
 
-// dateo
-.dateo-user {
-
-	.img-holder {
-		height: 62px;
-		margin: 0 10px 0 0;
-	}
-
-	img {
+.tag-holder {
+	.map-holder {
 		position: relative;
-		top: 10px;
+
+		.form-group {
+			color: black;
+			padding: 5px 0 5px 35px;
+		}
+		.nav-tabs {
+			border: none;
+			left: 250px;
+			position: absolute;
+			top: 12px;
+			width: 500px;
+		}
+
+		.tab-content {
+			position: relative;
+			top: -15px;
+
+			.dateos-holder {
+				background: white;
+				height: 450px;
+				padding: 0 22px 30px 30px;
+				position: relative;
+				width: 40%;
+
+				.order-by-holder {
+					left: 200px;
+					position: absolute;
+					width: 250px;
+
+					.form-group {
+						left: 110px;
+						padding: 0;
+						position: absolute;
+						width: 200px;
+						top: 0px;
+
+						select {
+							width: 120px
+						}
+					}
+					.order-by {
+						border: none;
+						box-shadow: none;
+						cursor: pointer;
+						-webkit-appearance: none;
+						-moz-appearance:    none;
+						appearance:         none;
+					}
+					.order-by-label {
+						position: relative;
+						top: 7px;
+					}
+					.select-arrow-down {
+						left: 220px;
+						position: absolute;
+						top: 13px;
+					}
+				}
+
+				.dateo-description-holder {
+					height: 380px;
+					position: relative;
+					overflow: scroll;
+					top: 30px;
+
+					.dateo-description {
+						h4 {
+							font-weight: bold;
+							font-size: 15px;
+							margin: 0 0 8px 0;
+						}
+						.user-img {
+							height: 36px;
+							width: 36px;
+						}
+						.part-2 {
+							margin: 0 0 0 10px;
+							font-size: 10px;
+						}
+						.tag {
+							margin: 0 2px;
+						}
+						p {
+							margin: 10px 0 5px;
+						}
+						.glyphicon {
+							margin: 0 0 0 10px;
+						}
+					}
+				}
+			}
+			.dateos-with-images-holder {
+				height: 600px;
+
+				.dateo-with-image {
+					height: 200px;
+					position: relative;
+					width: 230px;
+
+					.info-holder {
+						display: none;
+						padding: 10px;
+						position: relative;
+						z-index: 1;
+
+						.extract {
+							font-size: 12px;
+							height: 100px;
+							overflow: none;
+						}
+						.part-1 {
+							width: 38px;
+						}
+						.part-2 {
+							width: 130px;
+
+							h5 {
+								font-size: 14px;
+								font-weight: bold;
+								margin: 3px 0 0;
+							}
+							.date {
+								color: @color-6;
+								font-size: 11px;
+							}
+						}
+						.user-img {
+							height: 35px;
+							width: 35px;
+						}
+						.cta-holder {
+							span {
+								color: @color-12;
+							}
+							span+span {
+								margin: 0 0 0 20px;
+							}
+						}
+					}
+					.info-bg {
+						background: rgba(255,255,255,0.7);
+						display: none;
+						height: 100%;
+						position: absolute;
+						width: 100%;
+						z-index: 0;
+					}
+				}
+				.dateo-with-image:hover {
+
+					.info-holder {
+						display: block;
+					}
+					.info-bg {
+						display: block;
+					}
+				}
+			}
+			.leaflet-map-holder {
+				position: relative;
+				width: 59%;
+			}
+		}
+	}
+	.datea-glyphtab-fix {
+		font-size: 20px;
+		height: 25px;
+		margin: 0 10px 0 0;
+		position: relative;
+		top: -16px;
+		width: 25px;
+
+		a {
+			background-color: transparent!important;
+			border: none!important;
+		}
+		.active {
+			background-color: @color-8!important;
+		}
+	}
+	.datea-glyphtab-fix:before {
+		position: relative;
+		top: 16px;
 	}
 }
 
-.dateo-content {
-	.part-1 {
-		padding: 10px;
-		width: 60%;
-	}
-	.part-2 {
-		padding: 10px;
-		width: 39%;
+//
+// Dateo
+//
+
+.dateo-holder {
+
+	.user-holder {
+		background: @color-4;
+		height: 75px;
+		padding: 16px 0 0 31px;
+
+		h4 {
+			font-weight: bold;
+			margin: 3px 0 0px 0;
+		}
+		p {
+			color: @color-6;
+			margin: 0;
+		}
+		img {
+			position: relative;
+		}
+
+		.img-holder {
+			height: 50px;
+			margin: 0 10px 0 0;
+		}
+		.next-holder {
+			a,
+			a:hover {
+				color: @color-6;
+				margin: 0 10px 0 0;
+				font-size: 14px;
+				text-decoration: none;
+			}
+		}
+
 	}
 
-	.social-holder {
-		.cta-holder-3 {
+	.content-holder {
+		background: white;
+		border: @color-3 solid 1px;
+		padding: 35px 50px;
+
+		.part-1 {
+			padding: 10px;
+			width: 60%;
+
+			p {
+				margin: 15px 0 5px;
+			}
+			.tag {
+				margin: 0 10px 0 0;
+			}
+		}
+		.part-2 {
+			padding: 10px;
+			width: 39%;
+		}
+
+		.social-holder {
+			position: relative;
+			.share {
+				margin-right: 20px;
+				position: relative;
+				top: -7px;
+				width: 200px;
+			}
+		}
+		.denounce-holder {
+			text-align: right;
+			position: absolute;
+			width: 100%;
+		}
+
+		.comments-holder {
+			h3 {
+				font-weight: bold;
+				text-transform: uppercase;
+			}
+
+			.comment-holder {
+				margin: 0 0 30px 0;
+				position: relative;
+				.user {
+					img {
+						margin: 0 10px 0 0;
+					}
+					a {
+						color: black;
+						margin: 0 5px 0 0;
+					}
+					.date {
+						color: @color-6;
+						font-size: 12px;
+					}
+					.denounce-holder {
+						position: absolute;
+						width: 100%;
+						text-align: right;
+					}
+				}
+			}
+		}
+	}
+
+	.map-holder {
+		h3 {
+			text-transform: uppercase;
+			font-weight: bold;
+		}
+		p {
+			margin: 10px 0;
+		}
+	}
+}
+
+.datea-glyph-holder {
+	display: inline-block;
+	vertical-align: top;
+	span {
+		display: inline-block;
+	}
+	p {
+		font-size: 11px;
+		line-height: 10px;
+		margin: 0!important;
+	}
+	p+p {
+		color: @color-12;
+		font-size: 10px;
+	}
+	.datea-glyph {
+		background: @color-12;
+		border-radius: 50%;
+		color: white;
+		font-size: 15px;
+		line-height: 23px;
+		text-align: center;
+		width: 23px!important;
+		top: -2px;
+	}
+	.datea-glyph-2 {
+		background: @color-3;
+	}
+}
+
+//
+// Profile
+//
+.profile-holder {
+	.profile-card {
+		padding: 30px 30% 30px;
+		position: relative;
+
+		.user-img {
+			height: 185px;
+			margin: 0 20px 0 0;
+			width: 185px;
+		}
+		.user-extra {
+			color: white;
 			width: 250px;
+			text-shadow: 0px 0px 2px rgba(0, 0, 0, 1);
+
+			.votes-count {
+				margin: 0 0 20px;
+			}
+		}
+	}
+	.social-share {
+		position: relative;
+		top: -70px;
+		right: 20px;
+		width: 200px;
+
+	}
+	.content-holder {
+		.part-1 {
+			padding: 0 20px;
+			width: 69%;
+
+			.tab-body {
+				background: white;
+				border: 1px solid;
+				border-color: #fff #ddd #ddd;
+				border-radius: 3px;
+				padding: 15px 25px;
+
+				p {
+					margin: 10px 0 0;
+				}
+				.user-img {
+					height: 40px;
+					width: 40px;
+				}
+				.part-2 {
+					padding: 4px 0 0;
+					margin: 0 0 0 5px;
+					width: 200px;
+
+					h4 {
+						margin: 0;
+						font-weight: bold;
+					}
+					.date {
+						color: @color-6;
+						font-size: 11px;
+					}
+				}
+				.social-holder {
+					margin: 10px 0 0 0;
+
+					span {
+						color: @color-12;
+					}
+					span+span {
+						margin: 0 0 0 10px;
+					}
+				}
+			}
+		}
+		.part-2 {
+			width: 31%;
+
+			h4 {
+				text-transform: uppercase;
+			}
+			.user-history {
+				list-style: none;
+				margin: 0;
+				padding: 0;
+			}
 		}
 	}
 }
@@ -1013,38 +1659,48 @@ footer.colophon {
 	}
 }
 
+//
+// Marker Holder
+//
+.marker-holder {
+	color: @color-6;
 
-// datear
-.datear-form-holder {
-
-	.date-picker-holder {
+	img {
 		display: inline-block;
-		min-height: 290px;
+		vertical-align: top;
 	}
+	.part {
+		display: inline-block;
+		margin: 0 0 0 10px;
+		vertical-align: top;
 
-	.datepicker-holder-fix {
-		padding: 0;
+		h5 {
+			margin: 1px 0 3px 0;
+			font-weight: bold;
+		}
 	}
-
-	.timepicker-holder {
+	p {
+		min-width: 280px;
+	}
+	.datea-glyph {
 		position: relative;
-		top: -12px;
+		margin: 0 4px 0 0;
+		top: 4px;
 	}
-
-	.uploaded-img {
-		padding: 10px;
+	.glyphicon-comment {
+		margin: 0 4px 0 14px;
 	}
-
-	.datear-form {
-		margin-bottom: 200px;
+	a.datea-btn {
+		color: white;
+		height: 20px;
 	}
 
 }
 
 
-/* ==========================================================================
-   Media Queries
-========================================================================== */
+//
+// Media Queries
+//
 @media (min-width: 768px) {
 
 	header.branding .navbar-collapse {

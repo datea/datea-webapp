@@ -1,85 +1,89 @@
 <div class="profile-holder">
-	<div class="well profile-card" bg-from-api="">
-		<div class="user-img" bg-from-api="{{ targetUser.image }}"></div>
-		<h2>{{targetUser.username}}</h2>
-		<span class="message">{{targetUser.message}}</span>
-		<span class="dateo-count">{{targetUser.dateo_count}} dateos</span>
-		<span class="votes-count">{{targetUser.votes.length}} apoyos</span>
-		<span class="url">url: {{targetUser.url}}</span>
-		<div class="social-share">
-			<div class="form-group">
-				<div class="input-group col-sm-2">
-					<input type="text" class="form-control" ng-model="targetUser.url">
-					<span class="input-group-btn">
-						<button class="btn btn-default" type="button"><i class="glyphicon glyphicon-share"></i></button>
-					</span>
-				</div>
+	<div class="well profile-card" bg-from-api="{{targetUser.bg_image}}">
+		<div class="part user-img" bg-from-api="{{ targetUser.image_large }}"></div>
+		<div class="part ff1 user-extra">
+			<h2>{{targetUser.username}}</h2>
+			<p class="message">{{targetUser.message}}</p>
+			<span class="dateo-count">{{targetUser.dateo_count}} <ng-pluralize count="targetUser.dateo_count" when="{'one':'dateo','other':'dateos'}"></span>
+			<span class="votes-count">{{targetUser.votes.length}} <ng-pluralize count="targetUser.votes.length" when="{'one':'apoyo','other':'apoyos'}"></span>
+			<p class="url">url: {{targetUser.url}}</p>
+		</div>
+	</div>
+	<div class="social-share pull-right">
+		<div class="form-group">
+			<div class="input-group">
+				<input type="text" class="form-control" ng-model="targetUser.url">
+				<span class="input-group-btn">
+					<button class="btn btn-default" type="button" ng-click="targetUser.share()"><i class="glyphicon glyphicon-share"></i></button>
+				</span>
 			</div>
 		</div>
 	</div>
-	<div class="part part-1">
-		<tabset>
-			<tab heading="dateos">
-				<div class="dateo" ng-repeat="dateo in targetUser.dateos">
-					<div class="parts-holder">
-						<div class="user-img part part-1" bg-from-api="dateo.user.image_small"></div>
-						<div class="part part-2">
-							<h4>{{dateo.user.username}}</h4>
-							<span class="date">{{dateo.created | date:'fullDate'}}</span>
+	<div class="clearfix"></div>
+	<div class="content-holder">
+		<div class="part part-1">
+			<tabset>
+				<tab heading="dateos">
+					<div class="dateos-holder tab-body">
+						<div class="dateo" ng-repeat="dateo in targetUser.dateos">
+							<div class="parts-holder">
+								<div class="user-img part part-1" bg-from-api="{{dateo.user.image_small}}"></div>
+								<div class="part part-2">
+									<h4>{{dateo.user.username}}</h4>
+									<span class="date">{{dateo.created | date:'fullDate'}}</span>
+								</div>
+							</div>
+							<p>{{dateo.content}}</p>
+							<div class="social-holder">
+								<span class="glyphicon glyphicon-thumbs-up"></span> {{dateo.vote_count}}
+								<span class="glyphicon glyphicon-comment"></span> {{dateo.comment_count}}
+								<div class="pull-right">
+									<a class="btn datea-btn datea-btn-xs" href="#/{{dateo.user.username}}/dateos/{{dateo.id}}">ver detalle</a>
+								</div>
+							</div>
+							<hr>
 						</div>
+						<pagination boundary-links="true" items-per-page="paginationDateos.itemsPerPage" total-items="paginationDateos.totalItems" page="paginationDateos.currentPage" class="pagination-sm" previous-text="&lsaquo;" next-text="&rsaquo;" first-text="&laquo;" last-text="&raquo;"></pagination>
 					</div>
-					<p>{{dateo.content}}</p>
-					<div class="social-holder">
-						<div class="part part-1">
-							<span class="glyphicon glyphicon-thumbs-up"></span> {{dateo.vote_count}}
-							<span class="glyphicon glyphicon-comment"></span> {{dateo.comment_count}}
+				</tab>
+				<tab heading="iniciativas" ng-show="targetUser.campaigns.length">
+					<div class="campaigns-holder">
+						<div class="campaign tab-body" ng-repeat="campaign in targetUser.campaigns">
+							<div class="parts-holder">
+								<div class="user-img part part-1" bg-from-api="{{campaign.user.image_small}}"></div>
+								<div class="part part-2">
+									<h4>{{campaign.user.username}}</h4>
+									<span class="date">{{campaign.created | date:'fullDate'}}</span>
+								</div>
+							</div>
+							<p>{{campaign.short_description}}</p>
+							<div class="social-holder">
+								<span class="glyphicon glyphicon-thumbs-up"></span> {{campaign.follow_count}}
+								<span class="glyphicon glyphicon-comment"></span> {{campaign.comment_count}}
+								<div class="pull-right">
+									<a class="btn datea-btn datea-btn-xs" href="#/{{campaign.user.username}}/{{campaign.main_tag.tag}}" target="_blank">ver detalle</a>
+								</div>
+							</div>
+							<hr>
 						</div>
-						<div class="part part-2">
-							<a class="btn btn-default" href="#/{{dateo.user.username}}/dateos/{{dateo.id}}">ver detalle</a>
-						</div>
+						<pagination boundary-links="true" items-per-page="paginationCampaigns.itemsPerPage" total-items="paginationCampaigns.totalItems" page="paginationCampaigns.currentPage" class="pagination-sm" previous-text="&lsaquo;" next-text="&rsaquo;" first-text="&laquo;" last-text="&raquo;"></pagination>
 					</div>
-					<hr>
-				</div>
-				<pagination boundary-links="true" items-per-page="paginationDateos.itemsPerPage" total-items="paginationDateos.totalItems" page="paginationDateos.currentPage" class="pagination-sm" previous-text="&lsaquo;" next-text="&rsaquo;" first-text="&laquo;" last-text="&raquo;"></pagination>
-			</tab>
-			<tab heading="iniciativas">
-				<div class="campaign" ng-repeat="campaign in targetUser.campaigns">
-					<div class="parts-holder">
-						<div class="user-img part part-1" bg-from-api="campaign.user.image_small"></div>
-						<div class="part part-2">
-							<h4>{{campaign.user.username}}</h4>
-							<span class="date">{{campaign.created | date:'fullDate'}}</span>
-						</div>
-					</div>
-					<p>{{campaign.short_description}}</p>
-					<div class="social-holder">
-						<div class="part part-1">
-							<span class="glyphicon glyphicon-thumbs-up"></span> {{campaign.follow_count}}
-							<span class="glyphicon glyphicon-thumbs-up"></span> {{campaign.vote_count}}
-							<span class="glyphicon glyphicon-comment"></span> {{campaign.comment_count}}
-						</div>
-						<div class="part part-2">
-							<a class="btn btn-default" href="#/{{campaign.user.username}}/{{campaign.main_tag.tag}}" target="_blank">ver detalle</a>
-						</div>
-					</div>
-					<hr>
-				</div>
-				<pagination boundary-links="true" items-per-page="paginationCampaigns.itemsPerPage" total-items="paginationCampaigns.totalItems" page="paginationCampaigns.currentPage" class="pagination-sm" previous-text="&lsaquo;" next-text="&rsaquo;" first-text="&laquo;" last-text="&raquo;"></pagination>
-			</tab>
-		</tabset>
-	</div>
-	<div class="well part part-2">
-		<h4>{{targetUser.username}} sigue:</h4>
-		<span class="user-tag" ng-repeat="tag in targetUser.follows">
-			<a href="/tag/{{tag.tag}}">{{tag.tag}}</a>
-		</span>
-		<hr>
-		<h4>últimas acciones:</h4>
-		<ul class="user-history">
-			<li class="user-history-item" ng-repeat="item in targetUser.history">
-				<a href="#{{item._url}}" >{{item._message}}</a>
-				<p>{{item.data.extract}}</p>
-			</li>
-		</ul>
+				</tab>
+			</tabset>
+		</div><div class="part part-2">
+			<h4 ng-show="!targetUser.isSameAsUser">{{targetUser.username}} sigue:</h4>
+			<h4 ng-show="targetUser.isSameAsUser">Etiquetas que sigo:</h4>
+			<span class="user-tag" ng-repeat="tag in targetUser.follows">
+				<a href="#/tag/{{tag.tag}}">#{{tag.tag}}</a>
+			</span>
+			<hr>
+			<h4>últimas acciones:</h4>
+			<ul class="user-history">
+				<li class="user-history-item" ng-repeat="item in targetUser.history">
+					<a href="#{{item._url}}" >{{item._message}}</a>
+					<p>{{item.data.extract}}</p>
+				</li>
+			</ul>
+		</div>
 	</div>
 </div>

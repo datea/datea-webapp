@@ -9,6 +9,7 @@ angular.module('dateaWebApp')
   , '$routeParams'
   , '$interpolate'
   , 'ActivityUrl'
+  , '$modal'
 , function (
     $scope
   , User
@@ -17,11 +18,13 @@ angular.module('dateaWebApp')
   , $routeParams
   , $interpolate
   , ActivityUrl
+  , $modal
 ) {
 
 	var sup
 	  // fn declarations
 	  , buildUserInfo
+	  , buildUserFollows
 	  , buildUserDateos
 	  , buildUserCampaigns
 	  , buildPagination
@@ -35,6 +38,17 @@ angular.module('dateaWebApp')
 	$scope.targetUser.history = [];
 	$scope.paginationCampaigns = {};
 	$scope.paginationDateos = {};
+
+	buildUserFollows = function () {
+		Api.tag
+		.getTags( { followed: User.data.id } )
+		.then( function ( response ) {
+			console.log( 'targetUser follow', response );
+			$scope.targetUser.follows = response.objects;
+		}, function ( reason ) {
+			console.log( reason );
+		} );
+	}
 
 	buildActivityLog = function () {
 		var activityLog = [];
@@ -107,6 +121,7 @@ angular.module('dateaWebApp')
 		.then( function ( response ) {
 			console.log( 'user info', response);
 			angular.extend($scope.targetUser, response);
+			$scope.targetUser.isSameAsUser = $scope.targetUser.username === User.data.username;
 		}, function ( reason ) {
 			console.log( reason );
 		} );
@@ -126,6 +141,16 @@ angular.module('dateaWebApp')
 		$scope.paginationDateos.itemsPerPage = config.profile.paginationLimit;
 	}
 
+	$scope.targetUser.share = function () {
+		$modal.open( { templateUrl : 'views/share.html'
+		             , controller  : 'ShareCtrl'
+		             , resolve     : {
+		                 shareModalGivens : function () {
+		                   return { url : $scope.targetUser.url }
+		                 }
+		             } } );
+	}
+
 	$scope.$watch( 'paginationDateos.currentPage', function () {
 		buildUserDateos( { index : $scope.paginationDateos.currentPage - 1 } );
 	} );
@@ -135,6 +160,7 @@ angular.module('dateaWebApp')
 		buildUserDateos();
 		buildUserCampaigns();
 		buildActivityLog();
+		buildUserFollows();
 	}
 
 } ] );

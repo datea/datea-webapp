@@ -1,14 +1,16 @@
 <div class="homeSI-holder">
 	<div class="part part-1">
-		<div class="homeSI-map-holder" id="homeSI-map-holder">
+		<div class="homeSI-map-holder" ng-class="{ 'datea-loading': homeSI.loading.leaflet }" id="homeSI-map-holder">
 			<div class="map-frame-top map-frame">
 				<div class="form-group search-box">
-					<div class="input-group">
-						<input type="text" class="form-control" placeholder="buscar" ng-model="homeSI.searchDateosKeyword">
-						<span class="input-group-btn">
-							<button class="btn btn-default" type="button" ng-click="homeSI.searchDateos()"><i class="glyphicon glyphicon-search"></i></button>
-						</span>
-					</div>
+					<form ng-submit="homeSI.searchDateos()">
+						<div class="input-group">
+							<input type="text" class="form-control" placeholder="buscar" ng-model="homeSI.searchDateosKeyword">
+							<span class="input-group-btn">
+								<button class="btn btn-default" type="button" ng-click="homeSI.searchDateos()"><i class="glyphicon glyphicon-search"></i></button>
+							</span>
+						</div>
+					</form>
 				</div>
 				<span class="order-by-label">ordernar por:</span>
 				<div class="form-group">
@@ -22,7 +24,7 @@
 				<button class="btn btn-default pull-right" type="button" ng-click="homeSI.searchDateosWithImages()"><i class="glyphicon glyphicon-camera"></i></button>
 				<button class="btn btn-default pull-right" type="button" ng-click="homeSI.geolocate()"><i class="glyphicon glyphicon-map-marker"></i></button>
 			</div>
-			<leaflet class="leaflet-map" id="leafletHomeSI" defaults="homeSI.leaflet.defaults" markers="homeSI.leaflet.markers" center="homeSI.leaflet.center" width="100%" height="450px"></leaflet>
+			<leaflet class="leaflet-map" id="leafletHomeSI" defaults="homeSI.leaflet.defaults" bounds="homeSI.leaflet.bounds" markers="homeSI.leaflet.markers" center="homeSI.leaflet.center" width="100%" height="450px"></leaflet>
 			<div class="map-frame-bottom map-frame">
 				<button class="btn btn-default fix-center" type="button" ng-click="homeSI.focusNextMarker( { direction : 0 } )"><i class="glyphicon glyphicon-chevron-left"></i></button>
 				<button class="btn btn-default" type="button" ng-click="homeSI.focusNextMarker( { direction : 1 } )"><i class="glyphicon glyphicon-chevron-right"></i></button>
@@ -32,15 +34,18 @@
 		</div>
 		<tabset class="datea-tabset ff1">
 			<tab heading="iniciativas">
-				<div class="campaigns-holder">
-					<div class="form-group search-box">
-						<div class="input-group col-sm-4">
-							<input type="text" class="form-control" placeholder="buscar" ng-model="homeSI.searchCampaignsKeyword">
-							<span class="input-group-btn">
-								<button class="btn btn-default" type="button" ng-click="homeSI.searchCampaigns()"><i class="glyphicon glyphicon-search"></i></button>
-							</span>
+				<div class="campaigns-holder" ng-class="{'datea-loading': homeSI.loading.campaigns }">
+					<a class="btn datea-btn ff1" href="#/nuevaIniciativa">Crear iniciativa</a>
+					<form ng-submit="homeSI.searchCampaigns()">
+						<div class="form-group search-box">
+							<div class="input-group col-sm-4">
+								<input type="text" class="form-control" placeholder="buscar" ng-model="homeSI.searchCampaignsKeyword">
+								<span class="input-group-btn">
+									<button class="btn btn-default" type="button" ng-click="homeSI.searchCampaigns()"><i class="glyphicon glyphicon-search"></i></button>
+								</span>
+							</div>
 						</div>
-					</div>
+					</form>
 <!-- 					<button class="btn btn-default">Crear iniciativa</button> -->
 					<a class="campaign" ng-href="#/{{campaign.user.username}}/{{campaign.main_tag.tag}}" ng-repeat="campaign in homeSI.campaigns">
 						<div class="campaign-img" bg-from-api="{{campaign.image.image}}" ></div>
@@ -52,9 +57,9 @@
 					<pagination boundary-links="true" items-per-page="pagination.itemsPerPage" total-items="pagination.totalItems" max-size="5" page="pagination.currentPage" class="pagination-sm" previous-text="&lsaquo;" next-text="&rsaquo;" first-text="&laquo;" last-text="&raquo;"></pagination>
 				</div>
 			</tab>
-			<tab heading="novedades">
+<!-- 			<tab heading="novedades">
 				Acá irán las novedades
-			</tab>
+			</tab> -->
 		</tabset>
 	</div><div class="part part-2 homeSI-meta-holder">
 		<div class="block block-1">
@@ -72,11 +77,11 @@
 					</div>
 				</div>
 				<button class="btn datea-datear-btn" ng-click="flow.datear()">Datea<i class="glyphicon glyphicon-map-marker"></i></button>
+				<a class="btn datea-btn ff1" href="#/nuevaIniciativa">Crear iniciativa</a>
 				<a href="#/{{user.username}}">Mi perfil</a>
-				<a href>Mis dateos</a>
 			</div>
 			<div class="user-follows ff1">
-				<h5>{{user.username}} sigue:</h5>
+				<h5>etiquetas que sigo:</h5>
 				<a class="datea-tag-btn user-tag" ng-href="#/tag/{{tag.tag}}" ng-repeat="tag in homeSI.followingTags">
 					#{{tag.tag}}
 				</a>

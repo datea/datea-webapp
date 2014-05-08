@@ -9,6 +9,7 @@ angular.module('dateaWebApp')
   , '$location'
   , '$modal'
   , '$window'
+  , 'User'
 , function (
     $scope
   , $routeParams
@@ -17,21 +18,35 @@ angular.module('dateaWebApp')
   , $location
   , $modal
   , $window
+  , User
  ) {
 	var dateos
 	  , dateosId = []
 	  , dateo
-	  , staticMap
 	  // fn declarations
 	  , buildDateo
 	  , updateComments
 	  , hasNext
+	  , hasUserVoted
 	  ;
 
-	$scope.dateo = {};
-	$scope.dateo.form = {};
-	$scope.dateo.leaflet = {};
+	$scope.dateo             = {};
+	$scope.dateo.form        = {};
+	$scope.dateo.leaflet     = {};
 	$scope.dateo.messageNext = '';
+
+	$scope.dateo.isUserSignedIn = User.isSignedIn();
+
+	hasUserVoted = function () {
+		Api.vote
+		.getVotes( { user : User.data.id, vote_key : 'dateo.'+$scope.dateo.id } )
+		.then( function ( response ) {
+			console.log( 'hasUserVoted', response );
+			$scope.dateo.hasVoted = response.meta.total_count ? true : false;
+		}, function ( reason ) {
+			console.log( reason );
+		} )
+	}
 
 	hasNext = function () {
 		return dateo.id < dateo.next_by_user;
@@ -52,6 +67,9 @@ angular.module('dateaWebApp')
 			$scope.dateo.messageNext = hasNext() ? 'siguiente' : 'primer';
 			angular.extend( $scope.dateo, dateo );
 			angular.extend( $scope.dateo.leaflet, leaflet );
+			$scope.dateo.shareableUrl = config.app.url + $scope.dateo.user.username + '/dateos/' + $scope.dateo.id;
+			hasUserVoted();
+			console.log( 'buildDateo', dateo );
 		} else {
 			$scope.dateo.message = 'error no encontrado';
 		}
@@ -103,6 +121,44 @@ angular.module('dateaWebApp')
 			} )
 			.then( updateComments );
 		} )
+	}
+
+	$scope.dateo.doVote = function () {
+		Api.vote
+		.doVote( { content_type: 'dateo', object_id: $scope.dateo.id } )
+		.then( function ( response ) {
+			console.log( 'doVote', response );
+			Api.dateo
+			.getDateoByUsernameAndDateoId(
+			{ user : $routeParams.username
+			, id   : +$routeParams.dateoId
+			} )
+			.then( buildDateo );
+		}, function ( reason ) {
+			console.log( reason );
+		} );
+	}
+
+	$scope.dateo.share = function () {
+		$modal.open( { templateUrl: 'views/share.html'
+		             , controller : 'ShareCtrl'
+		             , resolve    : {
+		                 shareModalGivens : function () {
+		                 	return { url : $scope.dateo.shareableUrl }
+		                 }
+		             } } );
+	}
+
+	$scope.dateo.denounce = function ( type, ev ) {
+		Api.flag
+		.doFlag( { content_type : type
+		         , object_id    : +$routeParams.dateoId } )
+		.then( function ( response ) {
+			console.log( 'flag', type, +$routeParams.dateoId )
+			$( ev.target ).hide();
+		}, function ( reason ) {
+			console.log( reason );
+		} );
 	}
 
 	if ( $routeParams.username && $routeParams.dateoId ) {

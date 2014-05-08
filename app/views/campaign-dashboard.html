@@ -31,11 +31,11 @@
 				</div>
 				<div class="form-group">
 					<label for="mission">Misión / Objetivos</label>
-					<textarea id="mission" class="form-control" msd-elastic rows="3" ng-model="newCampaign.mission"></textarea>
+					<textarea id="mission" class="form-control" msd-elastic="\n" rows="3" ng-model="newCampaign.mission"></textarea>
 				</div>
 				<div class="form-group">
 					<label for="information-destiny">¿Qué sucede con la información recibida?</label>
-					<textarea id="information-destiny" class="form-control" msd-elastic rows="3" ng-model="newCampaign.information_destiny"></textarea>
+					<textarea id="information-destiny" class="form-control" msd-elastic="\n" rows="3" ng-model="newCampaign.information_destiny"></textarea>
 				</div>
 				<hr>
 				<h4>Etiquetas (hashtags)</h4>
@@ -68,6 +68,9 @@
 						</li>
 					</ul>
 				</div>
+				<hr>
+				<h4>Opciones de ubicación</h4>
+				<leaflet id="leafletNewCampaign" defaults="newCampaign.leaflet.defaults" markers="newCampaign.leaflet.markers" center="newCampaign.leaflet.center" controls="newCampaign.leaflet.controls" height="460px" width="100%"></leaflet>
 			</form>
 		</tab>
 		<tab heading="administrador de dateos"></tab>

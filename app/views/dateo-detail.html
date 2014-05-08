@@ -1,77 +1,85 @@
-<div class="dateo-user" ng-show="!dateo.message">
-	<div class="part part-1 img-holder">
-		<img ng-show="dateo.user" ng-src="{{dateo.user.image_small | imgFromApi}}" alt="{{dateo.user.username}}">
-	</div><div class="part part-2 data-holder">
-		<h4>{{dateo.user.username}}</h4>
-		<h6>el {{dateo.modified | date:'fullDate'}}</h6>
+<div class="dateo-holder">
+	<div class="user-holder">
+		<div class="part part-1 img-holder">
+			<img ng-show="dateo.user" ng-src="{{dateo.user.image_small | imgFromApi}}" alt="{{dateo.user.username}}">
+		</div><div class="part part-2 data-holder">
+			<a href="#/{{dateo.user.username}}">
+				<h4>{{dateo.user.username}}</h4>
+			</a>
+			<p class="ff1">el {{dateo.modified | date:'fullDate'}}</p>
+		</div>
+		<button class="btn datea-btn" ng-disabled="dateo.hasVoted" ng-click="dateo.doVote()">apoyar</button>
+		<div class="next-holder pull-right">
+			<a href ng-click="dateo.nextDateo()">ver {{ dateo.messageNext }} dateo de {{dateo.user.username}} &nbsp; ▶</a>
+		</div>
 	</div>
-	<div class="next-holder pull-right">
-		<button class="btn btn-default" ng-click="dateo.nextDateo()">ver {{ dateo.messageNext }} dateo de {{dateo.user.username}} ></button>
-	</div>
-</div><div class="dateo-content" ng-show="!dateo.message">
-	<div class="part part-1">
-		<a ng-repeat="tag in dateo.tags" href="#/tags/{{tag.id}}">#{{tag.tag}}</a>
-		<p>{{dateo.content}}</p>
-		<a href ng-repeat="img in dateo.images" ng-click="dateo.imgDetail(img.image)">
-			<img class="part" ng-src="{{img.thumb | imgFromApi}}" alt="sorry">
-		</a>
-		<hr>
-		<div class="social-holder">
-			<div class="part cta-holder cta-holder-1">
-				<button class="btn btn-default">{{dateo.comments.length}} comentar</button>
-			</div><div class="part cta-holder cta-holder-2">
-				<button class="btn btn-default">{{dateo.vote_count}} apoyar</button>
-			</div><div class="part cta-holder cta-holder-3">
-				<div class="form-group">
-					<div class="input-group col-sm-8">
-						<input type="text" class="form-control" value="{{dateo.url}}">
+	<div class="content-holder" ng-show="!dateo.message">
+		<div class="part part-1">
+			<a class="tag" href="#/tag/{{tag.tag}}" ng-repeat="tag in dateo.tags">#{{tag.tag}}</a>
+			<p>{{dateo.content}}</p>
+			<a href ng-repeat="img in dateo.images" ng-click="dateo.imgDetail(img.image)">
+				<img class="part" ng-src="{{img.thumb | imgFromApi}}" alt="sorry">
+			</a>
+			<hr>
+			<div class="social-holder">
+				<div class="datea-glyph-holder">
+					<span class="glyphicon glyphicon-thumbs-up datea-glyph"></span> <span class="datea-glyph-text"><p>{{dateo.vote_count}}</p> <p><ng-pluralize count="dateo.vote_count" when="{'one':
+						'apoyo','other':'apoyos'}"></p></span>
+				</div>
+				<div class="datea-glyph-holder">
+					<span class="glyphicon glyphicon-comment datea-glyph"></span> <span class="datea-glyph-text"><p>{{dateo.comments.length}}</p><p><ng-pluralize count="dateo.comments.length" when="{'one':
+						'comentario','other':'comentarios'}"></p></span>
+				</div>
+				<span class="glyphicon glyphicon-print pull-right datea-glyph datea-glyph-2" ng-click="dateo.print()"></span>
+				<div class="form-group pull-right share">
+					<div class="input-group">
+						<input type="text" class="form-control" value="{{dateo.shareableUrl}}">
 						<span class="input-group-btn">
-							<button class="btn btn-default" type="button">+</button>
+							<button class="btn btn-default" type="button" ng-click="dateo.share()"><i class="glyphicon glyphicon-share"></i></button>
 						</span>
 					</div>
 				</div>
-			</div><div class="part cta-holder cta-holder-4">
-				<button class="btn btn-default" ng-click="dateo.print()">imprimir</button>
-			</div>
-			<div class="denounce-holder">
-				<a class="denounce block pull-right" href="#/denunciar">denunciar</a>
-			</div>
-		</div>
-		<hr>
-		<div class="comments-holder">
-			<h3>Comentarios</h3>
-			<div class="comment-holder" ng-repeat="comment in dateo.comments">
-				<div class="user">
-					<img ng-src="{{comment.user.image_small | imgFromApi}}" alt="{{comment.user.username}}">
-					<a href="{{comment.user.id}}">
-						<span>{{comment.user.username}}</span>
-					</a>
-					<span>el {{comment.created | date:'fullDate'}}</span>
-				</div>
-				<p>{{comment.comment}}</p>
-				<div class="comment-social-holder">
-					<a class="denounce" href="#/denunciar">denunciar</a>
-<!-- 					<button class="btn btn-default pull-right">responder</button>
-					<button class="btn btn-default pull-right">apoyar</button> -->
+				<div class="denounce-holder">
+					<a class="denounce" href="" ng-click="dateo.denounce( 'dateo', $event )">denunciar</a>
 				</div>
 			</div>
-			<div class="comment-form-holder">
-				<form role="form" name="form">
-					<div class="form-group">
-						<label for="message">Tu comentario</label>
-						<textarea id="message" class="form-control" rows="3" ng-model="dateo.form.comment"></textarea>
+			<div class="clearfix"></div>
+			<hr>
+			<div class="comments-holder">
+				<h3>Comentarios</h3>
+				<div class="comment-holder" ng-repeat="comment in dateo.comments">
+					<div class="user">
+						<img ng-src="{{comment.user.image_small | imgFromApi}}" alt="{{comment.user.username}}">
+						<a href="#/{{comment.user.username}}">
+							<span>{{comment.user.username}}</span>
+						</a>
+						<span class="date">el {{comment.created | date:'fullDate'}}</span>
 					</div>
-					<button type="submit" class="btn btn-success" ng-click="dateo.postComment()">Comentar</button>
-				</form>
+					<p>{{comment.comment}}</p>
+					<div class="denounce-holder">
+						<a class="denounce" href="" ng-click="dateo.denounce( 'comment', $event )">denunciar</a>
+					</div>
+				</div>
+				<div class="comment-form-holder" ng-show="dateo.isUserSignedIn">
+					<form role="form" name="form">
+						<div class="form-group">
+							<label for="message">Tu comentario</label>
+							<textarea id="message" class="form-control" rows="3" ng-model="dateo.form.comment"></textarea>
+						</div>
+						<button type="submit" class="btn datea-btn" ng-click="dateo.postComment()">Comentar</button>
+					</form>
+				</div>
 			</div>
 		</div>
+		<div class="part part-2 map-holder" ng-show="!dateo.message">
+			<h3>Ubicación</h3>
+			<leaflet defaults="dateo.leaflet.defaults" markers="dateo.leaflet.markers" center="dateo.leaflet.center" height="260px" width="425px"></leaflet>
+			<p>{{dateo.address || ''}}</p>
+			<p>{{dateo.admin_level1}} > {{dateo.admin_level2}} > {{dateo.admin_level3}}</p>
+			<hr>
+			<h3>Iniciativas relacionadas</h3>
+			<a class="tag" href="#/tag/{{tag.campaigns[0].username}}" ng-repeat="tag in dateo.tags" ng-if="tag.campaigns[0]">#{{tag.campaigns[0].username}}</a>
+		</div>
 	</div>
-	<div class="part part-2 map-holder" ng-show="!dateo.message">
-		<h3>Ubicación</h3>
-		<leaflet defaults="dateo.leaflet.defaults" markers="dateo.leaflet.markers" center="dateo.leaflet.center" height="260px" width="425px"></leaflet>
-		<p>{{dateo.address || 'una dirección por defecto'}}</p>
-		<hr>
-		<h3>Iniciativas relacionadas</h3>
-	</div>
+	<span ng-show="dateo.message">{{dateo.message}}</span>
 </div>
-<span ng-show="dateo.message">{{dateo.message}}</span>

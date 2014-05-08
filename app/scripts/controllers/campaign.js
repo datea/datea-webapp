@@ -35,6 +35,7 @@ angular.module('dateaWebApp')
 	  , buildDateosWithImages
 	  , buildMarkers
 	  , buildFollowersList
+	  , buildRelatedCampaigns
 	  , getTagsString
 	  ;
 
@@ -42,8 +43,24 @@ angular.module('dateaWebApp')
 	$scope.campaign.leaflet = {};
 	$scope.campaign.dateos  = {};
 
+	$scope.campaign.loading = {};
+	$scope.campaign.loading.leaflet = true;
+	$scope.campaign.loading.dateos  = true;
+
 
 	$scope.campaign.selectedMarker = 'last';
+
+	buildRelatedCampaigns = function () {
+		var tags = getTagsString( $scope.campaign );
+		console.log( 'buildRelatedCampaigns tags', tags );
+		Api.campaign
+		.getCampaigns( {tags : tags} )
+		.then( function ( response ) {
+			console.log( 'Api campaign', response );
+		}, function ( reason ) {
+			console.log( reason );
+		} );
+	}
 
 	buildMarkers = function ( givens ) {
 		var dateos  = givens && givens.dateos
@@ -63,7 +80,8 @@ angular.module('dateaWebApp')
 			markers['marker'+sessionMarkersIdx] = {
 			  lat       : value.position.coordinates[1]
 			, lng       : value.position.coordinates[0]
-			, group			: value.admin_level3
+			, group     : value.country
+			// , group     : value.admin_level3
 			, label     : { message: '#' + value.tags[0].tag }
 			, message   : $interpolate( config.marker )(value)
 			, draggable : false
@@ -76,12 +94,14 @@ angular.module('dateaWebApp')
 		center.lat  = markers.marker0.lat;
 		center.lng  = markers.marker0.lng;
 		center.zoom = config.campaign.mapZoomFocus;
+		console.log( 'campaign markers', markers );
 		angular.extend( $scope.campaign.leaflet.markers, markers );
 		angular.extend( $scope.campaign.leaflet.center, center );
 		leafletData.getMap("leafletCampaign")
 		.then( function ( map ) {
 			map.fitBounds( markersBounds );
 		} )
+		$scope.campaign.loading.leaflet = false;
 		// $scope.campaign.leaflet.markers.marker0.focus = true;
 	}
 
@@ -115,6 +135,7 @@ angular.module('dateaWebApp')
 			buildDateos();
 			buildDateosWithImages();
 			buildFollowersList();
+			buildRelatedCampaigns();
 		}, function ( reason ) {
 			console.log( reason );
 		} );
@@ -145,16 +166,25 @@ angular.module('dateaWebApp')
 			dateoGivens.order_by = config.selectFilter[ $scope.campaign.selectedMarker ];
 		}
 		if ( $scope.campaign ) {
+			$scope.campaign.dateos = [];
 			Api.dateo
 			.getDateos( dateoGivens )
 			.then( function ( response ) {
-				angular.forEach( response.objects, function ( value, key ){
-					if ( value.position ) {
-						dateos.push( value );
-					}
-				});
-				$scope.campaign.dateos = dateos;
-				buildMarkers( { dateos : dateos } );
+				if ( response.objects.length ) {
+					angular.forEach( response.objects, function ( value, key ){
+						if ( value.position ) {
+							dateos.push( value );
+						}
+					});
+					$scope.campaign.dateos = dateos;
+					buildMarkers( { dateos : dateos } );
+					$scope.campaign.loading.dateos = false;
+				} else {
+					$scope.campaign.leaflet.markers = {};
+					$scope.campaign.loading.dateos  = false;
+					$scope.campaign.loading.leaflet = false;
+				}
+
 			}, function ( reason ) {
 				console.log( reason );
 			} );
@@ -172,7 +202,7 @@ angular.module('dateaWebApp')
 				}
 			} );
 			$scope.campaign.dateosWithImages = dateos;
-			$scope.campaign.dateosWithImagesHolderHeight = { height : ( Math.ceil( $scope.campaign.dateosWithImages.length / 6 ) * 181 ) + 'px' };
+			$scope.campaign.dateosWithImagesHolderHeight = { height : ( Math.ceil( $scope.campaign.dateosWithImages.length / 6 ) * 200 ) + 'px' };
 			console.log( 'buildDateosWithImages', dateos );
 		}, function ( reason ) {
 			console.log( reason );
@@ -187,8 +217,12 @@ angular.module('dateaWebApp')
 	$scope.campaign.searchDateos = function () {
 		if ( $scope.campaign.searchDateosKeyword ) {
 			buildDateos( { q : $scope.campaign.searchDateosKeyword } );
+			$scope.campaign.loading.leaflet = true;
+			$scope.campaign.loading.dateos = true;
 		} else {
 			buildDateos();
+			$scope.campaign.loading.leaflet = true;
+			$scope.campaign.loading.dateos = true;
 		}
 	}
 
@@ -200,16 +234,18 @@ angular.module('dateaWebApp')
 		if ( $scope.campaign.leaflet.markers[markerName] ) {
 			center.lat  = $scope.campaign.leaflet.markers[markerName].lat;
 			center.lng  = $scope.campaign.leaflet.markers[markerName].lng;
-			center.zoom = $scope.campaign.leaflet.center.zoom < 15 ? 15 : $scope.campaign.leaflet.center.zoom;
+			center.zoom = $scope.campaign.leaflet.center.zoom < 16 ? 16 : $scope.campaign.leaflet.center.zoom;
 			angular.extend( $scope.campaign.leaflet.center, center );
-			$timeout( function () {
+			// $timeout( function () {
 				$scope.campaign.leaflet.markers[markerName].focus = true;
-			}, 1000 );
+			// }, 1000 );
 		}
 		console.log( 'focusDateo', idx, $scope.campaign.leaflet.markers[markerName].focus );
 	}
 
 	$scope.campaign.onSelectFilterChange = function () {
+		$scope.campaign.loading.leaflet = true;
+		$scope.campaign.loading.dateos = true;
 		buildDateos();
 	}
 
@@ -217,12 +253,28 @@ angular.module('dateaWebApp')
 		var id = $scope.campaign.main_tag.id;
 		console.log( 'followTag' );
 		if ( $scope.campaign.followable ) {
+			$scope.campaign.followable = false;
 			Api.follow
 			.doFollow( { content_type: 'tag', object_id: id } )
 			.then( function ( response ) {
-				$scope.campaign.followable = false;
 				User.updateUserDataFromApi();
 			}, function ( reason ) {
+				$scope.campaign.followable = true;
+				console.log( reason );
+			} );
+		}
+	}
+
+	$scope.campaign.unfollowTag = function () {
+		var id = $scope.campaign.main_tag.id;
+		if ( !$scope.campaign.followable ) {
+			$scope.campaign.followable = true;
+			Api.follow
+			.doUnfollow( { user: User.data.id, content_type: 'tag', object_id: id } )
+			.then( function ( response ) {
+				User.updateUserDataFromApi();
+			}, function ( reason ) {
+				$scope.campaign.followable = false;
 				console.log( reason );
 			} );
 		}
@@ -238,7 +290,9 @@ angular.module('dateaWebApp')
 		             , windowClass : 'datear-modal'
 		             , resolve     : {
 		                datearModalGivens : function () {
-		                 	return { defaultTag : $scope.campaign.main_tag.tag };
+		                  return { defaultTag    : $scope.campaign.main_tag.tag
+		                         , suggestedTags : $scope.campaign.secondary_tags
+		                         };
 		                 }
 		               }
 		             } );
@@ -247,9 +301,9 @@ angular.module('dateaWebApp')
 	$scope.campaign.share = function () {
 		$modal.open( { templateUrl : 'views/share.html'
 		             , controller  : 'ShareCtrl'
-		             , resolve		 : {
-		                 shareModalGivens : function () {
-		                 	return { url         : $scope.campaign.shareableUrl
+		             , resolve     : {
+		                shareModalGivens : function () {
+		                  return { url         : $scope.campaign.shareableUrl
 		                         , title       : $scope.campaign.name
 		                         , description : $scope.campaign.short_description
 		                         , image       : $filter('imgFromApi')($scope.campaign.image_thumb) }

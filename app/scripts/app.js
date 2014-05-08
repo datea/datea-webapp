@@ -66,13 +66,17 @@ angular.module( 'dateaWebApp'
 	  , { templateUrl: 'views/account.html'
 	    , controller: 'AccountCtrl'
 	    } )
-	.when('/panel'
+	.when( '/panel'
 	  , { templateUrl: 'views/campaign-dashboard.html'
 	    , controller: 'CampaignDashboardCtrl'
 	    } )
-	.when('/nuevaIniciativa'
+	.when( '/nuevaIniciativa'
 	  , { templateUrl: 'views/campaign-dashboard.html'
 	    , controller: 'CampaignDashboardCtrl'
+	    } )
+	.when( '/tag/:tagName'
+	  , { templateUrl: 'views/tag.html'
+	    , controller: 'TagCtrl'
 	    } )
 	.when( '/:username/:campaignName'
 	, { templateUrl: 'views/campaign.html'

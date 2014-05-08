@@ -8,6 +8,8 @@ angular.module('dateaWebApp')
   , '$modal'
   , '$location'
   , 'localStorageService'
+  , 'State'
+  , '$timeout'
 , function (
     $scope
   , User
@@ -15,6 +17,8 @@ angular.module('dateaWebApp')
   , $modal
   , $location
   , localStorageService
+  , State
+  , $timeout
 ) {
 	// fn declarations
 	var onSignIn
@@ -23,6 +27,8 @@ angular.module('dateaWebApp')
 
 	$scope.nav  = {};
 	$scope.user = {};
+	$scope.state = State.state;
+
 	$scope.nav.visible = User.isSignedIn();
 
 	$scope.nav.isCollapsed = true;
@@ -59,6 +65,11 @@ console.log( 'updateUserDataFromApi', 'status === 0' );
 	onSignIn = function ( givens ) {
 		User.updateUserDataFromStorage();
 		$scope.nav.visible = User.isSignedIn();
+		if ( $location.path() === '/signin'
+		|| $location.path() === '/signup'
+		|| $location.path() === '/registrate' ) {
+			$scope.nav.visible = true;
+		}
 		$scope.user = User.data;
 		if ( User.data.status === 0 ) {
 			updateUserDataFromApi();

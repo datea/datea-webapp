@@ -6,7 +6,8 @@
 			<p>{{campaign.short_description}}</p>
 			<span class="dateo-count">{{campaign.dateo_count}} <ng-pluralize count="campaign.dateo_count" when="{'one':'dateo','other':'dateos'}"></ng-pluralize></span>
 			<span class="follow-count">{{campaign.follow_count}} <ng-pluralize count="campaign.follow_count" when="{'one':'seguidor','other':'seguidores'}"></ng-pluralize></span>
-			<button class="btn datea-btn" ng-click="campaign.followTag()" ng-disabled="!campaign.followable">+seguir</button>
+			<button class="btn datea-btn" ng-click="campaign.followTag()" ng-show="campaign.followable">+seguir</button>
+			<button class="btn datea-btn" ng-click="campaign.unfollowTag()" ng-show="!campaign.followable">x no seguir</button>
 		</div>
 		<div class="part part-2">
 			<button class="btn datea-datear-btn" ng-click="campaign.datear()">Datea <i class="glyphicon glyphicon-map-marker"></i></button><span class="time-left" ng-show="campaign.end_date">{{campaign._timeLeft | date:time }}</span>
@@ -14,25 +15,27 @@
 				<div class="input-group">
 					<input type="text" class="form-control" ng-model="campaign.shareableUrl">
 					<span class="input-group-btn">
-						<button class="btn btn-default" type="button"ng-click="campaign.share()"><i class="glyphicon glyphicon-share"></i></button>
+						<button class="btn btn-default" type="button" ng-click="campaign.share()"><i class="glyphicon glyphicon-share"></i></button>
 					</span>
 				</div>
 			</div>
 		</div>
 	</div>
 	<div class="map-holder">
-		<div class="form-group">
-			<div class="input-group col-sm-2">
-				<input type="text" class="form-control" ng-model="campaign.searchDateosKeyword">
-				<span class="input-group-btn">
-					<button class="btn btn-default" type="button"><i class="glyphicon glyphicon-search" ng-click="campaign.searchDateos()"></i></button>
-				</span>
+		<form ng-submit="campaign.searchDateos()">
+			<div class="form-group">
+				<div class="input-group col-sm-2">
+					<input type="text" class="form-control" ng-model="campaign.searchDateosKeyword">
+					<span class="input-group-btn">
+						<button class="btn btn-default" type="button"><i class="glyphicon glyphicon-search" ng-click="campaign.searchDateos()"></i></button>
+					</span>
+				</div>
 			</div>
-		</div>
+		</form>
 		<tabset>
 			<tab heading="&nbsp;" class="glyphicon glyphicon-map-marker datea-glyphtab-fix">
-				<div class="part part-1 dateos-holder">
-				  <div class="order-by-holder">
+				<div class="part part-1 dateos-holder" ng-class="{'datea-loading': campaign.loading.dateos }">
+					<div class="order-by-holder">
 						<span class="order-by-label">ordernar por:</span>
 						<div class="form-group">
 							<select class="form-control order-by" name="orderBy" ng-model="campaign.selectedMarker" ng-change="campaign.onSelectFilterChange()">
@@ -64,17 +67,30 @@
 						</div>
 					</div>
 				</div>
-				<div class="part part-2 leaflet-map-holder">
+				<div class="part part-2 leaflet-map-holder" ng-class="{'datea-loading': campaign.loading.leaflet }">
 					<leaflet id="leafletCampaign" defaults="campaign.leaflet.defaults" markers="campaign.leaflet.markers" center="campaign.leaflet.center" width="100%" height="450px"></leaflet>
 				</div>
 			</tab>
-			<tab heading="&nbsp;" class="glyphicon glyphicon-camera datea-glyphtab-fix">
+			<tab heading="&nbsp;" class="glyphicon glyphicon-camera datea-glyphtab-fix" ng-show="campaign.dateosWithImages.length > 0">
 				<div class="dateos-with-images-holder" ng-style="campaign.dateosWithImagesHolderHeight">
 					<div class="part dateo-with-image" bg-from-api="{{dateoWithImage.images[0].image}}" ng-repeat="dateoWithImage in campaign.dateosWithImages">
 						<div class="info-bg"></div>
 						<div class="info-holder">
-							<h5>{{dateoWithImage.user.username}}</h5>
-							<p>{{dateoWithImage.extract}}</p>
+							<div class="parts-holder">
+								<div class="part part-1">
+									<div class="user-img" bg-from-api="{{dateoWithImage.user.image}}"></div>
+								</div>
+								<div class="part part-2">
+									<h5>{{dateoWithImage.user.username}}</h5>
+									<span class="date">{{dateoWithImage.date | date:'fullDate'}}</span>
+								</div>
+							</div>
+							<p class="extract">{{dateoWithImage.extract}}</p>
+							<div class="cta-holder">
+								<span class="glyphicon glyphicon-thumbs-up"></span> {{dateoWithImage.vote_count}}
+								<span class="glyphicon glyphicon-comment"></span> {{dateoWithImage.comments.length}}
+								<a href="#/{{dateoWithImage.user.username}}/dateos/{{dateoWithImage.id}}" class="btn datea-btn datea-btn-xs pull-right">ver más</a>
+							</div>
 						</div>
 					</div>
 				</div>

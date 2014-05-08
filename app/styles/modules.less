@@ -8,6 +8,21 @@
 	Tags: datea, información, participación ciudadana, comparte...
 */
 
+// Colors
+@color-selection: #b3d4fc; // light blue
+@color-1: #EDFF00; // yellow
+@color-2: #8B00A4; // purple
+@color-3: #D3DAD7; // map frame grey
+@color-4: #EFF2F0; // bg grey
+@color-5: #28BC45; // green
+@color-6: #5E6E66; // text grey
+@color-7: #E9EDEB; // well grey
+@color-8: #EAFF74; // well important
+@color-9: #5E6E66; // followable tag hover
+@color-10: #909E97; // signin signup grey bg
+@color-11: #231F20; // footer brown
+@color-12: #28BC45; // green
+
 .datea-button-variant(@color; @background; @border; @hover) {
   color: @color;
   background-color: @background;
@@ -85,6 +100,11 @@
 	text-transform: uppercase;
 }
 
+.datea-btn-nopad {
+  .datea-button-variant(@datea-btn-color; @datea-btn-bg; @datea-btn-border; @datea-btn-hover);
+  text-transform: uppercase;
+}
+
 .datea-btn-xs {
 	height: 17px;
 	padding-top: 0;
@@ -119,4 +139,23 @@
 	position: absolute;
 	top: @top;
 	width: 26px;
+}
+
+//
+// Glyphs
+//
+
+.datea-glyph {
+	background: @color-12;
+	border-radius: 50%;
+	color: white;
+	font-size: 15px;
+	line-height: 23px;
+	text-align: center;
+	width: 23px!important;
+	top: -2px;
+}
+.datea-glyph-2 {
+	background: @color-3;
+	cursor: pointer;
 }

@@ -20,10 +20,12 @@
 	<!-- endbuild -->
 	<link rel="stylesheet" href="bower_components/leaflet-dist/leaflet.css">
 	<link rel="stylesheet" href="//netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.min.css">
+	<link rel="stylesheet" href="bower_components/bootstrap-social/bootstrap-social.css">
 	<link rel="stylesheet" href="bower_components/Leaflet.label/dist/leaflet.label.css">
 	<link rel="stylesheet" href="bower_components/leaflet.markerclusterer/dist/MarkerCluster.css">
 	<link rel="stylesheet" href="bower_components/leaflet.markerclusterer/dist/MarkerCluster.Default.css">
 	<link rel="stylesheet" href="bower_components/angular-social/angular-social.css">
+	<link rel="stylesheet" href="bower_components/leaflet.draw/dist/leaflet.draw.css">
 </head>
 <body ng-app="dateaWebApp">
 	<!--[if lt IE 7]>
@@ -42,9 +44,9 @@
 
 	<div class="container page" ng-view=""></div>
 
-	<footer class="colophon">
+	<div class="container colophon">
 		<div class="datea-rights" ng-include="'views/footer.html'"></div>
-	</footer>
+	</div>
 
 	<!-- Google Analytics: change UA-XXXXX-X to be your site's ID -->
 	<script>
@@ -75,7 +77,7 @@
 	<script src="bower_components/angular-local-storage/angular-local-storage.js"></script>
 	<script src="bower_components/angular-ui-bootstrap-bower/ui-bootstrap.js"></script>
 	<script src="bower_components/angular-ui-bootstrap-bower/ui-bootstrap-tpls.js"></script>
-	<script src="bower_components/angular-leaflet-directive/dist/angular-leaflet-directive.js"></script>
+	<script src="bower_components/angular-leaflet-directive/dist/angular-leaflet-directive.min.js"></script>
 	<script src="bower_components/leaflet.markerclusterer/dist/leaflet.markercluster.js"></script>
 	<script src="bower_components/Leaflet.label/dist/leaflet.label.js"></script>
 	<script src="bower_components/angularjs-geolocation/src/geolocation.js"></script>
@@ -88,6 +90,7 @@
 	<script src="bower_components/angular-route/angular-route.js"></script>
 	<script src="bower_components/angular-elastic/elastic.js"></script>
 	<script src="bower_components/angular-social/angular-social.js"></script>
+	<script src="bower_components/leaflet.draw/dist/leaflet.draw-src.js"></script>
 	<!-- endbuild -->
 
 	<!-- build:js({.tmp,app}) scripts/scripts.js -->
@@ -117,6 +120,8 @@
 <script src="scripts/directives/scrollspy.js"></script>
 <script src="scripts/controllers/campaign-dashboard.js"></script>
 <script src="scripts/controllers/share.js"></script>
+<script src="scripts/controllers/tag.js"></script>
+<script src="scripts/services/state.js"></script>
 	<!-- endbuild -->
 
 </body>

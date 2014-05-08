@@ -26,6 +26,8 @@ angular.module('dateaWebApp')
 	  , category    = {}
 	  , follow      = {}
 	  , userFollow  = {}
+	  , vote        = {}
+	  , flag        = {}
 	  // fn declarations
 	  , reconfigUserRsrc
 	  ;
@@ -93,13 +95,16 @@ angular.module('dateaWebApp')
 	);
 	userFollow.rsrc = $resource( config.api.url + 'user/', {},
 	{ 'query' : { method : 'GET' } }
-	)
+	);
+	tag.rsrc = $resource( config.api.url + 'tag/', {},
+	{ 'get' : { method : 'GET' } }
+	);
 	tag.autocomplete.rsrc = $resource( config.api.url + 'tag/autocomplete/', {},
 	{ 'get' : { method : 'GET' } }
-	)
+	);
 	tag.trending.rsrc = $resource( config.api.url + 'tag/trending/', {},
 	{ 'get' : { method : 'GET' } }
-	)
+	);
 	campaign.rsrc = $resource( config.api.url + 'campaign/', {},
 	{ 'query': { method : 'GET' }
 	, 'post' : { method  : 'POST'
@@ -112,17 +117,24 @@ angular.module('dateaWebApp')
 	category.rsrc = $resource( config.api.url + 'category/', {},
 	{ 'query': { method : 'GET' } }
 	)
-	follow.rsrc = $resource( config.api.url + 'follow/:id', {},
-	{ 'query': { method : 'GET' }
-	, 'post' : { method : 'POST'
-	           , headers : headers || ls.get('token')
-	           }
-	, 'delete' : { method : 'DELETE'
-	             // , params : { id: '@i' }
+	follow.rsrc = $resource( config.api.url + 'follow/', {},
+	{ 'query'  : { method : 'GET' }
+	, 'post'   : { method : 'POST'
 	             , headers : headers || ls.get('token')
-	           }
-	}
-	)
+	             }
+	, 'delete' : { method : 'DELETE'
+	             , headers : headers || ls.get('token')
+	             }
+	} );
+	vote.rsrc = $resource( config.api.url + 'vote/', {},
+	{ 'query' : { method : 'GET' }
+	, 'post'  : { method : 'POST'
+	            , headers : headers || ls.get('token') }
+	} );
+	flag.rsrc = $resource( config.api.url + 'flag/', {},
+	{ 'post' : { method : 'POST'
+	           , headers : headers || ls.get('token') }
+	} );
 
 console.log( 'api', headers );
 	// User
@@ -281,6 +293,16 @@ console.log( 'user.getUserByUserIdOrUsername token', token );
 	}
 
 	// Tags
+	tag.getTags = function ( givens ) {
+		var dfd = $q.defer();
+		tag.rsrc.get( givens, function ( response ) {
+			dfd.resolve( response );
+		}, function ( error ) {
+			dfd.reject( error );
+		} );
+		return dfd.promise;
+	}
+
 	tag.getAutocompleteByKeyword = function ( givens ) {
 		var dfd = $q.defer();
 		tag.autocomplete.rsrc.get( givens, {}
@@ -317,15 +339,15 @@ console.log( 'user.getUserByUserIdOrUsername token', token );
 		return dfd.promise;
 	}
 
-	campaign.getCampaignsByDate = function ( givens ) {
-		var dfd = $q.defer();
-		campaign.rsrc.query( givens, function ( response ) {
-			dfd.resolve( response );
-		}, function ( error ) {
-			dfd.reject( error );
-		} );
-		return dfd.promise;
-	}
+	// campaign.getCampaignsByDate = function ( givens ) {
+	// 	var dfd = $q.defer();
+	// 	campaign.rsrc.query( givens, function ( response ) {
+	// 		dfd.resolve( response );
+	// 	}, function ( error ) {
+	// 		dfd.reject( error );
+	// 	} );
+	// 	return dfd.promise;
+	// }
 
 	campaign.postCampaign = function ( givens ) {
 		var dfd = $q.defer();
@@ -393,6 +415,43 @@ console.log( 'user.getUserByUserIdOrUsername token', token );
 		return dfd.promise;
 	}
 
+	// Vote
+
+	vote.getVotes = function ( givens ) {
+		var dfd = $q.defer();
+		vote.rsrc.query( givens, function ( response ) {
+			dfd.resolve( response );
+		}, function ( error ) {
+			dfd.reject( error );
+		} );
+		return dfd.promise;
+	}
+
+	vote.doVote = function ( givens ) {
+		var dfd   = $q.defer()
+		  , token = ls.get('token')
+		  ;
+		vote.rsrc.post( {}, givens
+		, function ( response ) {
+			dfd.resolve( response );
+		}, function ( error ) {
+			dfd.reject( error );
+		} );
+		return dfd.promise;
+	}
+
+	// Flag
+
+	flag.doFlag = function ( givens ) {
+		var dfd = $q.defer();
+		flag.rsrc.post( givens, function ( response ) {
+			dfd.resolve( response );
+		}, function ( error ) {
+			dfd.reject( error );
+		} );
+		return dfd.promise;
+	}
+
 	return { dateo       : dateo
 	       , comment     : comment
 	       , account     : account
@@ -402,6 +461,8 @@ console.log( 'user.getUserByUserIdOrUsername token', token );
 	       , activityLog : activityLog
 	       , category    : category
 	       , follow      : follow
+	       , vote        : vote
+	       , flag        : flag
 	       };
 
 } ] );
