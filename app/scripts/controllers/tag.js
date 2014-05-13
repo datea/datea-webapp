@@ -206,9 +206,9 @@ angular.module('dateaWebApp')
 			center.lng  = $scope.tag.leaflet.markers[markerName].lng;
 			center.zoom = $scope.tag.leaflet.center.zoom < 15 ? 15 : $scope.tag.leaflet.center.zoom;
 			angular.extend( $scope.tag.leaflet.center, center );
-			$timeout( function () {
+			// $timeout( function () {
 				$scope.tag.leaflet.markers[markerName].focus = true;
-			}, 1000 );
+			// }, 1000 );
 		}
 		console.log( 'focusDateo', idx, $scope.tag.leaflet.markers[markerName].focus );
 	}

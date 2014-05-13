@@ -10,6 +10,7 @@ angular.module('dateaWebApp')
 , 'config'
 , 'Api'
 , 'datearModalGivens'
+, '$timeout'
 // , 'leafletEvents'
 , function (
   $scope
@@ -20,6 +21,7 @@ angular.module('dateaWebApp')
 , config
 , Api
 , datearModalGivens
+, $timeout
 // , leafletEvents
 ) {
 	var headers
@@ -40,7 +42,7 @@ $scope.flow                = {};
 $scope.datear.selectedTags = [];
 $scope.alerts = [];
 
-$scope.$on( 'leafletDirectiveMarker.dragend', function ( event ){
+$scope.$on( 'leafletDirectiveMarker.dragend', function ( event ) {
 	if ( $scope.datear.leaflet.center.zoom <= 16 ) {
 		$scope.datear.leaflet.center.lat  = $scope.datear.leaflet.markers.draggy.lat;
 		$scope.datear.leaflet.center.lng  = $scope.datear.leaflet.markers.draggy.lng;
@@ -79,6 +81,26 @@ onGeolocationError = function ( reason ) {
 
 	angular.extend( $scope.datear.leaflet, leaflet );
 }
+
+$scope.$on( 'leafletDirectiveMap.click', function ( event, args ) {
+	console.log( 'leafletDirectiveMap.click' );
+	var leafEvent = args.leafletEvent
+	  , newDraggy = {}
+	  ;
+
+	newDraggy = { lat : leafEvent.latlng.lat
+	            , lng : leafEvent.latlng.lng
+	            , draggable : true
+	            }
+
+	angular.extend( $scope.datear.leaflet.markers.draggy, newDraggy );
+
+	if ( $scope.datear.leaflet.center.zoom <= 16 ) {
+		$scope.datear.leaflet.center.lat  = $scope.datear.leaflet.markers.draggy.lat;
+		$scope.datear.leaflet.center.lng  = $scope.datear.leaflet.markers.draggy.lng;
+		$scope.datear.leaflet.center.zoom = $scope.datear.leaflet.center.zoom + 1;
+	}
+} );
 
 $scope.closeAlert = function ( index ) {
 	$scope.alerts.splice(index, 1);
