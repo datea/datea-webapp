@@ -70,6 +70,8 @@ angular
 	                }
 	, campaign : { mapZoomFocus : 15 }
 	, dashboard : { defaultZoom : 14 }
+	, regex : { email: /^([a-zA-Z0-9_\.\-])+\@(([a-zA-Z0-9\-])+\.)+([a-zA-Z0-9]{2,4})+$/
+	          , text : /^([a-záéíóúñÑÁÉÍÓÚA-Z \-])+$/}
 	}
 );
 

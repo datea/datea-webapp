@@ -1,4 +1,4 @@
-<div class="tag-holder ff1">
+<div class="tag-holder ff1" ng-hide="flow.notFound">
 	<div class="tag-card">
 		<h2>#{{tag.tag}}</h2>
 		<button class="btn datea-btn" ng-show="tag.followable" ng-click="tag.followTag()">+seguir</button>
@@ -83,4 +83,6 @@
 			</tab>
 		</tabset>
 	</div>
+</div>
+<div class="not-found" ng-if="flow.notFound" ng-include="'views/notFound.html'" ng-hide="!flow.notFound">
 </div>

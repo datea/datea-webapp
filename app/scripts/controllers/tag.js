@@ -52,6 +52,9 @@ angular.module('dateaWebApp')
 	$scope.tag.loading.leaflet = true;
 	$scope.tag.loading.dateos  = true;
 
+	$scope.flow             = {};
+	$scope.flow.notFound    = false;
+
 	isUserFollowing = function () {
 		return !!~User.data.tags_followed.map( function ( t ) { return t.id; } ).indexOf( $scope.tag.id );
 	}
@@ -72,14 +75,23 @@ angular.module('dateaWebApp')
 		Api.tag
 		.getTags( { tag: $routeParams.tagName } )
 		.then( function ( response ) {
-			console.log( 'buildTag', response );
-			angular.extend($scope.tag, response.objects[0]);
-			$scope.tag.followable = !isUserFollowing();
-			console.log('getTags', $scope.tag );
-			buildDateos();
-			buildDateosWithImages();
+			if ( response.objects[0] ) {
+				console.log( 'buildTag', response );
+				angular.extend($scope.tag, response.objects[0]);
+				$scope.tag.followable = !isUserFollowing();
+				console.log('getTags', $scope.tag );
+				buildDateos();
+				buildDateosWithImages();
+			} else {
+				$scope.flow.notFound = true;
+			}
 		}, function ( reason ) {
 			console.log( reason );
+			if ( reason.status === 404 ) {
+				$scope.$apply( function () {
+					$scope.flow.notFound = true;
+				} );
+			}
 		} );
 	}
 

@@ -22,15 +22,11 @@ angular.module( 'dateaWebApp'
 , $httpProvider
 ) {
 
-	// var fbAppId = '240185656082013';
-	// var fbAppId = '203191529863567';
-
 	$httpProvider.defaults.useXDomain = true;
 	delete $httpProvider.defaults.headers.common['X-Requested-With'];
 	$httpProvider.defaults.headers.patch = {
 	  'Content-Type': 'application/json;charset=utf-8'
 	}
-	// FacebookProvider.init( fbAppId );
 	OAuth.initialize('rT1wbk04eERCkSCMnA7vvdm5UcY');
 
 	$routeProvider
@@ -43,6 +39,10 @@ angular.module( 'dateaWebApp'
 	    , controller  : 'SignupCtrl'
 	    } )
 	.when( '/signup'
+	  , { templateUrl : 'views/signupForm.html'
+	    , controller  : 'SignupformCtrl'
+	    } )
+	.when( '/crear-cuenta'
 	  , { templateUrl : 'views/signupForm.html'
 	    , controller  : 'SignupformCtrl'
 	    } )
@@ -79,9 +79,9 @@ angular.module( 'dateaWebApp'
 	    , controller: 'TagCtrl'
 	    } )
 	.when( '/:username/:campaignName'
-	, { templateUrl: 'views/campaign.html'
-	  , controller: 'CampaignCtrl'
-	  } )
+	  , { templateUrl: 'views/campaign.html'
+	    , controller: 'CampaignCtrl'
+	    } )
 	.when( '/:username'
 	  , { templateUrl: 'views/profile.html'
 	    , controller : 'ProfileCtrl'

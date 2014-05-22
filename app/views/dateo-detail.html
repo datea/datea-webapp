@@ -1,4 +1,4 @@
-<div class="dateo-holder">
+<div class="dateo-holder" ng-hide="flow.notFound">
 	<div class="user-holder">
 		<div class="part part-1 img-holder">
 			<img ng-show="dateo.user" ng-src="{{dateo.user.image_small | imgFromApi}}" alt="{{dateo.user.username}}">
@@ -82,4 +82,6 @@
 		</div>
 	</div>
 	<span ng-show="dateo.message">{{dateo.message}}</span>
+</div>
+<div class="not-found-holder" ng-if="flow.notFound" ng-include="'views/notFound.html'" ng-hide="!flow.notFound">
 </div>

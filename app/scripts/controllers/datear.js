@@ -96,9 +96,9 @@ $scope.$on( 'leafletDirectiveMap.click', function ( event, args ) {
 	angular.extend( $scope.datear.leaflet.markers.draggy, newDraggy );
 
 	if ( $scope.datear.leaflet.center.zoom <= 16 ) {
+		$scope.datear.leaflet.center.zoom = $scope.datear.leaflet.center.zoom + 1;
 		$scope.datear.leaflet.center.lat  = $scope.datear.leaflet.markers.draggy.lat;
 		$scope.datear.leaflet.center.lng  = $scope.datear.leaflet.markers.draggy.lng;
-		$scope.datear.leaflet.center.zoom = $scope.datear.leaflet.center.zoom + 1;
 	}
 } );
 

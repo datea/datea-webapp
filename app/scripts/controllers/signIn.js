@@ -19,10 +19,10 @@ angular.module( 'dateaWebApp' )
 	var ls = localStorageService;
 
 	State.isLanding = false;
-	$scope.auth = {};
-	$scope.flow = {};
-	$scope.reset = {};
-	$scope.nav = {};
+	$scope.auth     = {};
+	$scope.flow     = {};
+	$scope.reset    = {};
+	$scope.nav      = {};
 
 	$scope.nav.visible = true;
 

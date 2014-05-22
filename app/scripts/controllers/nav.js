@@ -67,6 +67,7 @@ console.log( 'updateUserDataFromApi', 'status === 0' );
 		$scope.nav.visible = User.isSignedIn();
 		if ( $location.path() === '/signin'
 		|| $location.path() === '/signup'
+		|| $location.path() === '/crear-cuenta'
 		|| $location.path() === '/registrate' ) {
 			$scope.nav.visible = true;
 		}

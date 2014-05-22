@@ -38,6 +38,8 @@ angular.module('dateaWebApp')
 	$scope.targetUser.history = [];
 	$scope.paginationCampaigns = {};
 	$scope.paginationDateos = {};
+	$scope.flow = {};
+	$scope.flow.notFound = true;
 
 	buildUserFollows = function () {
 		Api.tag
@@ -122,8 +124,19 @@ angular.module('dateaWebApp')
 			console.log( 'user info', response);
 			angular.extend($scope.targetUser, response);
 			$scope.targetUser.isSameAsUser = $scope.targetUser.username === User.data.username;
+			$scope.flow.notFound = false;
+			buildUserDateos();
+			buildUserCampaigns();
+			buildActivityLog();
+			buildUserFollows();
 		}, function ( reason ) {
-			console.log( reason );
+			console.log( 'user error reason:', reason );
+			if ( reason.status === 404 ) {
+				$scope.$apply( function () {
+					$scope.flow.notFound = true;
+				} );
+				console.log( 'usuario no encontrado' );
+			}
 		} );
 	}
 
@@ -157,10 +170,6 @@ angular.module('dateaWebApp')
 
 	if ( $routeParams.username ) {
 		buildUserInfo();
-		buildUserDateos();
-		buildUserCampaigns();
-		buildActivityLog();
-		buildUserFollows();
 	}
 
 } ] );

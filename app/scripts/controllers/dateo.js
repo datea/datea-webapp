@@ -34,6 +34,8 @@ angular.module('dateaWebApp')
 	$scope.dateo.form        = {};
 	$scope.dateo.leaflet     = {};
 	$scope.dateo.messageNext = '';
+	$scope.flow              = {};
+	$scope.flow.notFound     = true;
 
 	$scope.dateo.isUserSignedIn = User.isSignedIn();
 
@@ -56,6 +58,7 @@ angular.module('dateaWebApp')
 		var leaflet = {};
 		if( response.objects[0] ) {
 			dateo   = response.objects[0];
+			$scope.flow.notFound = false;
 			leaflet.center = { lat  : dateo.position.coordinates[1]
 			                 , lng  : dateo.position.coordinates[0]
 			                 , zoom : 14
@@ -71,7 +74,7 @@ angular.module('dateaWebApp')
 			hasUserVoted();
 			console.log( 'buildDateo', dateo );
 		} else {
-			$scope.dateo.message = 'error no encontrado';
+			$scope.flow.notFound = true;
 		}
 	}
 
@@ -167,7 +170,14 @@ angular.module('dateaWebApp')
 			{ user : $routeParams.username
 			, id   : +$routeParams.dateoId
 			} )
-			.then( buildDateo );
+			.then( buildDateo, function ( reason ) {
+				if ( reason.status === 404 ) {
+					$scope.$apply( function () {
+						$scope.flow.notFound = true;
+					} );
+					console.log( 'usuario no encontrado' );
+				}
+			} );
 			angular.extend( $scope.dateo.leaflet, config.defaultMap );
 	}
 

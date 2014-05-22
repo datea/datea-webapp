@@ -1,4 +1,4 @@
-<div class="campaign-holder ff1">
+<div class="campaign-holder ff1" ng-hide="flow.notFound">
 	<div class="campaign-card" bg-from-api="{{campaign.image.image}}">
 		<div class="part part-1">
 			<h1>{{campaign.name}}</h1>
@@ -137,4 +137,6 @@
 			</div>
 		</div>
 	</div>
+</div>
+<div class="not-found" ng-if="flow.notFound" ng-include="'views/notFound.html'" ng-hide="!flow.notFound">
 </div>

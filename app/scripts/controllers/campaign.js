@@ -42,6 +42,8 @@ angular.module('dateaWebApp')
 	$scope.campaign         = {};
 	$scope.campaign.leaflet = {};
 	$scope.campaign.dateos  = {};
+	$scope.flow             = {};
+	$scope.flow.notFound    = false;
 
 	$scope.campaign.loading = {};
 	$scope.campaign.loading.leaflet = true;
@@ -126,18 +128,28 @@ angular.module('dateaWebApp')
 		Api.campaign
 		.getCampaigns( campaignGivens )
 		.then( function ( response ) {
-			angular.extend( $scope.campaign, response.objects[0] );
-			$scope.campaign.followable = !$scope.campaign.isUserFollowing();
-			console.log( '$scope.campaign', $scope.campaign )
-			$scope.campaign.shareableUrl = config.app.url
-				                             + $scope.campaign.user.username + '/'
-			                               + $scope.campaign.main_tag.tag;
-			buildDateos();
-			buildDateosWithImages();
-			buildFollowersList();
-			buildRelatedCampaigns();
+			if ( response.objects[0] ) {
+				angular.extend( $scope.campaign, response.objects[0] );
+				$scope.campaign.followable = !$scope.campaign.isUserFollowing();
+				console.log( '$scope.campaign', $scope.campaign )
+				$scope.campaign.shareableUrl = config.app.url
+					                             + $scope.campaign.user.username + '/'
+				                               + $scope.campaign.main_tag.tag;
+				$scope.flow.notFound = false;
+				buildDateos();
+				buildDateosWithImages();
+				buildFollowersList();
+				buildRelatedCampaigns();
+			} else {
+				$scope.flow.notFound = true;
+			}
 		}, function ( reason ) {
 			console.log( reason );
+			if ( reason.status === 404 ) {
+				$scope.$apply( function () {
+					$scope.flow.notFound = true;
+				} );
+			}
 		} );
 
 	}
