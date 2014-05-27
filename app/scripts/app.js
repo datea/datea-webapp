@@ -74,6 +74,10 @@ angular.module( 'dateaWebApp'
 	  , { templateUrl: 'views/campaign-dashboard.html'
 	    , controller: 'CampaignDashboardCtrl'
 	    } )
+	.when( '/crear-iniciativa'
+	  , { templateUrl: 'views/campaign-dashboard.html'
+	    , controller: 'CampaignDashboardCtrl'
+	    } )
 	.when( '/tag/:tagName'
 	  , { templateUrl: 'views/tag.html'
 	    , controller: 'TagCtrl'

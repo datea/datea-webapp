@@ -78,7 +78,7 @@ angular.module('dateaWebApp')
 			if ( response.objects[0] ) {
 				console.log( 'buildTag', response );
 				angular.extend($scope.tag, response.objects[0]);
-				$scope.tag.followable = !isUserFollowing();
+				$scope.tag.followable = $scope.tag.isUserSignedIn && !isUserFollowing();
 				console.log('getTags', $scope.tag );
 				buildDateos();
 				buildDateosWithImages();
@@ -197,15 +197,19 @@ angular.module('dateaWebApp')
 	}
 
 	$scope.tag.datear = function () {
-		$modal.open( { templateUrl : 'views/datear.html'
-		             , controller  : 'DatearCtrl'
-		             , windowClass : 'datear-modal'
-		             , resolve     : {
-		                datearModalGivens : function () {
-		                   return { defaultTag : $scope.tag.tag };
-		                 }
-		               }
-		             } );
+		if ( $scope.tag.isUserSignedIn  ) {
+			$modal.open( { templateUrl : 'views/datear.html'
+			             , controller  : 'DatearCtrl'
+			             , windowClass : 'datear-modal'
+			             , resolve     : {
+			                datearModalGivens : function () {
+			                   return { defaultTag : $scope.tag.tag };
+			                 }
+			               }
+			             } );
+		} else {
+			$location.path('/registrate');
+		}
 	}
 
 	$scope.tag.focusDateo = function ( idx ) {

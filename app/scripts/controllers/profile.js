@@ -10,6 +10,7 @@ angular.module('dateaWebApp')
   , '$interpolate'
   , 'ActivityUrl'
   , '$modal'
+  , '$location'
 , function (
     $scope
   , User
@@ -19,6 +20,7 @@ angular.module('dateaWebApp')
   , $interpolate
   , ActivityUrl
   , $modal
+  , $location
 ) {
 
 	var sup

@@ -66,9 +66,11 @@ console.log( 'updateUserDataFromApi', 'status === 0' );
 		User.updateUserDataFromStorage();
 		$scope.nav.visible = User.isSignedIn();
 		if ( $location.path() === '/signin'
-		|| $location.path() === '/signup'
-		|| $location.path() === '/crear-cuenta'
-		|| $location.path() === '/registrate' ) {
+		  || $location.path() === '/signup'
+		  || $location.path() === '/crear-cuenta'
+		  || $location.path() === '/registrate'
+		  || $location.path() !== '/'
+		) {
 			$scope.nav.visible = true;
 		}
 		$scope.user = User.data;

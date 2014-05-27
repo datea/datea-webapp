@@ -86,6 +86,14 @@ angular.module( 'dateaWebApp' )
 	$scope.homeSI.loading.leaflet   = true;
 	$scope.homeSI.loading.campaigns = true;
 
+	// $scope.homeSI.leaflet = { bounds   : [ [ -12.0735, -77.0336 ], [ -12.0829, -77.0467 ] ]
+	//                , center   : { lat: -12.05, lng: -77.06, zoom: 13 }
+	//                , defaults : { scrollWheelZoom: false }
+	//                , markers  : {}
+	//                }
+
+	$scope.homeSI.leaflet = config.defaultMap;
+
 	buildFollowingTags = function () {
 		Api.tag
 		.getTags( { followed: User.data.id } )
@@ -219,11 +227,16 @@ angular.module( 'dateaWebApp' )
 		{ lat: givens && givens.center && givens.center.coords.latitude || User.data.ip_location.latitude || config.defaultMap.center.lat
 		, lng: givens && givens.center && givens.center.coords.longitude || User.data.ip_location.longitude || config.defaultMap.center.lng }
 		) )
-console.log('buildMap bounds', config );
+
 		center.lat = givens && givens.center && givens.center.coords.latitude;
 		center.lng = givens && givens.center && givens.center.coords.longitude;
 
-		map        = config.defaultMap;
+		// map        = config.defaultMap;
+		map        = { bounds   : [ [ -12.0735, -77.0336 ], [ -12.0829, -77.0467 ] ]
+		             , center   : { lat: -12.05, lng: -77.06, zoom: 15 }
+		             , defaults : { scrollWheelZoom: false }
+		             , markers  : {}
+		             }
 		// map.bounds = bounds;
 
 		if ( center.lat && center.lng ) {
@@ -369,7 +382,7 @@ console.log('buildMap bounds', config );
 
 	geolocateAndBuildMap = function ( givens ) {
 		// buildMap( givens );
-		/*no spam*/
+		// no spam
 		geo.getLocation( { timeout:10000 } )
 		.then( function ( data ) {
 			console.log( 'geolocatedCenter', data );
@@ -397,7 +410,7 @@ console.log('buildMap bounds', config );
 
 		map             = config.defaultMap;
 		map.center.zoom = config.homeSI.mapZoomOverride;
-		map.bounds      = leafletBoundsHelpers.createBoundsFromArray( config.defaultMap.bounds );
+		map.bounds      = leafletBoundsHelpers.createBoundsFromArray( [ [ -12.0735, -77.0336 ], [ -12.0829, -77.0467 ] ] );
 		// map.center      = {};
 		angular.extend( $scope.homeSI.leaflet, map );
 
@@ -565,7 +578,12 @@ console.log('buildMap bounds', config );
 	$scope.$on( 'leafletDirectiveMarker.click', function ( ev, args ) {
 		console.log( 'focus event', args.markerName );
 		lastMarkerWithFocus = args.markerName;
-	} )
+	} );
+
+	$scope.$on('$destroy', function () {
+		console.log( 'destroy' );
+		$scope.homeSI = {};
+	});
 
 	$rootScope.$on( 'user:signedIn', function () {
 		onSignIn();
