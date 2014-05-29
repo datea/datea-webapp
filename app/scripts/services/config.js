@@ -70,6 +70,10 @@ angular
 	                }
 	, campaign : { mapZoomFocus : 15 }
 	, dashboard : { defaultZoom : 14 }
+	, signupForm : { validationMsgs : { usernameExists : 'El nombre de usuario ya ha sido usado.'
+	                                  , http400        : 'El nombre de usuario o correo ya está siendo usado.'} }
+	, regex : { email: /^([a-zA-Z0-9_\.\-])+\@(([a-zA-Z0-9\-])+\.)+([a-zA-Z0-9]{2,4})+$/
+	          , text : /^([a-záéíóúñÑÁÉÍÓÚA-Z \-])+$/}
 	}
 );
 

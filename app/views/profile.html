@@ -1,4 +1,4 @@
-<div class="profile-holder">
+<div class="profile-holder" ng-hide="flow.notFound">
 	<div class="well profile-card" bg-from-api="{{targetUser.bg_image}}">
 		<div class="part user-img" bg-from-api="{{ targetUser.image_large }}"></div>
 		<div class="part ff1 user-extra">
@@ -86,4 +86,6 @@
 			</ul>
 		</div>
 	</div>
+</div>
+<div class="not-found" ng-if="flow.notFound" ng-include="'views/notFound.html'" ng-hide="!flow.notFound">
 </div>

@@ -159,3 +159,30 @@
 	background: @color-3;
 	cursor: pointer;
 }
+
+// Bstrapless fix
+
+.has-feedback {
+	position: relative;
+}
+
+.has-feedback .form-control-feedback {
+	position: absolute;
+	top: 25px;
+	right: 0;
+	display: block!important;
+	width: 34px;
+	height: 34px;
+	line-height: 34px;
+	text-align: center;
+}
+
+.has-success .form-control-feedback {
+	color: #3c763d;
+}
+.has-error .form-control-feedback {
+	color: #a94442;
+}
+.has-warning .form-control-feedback {
+	color: #8a6d3b;
+}

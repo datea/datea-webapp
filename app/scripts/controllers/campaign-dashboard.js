@@ -7,12 +7,16 @@ angular.module( 'dateaWebApp' )
   , 'geolocation'
   , 'config'
   , 'leafletData'
+  , 'User'
+  , '$location'
 , function (
     $scope
   , Api
   , geo
   , config
   , leafletData
+  , User
+  , $location
 ) {
 
 	var sup
@@ -33,6 +37,8 @@ angular.module( 'dateaWebApp' )
 	$scope.flow.categories;
 
 	$scope.newCampaign.leaflet = {};
+
+	User.isSignedIn() || $location.path( '/' );
 
 onGeolocation = function ( data ) {
 	var leaflet = {};

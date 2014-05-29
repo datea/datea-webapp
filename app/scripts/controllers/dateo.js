@@ -10,6 +10,8 @@ angular.module('dateaWebApp')
   , '$modal'
   , '$window'
   , 'User'
+  , 'leafletData'
+  , '$timeout'
 , function (
     $scope
   , $routeParams
@@ -19,6 +21,8 @@ angular.module('dateaWebApp')
   , $modal
   , $window
   , User
+  , leafletData
+  , $timeout
  ) {
 	var dateos
 	  , dateosId = []
@@ -34,6 +38,8 @@ angular.module('dateaWebApp')
 	$scope.dateo.form        = {};
 	$scope.dateo.leaflet     = {};
 	$scope.dateo.messageNext = '';
+	$scope.flow              = {};
+	$scope.flow.notFound     = true;
 
 	$scope.dateo.isUserSignedIn = User.isSignedIn();
 
@@ -56,6 +62,7 @@ angular.module('dateaWebApp')
 		var leaflet = {};
 		if( response.objects[0] ) {
 			dateo   = response.objects[0];
+			$scope.flow.notFound = false;
 			leaflet.center = { lat  : dateo.position.coordinates[1]
 			                 , lng  : dateo.position.coordinates[0]
 			                 , zoom : 14
@@ -69,9 +76,14 @@ angular.module('dateaWebApp')
 			angular.extend( $scope.dateo.leaflet, leaflet );
 			$scope.dateo.shareableUrl = config.app.url + $scope.dateo.user.username + '/dateos/' + $scope.dateo.id;
 			hasUserVoted();
+			leafletData.getMap('leafletDateo').then( function ( map ) {
+				$timeout( function () {
+					map.invalidateSize();
+				}, 200 );
+			});
 			console.log( 'buildDateo', dateo );
 		} else {
-			$scope.dateo.message = 'error no encontrado';
+			$scope.flow.notFound = true;
 		}
 	}
 
@@ -124,19 +136,24 @@ angular.module('dateaWebApp')
 	}
 
 	$scope.dateo.doVote = function () {
-		Api.vote
-		.doVote( { content_type: 'dateo', object_id: $scope.dateo.id } )
-		.then( function ( response ) {
-			console.log( 'doVote', response );
-			Api.dateo
-			.getDateoByUsernameAndDateoId(
-			{ user : $routeParams.username
-			, id   : +$routeParams.dateoId
-			} )
-			.then( buildDateo );
-		}, function ( reason ) {
-			console.log( reason );
-		} );
+		if ( $scope.dateo.isUserSignedIn ) {
+			Api.vote
+			.doVote( { content_type: 'dateo', object_id: $scope.dateo.id } )
+			.then( function ( response ) {
+				console.log( 'doVote', response );
+				Api.dateo
+				.getDateoByUsernameAndDateoId(
+				{ user : $routeParams.username
+				, id   : +$routeParams.dateoId
+				} )
+				.then( buildDateo );
+			}, function ( reason ) {
+				console.log( reason );
+			} );
+		} else {
+			$location.path('/registrate');
+		}
+
 	}
 
 	$scope.dateo.share = function () {
@@ -167,7 +184,14 @@ angular.module('dateaWebApp')
 			{ user : $routeParams.username
 			, id   : +$routeParams.dateoId
 			} )
-			.then( buildDateo );
+			.then( buildDateo, function ( reason ) {
+				if ( reason.status === 404 ) {
+					$scope.$apply( function () {
+						$scope.flow.notFound = true;
+					} );
+					console.log( 'usuario no encontrado' );
+				}
+			} );
 			angular.extend( $scope.dateo.leaflet, config.defaultMap );
 	}
 

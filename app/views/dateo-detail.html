@@ -1,4 +1,4 @@
-<div class="dateo-holder">
+<div class="dateo-holder" ng-hide="flow.notFound">
 	<div class="user-holder">
 		<div class="part part-1 img-holder">
 			<img ng-show="dateo.user" ng-src="{{dateo.user.image_small | imgFromApi}}" alt="{{dateo.user.username}}">
@@ -9,7 +9,7 @@
 			<p class="ff1">el {{dateo.modified | date:'fullDate'}}</p>
 		</div>
 		<button class="btn datea-btn" ng-disabled="dateo.hasVoted" ng-click="dateo.doVote()">apoyar</button>
-		<div class="next-holder pull-right">
+		<div class="next-holder pull-right" ng-show="dateo.next_by_user">
 			<a href ng-click="dateo.nextDateo()">ver {{ dateo.messageNext }} dateo de {{dateo.user.username}} &nbsp; ▶</a>
 		</div>
 	</div>
@@ -73,7 +73,7 @@
 		</div>
 		<div class="part part-2 map-holder" ng-show="!dateo.message">
 			<h3>Ubicación</h3>
-			<leaflet defaults="dateo.leaflet.defaults" markers="dateo.leaflet.markers" center="dateo.leaflet.center" height="260px" width="425px"></leaflet>
+			<leaflet id="leafletDateo" defaults="dateo.leaflet.defaults" markers="dateo.leaflet.markers" center="dateo.leaflet.center" height="260px" width="425px"></leaflet>
 			<p>{{dateo.address || ''}}</p>
 			<p>{{dateo.admin_level1}} > {{dateo.admin_level2}} > {{dateo.admin_level3}}</p>
 			<hr>
@@ -82,4 +82,6 @@
 		</div>
 	</div>
 	<span ng-show="dateo.message">{{dateo.message}}</span>
+</div>
+<div class="not-found-holder" ng-if="flow.notFound" ng-include="'views/notFound.html'" ng-hide="!flow.notFound">
 </div>

@@ -57,7 +57,7 @@ angular.module('dateaWebApp')
 	}
 
 	$scope.flow.withEmail = function () {
-		$location.path('/signup');
+		$location.path('/crear-cuenta');
 	}
 
 } ] );

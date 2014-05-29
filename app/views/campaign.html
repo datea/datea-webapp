@@ -1,4 +1,4 @@
-<div class="campaign-holder ff1">
+<div class="campaign-holder ff1" ng-hide="flow.notFound">
 	<div class="campaign-card" bg-from-api="{{campaign.image.image}}">
 		<div class="part part-1">
 			<h1>{{campaign.name}}</h1>
@@ -7,7 +7,7 @@
 			<span class="dateo-count">{{campaign.dateo_count}} <ng-pluralize count="campaign.dateo_count" when="{'one':'dateo','other':'dateos'}"></ng-pluralize></span>
 			<span class="follow-count">{{campaign.follow_count}} <ng-pluralize count="campaign.follow_count" when="{'one':'seguidor','other':'seguidores'}"></ng-pluralize></span>
 			<button class="btn datea-btn" ng-click="campaign.followTag()" ng-show="campaign.followable">+seguir</button>
-			<button class="btn datea-btn" ng-click="campaign.unfollowTag()" ng-show="!campaign.followable">x no seguir</button>
+			<button class="btn datea-btn" ng-click="campaign.unfollowTag()" ng-show="!campaign.followable && $scope.campaign.isUserSignedIn">x no seguir</button>
 		</div>
 		<div class="part part-2">
 			<button class="btn datea-datear-btn" ng-click="campaign.datear()">Datea <i class="glyphicon glyphicon-map-marker"></i></button><span class="time-left" ng-show="campaign.end_date">{{campaign._timeLeft | date:time }}</span>
@@ -128,7 +128,7 @@
 					</div>
 					<button class="btn datea-btn datea-btn-xs see-more-peers">ver todos</button>
 					<h5>iniciativas relacionadas</h5>
-					<span class="tags" ng-repeat="tag in campaign.secondary_tags">#{{tag.tag}}</span>
+					<span class="tags" ng-repeat="tag in campaign.relatedCampaigns">#{{tag.tag}}</span>
 				</div>
 				<div class="part part-2">
 					<img src="static/images/campaign/btn-print-report.png" alt="imprimir reporte" ng-click="campaign.print()">
@@ -137,4 +137,6 @@
 			</div>
 		</div>
 	</div>
+</div>
+<div class="not-found" ng-if="flow.notFound" ng-include="'views/notFound.html'" ng-hide="!flow.notFound">
 </div>

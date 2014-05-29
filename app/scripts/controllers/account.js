@@ -24,6 +24,8 @@ angular.module('dateaWebApp')
 	  , updateUserDataFromApi
 	  ;
 
+	User.isSignedIn() || $location.path( '/' );
+
 	$scope.flow    = {};
 	$scope.account = User.data;
 	$scope.alerts  = [];

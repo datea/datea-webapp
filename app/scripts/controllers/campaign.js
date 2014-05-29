@@ -13,6 +13,7 @@ angular.module('dateaWebApp')
   , 'User'
   , '$window'
   , '$modal'
+  , '$location'
 , function (
     $scope
   , Api
@@ -25,6 +26,7 @@ angular.module('dateaWebApp')
   , User
   , $window
   , $modal
+  , $location
 ) {
 
 	var sessionMarkersIdx = 0
@@ -42,11 +44,14 @@ angular.module('dateaWebApp')
 	$scope.campaign         = {};
 	$scope.campaign.leaflet = {};
 	$scope.campaign.dateos  = {};
+	$scope.flow             = {};
+	$scope.flow.notFound    = false;
 
 	$scope.campaign.loading = {};
 	$scope.campaign.loading.leaflet = true;
 	$scope.campaign.loading.dateos  = true;
 
+	$scope.campaign.isUserSignedIn = User.isSignedIn();
 
 	$scope.campaign.selectedMarker = 'last';
 
@@ -56,6 +61,7 @@ angular.module('dateaWebApp')
 		Api.campaign
 		.getCampaigns( {tags : tags} )
 		.then( function ( response ) {
+			$scope.campaign.relatedCampaigns = response.objects[0];
 			console.log( 'Api campaign', response );
 		}, function ( reason ) {
 			console.log( reason );
@@ -81,6 +87,7 @@ angular.module('dateaWebApp')
 			  lat       : value.position.coordinates[1]
 			, lng       : value.position.coordinates[0]
 			, group     : value.country
+			// , group     : $scope.campaign.main_tag.tag
 			// , group     : value.admin_level3
 			, label     : { message: '#' + value.tags[0].tag }
 			, message   : $interpolate( config.marker )(value)
@@ -88,6 +95,7 @@ angular.module('dateaWebApp')
 			, focus     : false
 			, _id       : value.id
 			};
+			// console.log( ':: group', $scope.campaign.main_tag.tag );
 			sessionMarkersIdx += 1;
 			markersBounds.push( [ value.position.coordinates[1], value.position.coordinates[0] ] );
 		} );
@@ -126,18 +134,28 @@ angular.module('dateaWebApp')
 		Api.campaign
 		.getCampaigns( campaignGivens )
 		.then( function ( response ) {
-			angular.extend( $scope.campaign, response.objects[0] );
-			$scope.campaign.followable = !$scope.campaign.isUserFollowing();
-			console.log( '$scope.campaign', $scope.campaign )
-			$scope.campaign.shareableUrl = config.app.url
-				                             + $scope.campaign.user.username + '/'
-			                               + $scope.campaign.main_tag.tag;
-			buildDateos();
-			buildDateosWithImages();
-			buildFollowersList();
-			buildRelatedCampaigns();
+			if ( response.objects[0] ) {
+				angular.extend( $scope.campaign, response.objects[0] );
+				$scope.campaign.followable = $scope.campaign.isUserSignedIn && !$scope.campaign.isUserFollowing();
+				console.log( ':: $scope.campaign', $scope.campaign )
+				$scope.campaign.shareableUrl = config.app.url
+					                             + $scope.campaign.user.username + '/'
+				                               + $scope.campaign.main_tag.tag;
+				$scope.flow.notFound = false;
+				buildDateos();
+				buildDateosWithImages();
+				buildFollowersList();
+				buildRelatedCampaigns();
+			} else {
+				$scope.flow.notFound = true;
+			}
 		}, function ( reason ) {
 			console.log( reason );
+			if ( reason.status === 404 ) {
+				$scope.$apply( function () {
+					$scope.flow.notFound = true;
+				} );
+			}
 		} );
 
 	}
@@ -252,17 +270,23 @@ angular.module('dateaWebApp')
 	$scope.campaign.followTag = function () {
 		var id = $scope.campaign.main_tag.id;
 		console.log( 'followTag' );
-		if ( $scope.campaign.followable ) {
-			$scope.campaign.followable = false;
-			Api.follow
-			.doFollow( { content_type: 'tag', object_id: id } )
-			.then( function ( response ) {
-				User.updateUserDataFromApi();
-			}, function ( reason ) {
-				$scope.campaign.followable = true;
-				console.log( reason );
-			} );
+
+		if ( $scope.campaign.isUserSignedIn ) {
+			if ( $scope.campaign.followable ) {
+				$scope.campaign.followable = false;
+				Api.follow
+				.doFollow( { content_type: 'tag', object_id: id } )
+				.then( function ( response ) {
+					User.updateUserDataFromApi();
+				}, function ( reason ) {
+					$scope.campaign.followable = true;
+					console.log( reason );
+				} );
+			}
+		} else {
+			$location.path('/registrate');
 		}
+
 	}
 
 	$scope.campaign.unfollowTag = function () {
@@ -285,17 +309,21 @@ angular.module('dateaWebApp')
 	}
 
 	$scope.campaign.datear = function () {
-		$modal.open( { templateUrl : 'views/datear.html'
-		             , controller  : 'DatearCtrl'
-		             , windowClass : 'datear-modal'
-		             , resolve     : {
-		                datearModalGivens : function () {
-		                  return { defaultTag    : $scope.campaign.main_tag.tag
-		                         , suggestedTags : $scope.campaign.secondary_tags
-		                         };
-		                 }
-		               }
-		             } );
+		if ( $scope.campaign.isUserSignedIn ) {
+			$modal.open( { templateUrl : 'views/datear.html'
+			             , controller  : 'DatearCtrl'
+			             , windowClass : 'datear-modal'
+			             , resolve     : {
+			                datearModalGivens : function () {
+			                  return { defaultTag    : $scope.campaign.main_tag.tag
+			                         , suggestedTags : $scope.campaign.secondary_tags
+			                         };
+			                 }
+			               }
+			             } );
+		} else {
+			$location.path('/registrate');
+		}
 	}
 
 	$scope.campaign.share = function () {
@@ -313,7 +341,18 @@ angular.module('dateaWebApp')
 
 	if ( $routeParams.username && $routeParams.campaignName ) {
 		buildCampaign();
+		// $scope.campaign.leaflet = { bounds   : [ [ -12.0735, -77.0336 ], [ -12.0829, -77.0467 ] ]
+	 //               , center   : { lat: -12.05, lng: -77.06, zoom: 13 }
+	 //               , defaults : { scrollWheelZoom: false }
+	 //               , markers  : {}
+	 //               }
 		angular.extend( $scope.campaign.leaflet, config.defaultMap );
 	}
+
+	$scope.$on('$destroy', function () {
+		console.log( 'destroy' );
+		markersBounds   = [];
+		$scope.campaign = {};
+	});
 
 } ] );
