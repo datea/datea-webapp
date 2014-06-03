@@ -31,6 +31,7 @@ angular.module('dateaWebApp')
 
 	var sessionMarkersIdx = 0
 	  , markersBounds     = []
+	  , defaultMap
 	  // fn declarations
 	  , buildCampaign
 	  , buildDateos
@@ -86,8 +87,8 @@ angular.module('dateaWebApp')
 			markers['marker'+sessionMarkersIdx] = {
 			  lat       : value.position.coordinates[1]
 			, lng       : value.position.coordinates[0]
-			, group     : value.country
-			// , group     : $scope.campaign.main_tag.tag
+			// , group     : value.country
+			, group     : $scope.campaign.main_tag.tag
 			// , group     : value.admin_level3
 			, label     : { message: '#' + value.tags[0].tag }
 			, message   : $interpolate( config.marker )(value)
@@ -137,7 +138,6 @@ angular.module('dateaWebApp')
 			if ( response.objects[0] ) {
 				angular.extend( $scope.campaign, response.objects[0] );
 				$scope.campaign.followable = $scope.campaign.isUserSignedIn && !$scope.campaign.isUserFollowing();
-				console.log( ':: $scope.campaign', $scope.campaign )
 				$scope.campaign.shareableUrl = config.app.url
 					                             + $scope.campaign.user.username + '/'
 				                               + $scope.campaign.main_tag.tag;
@@ -346,7 +346,9 @@ angular.module('dateaWebApp')
 	 //               , defaults : { scrollWheelZoom: false }
 	 //               , markers  : {}
 	 //               }
-		angular.extend( $scope.campaign.leaflet, config.defaultMap );
+		defaultMap = angular.copy( config.defaultMap );
+		angular.extend( $scope.campaign.leaflet, defaultMap );
+		// console.log( 'EXTEND', angular.extend( $scope.campaign.leaflet, config.defaultMap ) );
 	}
 
 	$scope.$on('$destroy', function () {

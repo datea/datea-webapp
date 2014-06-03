@@ -29,6 +29,7 @@ angular.module('dateaWebApp')
 	var headers
 	  , dateo        = {}
 	  , alertIndexes = {}
+	  , defaultMap
 	  // fn declarations
 	  , onGeolocation
 	  , onGeolocationError
@@ -182,28 +183,46 @@ $scope.$watch( 'flow.dt + flow.timeNow', function () {
 
 $scope.datear.doDatear = function () {
 	var tags = [];
-	$scope.dateo.position = { coordinates : [ $scope.datear.leaflet.markers.draggy.lng, $scope.datear.leaflet.markers.draggy.lat ]
-	                        , type : 'Point'
-	                        }
+	// Tags
 	angular.forEach( $scope.datear.selectedTags, function ( value, key ){
 		tags.push( { 'tag' : value } );
 	});
 	$scope.dateo.tags = tags;
-	$scope.dateo.images = [ { image : { name     : $scope.datear.imgData.name
-	                                  , data_uri : $scope.datear.img
-	                                  }
-	                        , order : 0
+
+	// Position
+	$scope.dateo.position = { coordinates : [ $scope.datear.leaflet.markers.draggy.lng, $scope.datear.leaflet.markers.draggy.lat ]
+	                        , type : 'Point'
 	                        }
-	                      ];
-	// Some validation and then
-	Api.dateo.postDateo( $scope.dateo )
-	.then( function ( response ) {
-		$scope.datear.onFinished = true;
-		$rootScope.$broadcast( 'user:hasDateado' );
+
+	// Images
+	if ( $scope.datear.imgData ) {
+		$scope.dateo.images = [ { image : { name     : $scope.datear.imgData.name
+		                                  , data_uri : $scope.datear.img
+		                                  }
+		                        , order : 0
+		                        }
+		                      ];
 	}
-	, function ( reason ) {
-		console.log( reason )
-	} )
+
+	if ( $scope.dateo.content && $scope.dateo.tags.length ) {
+		Api.dateo.postDateo( $scope.dateo )
+		.then( function ( response ) {
+			$scope.dateo.errorMessage = null;
+			$scope.datear.onFinished  = true;
+			$rootScope.$broadcast( 'user:hasDateado' );
+		} , function ( reason ) {
+			console.log( reason );
+		} )
+	} else {
+		if ( !$scope.dateo.content ) {
+			$scope.dateo.errorMessage = 'Escriba una descripción de su dateo';
+		} else if ( !$scope.dateo.tags.length ) {
+			$scope.dateo.errorMessage = 'Elija una etiqueta';
+		} else {
+			$scope.dateo.errorMessage = 'Hubo un error al datear';
+		}
+	}
+
 };
 
 $scope.datear.cancel = function () {
@@ -234,7 +253,8 @@ $scope.datear.removeTag = function ( idx ) {
 }
 
 // Map defaults
-angular.extend( $scope.datear.leaflet, config.defaultMap );
+defaultMap = angular.copy( config.defaultMap );
+angular.extend( $scope.datear.leaflet, defaultMap );
 if ( datearModalGivens.defaultTag ) {
 	$scope.datear.selectedTags.push( datearModalGivens.defaultTag );
 }

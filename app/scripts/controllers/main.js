@@ -21,6 +21,7 @@ angular.module( 'dateaWebApp' )
   , '$timeout'
   , 'State'
   , 'leafletBoundsHelpers'
+  , '$log'
 , function (
     $scope
   , User
@@ -41,6 +42,7 @@ angular.module( 'dateaWebApp' )
   , $timeout
   , State
   , leafletBoundsHelpers
+  , $log
 ) {
 	var data
 	  , ls = localStorageService
@@ -92,7 +94,7 @@ angular.module( 'dateaWebApp' )
 	//                , markers  : {}
 	//                }
 
-	$scope.homeSI.leaflet = config.defaultMap;
+	$scope.homeSI.leaflet = angular.copy( config.defaultMap );
 
 	buildFollowingTags = function () {
 		Api.tag
@@ -231,12 +233,12 @@ angular.module( 'dateaWebApp' )
 		center.lat = givens && givens.center && givens.center.coords.latitude;
 		center.lng = givens && givens.center && givens.center.coords.longitude;
 
-		// map        = config.defaultMap;
-		map        = { bounds   : [ [ -12.0735, -77.0336 ], [ -12.0829, -77.0467 ] ]
-		             , center   : { lat: -12.05, lng: -77.06, zoom: 15 }
-		             , defaults : { scrollWheelZoom: false }
-		             , markers  : {}
-		             }
+		map        = angular.copy( config.defaultMap );
+		// map        = { bounds   : [ [ -12.0735, -77.0336 ], [ -12.0829, -77.0467 ] ]
+		//              , center   : { lat: -12.05, lng: -77.06, zoom: 15 }
+		//              , defaults : { scrollWheelZoom: false }
+		//              , markers  : {}
+		//              }
 		// map.bounds = bounds;
 
 		if ( center.lat && center.lng ) {
@@ -266,7 +268,6 @@ angular.module( 'dateaWebApp' )
 			dontCheckCenterOutOfBounds = true;
 			dateosGivens.updateCenter  = true;
 		}
-
 		angular.extend( $scope.homeSI.leaflet, map );
 
 		buildMarkers( dateosGivens );
@@ -351,6 +352,7 @@ angular.module( 'dateaWebApp' )
 						markers['marker'+sessionMarkersIdx] = {
 						  lat       : value.position.coordinates[1]
 						, lng       : value.position.coordinates[0]
+						// , group     : value.tag
 						, label     : { message: '#' + value.tags[0].tag }
 						, message   : $interpolate( config.marker )( value )
 						, draggable : false
@@ -398,7 +400,7 @@ angular.module( 'dateaWebApp' )
 		sessionMarkersIdx = 0;
 	}
 
-	onSignIn =function () {
+	onSignIn = function () {
 		var map
 		  , bounds
 		  ;
@@ -408,7 +410,8 @@ angular.module( 'dateaWebApp' )
 		$scope.user                 = User.data;
 		$scope.homeSI.followingTags = User.data.tags_followed;
 
-		map             = config.defaultMap;
+		map               = angular.copy( config.defaultMap );
+		config.defaultMap = map;
 		map.center.zoom = config.homeSI.mapZoomOverride;
 		map.bounds      = leafletBoundsHelpers.createBoundsFromArray( [ [ -12.0735, -77.0336 ], [ -12.0829, -77.0467 ] ] );
 		// map.center      = {};
