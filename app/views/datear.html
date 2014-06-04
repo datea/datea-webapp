@@ -1,77 +1,130 @@
-<div class="datear-modal">
+<div class="datear-modal-content">
 	<div class="modal-header">
 		<button type="button" class="close" data-dismiss="modal" aria-hidden="true" ng-click="datear.cancel()">&times;</button>
-		<h3>¡Datea!</h3>
-		<ol class="breadcrumb datear-breadcrumb">
-			<li class="scroll-title scroll-inactive" scrollto="{pos:1,container:'.modal-body',target:'.modal-scroll-'}"><span class="glyphicon glyphicon-comment"></span></li>
-			<li class="scroll-title scroll-inactive" scrollto="{pos:2,container:'.modal-body',target:'.modal-scroll-'}"><span class="glyphicon glyphicon-map-marker"></span></li>
-			<li class="scroll-title scroll-inactive" scrollto="{pos:3,container:'.modal-body',target:'.modal-scroll-'}"><span class="glyphicon glyphicon-tags"></span></li>
+		<h3 ng-hide="datear.onFinished">¡Datea!</h3>
+		<h3 ng-show="datear.onFinished">¡Gracias!</h3>
+		<ol class="breadcrumb datear-breadcrumb" ng-hide="datear.onFinished">
+			
+			<li class="scroll-title first" du-scrollspy="spy-step1" du-scroll-container="modal-body" offset="30" ng-click="scrollTo($event, 'spy-step1', 30)">
+				<a href="#spy-step1">
+					<span class="glyphicon glyphicon-comment"></span>
+				</a>
+			</li>
+
+			<li class="scroll-title" du-scrollspy="spy-step2" du-scroll-container="modal-body" offset="100" ng-click="scrollTo($event, 'spy-step2', 20)">
+				<a href="#spy-step2">
+					<span class="glyphicon glyphicon-map-marker"></span>
+				</a>
+			</li>
+
+			<li class="scroll-title" du-scrollspy="spy-step3" du-scroll-container="modal-body" offset="300" ng-click="scrollTo($event, 'spy-step3', 100)">
+				<a href="#spy-step3">
+					<span class="glyphicon glyphicon-tags"></span>
+				</a>
+			</li>
+
 		</ol>
-		<alert ng-repeat="alert in alerts" type="alert.type" close="closeAlert($index)">{{alert.msg}}</alert>
+		<alert ng-repeat="alert in alerts" type="{{alert.type}}" close="closeAlert($index)">{{alert.msg}}</alert>
 	</div>
-	<div class="modal-body" scrollspy="{targets:'h4.scroll-section',titles:'li.scroll-title'}">
+
+	<div id="modal-body" class="modal-body" ng-class="{'datea-loading': datear.loading, 'fixed-height': !datear.onFinished }">
+		
 		<div class="datear-form-holder" ng-hide="datear.onFinished">
-			<form class="datear-form" role="form" name="datearform" ng-submit="datear.send()">
-				<h4 class="modal-scroll-1 scroll-section">1. Describe tu dateo</h4>
-				<div class="form-group">
-					<textarea id="message" class="form-control" msd-elastic="\n" rows="3" placeholder="Ingrese el contenido de su dateo" ng-model="dateo.content"></textarea>
-				</div>
-				<div class="parts-holder">
-					<div class="form-group part part-1">
-						<label for="image">Suba una imagen</label>
-						<input type="file" id="image" class="datea-custom-imgUL" fileread="datear.img" filedata="datear.imgData" accept="image/*">
-						<img class="uploaded-img" ng-show="datear.img" ng-src="{{datear.img}}" alt="{{datear.imgData.name}}" width="200px">
+
+			<form class="datear-form" role="form" name="form" ng-submit="datear.send()">
+
+				<div id="spy-step1" class="step">
+				  <div class="step-cover" ng-if="datear.step != 1" ng-click="scrollTo($event, 'spy-step1', 30)"></div>
+					<h4 class="modal-scroll-1 scroll-section">1. Describe tu dateo</h4>
+					<div class="form-group content1">
+						<textarea id="message" class="form-control" msd-elastic="\n" rows="3" placeholder="Ingresa el contenido de su dateo" ng-model="dateo.content"></textarea>
 					</div>
-					<div class="form-group part part-2">
-						<label for="datepicker">Fecha y hora del suceso (opcional)</label>
-						<div class="col-xs-6 datepicker-holder-fix">
-							<input type="text" class="form-control" id="datepicker" datepicker-popup="{{format}}" ng-model="flow.dt" is-open="flow.opened" min="flow.minDate" max="'2015-06-22'" datepicker-options="flow.dateOptions" date-disabled="flow.disabled(date, mode)" ng-required="true" close-text="Cerrar">
+
+					<div class="parts-holder content2">
+						<div class="form-group part part-1">
+							<label>Sube una imagen o archivo (opcional)</label>
+							<div>
+							<label for="image" class="datea-custom-imgUL">
+								<input class="img-file-input" type="file" id="image" fileread="datear.img" filedata="datear.imgData" accept="image/*">
+								<img class="uploaded-img" ng-show="datear.img" ng-src="{{datear.img}}" alt="{{datear.imgData.name}}" width="200px">
+							</label>
+							</div>
 						</div>
-						<div class="timepicker-holder col-xs-6" ng-model="flow.timeNow" ng-change="flow.changed()">
-							<timepicker hour-step="flow.hstep" minute-step="flow.mstep" show-meridian="flow.ismeridian"></timepicker>
+
+						<div class="form-group part part-2 date-form-holder">
+							<label for="datepicker">Indica la fecha y hora (opcional)</label>
+							<div class="datetime-inputs">
+								<div class="date-input-wrap">
+									<input type="text" class="form-control input-sm date-input" id="datepicker" datepicker-popup="{{format}}" ng-model="flow.dt" is-open="flow.dp_opened" min="flow.minDate" max="'2015-06-22'" datepicker-options="flow.dateOptions" date-disabled="flow.disabled(date, mode)" ng-required="true" close-text="Cerrar" ng-click="open_datepicker($event)">
+								</div>
+								<div class="timepicker-holder" ng-model="flow.timeNow" ng-change="flow.changed()">
+									<timepicker hour-step="flow.hstep" minute-step="flow.mstep" show-meridian="flow.ismeridian"></timepicker>
+								</div>
+							</div>
 						</div>
 					</div>
 				</div>
+
+				<hr class="modal-scroll-2 scroll-section">
+
+				<div id="spy-step2" class="step">
+					<div class="step-cover" ng-if="datear.step != 2" ng-click="scrollTo($event, 'spy-step2', 20)"></div>
+					<h4 class="">2. Ayúdanos a ubicar tu dateo</h4>
+					<div class="form-group">
+						<input type="text" class="form-control" id="address" placeholder="Dirección o descripción de la ubicación" ng-model="dateo.address">
+					</div>
+					<div class="form-group datea-no-margin-bottom">
+						<label for="map">Coloca el marcador en la ubicación exacta</label>
+						<input type="text" class="hide form-control" id="lng" ng-model="datear.leaflet.markers.draggy.lng" placeholder="lng hidden">
+						<input type="text" class="hide form-control" id="lat" ng-model="datear.leaflet.markers.draggy.lat" placeholder="lat hidden">
+					</div>
+					<leaflet id="leafletDatear" defaults="datear.leaflet.defaults" markers="datear.leaflet.markers" center="datear.leaflet.center" height="400px" width="100%"></leaflet>
+				</div>
+
 				<hr>
-				<h4 class="modal-scroll-2 scroll-section">2. Ayúdanos a ubicar tu dateo</h4>
-				<div class="form-group">
-					<input type="text" class="form-control" id="address" placeholder="Dirección o descripción de la ubicación" ng-model="dateo.address">
-				</div>
-				<div class="form-group datea-no-margin-bottom">
-					<label for="map">Arrastre el marcador hasta la ubicación exacta</label>
-					<input type="text" class="hide form-control" id="lng" ng-model="datear.leaflet.markers.draggy.lng" placeholder="lng hidden">
-					<input type="text" class="hide form-control" id="lat" ng-model="datear.leaflet.markers.draggy.lat" placeholder="lat hidden">
-				</div>
-				<leaflet id="leafletDatear" defaults="datear.leaflet.defaults" markers="datear.leaflet.markers" center="datear.leaflet.center" height="400px" width="550px"></leaflet>
-				<hr>
-				<h4 class="modal-scroll-3 scroll-section">3. Etiqueta tu dateo</h4>
-				<h5 ng-show="datear.suggestedTags">etiquetas sugeridas</h5>
-				<div class="btn-group" ng-show="datear.suggestedTags">
-					<button type="button" class="btn btn-default" ng-repeat="tag in datear.suggestedTags" ng-click="datear.addTag( tag.tag )">#{{tag.tag}}</button>
-				</div>
-				<h5>buscar / agregar etiquetas</h5>
-				<div class="form-group">
-					<div class="input-group col-sm-6">
-						<input type="text" ng-model="dateo.nextTag" ng-model="asyncSelected" typeahead="tags for tags in datear.autocompleteTag($viewValue) | filter:$viewValue" typeahead-loading="loadingLocations" class="form-control">
-						<i ng-show="loadingLocations" class="glyphicon glyphicon-refresh"></i>
-						<span class="input-group-btn">
-							<button class="btn btn-default" type="button" ng-click="datear.addTag( dateo.nextTag )">+</button>
+
+				<div id="spy-step3" class="step">
+					<div class="step-cover" ng-if="datear.step != 3" ng-click="scrollTo($event, 'spy-step3', 100)"></div>
+					<h4 class="modal-scroll-3 scroll-section">3. Etiqueta tu dateo</h4>
+					<h5 ng-show="datear.suggestedTags">etiquetas sugeridas</h5>
+					<div class="btn-group" ng-show="datear.suggestedTags">
+						<button type="button" class="btn btn-default" ng-repeat="tag in datear.suggestedTags" ng-click="datear.addTag( tag.tag )">#{{tag.tag}}</button>
+					</div>
+
+					<h5>buscar / agregar etiquetas</h5>
+					<div class="form-group">
+						<div class="input-group col-sm-6 tag-input-form">
+							<input type="text" ng-model="dateo.nextTag" ng-model="asyncSelected" typeahead="tags for tags in datear.autocompleteTag($viewValue) | filter:$viewValue" typeahead-loading="loadingLocations" class="form-control">
+							<i ng-show="loadingLocations" class="fa fa-refresh fa-spin"></i>
+							<span class="input-group-btn">
+								<button class="btn btn-default" type="button" ng-click="datear.addTag( dateo.nextTag )">+</button>
+							</span>
+						</div>
+					</div>
+					<div class="well selected-tags">
+						<h5>Etiquetas seleccionadas</h5>
+						<span class="tag-input tag-selected" ng-repeat="tag in datear.selectedTags">
+							<a href ng-click="datear.removeTag($index)">[x]</a> #{{ tag }}
 						</span>
 					</div>
 				</div>
-				<div class="well selected-tags">
-					<h5>Etiquetas seleccionadas</h5>
-					<span class="label label-default part" ng-repeat="tag in datear.selectedTags">
-						<a href ng-click="datear.removeTag($index)">[x]</a> #{{ tag }}
-					</span>
+
+				<div class="actions">
+					<div class="alert alert-danger" ng-show="dateo.errorMessage">{{dateo.errorMessage}}</div>
+					<button class="btn btn-success pull-right btn-lg" ng-click="datear.doDatear()">Enviar</button>
+					<button class="btn btn-default btn-lg" ng-click="datear.cancel()">Cancelar</button>
 				</div>
-				<div class="alert alert-danger" ng-show="dateo.errorMessage">{{dateo.errorMessage}}</div>
-				<button class="btn btn-success" ng-click="datear.doDatear()">Enviar</button>
-				<button class="btn btn-default" ng-click="datear.cancel()">Cancelar</button>
+
 			</form>
 		</div>
 		<div class="onFinished-holder" ng-show="datear.onFinished">
-			<h3>gracias tu dateo ha sido publicado</h3>
+			<h4>Tu dateo se ha creado existosamente.</h4>
+
+			<p class="finished-actions">
+				<a class="btn btn-lg btn-success" href="/#/{{dateo.user.username}}/dateos/{{dateo.id}}" ng-click="datear.cancel()">Ver dateo</a>
+				<button class="btn btn-lg btn-default" ng-click="datear.cancel()">Cerrar</button>
+			</p>
+
 		</div>
 	</div>
 </div>

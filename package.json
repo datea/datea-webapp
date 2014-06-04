@@ -1,7 +1,8 @@
 {
   "name": "dateaweb",
   "version": "0.0.0",
-  "dependencies": {},
+  "dependencies": {
+  },
   "devDependencies": {
     "grunt": "~0.4.1",
     "grunt-autoprefixer": "~0.4.0",
@@ -39,7 +40,8 @@
     "karma-phantomjs-launcher": "~0.1.1",
     "karma": "~0.10.8",
     "karma-ng-html2js-preprocessor": "~0.1.0",
-    "grunt-recess": "~0.5.0"
+    "grunt-recess": "~0.5.0",
+    "grunt-contrib-less": "^0.11.1"
   },
   "engines": {
     "node": ">=0.8.0"

@@ -26,9 +26,9 @@ module.exports = function (grunt) {
         files: ['test/spec/{,*/}*.coffee'],
         tasks: ['coffee:test']
       },
-      recess: {
+      less: {
         files: ['<%= yeoman.app %>/styles/{,*/}*.less'],
-        tasks: ['recess:dist']
+        tasks: ['less:dist']
       },
       // styles: {
       //   files: ['<%= yeoman.app %>/styles/{,*/}*.css'],
@@ -137,7 +137,7 @@ module.exports = function (grunt) {
         }]
       }
     },
-    recess: {
+    less: {
       options: {
         compile: true
       },
@@ -268,7 +268,7 @@ module.exports = function (grunt) {
     },
     concurrent: {
       server: [
-        'recess',
+        'less',
         'coffee:dist',
         'copy:styles'
       ],
@@ -278,7 +278,7 @@ module.exports = function (grunt) {
       ],
       dist: [
         'coffee',
-        'recess',
+        'less',
         'copy:styles',
         'imagemin',
         'svgmin',
