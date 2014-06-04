@@ -178,7 +178,7 @@ angular.module( 'dateaWebApp' )
 
 		index = givens && givens.index * config.homeSI.campaignsOffset;
 		defaultQuery = { order_by: '-featured,-created'
-		               , limit   : 6
+		               , limit   : config.homeSI.campaignsOffset
 		               , offset  : index || 0
 		               }
 		query = givens && givens.query || defaultQuery;

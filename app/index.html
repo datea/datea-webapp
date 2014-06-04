@@ -19,13 +19,14 @@
 	 -->
 	<!-- endbuild -->
 	<link rel="stylesheet" href="bower_components/leaflet-dist/leaflet.css">
-	<link rel="stylesheet" href="//netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.min.css">
+	<link href="//netdna.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.min.css" rel="stylesheet">
 	<link rel="stylesheet" href="bower_components/bootstrap-social/bootstrap-social.css">
 	<link rel="stylesheet" href="bower_components/Leaflet.label/dist/leaflet.label.css">
 	<link rel="stylesheet" href="bower_components/leaflet.markerclusterer/dist/MarkerCluster.css">
 	<link rel="stylesheet" href="bower_components/leaflet.markerclusterer/dist/MarkerCluster.Default.css">
 	<link rel="stylesheet" href="bower_components/angular-social/angular-social.css">
 	<link rel="stylesheet" href="bower_components/leaflet.draw/dist/leaflet.draw.css">
+	<link rel="Stylesheet" href="bower_components/bootstrap-select/bootstrap-select.css">
 </head>
 <body ng-app="dateaWebApp">
 	<!--[if lt IE 7]>
@@ -42,9 +43,9 @@
 
 	<div class="messagesList" app-messages></div>
 
-	<div class="container page" ng-view=""></div>
+	<div class="page" ng-view=""></div>
 
-	<div class="container colophon">
+	<div class="container-fluid colophon" ng-cloak>
 		<div class="datea-rights" ng-include="'views/footer.html'"></div>
 	</div>
 
@@ -91,6 +92,9 @@
 	<script src="bower_components/angular-elastic/elastic.js"></script>
 	<script src="bower_components/angular-social/angular-social.js"></script>
 	<script src="bower_components/leaflet.draw/dist/leaflet.draw-src.js"></script>
+	<script src="bower_components/bootstrap-select/bootstrap-select.js"></script>
+	<script src="bower_components/angular-bootstrap-select/build/angular-bootstrap-select.js"></script>
+	<script src="bower_components/angular-scroll/angular-scroll.js"></script>
 	<!-- endbuild -->
 
 	<!-- build:js({.tmp,app}) scripts/scripts.js -->
@@ -117,12 +121,13 @@
 	<script src="scripts/services/activityUrl.js"></script>
 	<script src="scripts/controllers/campaign.js"></script>
 	<script src="scripts/directives/scrollto.js"></script>
-<script src="scripts/directives/scrollspy.js"></script>
-<script src="scripts/controllers/campaign-dashboard.js"></script>
-<script src="scripts/controllers/share.js"></script>
-<script src="scripts/controllers/tag.js"></script>
-<script src="scripts/services/state.js"></script>
-<script src="scripts/controllers/landing.js"></script>
+	<script src="scripts/controllers/landing.js"></script>
+	<script src="scripts/controllers/campaign-dashboard.js"></script>
+	<script src="scripts/controllers/share.js"></script>
+	<script src="scripts/controllers/tag.js"></script>
+	<script src="scripts/services/state.js"></script>
+	<script src="scripts/directives/dateo-teaser.js"></script>
+	<script src="scripts/directives/campaign-teaser.js"></script>
 	<!-- endbuild -->
 
 </body>

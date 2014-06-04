@@ -38,6 +38,8 @@ angular.module('dateaWebApp')
 
 	$scope.targetUser = {};
 	$scope.targetUser.history = [];
+	$scope.targetUser.dateo_loading = true;
+	$scope.targetUser.campaign_loading = true;
 	$scope.paginationCampaigns = {};
 	$scope.paginationDateos = {};
 	$scope.flow = {};
@@ -79,9 +81,9 @@ angular.module('dateaWebApp')
 		var index
 		  , defaultQuery
 		  ;
-
+		$scope.targetUser.dateo_loading = true;
 		index = givens && givens.index * config.profile.dateosOffset;
-		defaultQuery = { limit  : 3
+		defaultQuery = { limit  : config.profile.dateosOffset
 		               , offset : index || 0
 		               , user   : $routeParams.username
 		               }
@@ -92,6 +94,7 @@ angular.module('dateaWebApp')
 			console.log( response );
 			$scope.targetUser.dateos = response.objects;
 			buildPaginationDateos( response );
+			$scope.targetUser.dateo_loading = false;
 		}, function ( reason ) {
 			console.log( reason );
 		} )
@@ -101,7 +104,7 @@ angular.module('dateaWebApp')
 		var index
 		  , defaultQuery
 		  ;
-
+		$scope.targetUser.campaign_loading = true;
 		index = givens && givens.index * config.profile.campaignsOffset;
 		defaultQuery = { limit : config.profile.campaignsOffset
 		               , offset : index || 0
@@ -114,6 +117,7 @@ angular.module('dateaWebApp')
 			console.log( 'buildUserCampaigns', response.objects );
 			$scope.targetUser.campaigns = response.objects;
 			buildPaginationCampaigns( response );
+			$scope.targetUser.campaign_loading = false;
 		}, function ( reason ) {
 			console.log( reason );
 		} )

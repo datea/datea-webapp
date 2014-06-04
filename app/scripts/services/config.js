@@ -35,9 +35,10 @@ angular
 	               , markers  : {}
 	               }
 	, defaultBoundsRatio : +0.0075
-	, defaultImgProfile : 'static/images/globals/user-profile-default.png'
-	, defaultImgBackground : 'static/images/globals/campaign-default.jpg'
-	, homeSI : { campaignsOffset : 6
+	, defaultImgProfile : 'static/images/globals/user-default.png'
+	, defaultImgBackground : 'static/images/globals/bg-gris.png'
+	, defaultImgCampaign: "static/images/globals/campaign-default.jpg"
+	, homeSI : { campaignsOffset : 12
 	           , paginationLimit : 6
 	           , mapZoomOverride : 15
 	           , activityVerbs : [ 'dateo', 'commented', 'voted' ]
@@ -53,9 +54,9 @@ angular
 	            , dateosLimitByRequest : 100
 	            , defaultMarkersImage : '/static/images/globals/'
 	            }
-	, profile : { dateosOffset    : 3
-	            , campaignsOffset : 3
-	            , paginationLimit : 3
+	, profile : { dateosOffset    : 6
+	            , campaignsOffset : 6
+	            , paginationLimit : 6
 	            }
 	, activityLog : { activityVerbs : [ 'dateo', 'commented', 'voted' ]
 	                , activityContentMsg : { onUser : { 'dateo'     : 'dateó en #{{action_object.tags[0].tag}}'
@@ -77,3 +78,4 @@ angular
 	          , text : /^([a-záéíóúñÑÁÉÍÓÚA-Z \-])+$/}
 	}
 );
+

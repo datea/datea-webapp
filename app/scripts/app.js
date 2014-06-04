@@ -13,6 +13,8 @@ angular.module( 'dateaWebApp'
   , 'FSAngular'
   , 'monospaced.elastic'
   , 'ngSocial'
+  , 'angular-bootstrap-select'
+  , 'duScroll'
 ])
 .config(
 [ '$routeProvider'

@@ -8,6 +8,8 @@
 	Tags: datea, información, participación ciudadana, comparte...
 */
 
+@icon-font-path: "/styles/fonts/";
+
 // Colors
 @color-selection: #b3d4fc; // light blue
 @color-1: #EDFF00; // yellow
@@ -22,6 +24,13 @@
 @color-10: #909E97; // signin signup grey bg
 @color-11: #231F20; // footer brown
 @color-12: #28BC45; // green
+@color-13: #456352; // ctrl gray
+@color-14: #f3f5f4; // light-gray
+@color-15: #ECEFEE;
+@color-16: #EBEFEE;
+@color-17: #d5dbd8; // gray campaign viz-bar
+
+@text-color: @color-6;
 
 .datea-button-variant(@color; @background; @border; @hover) {
   color: @color;
@@ -90,8 +99,16 @@
 
 .datea-btn {
   .datea-button-variant(@datea-btn-color; @datea-btn-bg; @datea-btn-border; @datea-btn-hover);
-  padding-top: 10px;
-  text-transform: uppercase;
+  //padding-top: 10px;
+  //text-transform: uppercase;
+  font-weight: bold;
+
+  &.btn-xs {
+  	padding: 2px 10px !important;
+  }
+  &.btn-sm {
+  	font-size: 13px !important;
+  }
 }
 
 .datea-datear-btn {
@@ -132,13 +149,15 @@
 ========================================================================== */
 
 .well-after( @top; @left ) {
-	background: url('@{imgUrl}globals/well-after-bg.png') no-repeat;
+	background: white url('@{imgUrl}globals/well-after-bg.png') no-repeat;
 	content: "";
 	height: 24px;
-	left: @left;
-	position: absolute;
-	top: @top;
-	width: 26px;
+	//left: 0px;
+	//right: 0px;
+	//position: absolute;
+	//bottom: 0;
+	display: block;
+
 }
 
 //
