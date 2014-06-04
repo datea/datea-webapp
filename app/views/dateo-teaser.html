@@ -1,0 +1,19 @@
+<div class="dateo dateo-teaser">
+	<div class="parts-holder">
+		<div class="user-img part part-1 img-circle" bg-from-api="{{dateo.user.image_small}}"></div>
+		<div class="part part-2 user-info">
+			<h4 class="username"><a href="/#/{{dateo.user.username}}">{{dateo.user.username}}</a></h4>
+			<div class="date">{{dateo.created | date:'fullDate'}}</div>
+		</div>
+	</div>
+	<p class="tags"><a class="tag" ng-repeat="tag in dateo.tags" href="/#/tag/{{tag.tag}}">#{{tag.tag}}</a></p>
+	<p class="content">{{dateo.content}}</p>
+	<div class="social-holder">
+		<span class="glyphicon glyphicon-thumbs-up"></span> {{dateo.vote_count}}
+		<span class="glyphicon glyphicon-comment"></span> {{dateo.comment_count}}
+		<div class="pull-right">
+			<a class="btn btn-xs datea-btn" href="#/{{dateo.user.username}}/dateos/{{dateo.id}}">ver detalle</a>
+		</div>
+	</div>
+	<hr>
+</div>
