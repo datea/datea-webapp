@@ -447,6 +447,346 @@ textarea { resize: vertical; }
 			top: -30px;
 		}
 	}
+
+	.section-holder-4 {
+		background: @color-10;
+		color: white;
+	}
+
+	.section-4 {
+		height: 720px;
+
+		h3 {
+			font-size: 36px;
+			font-weight: bold;
+			left: 60px;
+			position: relative;
+			text-transform: uppercase;
+			top: 20px;
+		}
+
+		.howitworks-holder {
+			.part {
+				position: relative;
+				width: 33%;
+			}
+			.step-number {
+				background: @color-1;
+				border-radius: 25px;
+				color: @color-10;
+				font-weight: bold;
+				font-size: 18px;
+				left: -35px;
+				line-height: 22px;
+				padding: 4px 9px 0;
+				position: absolute;
+				width: 26px;
+			}
+			.step-emphasis {
+				display: block;
+				text-transform: uppercase;
+			}
+			@iconFile: 'section-4-icons.png';
+			@iconUrl : '@{imgUrl}@{sectionImgUrl}@{iconFile}';
+
+			.part-1 {
+
+				padding: 0 0 0 90px;
+				top: 40px;
+
+				.icon-1 {
+					background: url(@iconUrl) no-repeat -8px 0;
+					height: 204px;
+					position: absolute;
+					width: 149px;
+				}
+
+				.step-1 {
+					left: 130px;
+					position: relative;
+					top: 140px;
+					width: 140px;
+				}
+
+			}
+			.part-2 {
+
+				left: 40px;
+				width: 28%;
+
+				.icon-2 {
+					background: url(@iconUrl) no-repeat -183px -34px;
+					height: 170px;
+					left: 20px;
+					position: absolute;
+					top: 65px;
+					width: 200px;
+				}
+				.step-2 {
+					left: 30px;
+					position: relative;
+					top: 10px;
+				}
+			}
+			.part-3 {
+
+				left: 30px;
+
+				.icon-3 {
+					background: url(@iconUrl) no-repeat -429px -62px;
+					height: 125px;
+					position: absolute;
+					width: 259px;
+				}
+				.step-3 {
+					left: 28px;
+					position: relative;
+					top: 140px;
+				}
+				.datea-btn {
+					left: 28px;
+					position: relative;
+					top: 150px;
+				}
+			}
+		}
+
+		.meta-info-holder {
+			margin: 0 auto 0;
+			position: relative;
+			top: 220px;
+			width: 85%;
+
+			.part {
+				border-radius: 5px;
+				height: 320px;
+				margin: 0 20px 0 0;
+				width: 440px;
+			}
+
+			.most-dateo {
+				background: white url('@{imgUrl}/landing/section-4-map.png') no-repeat center 50px;
+				color: @color-10;
+				padding: 15px;
+
+				h4 {
+					font-weight: bold;
+					text-transform: uppercase;
+				}
+
+				.trending-tags-holder {
+					position: relative;
+					top: 170px;
+					width: 220px;
+
+					.datea-tag-btn {
+						margin: 0 10px 0 0;
+					}
+				}
+				.datea-btn {
+					left: 255px;
+					position: relative;
+					top: 155px;
+				}
+			}
+			.outstanding-dateo-holder {
+				background: @color-1;
+				color: @color-10;
+				padding: 10px;
+
+				h4 {
+					font-weight: bold;
+					text-transform: uppercase;
+				}
+
+				.outstanding-dateo {
+					background: white;
+					border-radius: 5px;
+					color: black;
+					height: 220px;
+					padding: 15px;
+
+					.user-info {
+						height: 60px;
+
+						.part-1 {
+							height: 80px;
+							margin: 0;
+							width: 50px;
+
+							.user-img {
+								height: 48px;
+								margin: 0 auto 0;
+								position: relative;
+								width: 48px;
+							}
+						}
+						.part-2 {
+							height: 80px;
+							position: relative;
+							width: 200px;
+
+							h4 {
+								margin: 10px 0 0;
+								font-size: 15px;
+								text-transform: lowercase;
+							}
+							.date {
+								color: @color-6;
+								font-size: 12px;
+							}
+						}
+					}
+
+					.outstanding-dateo-img {
+						height: 70px;
+						margin: 0 0 10px 0;
+						width: 105px;
+					}
+					.icon-holder {
+						height: 10px;
+						width: 30px;
+					}
+					.outstanding-dateo-more-btn {
+						left: 180px;
+						position: relative;
+						top: -20px;
+					}
+				}
+
+			}
+		}
+
+	}
+	.section-holder-5 {
+		background: @color-7;
+		color: @color-10;
+	}
+	.section-5 {
+		height: 370px;
+
+		h3 {
+			font-size: 28px;
+			font-weight: bold;
+			left: 60px;
+			position: relative;
+			text-transform: uppercase;
+			top: 20px;
+		}
+
+		.campaigns-holder {
+			margin: 0 auto 0;
+			position: relative;
+			top: 20px;
+			width: 840px;
+		}
+
+		.campaign-holder {
+			background: white;
+			color: black;
+			height: 225px;
+			margin: 0 20px;
+			padding: 10px;
+			width: 170px;
+
+			h4 {
+				height: 38px;
+				margin: 10px 0 0;
+			}
+			span {
+				font-size: 12px;
+			}
+			.campaign-img {
+				height: 150px;
+				width: 150px;
+			}
+			.datea-btn-xs {
+				font-size: 12px;
+				left: 16px;
+				line-height: 19px;
+				padding-left: 0px;
+				padding-right: 2px;
+				position: relative;
+				top: -6px;
+				width: 60px;
+			}
+		}
+		.more-campaigns-btn {
+			left: 844px;
+			position: relative;
+			top: 35px;
+		}
+	}
+	.section-holder-6 {
+		background: white;
+		color: black;
+	}
+	.section-6 {
+		height: 250px;
+
+		h3 {
+			font-size: 28px;
+			font-weight: bold;
+			left: 60px;
+			position: relative;
+			text-transform: uppercase;
+			top: 20px;
+		}
+		.parts-holder {
+			margin: 0 auto 0;
+			position: relative;
+			top: 20px;
+			width: 750px;
+		}
+		.part-1 {
+			width: 250px;
+
+			p {
+				font-size: 20px;
+				left: 60px;
+				position: relative;
+				width: 175px;
+			}
+			.icon-1 {
+				background: url('@{imgUrl}/landing/section-5-icons.png') no-repeat -1px -27px;
+				height: 50px;
+				position: absolute;
+				width: 50px;
+			}
+		}
+		.part-2 {
+			width: 250px;
+
+			p {
+				font-size: 20px;
+				left: 60px;
+				position: relative;
+				width: 175px;
+			}
+			.icon-2 {
+				background: url('@{imgUrl}/landing/section-5-icons.png') no-repeat -71px -27px;
+				height: 50px;
+				position: absolute;
+				width: 50px;
+			}
+		}
+		.part-3 {
+
+			.appstore-icon {
+				background: url('@{imgUrl}/landing/section-5-icons.png') no-repeat -152px -48px;
+				height: 48px;
+				position: absolute;
+				width: 127px;
+			}
+			.playstore-icon {
+				background: url('@{imgUrl}/landing/section-5-icons.png') no-repeat -152px 0px;
+				height: 48px;
+				position: absolute;
+				top: 52px;
+				width: 127px;
+			}
+		}
+	}
 }
 
 //
@@ -900,8 +1240,8 @@ textarea { resize: vertical; }
 					}
 				}
 				.weekly-dateo-img {
-          height: 70px;
-          margin: 0 0 10px 0;
+					height: 70px;
+					margin: 0 0 10px 0;
 					width: 105px;
 				}
 			}

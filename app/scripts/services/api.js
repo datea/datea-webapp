@@ -28,6 +28,7 @@ angular.module('dateaWebApp')
 	  , userFollow  = {}
 	  , vote        = {}
 	  , flag        = {}
+	  , stats       = {}
 	  // fn declarations
 	  , reconfigUserRsrc
 	  ;
@@ -139,6 +140,9 @@ angular.module('dateaWebApp')
 	{ 'post' : { method : 'POST'
 	           , headers : headers || ls.get('token') }
 	} );
+	stats.rsrc = $resource( config.api.url + 'dateo/stats/', {},
+	{ 'query' : { method : 'GET' } }
+	)
 
 console.log( 'api', headers );
 	// User
@@ -466,6 +470,18 @@ console.log( 'user.getUserByUserIdOrUsername token', token );
 		return dfd.promise;
 	}
 
+	// Stats
+
+	stats.getLandingStats = function ( givens ) {
+		var dfd = $q.defer();
+		stats.rsrc.query( givens, function ( response ) {
+			dfd.resolve( response );
+		}, function ( error ) {
+			dfd.reject( error );
+		} );
+		return dfd.promise;
+	}
+
 	return { dateo       : dateo
 	       , comment     : comment
 	       , account     : account
@@ -477,6 +493,7 @@ console.log( 'user.getUserByUserIdOrUsername token', token );
 	       , follow      : follow
 	       , vote        : vote
 	       , flag        : flag
+	       , stats       : stats
 	       };
 
 } ] );
