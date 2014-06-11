@@ -54,7 +54,7 @@ angular.module('dateaWebApp')
 		data.url_twitter  = $scope.account.url_twitter;
 		data.url_youtube  = $scope.account.url_youtube;
 		data.id           = User.data.id;
-console.log( 'save', data );
+
 		for ( v in data ) {
 			if ( data.hasOwnProperty( v ) && !data[v] ) {
 				delete data[v];
@@ -63,25 +63,27 @@ console.log( 'save', data );
 
 		!User.data.status && User.updateTokenOnTwitterSignup();
 
-		User.updateUser( data )
-		.then( function ( response ) {
-			if ( data.email ) {
-				if ( !User.data.status ) {
-					$modal.open( { templateUrl : 'views/verifyEmailModal.html'
-					             , backdrop    : 'static'
-					             } );
+		if ( data.username && data.email ) {
+			User.updateUser( data )
+			.then( function ( response ) {
+				if ( data.email ) {
+					if ( !User.data.status ) {
+						$modal.open( { templateUrl : 'views/verifyEmailModal.html'
+						             , backdrop    : 'static'
+						             } );
+					}
+					// update user object with response and no use updateUserDataFromApi
+					// User.updateUserDataFromApi();
+					// $location.path( '/' );
+				} else {
+					$scope.addAlert( { type : 'danger'
+					                 , msg  : 'Por favor indique un correo válido.'
+					                 } );
 				}
-				// update user object with response and no use updateUserDataFromApi
-				// User.updateUserDataFromApi();
-				// $location.path( '/' );
-			} else {
-				$scope.addAlert( { type : 'danger'
-				                 , msg  : 'Por favor indique un correo válido.'
-				                 } );
-			}
-		}, function ( reason ) {
-			console.log( reason );
-		} )
+			}, function ( reason ) {
+				console.log( reason );
+			} );
+		}
 	}
 
 } ] );
