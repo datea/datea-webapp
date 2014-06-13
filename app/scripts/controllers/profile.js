@@ -44,6 +44,7 @@ angular.module('dateaWebApp')
 	$scope.paginationDateos = {};
 	$scope.flow = {};
 	$scope.flow.notFound = true;
+	$scope.map_is_present = false;
 
 	buildUserFollows = function () {
 		Api.tag

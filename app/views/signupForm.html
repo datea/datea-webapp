@@ -1,38 +1,46 @@
-<div class="signup-form-holder container">
-	<div class="signup-form">
-		<h3>Crea una cuenta en datea</h3>
-		<form role="form" name="form" ng-submit="auth.save()">
-			<div class="form-group" ng-class="{null: '',true: 'has-success has-feedback',false: 'has-warning has-feedback'}[flow.validInput.username]">
-				<label class="control-label" for="bio">Usuario - [ letras y números ] </label>
-				<input type="text" class="form-control" id="bio" wx-validate="username" pattern="^[A-Za-z0-9]{1,32}$" formText ng-model="auth.bio" ng-blur="auth.checkUsername()">
-				<span class="glyphicon form-control-feedback" ng-class="{null: '',true: 'glyphicon-ok',false: 'glyphicon-warning-sign'}[flow.validInput.username]"></span>
-				<p class="help-block">{{ auth.messages.usernameExists }}</p>
+<div class="signup-form-holder">
+	<div class="container">
+		<div class="row">
+			<div class="col-xs-12 col-md-10 col-md-offset-1">
+				<div class="row signup-form">
+				`<div class="col-xs-8">
+						<h3>Crea una cuenta en datea</h3>
+						<form role="form" name="form" ng-submit="auth.save()">
+							<div class="form-group" ng-class="{null: '',true: 'has-success has-feedback',false: 'has-warning has-feedback'}[flow.validInput.username]">
+								<label class="control-label" for="bio">Usuario - [ letras y números ] </label>
+								<input type="text" class="form-control input-lg" id="bio" wx-validate="username" pattern="^[A-Za-z0-9]{1,32}$" formText ng-model="auth.bio" ng-blur="auth.checkUsername()">
+								<span class="glyphicon form-control-feedback" ng-class="{null: '',true: 'glyphicon-ok',false: 'glyphicon-warning-sign'}[flow.validInput.username]"></span>
+								<p class="help-block">{{ auth.messages.usernameExists }}</p>
+							</div>
+							<div class="form-group" ng-class="{null: '',true: 'has-success has-feedback',false: 'has-error has-feedback'}[flow.validInput.email]">
+								<label class="control-label" for="email">Correo electrónico</label>
+								<input type="email" class="form-control input-lg" id="email" required ng-model="auth.email" ng-change="auth.checkEmail()">
+								<span class="glyphicon form-control-feedback" ng-class="{null: '',true: 'glyphicon-ok',false: 'glyphicon-remove'}[flow.validInput.email]"></span>
+							</div>
+							<div class="form-group" ng-class="{null: '',true: 'has-success has-feedback',false: 'has-error has-feedback'}[flow.validInput.password]">
+								<label class="control-label" for="password">Contraseña - [ mínimo 6 letras y mínimo 1 número ] </label>
+								<input type="password" class="form-control input-lg" id="password" wx-validate="password" required pattern="^(?=.*\d)(?=.*[a-z])(?!.*\s).{6,32}$" ng-model="auth.password" ng-change="auth.checkPassword()">
+								<span class="glyphicon form-control-feedback" ng-class="{null: '',true: 'glyphicon-ok',false: 'glyphicon-remove'}[flow.validInput.password]"></span>
+							</div>
+							<div class="form-group" ng-class="{null: '',true: 'has-success has-feedback',false: 'has-error has-feedback'}[flow.validInput.samePassword]">
+								<label class="control-label" for="samePassword">Repetir contraseña</label>
+								<input type="password" class="form-control input-lg" id="samePassword" wx-validate="password" required pattern="^(?=.*\d)(?=.*[a-z])(?!.*\s).{6,32}$" ng-model="auth.samePassword" wx-password-match="auth.password" ng-change="auth.checkSamePassword()">
+								<span class="glyphicon form-control-feedback" ng-class="{null: '',true: 'glyphicon-ok',false: 'glyphicon-remove'}[flow.validInput.samePassword]"></span>
+							</div>
+						<!-- 	<div class="checkbox">
+								<label>
+									<input type="checkbox" ng-checked="auth.newsletter"> Quiero recibir noticias dateras de vez en cuando
+								</label>
+							</div> -->
+							<input type="submit" class="btn datea-datear-btn datea-btn-nopad btn-lg" value="regístrate">
+							<button type="submit" class="btn datea-datear-btn datea-btn-nopad btn-lg" disabled>regístrate</button>
+							<span ng-bind="auth.message"></span>
+						</form>
+					</div>
+			<!-- 		<hr>
+					<pre>Validation: {{form.$error|json}}</pre> -->
+				</div>
 			</div>
-			<div class="form-group" ng-class="{null: '',true: 'has-success has-feedback',false: 'has-error has-feedback'}[flow.validInput.email]">
-				<label class="control-label" for="email">Correo electrónico</label>
-				<input type="email" class="form-control" id="email" required ng-model="auth.email" ng-change="auth.checkEmail()">
-				<span class="glyphicon form-control-feedback" ng-class="{null: '',true: 'glyphicon-ok',false: 'glyphicon-remove'}[flow.validInput.email]"></span>
-			</div>
-			<div class="form-group" ng-class="{null: '',true: 'has-success has-feedback',false: 'has-error has-feedback'}[flow.validInput.password]">
-				<label class="control-label" for="password">Contraseña - [ mínimo 6 letras y mínimo 1 número ] </label>
-				<input type="password" class="form-control" id="password" wx-validate="password" required pattern="^(?=.*\d)(?=.*[a-z])(?!.*\s).{6,32}$" ng-model="auth.password" ng-change="auth.checkPassword()">
-				<span class="glyphicon form-control-feedback" ng-class="{null: '',true: 'glyphicon-ok',false: 'glyphicon-remove'}[flow.validInput.password]"></span>
-			</div>
-			<div class="form-group" ng-class="{null: '',true: 'has-success has-feedback',false: 'has-error has-feedback'}[flow.validInput.samePassword]">
-				<label class="control-label" for="samePassword">Repetir contraseña</label>
-				<input type="password" class="form-control" id="samePassword" wx-validate="password" required pattern="^(?=.*\d)(?=.*[a-z])(?!.*\s).{6,32}$" ng-model="auth.samePassword" wx-password-match="auth.password" ng-change="auth.checkSamePassword()">
-				<span class="glyphicon form-control-feedback" ng-class="{null: '',true: 'glyphicon-ok',false: 'glyphicon-remove'}[flow.validInput.samePassword]"></span>
-			</div>
-		<!-- 	<div class="checkbox">
-				<label>
-					<input type="checkbox" ng-checked="auth.newsletter"> Quiero recibir noticias dateras de vez en cuando
-				</label>
-			</div> -->
-			<input type="submit" class="btn datea-datear-btn datea-btn-nopad" value="regístrate">
-			<button type="submit" class="btn datea-datear-btn datea-btn-nopad" disabled>regístrate</button>
-			<span ng-bind="auth.message"></span>
-		</form>
-<!-- 		<hr>
-		<pre>Validation: {{form.$error|json}}</pre> -->
+		</div>
 	</div>
 </div>

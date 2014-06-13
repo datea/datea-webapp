@@ -32,7 +32,7 @@
 						<tab heading="dateos">
 							<div class="dateos-holder tab-body" ng-class="{'datea-loading': targetUser.dateo_loading}">
 								<da-dateo-teaser ng-repeat="dateo in targetUser.dateos"></da-dateo-teaser>
-								<pagination ng-if="paginationDateos.totalItems > paginationDateos.itemsPerPage" boundary-links="true" items-per-page="paginationDateos.itemsPerPage" total-items="paginationDateos.totalItems" page="paginationDateos.currentPage" class="pagination" previous-text="&lsaquo;" next-text="&rsaquo;" first-text="&laquo;" last-text="&raquo;"></pagination>
+								<pagination ng-if="paginationDateos.totalItems > paginationDateos.itemsPerPage" boundary-links="true" items-per-page="paginationDateos.itemsPerPage" total-items="paginationDateos.totalItems" page="paginationDateos.currentPage" class="pagination pagination-lg" previous-text="&lsaquo;" next-text="&rsaquo;" first-text="&laquo;" last-text="&raquo;"></pagination>
 							</div>
 						</tab>
 
@@ -43,7 +43,7 @@
 										<da-campaign-teaser></da-campaign-teaser>
 									</div>
 								</div>
-								<pagination ng-if="paginationCampaigns.totalItems > paginationCampaigns.itemsPerPage" boundary-links="true" items-per-page="paginationCampaigns.itemsPerPage" total-items="paginationCampaigns.totalItems" page="paginationCampaigns.currentPage" class="pagination" previous-text="&lsaquo;" next-text="&rsaquo;" first-text="&laquo;" last-text="&raquo;"></pagination>
+								<pagination ng-if="paginationCampaigns.totalItems > paginationCampaigns.itemsPerPage" boundary-links="true" items-per-page="paginationCampaigns.itemsPerPage" total-items="paginationCampaigns.totalItems" page="paginationCampaigns.currentPage" class="pagination pagination-lg" previous-text="&lsaquo;" next-text="&rsaquo;" first-text="&laquo;" last-text="&raquo;"></pagination>
 							</div>
 						</tab>
 					</tabset>

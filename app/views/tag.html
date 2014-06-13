@@ -1,88 +1,87 @@
 <div class="tag-holder ff1" ng-hide="flow.notFound">
-	<div class="tag-card">
-		<h2>#{{tag.tag}}</h2>
-		<button class="btn datea-btn" ng-show="tag.followable" ng-click="tag.followTag()">+seguir</button>
-		<button class="btn datea-btn" ng-show="!tag.followable && tag.isUserSignedIn" ng-click="tag.unfollowTag()">x no seguir</button>
-		<button class="btn datea-datear-btn" ng-click="tag.datear()">Datea <i class="glyphicon glyphicon-map-marker"></i></button>
-		<span class="dateo-count">{{tag.dateo_count}} <ng-pluralize count="tag.dateo_count" when="{'one': 'dateo','other':'dateos'}"></span>
-		<span class="follow-count">{{tag.follow_count}} <ng-pluralize count="tag.follow_count" when="{'one': 'seguidor','other':'seguidores'}"></span>
+	<div class="tag-card container-fluid clearfix">
+		<h2 class="title pull-left">#{{tag.tag}}</h2>
+		<div class="stats pull-left">
+			<span class="dateo-count">{{tag.dateo_count}} <ng-pluralize count="tag.dateo_count" when="{'one': 'dateo','other':'dateos'}"></span>
+			<span class="follow-count">{{tag.follow_count}} <ng-pluralize count="tag.follow_count" when="{'one': 'seguidor','other':'seguidores'}"></span>
+		</div>
+		<div class="buttons pull-left">
+			<button class="btn datea-btn" ng-show="tag.followable" ng-click="tag.followTag()">+seguir</button>
+			<button class="btn datea-btn" ng-show="!tag.followable && tag.isUserSignedIn" ng-click="tag.unfollowTag()">x no seguir</button>
+			<button class="btn datea-datear-btn btn-lg" ng-click="tag.datear()">Datea <i class="glyphicon glyphicon-map-marker"></i></button>
+		</div>
 	</div>
-	<div class="map-holder">
-		<form ng-submit="tag.searchDateos()">
-			<div class="form-group">
-				<div class="input-group col-sm-2">
-					<input type="text" class="form-control" ng-model="tag.searchDateosKeyword">
-					<span class="input-group-btn">
-						<button class="btn btn-default" type="button"><i class="glyphicon glyphicon-search" ng-click="tag.searchDateos()"></i></button>
-					</span>
-				</div>
+	
+	<div class="viz-holder">
+		<div class="viz-nav">
+			<div class="search">
+				<form class="form search-form" ng-submit="tag.searchDateos()">
+					<!--<div class="form-group">-->
+						<div class="input-group">
+							<input type="text" class="form-control" ng-model="tag.searchDateosKeyword">
+							<span class="input-group-btn">
+								<button class="btn btn-default" type="button"><i class="fa fa-search" ng-click="tag.searchDateos()"></i></button>
+							</span>
+						</div>
+					<!--</div>-->
+				</form>
+				<div class="order-by-holder" ng-hide="search.show_orderby">
+					<span class="order-by-label">ordernar por:</span>
+						<select class="selectpicker" data-style="btn-link" name="orderBy" ng-model="tag.selectedMarker" ng-change="tag.onSelectFilterChange()">
+							<option value="last">últimos</option>
+							<option value="mostVoted">más apoyados</option>
+							<option value="mostCommented">más comentados</option>
+						</select>
+			  </div>
 			</div>
-		</form>
-		<tabset>
-			<tab heading="&nbsp;" class="glyphicon glyphicon-map-marker datea-glyphtab-fix">
-				<div class="part part-1 dateos-holder" ng-class="{'datea-loading': tag.loading.dateos }">
-					<div class="order-by-holder">
-						<span class="order-by-label">ordernar por:</span>
-						<div class="form-group">
-							<select class="form-control order-by" name="orderBy" ng-model="tag.selectedMarker" ng-change="tag.onSelectFilterChange()">
-								<option value="last">últimos</option>
-								<option value="mostVoted">más apoyados</option>
-								<option value="mostCommented">más comentados</option>
-							</select>
-						</div>
-						<b class="caret select-arrow-down"></b>
-				  </div>
-					<div class="dateo-description-holder">
-						<div class="dateo-description" ng-repeat="dateo in tag.dateos">
-							<div class="parts-holder">
-								<div class="user-img part part-1" bg-from-api="{{ dateo.user.image_small }}"></div>
-								<div class="part part-2">
-									<a ng-href="#/{{dateo.user.username}}">
-										<h4>{{ dateo.user.username }}</h4>
-									</a>
-									<span class="date">el {{ dateo.created | date:'fullDate' }}</span>
+		</div>
+		<div class="viz-viewer" ng-class="{'datea-loading': tag.loading.dateos }">
+			<tabset>
+				<tab heading="&nbsp;" class="glyphicon glyphicon-map-marker datea-glyphtab-fix">
+					<div class="container-fluid">
+						<div class="row">
+							<div class="col-xs-5 dateos-holder">
+								<div class="dateo-description-holder">
+									
+										<da-dateo-teaser ng-repeat="dateo in tag.dateos"></da-dateo-teaser>
+										
 								</div>
 							</div>
-							<span class="label datea-label tag" ng-repeat="tag in dateo.tags">#{{tag.tag}}</span>
-							<p>{{dateo.extract}}</p>
-							<a ng-href="#/{{dateo.user.username}}/dateos/{{dateo.id}}" target="_blank">leer más</a>
-							<span class="glyphicon glyphicon-thumbs-up"></span> {{dateo.vote_count}}
-							<span class="glyphicon glyphicon-comment"></span> {{dateo.comment_count}}
-							<button class="pull-right btn datea-btn datea-btn-xs" ng-show="dateo.position" ng-click="tag.focusDateo($index)">ver en mapa</button>
-							<hr>
-						</div>
-					</div>
-				</div>
-				<div class="part part-2 leaflet-map-holder" ng-class="{'datea-loading': tag.loading.leaflet }">
-					<leaflet id="leafletTag" defaults="tag.leaflet.defaults" markers="tag.leaflet.markers" center="tag.leaflet.center" width="100%" height="450px"></leaflet>
-				</div>
-			</tab>
-			<tab heading="&nbsp;" class="glyphicon glyphicon-camera datea-glyphtab-fix" ng-show="tag.dateosWithImages.length > 0" >
-				<div class="dateos-with-images-holder" ng-style="tag.dateosWithImagesHolderHeight">
-					<div class="part dateo-with-image" bg-from-api="{{dateoWithImage.images[0].image}}" ng-repeat="dateoWithImage in tag.dateosWithImages">
-						<div class="info-bg"></div>
-						<div class="info-holder">
-							<div class="parts-holder">
-								<div class="part part-1">
-									<div class="user-img" bg-from-api="{{dateoWithImage.user.image}}"></div>
-								</div>
-								<div class="part part-2">
-									<h5>{{dateoWithImage.user.username}}</h5>
-									<span class="date">{{dateoWithImage.date | date:'fullDate'}}</span>
-								</div>
-							</div>
-							<p class="extract">{{dateoWithImage.extract}}</p>
-							<div class="cta-holder">
-								<span class="glyphicon glyphicon-thumbs-up"></span> {{dateoWithImage.vote_count}}
-								<span class="glyphicon glyphicon-comment"></span> {{dateoWithImage.comments.length}}
-								<a href="#/{{dateoWithImage.user.username}}/dateos/{{dateoWithImage.id}}" class="btn datea-btn datea-btn-xs pull-right">ver más</a>
+							<div class="col-xs-7 leaflet-map-holder">
+								<leaflet id="leafletCampaign" defaults="tag.leaflet.defaults" markers="tag.leaflet.markers" center="tag.leaflet.center" width="100%"></leaflet>
 							</div>
 						</div>
 					</div>
-				</div>
-			</tab>
-		</tabset>
+				</tab>
+				<tab heading="&nbsp;" class="glyphicon glyphicon-camera datea-glyphtab-fix" ng-show="tag.dateosWithImages.length > 0">
+					<div class="dateos-with-images-holder" ng-style="tag.dateosWithImagesHolderHeight">
+						<div class="part dateo-with-image" bg-from-api="{{dateoWithImage.images[0].image}}" ng-repeat="dateoWithImage in tag.dateosWithImages">
+							<div class="info-bg"></div>
+							<div class="info-holder">
+								<div class="parts-holder">
+									<div class="part part-1">
+										<div class="user-img" bg-from-api="{{dateoWithImage.user.image}}"></div>
+									</div>
+									<div class="part part-2">
+										<h5>{{dateoWithImage.user.username}}</h5>
+										<span class="date">{{dateoWithImage.date | date:'fullDate'}}</span>
+									</div>
+								</div>
+								<p class="extract">{{dateoWithImage.extract}}</p>
+								<div class="cta-holder">
+									<span class="glyphicon glyphicon-thumbs-up"></span> {{dateoWithImage.vote_count}}
+									<span class="glyphicon glyphicon-comment"></span> {{dateoWithImage.comments.length}}
+									<a href="#/{{dateoWithImage.user.username}}/dateos/{{dateoWithImage.id}}" class="btn datea-btn datea-btn-xs pull-right">ver más</a>
+								</div>
+							</div>
+						</div>
+					</div>
+				</tab>
+			</tabset>
+		</div>
 	</div>
+
+
 </div>
 <div class="not-found" ng-if="flow.notFound" ng-include="'views/notFound.html'" ng-hide="!flow.notFound">
 </div>

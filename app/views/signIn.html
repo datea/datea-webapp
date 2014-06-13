@@ -1,47 +1,61 @@
-<div class="signin-holder container">
-	<div class="signin">
-		<div class="part part-1">
-			<h1>Bienvenido a Datea</h1>
-			<h4 class="subheading">Comienza a compartir información útil con tu comunidad</h4>
-			<p>Ingresa con tus cuentas de</p>
-			<button class="btn btn-social btn-facebook" ng-click="auth.withFacebook()"><i class="fa fa-facebook"></i>Facebook</button>
-			<button class="btn btn-social btn-twitter" ng-click="auth.withTwitter()"><i class="fa fa-twitter"></i>Twitter</button>
-			<p>(No publicamos en tus cuentas sin tu permiso)</p>
-			<p>O con tu cuenta en Datea:</p>
-			<form role="form" name="form" ng-submit="auth.signIn()" ng-show="!auth.resetPasswordCheckbox">
-				<div class="form-group" ng-show="!auth.resetPasswordCheckbox">
-					<label for="username">Usuario</label>
-					<input type="text" class="form-control" id="username" pattern="^[A-Za-z0-9]{3,10}$" ng-required="auth.passwordRequired" ng-model="auth.username">
+<div class="signin-holder">
+	<div class="container">
+		<div class="row">
+			<div class="col-xs-12 col-md-10 col-md-offset-1">
+				<div class="row signin">
+					<div class="col-xs-12 col-md-8">
+						<h1>Bienvenido a Datea</h1>
+						<h4 class="subheading">Comienza a compartir información útil con tu comunidad</h4>
+						
+						<div class="row">
+							<div class="register-btns col-xs-9">
+								<button class="btn btn-social btn-facebook btn-block btn-lg" ng-click="auth.withFacebook()"><i class="fa fa-facebook"></i>Ingresa con Facebook</button>
+								<button class="btn btn-social btn-twitter btn-block btn-lg" ng-click="auth.withTwitter()"><i class="fa fa-twitter"></i>Ingresa con Twitter</button>
+							</div>
+						</div>
+						<br />
+						<div class="row">
+							<div class="col-xs-9">
+								<form role="form" name="form" ng-submit="auth.signIn()" ng-show="!auth.showResetPassword">
+									<p>O con tu cuenta en Datea:</p>
+									<div class="form-group" ng-show="!auth.resetPasswordCheckbox">
+										<!--<label for="username">Usuario</label>-->
+										<input placeholder="usuario" type="text" class="form-control input-lg" id="username" pattern="^[A-Za-z0-9]{3,10}$" ng-required="auth.passwordRequired" ng-model="auth.username">
+									</div>
+									<div class="form-group" ng-show="!auth.resetPasswordCheckbox">
+										<!--<label for="password">Contraseña</label>-->
+										<input placeholder="contraseña" type="password" class="form-control input-lg" id="password" ng-required="auth.passwordRequired" pattern="^(?=.*\d)(?=.*[a-z])(?!.*\s).{6,32}$" ng-model="auth.password">
+									</div>
+									<button type="button" class="btn btn-sm btn-link pull-right btn-datea-link" ng-click="flow.toggleResetPassword()">recuperar contraseña</button>
+									<input type="submit" class="btn datea-datear-btn" value="Ingresar" ng-show="form.$valid">
+									<button class="btn datea-datear-btn btn-lg" ng-disabled="true">Ingresar</button>
+									<span ng-bind="auth.message"></span>
+								</form>
+								<form role="form" name="forgotMail" ng-submit="auth.resetPassword()" ng-show="auth.showResetPassword">
+									<p>Recuperar contraseña:</p>
+									<div class="form-group">
+										<!--<label for="email">correo electrónico</label>-->
+										<input placeholder="ingresa tu correo electrónico" type="email" class="form-control input-lg" id="email" ng-required="auth.passwordRequired" ng-model="reset.email">
+									</div>
+									<button type="button" class="btn btn-sm btn-link pull-right btn-datea-link" ng-click="flow.toggleResetPassword()">&lt; regresar</button>
+									<input type="submit" class="btn datea-datear-btn" value="Enviar">
+									<button class="btn datea-datear-btn input-lg" ng-disabled="true">Enviar</button>
+								</form>
+							</div>
+						</div>
+			<!-- 			<hr>
+						<pre>Validation: {{form.$error|json}}
+						Valid: {{form.$valid|json}}
+						</pre> -->
+					</div>
+					<div class="col-md-4 hidden-xs hidden-sm">
+						<div class="well">
+							<h4>¿No eres dater@?</h4>
+							<a href="#/signup" class="btn datea-btn-nopad">regístrate</a>
+						</div>
+					</div>
 				</div>
-				<div class="form-group" ng-show="!auth.resetPasswordCheckbox">
-					<label for="password">Contraseña</label>
-					<input type="password" class="form-control" id="password" ng-required="auth.passwordRequired" pattern="^(?=.*\d)(?=.*[a-z])(?!.*\s).{6,32}$" ng-model="auth.password">
-				</div>
-				<input type="submit" class="btn datea-datear-btn" value="Ingresar" ng-show="form.$valid">
-				<button class="btn datea-datear-btn" ng-disabled="true">Ingresar</button>
-				<span ng-bind="auth.message"></span>
-			</form>
-			<form role="form" name="forgotMail" ng-submit="auth.resetPassword()" ng-show="auth.resetPasswordCheckbox">
-				<div class="form-group" ng-show="auth.resetPasswordCheckbox">
-					<label for="email">correo electrónico</label>
-					<input type="email" class="form-control" id="email" ng-required="auth.passwordRequired" ng-model="reset.email">
-				</div>
-				<input type="submit" class="btn datea-datear-btn" value="Enviar">
-				<button class="btn datea-datear-btn" ng-disabled="true">Enviar</button>
-			</form>
-			<div class="checkbox">
-				<label>
-					<input type="checkbox" ng-model="auth.resetPasswordCheckbox" ng-click="flow.toggleResetPassword()"> recuperar contraseña
-				</label>
 			</div>
-<!-- 			<hr>
-			<pre>Validation: {{form.$error|json}}
-			Valid: {{form.$valid|json}}
-			</pre> -->
-		</div>
-		<div class="part part-2 well">
-			<h4>¿No eres dater@?</h4>
-			<a href="#/signup" class="btn datea-btn-nopad">regístrate</a>
 		</div>
 	</div>
 </div>

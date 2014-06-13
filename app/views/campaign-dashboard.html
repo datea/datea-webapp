@@ -10,89 +10,101 @@
 					<button class="btn btn-default" ng-click="newCampaign.save()">guardar</button>
 				</li>
 			</ol>
-			<form class="new-campaign-holder">
-				<h4>Configuración general</h4>
-				<div class="form-group">
-					<label for="title">Título</label>
-					<input type="text" class="form-control" id="title" ng-model="newCampaign.title">
-				</div>
-				<div class="form-group">
-					<label for="categories">Categoria General</label>
-					<select class="form-control" ng-model="flow.selectedCategory" ng-options="category.id as category.name for category in flow.categories">
-					</select>
-				</div>
-				<div class="form-group" ng-class="{null: '',true: 'has-success has-feedback',false: 'has-error has-feedback'}[flow.validInput.mainTag]">
-					<label for="main-hashtag">Etiqueta (hashtag) principal</label>
-					<input type="text" class="form-control" id="main-hashtag" ng-model="newCampaign.main_hashtag" ng-blur="flow.checkMainTag()">
-					<span class="glyphicon form-control-feedback" ng-class="{null: '',true: 'glyphicon-ok',false: 'glyphicon-remove'}[flow.validInput.mainTag]"></span>
-					<p class="help-block">{{ flow.messages.mainTagExists }}</p>
-				</div>
-				<div class="form-group">
-					<label for="datepicker">Fecha de finalización (opcional)</label>
-					<input type="text" class="form-control" id="datepicker" datepicker-popup="{{format}}" ng-model="flow.dt" is-open="flow.opened" min="flow.minDate" max="'2021-06-22'" datepicker-options="flow.dateOptions" date-disabled="flow.disabled(date, mode)" ng-required="true" close-text="Cerrar">
-				</div>
-				<div class="form-group">
-					<label for="mission">Misión / Objetivos</label>
-					<textarea id="mission" class="form-control" msd-elastic="\n" rows="3" ng-model="newCampaign.mission"></textarea>
-				</div>
-				<div class="form-group">
-					<label for="information-destiny">¿Qué sucede con la información recibida?</label>
-					<textarea id="information-destiny" class="form-control" msd-elastic="\n" rows="3" ng-model="newCampaign.information_destiny"></textarea>
-				</div>
-				<hr>
-				<h4>Etiquetas (hashtags)</h4>
-				<div class="form-group">
-					<label for="new-tag">Introduce una etiqueta y agregalas una por una</label>
-					<div class="input-group col-sm-6">
-						<input type="text" ng-model="newCampaign.nextTag" class="form-control">
-						<span class="input-group-btn">
-							<button class="btn btn-default" type="button" ng-click="flow.addTag()">+</button>
-						</span>
+			
+			<div class="container">
+				<div class="row">
+					<div class="col-xs-8">
+						<form class="new-campaign-holder">
+							<h4>Configuración general</h4>
+							<div class="form-group">
+								<label for="title">Título</label>
+								<input type="text" class="form-control" id="title" ng-model="newCampaign.title">
+							</div>
+							<div class="form-group">
+								<label for="categories">Categoria General</label>
+								<select class="form-control" ng-model="flow.selectedCategory" ng-options="category.id as category.name for category in flow.categories">
+								</select>
+							</div>
+							<div class="form-group" ng-class="{null: '',true: 'has-success has-feedback',false: 'has-error has-feedback'}[flow.validInput.mainTag]">
+								<label for="main-hashtag">Etiqueta (hashtag) principal</label>
+								<input type="text" class="form-control" id="main-hashtag" ng-model="newCampaign.main_hashtag" ng-blur="flow.checkMainTag()">
+								<span class="glyphicon form-control-feedback" ng-class="{null: '',true: 'glyphicon-ok',false: 'glyphicon-remove'}[flow.validInput.mainTag]"></span>
+								<p class="help-block">{{ flow.messages.mainTagExists }}</p>
+							</div>
+							<div class="form-group">
+								<label for="datepicker">Fecha de finalización (opcional)</label>
+								<input type="text" class="form-control" id="datepicker" datepicker-popup="{{format}}" ng-model="flow.dt" is-open="flow.opened" min="flow.minDate" max="'2021-06-22'" datepicker-options="flow.dateOptions" date-disabled="flow.disabled(date, mode)" ng-required="true" close-text="Cerrar">
+							</div>
+							<div class="form-group">
+								<label for="mission">Misión / Objetivos</label>
+								<textarea id="mission" class="form-control" msd-elastic="\n" rows="3" ng-model="newCampaign.mission"></textarea>
+							</div>
+							<div class="form-group">
+								<label for="information-destiny">¿Qué sucede con la información recibida?</label>
+								<textarea id="information-destiny" class="form-control" msd-elastic="\n" rows="3" ng-model="newCampaign.information_destiny"></textarea>
+							</div>
+							<hr>
+							<h4>Etiquetas (hashtags)</h4>
+							<div class="form-group">
+								<label for="new-tag">Introduce una etiqueta y agregalas una por una</label>
+								<div class="input-group col-sm-6">
+									<input type="text" ng-model="newCampaign.nextTag" class="form-control">
+									<span class="input-group-btn">
+										<button class="btn btn-default" type="button" ng-click="flow.addTag()">+</button>
+									</span>
+								</div>
+							</div>
+							<div class="well">
+								<h5>Etiquetas seleccionadas</h5>
+								<ul class="tags-holder">
+									<li class="tag-holder" ng-repeat="tag in newCampaign.tags">
+										<div class="arrows part part-1">
+											<i class="fa fa-caret-square-o-up" ng-click="flow.arrowUp($index)"></i>
+											<i class="fa fa-caret-square-o-down" ng-click="flow.arrowDown($index)"></i>
+										</div>
+										<div class="title part part-2">
+											{{tag.title}}
+										</div>
+										<div class="tag part part-3">
+											{{tag.tag}}
+										</div>
+										<div class="close part part-4" ng-click="flow.removeTag($index)">
+											[x]
+										</div>
+									</li>
+								</ul>
+							</div>
+							<hr>
+							<h4>Opciones de ubicación</h4>
+							<leaflet id="leafletNewCampaign" defaults="newCampaign.leaflet.defaults" markers="newCampaign.leaflet.markers" center="newCampaign.leaflet.center" controls="newCampaign.leaflet.controls" height="460px" width="100%"></leaflet>
+				
+							<hr>
+
+							<h4>Adjuntos</h4>
+							<div class="form-group part part-1">
+								<label for="newFile">Suba un archivo kml</label>
+								<input type="file" id="newFile" class="datea-custom-fileUL" fileread="newCampaign.nextFile" filedata="newCampaign.nextFileData" accept=".kml">
+							</div>
+							<div class="well">
+								<!-- <h6>{{newCampaign.nextFileData.name}}</h6> -->
+								<ul class="files-holder">
+									<li class="file-holder" ng-repeat="file in newCampaign.files">
+										<div class="title part part-2">
+											{{file.name}}
+										</div>
+										<div class="close part part-4" ng-click="flow.removeFile($index)">
+											[x]
+										</div>
+									</li>
+								</ul>
+							</div>
+							<hr>
+							<h4>Opciones de ubicación</h4>
+							<leaflet id="leafletNewCampaign" defaults="newCampaign.leaflet.defaults" markers="newCampaign.leaflet.markers" center="newCampaign.leaflet.center" controls="newCampaign.leaflet.controls" height="460px" width="100%"></leaflet>
+						</form>
 					</div>
 				</div>
-				<div class="well">
-					<h5>Etiquetas seleccionadas</h5>
-					<ul class="tags-holder">
-						<li class="tag-holder" ng-repeat="tag in newCampaign.tags">
-							<div class="arrows part part-1">
-								<i class="fa fa-caret-square-o-up" ng-click="flow.arrowUp($index)"></i>
-								<i class="fa fa-caret-square-o-down" ng-click="flow.arrowDown($index)"></i>
-							</div>
-							<div class="title part part-2">
-								{{tag.title}}
-							</div>
-							<div class="tag part part-3">
-								{{tag.tag}}
-							</div>
-							<div class="close part part-4" ng-click="flow.removeTag($index)">
-								[x]
-							</div>
-						</li>
-					</ul>
-				</div>
-				<hr>
-				<h4>Adjuntos</h4>
-				<div class="form-group part part-1">
-					<label for="newFile">Suba un archivo kml</label>
-					<input type="file" id="newFile" class="datea-custom-fileUL" fileread="newCampaign.nextFile" filedata="newCampaign.nextFileData" accept=".kml">
-				</div>
-				<div class="well">
-					<!-- <h6>{{newCampaign.nextFileData.name}}</h6> -->
-					<ul class="files-holder">
-						<li class="file-holder" ng-repeat="file in newCampaign.files">
-							<div class="title part part-2">
-								{{file.name}}
-							</div>
-							<div class="close part part-4" ng-click="flow.removeFile($index)">
-								[x]
-							</div>
-						</li>
-					</ul>
-				</div>
-				<hr>
-				<h4>Opciones de ubicación</h4>
-				<leaflet id="leafletNewCampaign" defaults="newCampaign.leaflet.defaults" markers="newCampaign.leaflet.markers" center="newCampaign.leaflet.center" controls="newCampaign.leaflet.controls" height="460px" width="100%"></leaflet>
-			</form>
+			</div>
 		</tab>
 		<tab heading="administrador de dateos"></tab>
 	</tabset>

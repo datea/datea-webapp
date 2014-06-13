@@ -7,6 +7,7 @@
 	Version: 1.0
 	Tags: datea, información, participación ciudadana, comparte...
 */
+@import "app/bower_components/bootstrap/less/variables.less";
 
 @icon-font-path: "/styles/fonts/";
 
@@ -29,8 +30,46 @@
 @color-15: #ECEFEE;
 @color-16: #EBEFEE;
 @color-17: #d5dbd8; // gray campaign viz-bar
+@color-18: #a9b4af; // icon font gray color
+@color-19: #c1c9c5; // gray separator lines
+@color-20: #87958d; // 
 
 @text-color: @color-6;
+
+.graylight-bg {
+	background-color: @color-15;
+	position: fixed;
+	top:0;
+	bottom:0;
+	left:0;
+	right:0;
+}
+.graydark-bg {
+	background-color: @color-10;
+	position: fixed;
+	top:0;
+	bottom:0;
+	left:0;
+	right:0;
+}
+
+.heigh100 {
+	height: 100%;
+	min-height: 100%;
+}
+.z2 { z-index: 2; position: relative}
+
+.newline2br {
+	white-space: pre-wrap;
+}
+
+.tab-body {
+	background: white;
+	border: 1px solid;
+	border-color: #fff #ddd #ddd;
+	border-radius: 3px;
+	padding: 15px 25px;
+}
 
 .datea-button-variant(@color; @background; @border; @hover) {
   color: @color;
@@ -132,6 +171,28 @@
 	border: none;
 }
 
+.datea-green-btn {
+  .datea-button-variant(white; @datea-btn-hover; @color-20; darken(@datea-btn-hover, 10%));
+  //padding-top: 10px;
+  //text-transform: uppercase;
+  //font-weight: bold;
+
+  /*
+  &.btn-xs {
+  	padding: 2px 10px !important;
+  }
+  &.btn-sm {
+  	font-size: 13px !important;
+  }*/
+}
+
+.btn-datea-link {
+	padding-left: 0 !important;
+	padding-right: 0 !important;
+}
+
+
+
 /* ==========================================================================
    Labels
 ========================================================================== */
@@ -205,3 +266,41 @@
 .has-warning .form-control-feedback {
 	color: #8a6d3b;
 }
+
+
+/* =============================================
+	Extra Grid sizes
+================================================ */
+
+.extracol(@size, @name, @type) {
+	
+	.col-@{type}-@{name} {
+    width: percentage((@size / @grid-columns));
+    position: relative;
+    // Prevent columns from collapsing when empty
+    min-height: 1px;
+    // Inner gutter via padding
+    padding-left:  (@grid-gutter-width / 2);
+    padding-right: (@grid-gutter-width / 2);
+    float:left;
+  }
+}
+
+.extracol(4.5, 4half, xs);
+.extracol(7.5, 7half, xs);
+
+@media (min-width: @screen-sm-min) {
+	.extracol(4.5, 4half, sm);
+	.extracol(7.5, 7half, sm);
+}
+@media (min-width: @screen-md-min) {
+	.extracol(4.5, 4half, md);
+	.extracol(7.5, 7half, md);
+}
+@media (min-width: @screen-lg-min) {
+	.extracol(4.5, 4half, xs);
+	.extracol(7.5, 7half, xs);
+}
+
+
+
