@@ -65,7 +65,7 @@ angular.module('dateaWebApp')
 			$scope.flow.notFound = false;
 			leaflet.center = { lat  : dateo.position.coordinates[1]
 			                 , lng  : dateo.position.coordinates[0]
-			                 , zoom : 14
+			                 , zoom : 16
 			                 }
 			leaflet.markers = { staticy : { lat       : dateo.position.coordinates[1]
 			                              , lng       : dateo.position.coordinates[0]

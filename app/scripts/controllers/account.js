@@ -29,6 +29,7 @@ angular.module('dateaWebApp')
 	$scope.flow    = {};
 	$scope.account = User.data;
 	$scope.alerts  = [];
+	$scope.loading = false;
 
 	$scope.closeAlert = function(index) {
 		$scope.alerts.splice(index, 1);
@@ -40,6 +41,7 @@ angular.module('dateaWebApp')
 	}
 
 	$scope.account.save = function () {
+		$scope.loading = true;
 		var data = {}
 		  , v
 		  ;
@@ -54,7 +56,7 @@ angular.module('dateaWebApp')
 		data.url_twitter  = $scope.account.url_twitter;
 		data.url_youtube  = $scope.account.url_youtube;
 		data.id           = User.data.id;
-console.log( 'save', data );
+		console.log( 'save', data );
 		for ( v in data ) {
 			if ( data.hasOwnProperty( v ) && !data[v] ) {
 				delete data[v];
@@ -74,13 +76,16 @@ console.log( 'save', data );
 				// update user object with response and no use updateUserDataFromApi
 				// User.updateUserDataFromApi();
 				// $location.path( '/' );
+				$scope.loading = false;
 			} else {
 				$scope.addAlert( { type : 'danger'
 				                 , msg  : 'Por favor indique un correo válido.'
 				                 } );
+				$scope.loading = false;
 			}
 		}, function ( reason ) {
 			console.log( reason );
+			$scope.loading = false;
 		} )
 	}
 

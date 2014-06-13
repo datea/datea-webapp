@@ -1,7 +1,7 @@
 <div class="campaign-holder ff1" ng-hide="flow.notFound">
 	<div class="campaign-card container-fluid">
 		<div class="row">
-			<div class="col-lg-4 col-md-5 col-sm-6 col-xs-12 campaign-info">
+			<div class="col-sm-5 col-xs-7 campaign-info">
 				<div class="inner">
 					<div class="main-info">
 						<h1>{{campaign.name}}</h1>
@@ -16,11 +16,11 @@
 					</div>
 				</div>
 			</div>
-			<div class="col-lg-3 col-md-2 col-sm-3 col-xs-12 main-controls">
+			<div class="col-sm-2 col-xs-5 main-controls">
 				<div class="inner">
 					<button class="btn datea-datear-btn btn-lg" ng-click="campaign.datear()">Datea <i class="glyphicon glyphicon-map-marker"></i></button><span class="time-left" ng-show="campaign.end_date">{{campaign._timeLeft | date:time }}</span>
 	
-					<div class="share input-group col-sm-7">
+					<div class="share input-group col-sm-12">
 						<input type="text" class="form-control" ng-model="campaign.shareableUrl">
 						<span class="input-group-btn">
 							<button class="btn btn-default" type="button" ng-click="campaign.share()"><i class="fa fa-share-alt"></i></button>
@@ -28,22 +28,24 @@
 					</div>
 				</div>
 			</div>
-			<div class="col-lg-5 campaign-img" bg-from-api="{{campaign.image.image}}"></div>
+			<div class="col-sm-5 hidden-xs campaign-img" bg-from-api="{{campaign.image.image}}"></div>
 		</div>
 	</div>
+
+
 
 	<div class="viz-holder">
 		<div class="viz-nav">
 			<div class="search">
-				<form class="search-form" ng-submit="campaign.searchDateos()">
-					<div class="form-group">
+				<form class="form search-form" ng-submit="campaign.searchDateos()">
+					<!--<div class="form-group">-->
 						<div class="input-group">
 							<input type="text" class="form-control" ng-model="campaign.searchDateosKeyword">
 							<span class="input-group-btn">
-								<button class="btn btn-default" type="button"><i class="glyphicon glyphicon-search" ng-click="campaign.searchDateos()"></i></button>
+								<button class="btn btn-default" type="button"><i class="fa fa-search" ng-click="campaign.searchDateos()"></i></button>
 							</span>
 						</div>
-					</div>
+					<!--</div>-->
 				</form>
 				<div class="order-by-holder" ng-hide="search.show_orderby">
 					<span class="order-by-label">ordernar por:</span>
@@ -55,41 +57,26 @@
 			  </div>
 			</div>
 		</div>
-		<div class="viz-viewer">
+		<div class="viz-viewer" ng-class="{'datea-loading': campaign.loading.dateos }">
 			<tabset>
 				<tab heading="&nbsp;" class="glyphicon glyphicon-map-marker datea-glyphtab-fix">
 					<div class="container-fluid">
 						<div class="row">
-							<div class="col-lg-4 col-md-5 dateos-holder" ng-class="{'datea-loading': campaign.loading.dateos }">
+							<div class="hidden-xs col-sm-5 col-md-4half dateos-holder">
 								<div class="dateo-description-holder">
-									<div class="dateo-description" ng-repeat="dateo in campaign.dateos">
-										<div class="parts-holder">
-											<div class="user-img part part-1" bg-from-api="{{ dateo.user.image_small }}"></div>
-											<div class="part part-2">
-												<a ng-href="#/{{dateo.user.username}}">
-													<h4>{{ dateo.user.username }}</h4>
-												</a>
-												<span class="date">el {{ dateo.created | date:'fullDate' }}</span>
-											</div>
-										</div>
-										<span class="label datea-label tag" ng-repeat="tag in dateo.tags">#{{tag.tag}}</span>
-										<p>{{dateo.extract}}</p>
-										<a ng-href="#/{{dateo.user.username}}/dateos/{{dateo.id}}" target="_blank">leer más</a>
-										<span class="glyphicon glyphicon-thumbs-up"></span> {{dateo.vote_count}}
-										<span class="glyphicon glyphicon-comment"></span> {{dateo.comment_count}}
-										<button class="pull-right btn datea-btn datea-btn-xs" ng-show="dateo.position" ng-click="campaign.focusDateo($index)">ver en mapa</button>
-										<hr>
-									</div>
+									
+										<da-dateo-teaser ng-repeat="dateo in campaign.dateos"></da-dateo-teaser>
+										
 								</div>
 							</div>
-							<div class="col-lg-8 col-md-7 leaflet-map-holder" ng-class="{'datea-loading': campaign.loading.leaflet }">
-								<leaflet id="leafletCampaign" defaults="campaign.leaflet.defaults" markers="campaign.leaflet.markers" center="campaign.leaflet.center" width="100%" height="450px"></leaflet>
+							<div class="col-xs-12 col-sm-7 col-md-7half leaflet-map-holder">
+								<leaflet id="leafletCampaign" defaults="campaign.leaflet.defaults" markers="campaign.leaflet.markers" center="campaign.leaflet.center" width="100%"></leaflet>
 							</div>
 						</div>
 					</div>
 				</tab>
 				<tab heading="&nbsp;" class="glyphicon glyphicon-camera datea-glyphtab-fix" ng-show="campaign.dateosWithImages.length > 0">
-					<div class="dateos-with-images-holder" ng-style="campaign.dateosWithImagesHolderHeight">
+					<div class="dateos-with-images-holder"> <!-- ng-style="campaign.dateosWithImagesHolderHeight"> -->
 						<div class="part dateo-with-image" bg-from-api="{{dateoWithImage.images[0].image}}" ng-repeat="dateoWithImage in campaign.dateosWithImages">
 							<div class="info-bg"></div>
 							<div class="info-holder">
@@ -115,42 +102,54 @@
 			</tabset>
 		</div>
 	</div>
-	<div class="extra-info-holder">
-		<div class="description part part-1">
-			<div class="user-info">
-				<div class="parts-holder">
-					<div class="part part-1">
-						<div class="user-img" bg-from-api="{{campaign.user.image}}"></div>
-					</div>
-					<div class="part part-2">
-						<p>dater@</p>
-						<h3>{{campaign.user.username}}</h3>
+
+
+
+	<div class="extra-info-holder container-fluid">
+		<div class="row">
+			<div class="col-xs-4">
+				<div class="description">
+					<div class="user-info">
+						<div class="parts-holder">
+							<div class="part part-1">
+								<div class="user-img img-circle" api-user-img="{{campaign.user.image}}"></div>
+							</div>
+							<div class="part part-2">
+								<p>dater@</p>
+								<h3>{{campaign.user.username}}</h3>
+							</div>
+						</div>
+						<h4>#{{campaign.main_tag.tag}}</h4>
+						<p class="question">¿Qué buscamos con esta acción?</p>
+						<p class="answer answer1">{{campaign.mission}}</p>
+						<p class="question">¿Qué pasa con la info?</p>
+						<p class="answer answer2">{{campaign.information_destiny}}</p>
 					</div>
 				</div>
-				<h4>#{{campaign.main_tag.tag}}</h4>
-				<p class="question">¿Qué buscamos con esta acción?</p>
-				<p>{{campaign.mission}}</p>
-				<p class="question">¿Qué pasa con la info?</p>
-				<p>{{campaign.information_destiny}}</p>
 			</div>
-		</div>
-		<div class="social part part-2">
-			<div class="parts-holder">
-				<div class="part part-1">
-					<h5>{{campaign.follow_count}} <ng-pluralize count="campaign.follow_count" when="{'one':'seguidor','other':'seguidores'}"></ng-pluralize></h5>
-					<button class="btn datea-btn">invita a tus amigos</button>
-					<div class="followers-holder">
-						<a class="follower-image" target="_blank" ng-href="#/{{follower.username}}" ng-repeat="follower in campaign.followers">
-							<span bg-from-api="{{follower.image}}" ></span>
-						</a>
+			<div class="col-lg-6 col-md-6 col-sm-8 col-xs-8">
+				<div class="social">
+					<div class="parts-holder">
+						<div class="part part-1">
+							<h5>{{campaign.follow_count}} <ng-pluralize count="campaign.follow_count" when="{'one':'seguidor','other':'seguidores'}"></ng-pluralize></h5>
+							<!--<button class="btn datea-btn">invita a tus amigos</button>-->
+							<div class="followers-holder">
+								<a class="follower-image" target="_blank" ng-href="#/{{follower.username}}" ng-repeat="follower in campaign.followers">
+									<span bg-from-api="{{follower.image}}" ></span>
+								</a>
+							</div>
+							<!--<button class="btn datea-btn datea-btn-xs see-more-peers">ver todos</button>-->
+
+							<div class="related" ng-if="campaign.relatedCampaigns.length > 0">
+								<h5>iniciativas relacionadas</h5>
+								<span class="tags" ng-repeat="tag in campaign.relatedCampaigns">#{{tag.tag}}</span>
+							</div>
+						</div>
+						<div class="part part-2">
+							<img src="static/images/campaign/btn-print-report.png" alt="imprimir reporte" ng-click="campaign.print()">
+							<img src="static/images/campaign/btn-csv-dl.png" alt="descargar csv">
+						</div>
 					</div>
-					<button class="btn datea-btn datea-btn-xs see-more-peers">ver todos</button>
-					<h5>iniciativas relacionadas</h5>
-					<span class="tags" ng-repeat="tag in campaign.relatedCampaigns">#{{tag.tag}}</span>
-				</div>
-				<div class="part part-2">
-					<img src="static/images/campaign/btn-print-report.png" alt="imprimir reporte" ng-click="campaign.print()">
-					<img src="static/images/campaign/btn-csv-dl.png" alt="descargar csv">
 				</div>
 			</div>
 		</div>

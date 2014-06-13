@@ -28,7 +28,7 @@
 	<link rel="stylesheet" href="bower_components/leaflet.draw/dist/leaflet.draw.css">
 	<link rel="Stylesheet" href="bower_components/bootstrap-select/bootstrap-select.css">
 </head>
-<body ng-app="dateaWebApp">
+<body ng-app="dateaWebApp" ng-controller="LayoutCtrl">
 	<!--[if lt IE 7]>
 	<p class="browsehappy">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> to improve your experience.</p>
 	<![endif]-->
@@ -37,16 +37,20 @@
 	<script src="bower_components/es5-shim/es5-shim.js"></script>
 	<script src="bower_components/json3/lib/json3.min.js"></script>
 	<![endif]-->
-
 	<!-- Add your site or application content here -->
 	<div ng-controller="NavCtrl" ng-include="'views/nav.html'"></div>
 
-	<div class="messagesList" app-messages></div>
+	<div id="#page-wrap" class="page-wrap" ng-class="{'autoheight': autoheight, 'with-nav': with_nav}">
+		
+		<div class="messagesList z2" app-messages></div>
 
-	<div class="page" ng-view=""></div>
+		<div class="page" ng-view=""></div>
 
-	<div class="container-fluid colophon" ng-cloak>
-		<div class="datea-rights" ng-include="'views/footer.html'"></div>
+		<div class="footer-push"></div>
+	</div>
+
+	<div class="footer-holder container-fluid" ng-cloak>
+			<div class="datea-rights" ng-include="'views/footer.html'"></div>
 	</div>
 
 	<!-- Google Analytics: change UA-XXXXX-X to be your site's ID -->
@@ -99,6 +103,7 @@
 
 	<!-- build:js({.tmp,app}) scripts/scripts.js -->
 	<script src="scripts/app.js"></script>
+	<script src="scripts/directives/datea-layout.js"></script>
 	<script src="scripts/controllers/main.js"></script>
 	<script src="scripts/controllers/signup.js"></script>
 	<script src="scripts/services/user.js"></script>
@@ -127,6 +132,7 @@
 	<script src="scripts/services/state.js"></script>
 	<script src="scripts/directives/dateo-teaser.js"></script>
 	<script src="scripts/directives/campaign-teaser.js"></script>
+	<script src="scripts/controllers/layout.js"></script>
 	<!-- endbuild -->
 
 </body>

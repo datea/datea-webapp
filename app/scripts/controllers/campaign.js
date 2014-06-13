@@ -56,6 +56,9 @@ angular.module('dateaWebApp')
 
 	$scope.campaign.selectedMarker = 'last';
 
+	$scope.dateamap = {};
+	$scope.map_is_present = true;
+
 	buildRelatedCampaigns = function () {
 		var tags = getTagsString( $scope.campaign );
 		console.log( 'buildRelatedCampaigns tags', tags );
@@ -120,6 +123,7 @@ angular.module('dateaWebApp')
 		.getUsers( { follow_key: 'tag.'+$scope.campaign.main_tag.id } )
 		.then( function ( response ) {
 			console.log( 'buildFollowersList', response.objects );
+			console.log("HEY CARAJO", $scope.campaign.followers);
 			angular.extend( $scope.campaign.followers, response.objects );
 		}, function ( reason ) {
 			console.log( reason );
@@ -244,7 +248,7 @@ angular.module('dateaWebApp')
 		}
 	}
 
-	$scope.campaign.focusDateo = function ( idx ) {
+	$scope.dateamap.focusDateo = function ( idx ) {
 		var markerName
 		  , center = {}
 		  ;

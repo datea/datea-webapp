@@ -83,6 +83,7 @@ angular.module( 'dateaWebApp'
 	.when( '/tag/:tagName'
 	  , { templateUrl: 'views/tag.html'
 	    , controller: 'TagCtrl'
+	    , style: 'height100'
 	    } )
 	.when( '/:username/:campaignName'
 	  , { templateUrl: 'views/campaign.html'
@@ -94,4 +95,4 @@ angular.module( 'dateaWebApp'
 	    } )
 	.otherwise( { redirectTo: '/' } );
 
-} ] );
+} ] )

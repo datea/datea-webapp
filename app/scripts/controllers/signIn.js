@@ -27,6 +27,7 @@ angular.module( 'dateaWebApp' )
 	$scope.nav.visible = true;
 
 	$scope.auth.passwordRequired = true;
+	$scope.auth.showResetPassword = false;
 
 	User.isSignedIn() && $location.path( '/' );
 
@@ -88,6 +89,10 @@ angular.module( 'dateaWebApp' )
 		var resetGivens = {};
 		resetGivens.email = $scope.reset.email;
 		User.resetPassword( resetGivens );
+	}
+
+	$scope.flow.toggleResetPassword = function () {
+		$scope.auth.showResetPassword = !$scope.auth.showResetPassword;
 	}
 
 
