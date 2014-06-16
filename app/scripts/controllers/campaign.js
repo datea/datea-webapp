@@ -58,8 +58,6 @@ angular.module('dateaWebApp')
 
 	$scope.campaign.selectedMarker = 'last';
 
-console.log( 'leafletMarkersHelpers', leafletMarkersHelpers, leafletMarkersHelpers.groups );
-
 	buildRelatedCampaigns = function () {
 		var tags = getTagsString( $scope.campaign );
 		console.log( 'buildRelatedCampaigns tags', tags );
@@ -91,16 +89,13 @@ console.log( 'leafletMarkersHelpers', leafletMarkersHelpers, leafletMarkersHelpe
 			markers['marker'+sessionMarkersIdx] = {
 			  lat       : value.position.coordinates[1]
 			, lng       : value.position.coordinates[0]
-			// , group     : value.country
 			, group     : $scope.campaign.main_tag.tag
-			// , group     : value.admin_level3
 			, label     : { message: '#' + value.tags[0].tag }
 			, message   : $interpolate( config.marker )(value)
 			, draggable : false
 			, focus     : false
 			, _id       : value.id
 			};
-			// console.log( ':: group', $scope.campaign.main_tag.tag );
 			sessionMarkersIdx += 1;
 			markersBounds.push( [ value.position.coordinates[1], value.position.coordinates[0] ] );
 		} );
@@ -346,24 +341,14 @@ console.log( 'leafletMarkersHelpers', leafletMarkersHelpers, leafletMarkersHelpe
 
 	if ( $routeParams.username && $routeParams.campaignName ) {
 		buildCampaign();
-		// $scope.campaign.leaflet = { bounds   : [ [ -12.0735, -77.0336 ], [ -12.0829, -77.0467 ] ]
-	 //               , center   : { lat: -12.05, lng: -77.06, zoom: 13 }
-	 //               , defaults : { scrollWheelZoom: false }
-	 //               , markers  : {}
-	 //               }
 		defaultMap = angular.copy( config.defaultMap );
 		angular.extend( $scope.campaign.leaflet, defaultMap );
 	}
 
 	$scope.$on('$destroy', function () {
-		// var groupName = $scope.campaign.main_tag.tag;
-		// console.log( 'destroy', groupName );
 		markersBounds   = [];
 		$scope.campaign = {};
-		// delete leafletMarkersHelpers.groups[groupName];
-		console.log( 'destroy leafletMarkersHelpers', leafletMarkersHelpers );
 		leafletMarkersHelpers.resetCurrentGroups();
-		// console.log( 'leafletMarkersHelpers.groups[groupName] exists', leafletMarkersHelpers.groups[groupName] );
 	});
 
 } ] );

@@ -14,6 +14,7 @@ angular.module('dateaWebApp')
   , '$interpolate'
   , 'leafletData'
   , '$timeout'
+  , 'leafletMarkersHelpers'
 , function (
     $scope
   , Api
@@ -27,6 +28,7 @@ angular.module('dateaWebApp')
   , $interpolate
   , leafletData
   , $timeout
+  , leafletMarkersHelpers
 ) {
 
 	var sessionMarkersIdx = 0
@@ -292,5 +294,11 @@ if ( $routeParams.tagName ) {
 	} );
 	angular.extend( $scope.tag.leaflet, config.defaultMap );
 }
+
+$scope.$on('$destroy', function () {
+	markersBounds   = [];
+	$scope.tag = {};
+	leafletMarkersHelpers.resetCurrentGroups();
+});
 
 } ] );
