@@ -14,6 +14,7 @@ angular.module('dateaWebApp')
   , '$window'
   , '$modal'
   , '$location'
+  , 'leafletMarkersHelpers'
 , function (
     $scope
   , Api
@@ -27,6 +28,7 @@ angular.module('dateaWebApp')
   , $window
   , $modal
   , $location
+  , leafletMarkersHelpers
 ) {
 
 	var sessionMarkersIdx = 0
@@ -55,6 +57,8 @@ angular.module('dateaWebApp')
 	$scope.campaign.isUserSignedIn = User.isSignedIn();
 
 	$scope.campaign.selectedMarker = 'last';
+
+console.log( 'leafletMarkersHelpers', leafletMarkersHelpers, leafletMarkersHelpers.groups );
 
 	buildRelatedCampaigns = function () {
 		var tags = getTagsString( $scope.campaign );
@@ -139,7 +143,7 @@ angular.module('dateaWebApp')
 				angular.extend( $scope.campaign, response.objects[0] );
 				$scope.campaign.followable = $scope.campaign.isUserSignedIn && !$scope.campaign.isUserFollowing();
 				$scope.campaign.shareableUrl = config.app.url
-					                             + $scope.campaign.user.username + '/'
+				                               + $scope.campaign.user.username + '/'
 				                               + $scope.campaign.main_tag.tag;
 				$scope.flow.notFound = false;
 				buildDateos();
@@ -178,7 +182,8 @@ angular.module('dateaWebApp')
 		  , withMedia   = givens && givens.withMedia
 		  ;
 
-		dateoGivens.tags = getTagsString( $scope.campaign );
+		// dateoGivens.tags = getTagsString( $scope.campaign );
+		dateoGivens.tags = $scope.campaign.main_tag.tag;
 		dateoGivens.q    = q;
 		if ( $scope.campaign.selectedMarker !== 'last' ) {
 			dateoGivens.order_by = config.selectFilter[ $scope.campaign.selectedMarker ];
@@ -348,13 +353,17 @@ angular.module('dateaWebApp')
 	 //               }
 		defaultMap = angular.copy( config.defaultMap );
 		angular.extend( $scope.campaign.leaflet, defaultMap );
-		// console.log( 'EXTEND', angular.extend( $scope.campaign.leaflet, config.defaultMap ) );
 	}
 
 	$scope.$on('$destroy', function () {
-		console.log( 'destroy' );
+		// var groupName = $scope.campaign.main_tag.tag;
+		// console.log( 'destroy', groupName );
 		markersBounds   = [];
 		$scope.campaign = {};
+		// delete leafletMarkersHelpers.groups[groupName];
+		console.log( 'destroy leafletMarkersHelpers', leafletMarkersHelpers );
+		leafletMarkersHelpers.resetCurrentGroups();
+		// console.log( 'leafletMarkersHelpers.groups[groupName] exists', leafletMarkersHelpers.groups[groupName] );
 	});
 
 } ] );

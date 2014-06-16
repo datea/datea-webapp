@@ -125,7 +125,7 @@ $scope.addAlert = function ( givens ) {
 	return $scope.alerts.push( givens ) - 1;
 }
 
-$rootScope.$on( 'dateo:imgLoaded', function ( ev, givens ) {
+$rootScope.$on( 'datea:fileLoaded', function ( ev, givens ) {
 	if ( givens.data.size > config.dateo.sizeImgMax ) {
 		$scope.dateo.img = null;
 		alertIndexes.imgSize !== void 0 && $scope.closeAlert( alertIndexes.imgSize );

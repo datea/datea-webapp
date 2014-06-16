@@ -19,7 +19,7 @@ angular.module('dateaWebApp')
 					scope.$apply(function () {
 						scope.fileread = loadEvent.target.result;
 						scope.filedata = changeEvent.target.files[0];
-						$rootScope.$broadcast( 'dateo:imgLoaded', { data : changeEvent.target.files[0] } );
+						$rootScope.$broadcast( 'datea:fileLoaded', { data: changeEvent.target.files[0], file: loadEvent.target.result } );
 					});
 				}
 				reader.readAsDataURL(changeEvent.target.files[0]);

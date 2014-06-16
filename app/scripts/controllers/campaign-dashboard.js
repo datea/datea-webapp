@@ -9,6 +9,7 @@ angular.module( 'dateaWebApp' )
   , 'leafletData'
   , 'User'
   , '$location'
+  , '$rootScope'
 , function (
     $scope
   , Api
@@ -17,6 +18,7 @@ angular.module( 'dateaWebApp' )
   , leafletData
   , User
   , $location
+  , $rootScope
 ) {
 
 	var sup
@@ -35,6 +37,8 @@ angular.module( 'dateaWebApp' )
 	$scope.newCampaign = {};
 	$scope.flow        = {};
 	$scope.flow.categories;
+	$scope.flow.validInput = {};
+	$scope.flow.messages   = {};
 
 	$scope.newCampaign.leaflet = {};
 
@@ -92,6 +96,21 @@ buildBoundariesMap = function () {
 	});
 }
 
+$scope.flow.checkMainTag = function () {
+	$scope.flow.messages.mainTagExists = '';
+	if ( $scope.newCampaign.main_hashtag ) {
+		Api.campaign
+		.getCampaigns( { main_tag: $scope.newCampaign.main_hashtag } )
+		.then( function ( response ) {
+			console.log( 'checkMainTag', response, !!response.objects.length );
+			$scope.flow.validInput.mainTag     = !response.objects.length;
+			$scope.flow.messages.mainTagExists = !response.objects.length ? '' : config.dashboard.validationMsgs.mainTagExists;
+		}, function ( reason ) {
+			console.log( reason	);
+		} );
+	}
+}
+
 $scope.flow.hashtagify = function ( name ) {
 	var hashtag = [];
 	name.split(' ').map( function (v) { hashtag.push( v.charAt(0).toUpperCase() + v.slice(1) ) } );
@@ -102,6 +121,13 @@ $scope.flow.addTag = function () {
 	$scope.newCampaign.nextTag && $scope.newCampaign.tags.push( { title: $scope.newCampaign.nextTag, tag: $scope.flow.hashtagify( $scope.newCampaign.nextTag ) } );
 	$scope.newCampaign.nextTag = '';
 }
+
+// Add File
+$rootScope.$on('datea:fileLoaded', function ( ev, givens ) {
+	givens.data.name && $scope.newCampaign.files.push( { name: givens.data.name , data: givens.file } );
+	$scope.newCampaign.nextFile     = null;
+	$scope.newCampaign.nextFileData = null;
+});
 
 $scope.flow.arrowUp = function ( idx ) {
 	var temp;
@@ -125,6 +151,10 @@ $scope.flow.removeTag = function ( idx ) {
 	$scope.newCampaign.tags.splice( idx, 1 );
 }
 
+$scope.flow.removeFile = function ( idx ) {
+	$scope.newCampaign.files.splice( idx, 1 );
+}
+
 // Date picker
 $scope.flow.today = function() {
 	$scope.flow.dt = new Date();
@@ -140,7 +170,9 @@ $scope.flow.dateOptions = {
 
 $scope.newCampaign.tags = [
 { title: 'Autos Mal Estacionados', tag: '#AutosMalEstacionados' }
-]
+];
+
+$scope.newCampaign.files = [];
 
 $scope.newCampaign.save = function () {
 	var campaign = {};
@@ -154,8 +186,10 @@ $scope.newCampaign.save = function () {
 	campaign.category            = $scope.flow.selectedCategory;
 	campaign.main_tag            = { tag: $scope.newCampaign.main_hashtag };
 	campaign.secondary_tags      = $scope.newCampaign.tags;
+	campaign.files               = $scope.newCampaign.files.length && $scope.newCampaign.files;
 	campaign.center              = { type: 'Point', coordinates: [ -77.027772, -12.121937 ] };
 	campaign.boundary            = $scope.newCampaign.boundary;
+	campaign.zoom                = $scope.newCampaign.leaflet.center.zoom;
 
 	leafletData.getMap("leafletNewCampaign").then( function ( map ) {
 		campaign.center = map.getCenter();
@@ -164,8 +198,6 @@ $scope.newCampaign.save = function () {
 		console.log( reason );
 	} );
 
-	console.log( 'newCampaign', campaign );
-
 	Api.campaign
 	.postCampaign( campaign )
 	.then( function ( response ) {
@@ -173,7 +205,7 @@ $scope.newCampaign.save = function () {
 		console.log( 'postCampaign' );
 	}, function ( reason ) {
 		console.log( 'postCampaign reason: ', reason );
-	} )
+	} );
 }
 
 buildCategories();
