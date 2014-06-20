@@ -40,14 +40,14 @@
 				<tab heading="&nbsp;" class="glyphicon glyphicon-map-marker datea-glyphtab-fix">
 					<div class="container-fluid">
 						<div class="row">
-							<div class="col-xs-5 dateos-holder">
+							<div class="col-md-45 dateos-holder">
 								<div class="dateo-description-holder">
 									
 										<da-dateo-teaser ng-repeat="dateo in tag.dateos"></da-dateo-teaser>
 										
 								</div>
 							</div>
-							<div class="col-xs-7 leaflet-map-holder">
+							<div class="col-md-75 leaflet-map-holder">
 								<leaflet id="leafletCampaign" defaults="tag.leaflet.defaults" markers="tag.leaflet.markers" center="tag.leaflet.center" width="100%"></leaflet>
 							</div>
 						</div>
@@ -55,26 +55,7 @@
 				</tab>
 				<tab heading="&nbsp;" class="glyphicon glyphicon-camera datea-glyphtab-fix" ng-show="tag.dateosWithImages.length > 0">
 					<div class="dateos-with-images-holder" ng-style="tag.dateosWithImagesHolderHeight">
-						<div class="part dateo-with-image" bg-from-api="{{dateoWithImage.images[0].image}}" ng-repeat="dateoWithImage in tag.dateosWithImages">
-							<div class="info-bg"></div>
-							<div class="info-holder">
-								<div class="parts-holder">
-									<div class="part part-1">
-										<div class="user-img" bg-from-api="{{dateoWithImage.user.image}}"></div>
-									</div>
-									<div class="part part-2">
-										<h5>{{dateoWithImage.user.username}}</h5>
-										<span class="date">{{dateoWithImage.date | date:'fullDate'}}</span>
-									</div>
-								</div>
-								<p class="extract">{{dateoWithImage.extract}}</p>
-								<div class="cta-holder">
-									<span class="glyphicon glyphicon-thumbs-up"></span> {{dateoWithImage.vote_count}}
-									<span class="glyphicon glyphicon-comment"></span> {{dateoWithImage.comments.length}}
-									<a href="#/{{dateoWithImage.user.username}}/dateos/{{dateoWithImage.id}}" class="btn datea-btn datea-btn-xs pull-right">ver más</a>
-								</div>
-							</div>
-						</div>
+							<da-dateo-thumb ng-repeat="dateo in tag.dateosWithImages"></da-dateo-thumb>
 					</div>
 				</tab>
 			</tabset>

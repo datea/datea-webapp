@@ -272,7 +272,7 @@
 	Extra Grid sizes
 ================================================ */
 
-.extracol(@size, @name, @type) {
+.extra-col(@size, @name, @type) {
 	
 	.col-@{type}-@{name} {
     width: percentage((@size / @grid-columns));
@@ -286,20 +286,20 @@
   }
 }
 
-.extracol(4.5, 4half, xs);
-.extracol(7.5, 7half, xs);
+.extra-col(4.5, 45, xs);
+.extra-col(7.5, 75, xs);
 
 @media (min-width: @screen-sm-min) {
-	.extracol(4.5, 4half, sm);
-	.extracol(7.5, 7half, sm);
+	.extra-col(4.5, 45, sm);
+	.extra-col(7.5, 75, sm);
 }
 @media (min-width: @screen-md-min) {
-	.extracol(4.5, 4half, md);
-	.extracol(7.5, 7half, md);
+	.extra-col(4.5, 45, md);
+	.extra-col(7.5, 75, md);
 }
 @media (min-width: @screen-lg-min) {
-	.extracol(4.5, 4half, xs);
-	.extracol(7.5, 7half, xs);
+	.extra-col(4.5, 45, xs);
+	.extra-col(7.5, 75, xs);
 }
 
 

@@ -84,10 +84,7 @@ angular.module('dateaWebApp')
 		$scope.campaign.leaflet.markers = {};
 
 		angular.forEach( dateos, function ( value, key ) {
-			// default image for markers
-			value.user.image_small = value.user.image_small
-			? value.user.image_small
-			: config.defaultImgProfile;
+			
 			value._prettyDate = $filter('date')( value.date, 'fullDate' );
 			markers['marker'+sessionMarkersIdx] = {
 			  lat       : value.position.coordinates[1]
@@ -122,7 +119,6 @@ angular.module('dateaWebApp')
 		.getUsers( { follow_key: 'tag.'+$scope.campaign.main_tag.id } )
 		.then( function ( response ) {
 			console.log( 'buildFollowersList', response.objects );
-			console.log("HEY CARAJO", $scope.campaign.followers);
 			angular.extend( $scope.campaign.followers, response.objects );
 		}, function ( reason ) {
 			console.log( reason );

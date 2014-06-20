@@ -1,9 +1,9 @@
 <div class="thumbnail">
-		<a class="campaign" ng-href="#/{{campaign.user.username}}/{{campaign.main_tag.tag}}">
-			<div class="campaign-img" bg-from-api="{{campaign.image.image}}" ></div>
-			<h4>{{campaign.name}}</h4>
-			<span class="dateo-count">{{campaign.dateo_count}} dateos</span>
-			<span class="status">{{campaign.is_active && 'activo' || 'inactivo'}}</span>
-			<!--<span class="btn datea-btn btn-xs datea-btn-xs pull-right">ver más</span>-->
-		</a>
-	</div>
+	<a class="campaign" ng-href="#/{{campaign.user.username}}/{{campaign.main_tag.tag}}">
+		<div class="campaign-img" bg-from-api="{{campaign.image.image}}" ></div>
+		<h4>{{campaign.name}}</h4>
+		<span class="dateo-count">{{campaign.dateo_count}} dateos</span>
+		<span class="status">{{campaign.is_active && 'activo' || 'inactivo'}}</span>
+		<!--<span class="btn datea-btn btn-xs datea-btn-xs pull-right">ver más</span>-->
+	</a>
+</div>

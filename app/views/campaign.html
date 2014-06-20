@@ -28,7 +28,7 @@
 					</div>
 				</div>
 			</div>
-			<div class="col-sm-5 hidden-xs campaign-img" bg-from-api="{{campaign.image.image}}"></div>
+			<div class="col-sm-5 hidden-xs campaign-img" da-bg-from-api="{{campaign.image.image}}" da-img-size="cover"></div>
 		</div>
 	</div>
 
@@ -62,14 +62,14 @@
 				<tab heading="&nbsp;" class="glyphicon glyphicon-map-marker datea-glyphtab-fix">
 					<div class="container-fluid">
 						<div class="row">
-							<div class="hidden-xs col-sm-5 col-md-4half dateos-holder">
+							<div class="hidden-xs col-sm-45 dateos-holder">
 								<div class="dateo-description-holder">
 									
 										<da-dateo-teaser ng-repeat="dateo in campaign.dateos"></da-dateo-teaser>
 										
 								</div>
 							</div>
-							<div class="col-xs-12 col-sm-7 col-md-7half leaflet-map-holder">
+							<div class="col-xs-12 col-sm-75 leaflet-map-holder">
 								<leaflet id="leafletCampaign" defaults="campaign.leaflet.defaults" markers="campaign.leaflet.markers" center="campaign.leaflet.center" width="100%"></leaflet>
 							</div>
 						</div>
@@ -77,26 +77,9 @@
 				</tab>
 				<tab heading="&nbsp;" class="glyphicon glyphicon-camera datea-glyphtab-fix" ng-show="campaign.dateosWithImages.length > 0">
 					<div class="dateos-with-images-holder"> <!-- ng-style="campaign.dateosWithImagesHolderHeight"> -->
-						<div class="part dateo-with-image" bg-from-api="{{dateoWithImage.images[0].image}}" ng-repeat="dateoWithImage in campaign.dateosWithImages">
-							<div class="info-bg"></div>
-							<div class="info-holder">
-								<div class="parts-holder">
-									<div class="part part-1">
-										<div class="user-img" bg-from-api="{{dateoWithImage.user.image}}"></div>
-									</div>
-									<div class="part part-2">
-										<h5>{{dateoWithImage.user.username}}</h5>
-										<span class="date">{{dateoWithImage.date | date:'fullDate'}}</span>
-									</div>
-								</div>
-								<p class="extract">{{dateoWithImage.extract}}</p>
-								<div class="cta-holder">
-									<span class="glyphicon glyphicon-thumbs-up"></span> {{dateoWithImage.vote_count}}
-									<span class="glyphicon glyphicon-comment"></span> {{dateoWithImage.comments.length}}
-									<a href="#/{{dateoWithImage.user.username}}/dateos/{{dateoWithImage.id}}" class="btn datea-btn datea-btn-xs pull-right">ver más</a>
-								</div>
-							</div>
-						</div>
+
+						<da-dateo-thumb ng-repeat="dateo in campaign.dateosWithImages"></da-dateo-thumb>
+						
 					</div>
 				</tab>
 			</tabset>
@@ -112,7 +95,7 @@
 					<div class="user-info">
 						<div class="parts-holder">
 							<div class="part part-1">
-								<div class="user-img img-circle" api-user-img="{{campaign.user.image}}"></div>
+								<div class="user-img img-circle" da-bg-from-api="{{campaign.user.image}}" da-img-size="cover" da-img-type="user"></div>
 							</div>
 							<div class="part part-2">
 								<p>dater@</p>
@@ -135,7 +118,7 @@
 							<!--<button class="btn datea-btn">invita a tus amigos</button>-->
 							<div class="followers-holder">
 								<a class="follower-image" target="_blank" ng-href="#/{{follower.username}}" ng-repeat="follower in campaign.followers">
-									<span bg-from-api="{{follower.image}}" ></span>
+									<span da-bg-from-api="{{follower.image}}" da-img-size="cover" da-img-type="user"></span>
 								</a>
 							</div>
 							<!--<button class="btn datea-btn datea-btn-xs see-more-peers">ver todos</button>-->

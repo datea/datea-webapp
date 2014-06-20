@@ -161,9 +161,6 @@ angular.module('dateaWebApp')
 
 		angular.forEach( dateos, function ( value, key ) {
 			// default image for markers
-			value.user.image_small = value.user.image_small
-			? value.user.image_small
-			: config.defaultImgProfile;
 			value._prettyDate = $filter('date')( value.date, 'fullDate' );
 			markers['marker'+sessionMarkersIdx] = {
 			  lat       : value.position.coordinates[1]

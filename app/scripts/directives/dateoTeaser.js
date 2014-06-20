@@ -3,4 +3,4 @@ return {
     restrict: "E",
     templateUrl: "/views/dateo-teaser.html"
 }
-})
+});

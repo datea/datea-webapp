@@ -1,6 +1,7 @@
+
 <div class="profile-holder" ng-hide="flow.notFound">
 	<div class="profile-card" bg-from-api-wide="{{targetUser.bg_image}}">
-		<div class="part user-img img-circle" bg-from-api="{{ targetUser.image_large }}"></div>
+		<div class="part user-img img-circle" da-bg-from-api="{{ targetUser.image_large }}" da-img-size="cover" da-img-type="user"></div>
 		<div class="part ff1 user-extra">
 			<h2>{{targetUser.username}}</h2>
 			<p class="message" ng-if="targetUser.message">{{targetUser.message}}</p>
@@ -24,7 +25,7 @@
 
 	<div class="content-holder container">
 		<div class="row">
-			<div class="col-lg-8 main-col">
+			<div class="col col-md-8 main-col">
 				<div class="gray-bg"></div>
 				<div class="main-content">
 					<tabset>
@@ -48,7 +49,7 @@
 						</tab>
 					</tabset>
 				</div>
-			</div><div class="col-lg-4">
+			</div><div class="col-md-4">
 				<div class="sidebar-content">
 					<h4 ng-show="!targetUser.isSameAsUser">{{targetUser.username}} sigue:</h4>
 					<h4 ng-show="targetUser.isSameAsUser">Etiquetas que sigo:</h4>
