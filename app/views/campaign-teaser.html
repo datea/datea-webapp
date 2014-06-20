@@ -1,6 +1,6 @@
 <div class="thumbnail">
 	<a class="campaign" ng-href="#/{{campaign.user.username}}/{{campaign.main_tag.tag}}">
-		<div class="campaign-img" bg-from-api="{{campaign.image.image}}" ></div>
+		<div class="campaign-img" da-bg-from-api="{{campaign.image.image}}" da-img-size="cover"></div>
 		<h4>{{campaign.name}}</h4>
 		<span class="dateo-count">{{campaign.dateo_count}} dateos</span>
 		<span class="status">{{campaign.is_active && 'activo' || 'inactivo'}}</span>

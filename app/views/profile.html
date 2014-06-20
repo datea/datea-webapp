@@ -1,6 +1,6 @@
 
 <div class="profile-holder" ng-hide="flow.notFound">
-	<div class="profile-card" bg-from-api-wide="{{targetUser.bg_image}}">
+	<div class="profile-card" da-bg-from-api="{{targetUser.bg_image}}" da-img-type="user-bg" da-img-size="cover" da-img-repeat="repeat-x">
 		<div class="part user-img img-circle" da-bg-from-api="{{ targetUser.image_large }}" da-img-size="cover" da-img-type="user"></div>
 		<div class="part ff1 user-extra">
 			<h2>{{targetUser.username}}</h2>

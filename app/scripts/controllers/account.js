@@ -88,6 +88,6 @@ angular.module('dateaWebApp')
 				console.log( reason );
 				$scope.loading = false;
 			} )
+		}
 	}
-
 } ] );
