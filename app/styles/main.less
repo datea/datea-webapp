@@ -1553,7 +1553,17 @@ body {
 
 .campaign-holder {
 
-	.viz-holder { min-height: 450px; height: 75vh; }
+	.viz-holder { 
+		//min-height: 450px; 
+		//height: 75vh;
+		.viz-viewer .dateo-map-viz {
+			min-height: 450px; 
+			height: 75vh;
+		}
+		.dateo-img-viz {
+			height: auto;
+		}
+	}
 
 	.campaign-card {
 		background-color: @color-9;
@@ -1773,10 +1783,10 @@ body {
 	.viz-viewer {
 		//.clearfix();
 		position: relative;
-		height:  ~"calc(100% - 46px)";
-		height: ~"-webkit-calc(100% - 46px)";
-		height: ~"-moz-calc(100% - 46px)";
-		height: ~"-o-calc(100% - 46px)";
+		//height:  ~"calc(100% - 46px)";
+		//height: ~"-webkit-calc(100% - 46px)";
+		//height: ~"-moz-calc(100% - 46px)";
+		//height: ~"-o-calc(100% - 46px)";
 		.tabbable, 
 		.tab-content, 
 		.tab-pane, 
@@ -1853,8 +1863,8 @@ body {
 
 
 		.dateos-with-images-holder {
-			height: 100%;
-			overflow-y: scroll;
+			//height: 100%;
+			//overflow-y: scroll;
 
 			.dateo-with-image {
 				height: 200px;

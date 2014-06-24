@@ -199,7 +199,7 @@ $scope.flow.timeNow = new Date();
 
 $scope.flow.hstep = 1;
 $scope.flow.mstep = 1;
-
+ 
 // Datetime sum
 $scope.$watch( 'flow.dt + flow.timeNow', function () {
 	var datetime = {}
@@ -312,6 +312,8 @@ if ( datearModalGivens.suggestedTags ) {
 geo.getLocation( {timeout:10000} ).then( onGeolocation, onGeolocationError );
 
 
+var rootElem = angular.element(document.getElementById('modal-body'));
+console.log("MODAL BODY", rootElem);
 
 
 } ] );

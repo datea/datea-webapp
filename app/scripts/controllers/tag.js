@@ -188,7 +188,7 @@ angular.module('dateaWebApp')
 	}
 
 	goToMainTag = function ( givens ) {
-		$location.path( givens.username + '/' + givens.tagName );
+		$location.path( givens.username + '/' + givens.tagName ).replace();
 	}
 
 	$scope.tag.isUserFollowing = function () {

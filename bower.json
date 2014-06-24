@@ -13,7 +13,7 @@
     "angular-facebook": "~0.2.2",
     "birdangular": "*",
     "angular-local-storage": "*",
-    "angular-leaflet-directive": "~0.7.1",
+    "angular-leaflet-directive": "git://github.com/lafactura/angular-leaflet-directive.git#master",
     "angularjs-geolocation": "~0.1.0",
     "angular-i18n": "~1.2.6",
     "leaflet-dist": "~0.7.1",

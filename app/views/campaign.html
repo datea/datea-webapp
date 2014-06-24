@@ -60,7 +60,7 @@
 		<div class="viz-viewer" ng-class="{'datea-loading': campaign.loading.dateos }">
 			<tabset>
 				<tab heading="&nbsp;" class="glyphicon glyphicon-map-marker datea-glyphtab-fix">
-					<div class="container-fluid">
+					<div class="container-fluid dateo-map-viz">
 						<div class="row">
 							<div class="hidden-xs col-sm-45 dateos-holder">
 								<div class="dateo-description-holder">
@@ -76,7 +76,7 @@
 					</div>
 				</tab>
 				<tab heading="&nbsp;" class="glyphicon glyphicon-camera datea-glyphtab-fix" ng-show="campaign.dateosWithImages.length > 0">
-					<div class="dateos-with-images-holder"> <!-- ng-style="campaign.dateosWithImagesHolderHeight"> -->
+					<div class="dateos-with-images-holder dateo-img-viz"> <!-- ng-style="campaign.dateosWithImagesHolderHeight"> -->
 
 						<da-dateo-thumb ng-repeat="dateo in campaign.dateosWithImages"></da-dateo-thumb>
 						
