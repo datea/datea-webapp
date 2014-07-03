@@ -7,10 +7,10 @@
 		</div>
 	</div>
 	<p class="tags"><a class="tag" ng-repeat="tag in dateo.tags" href="/#/tag/{{tag.tag}}">#{{tag.tag}}</a></p>
-	<p class="content">{{dateo.content}}</p>
+	<p class="content" ng-bind-html="dateo.content | linky:'_blank'"></p>
 	<div class="social-holder">
 		<a class="btn" ng-class="{'pull-right datea-btn btn-xs': !map_is_present,'btn-link': map_is_present}" href="#/{{dateo.user.username}}/dateos/{{dateo.id}}" >ver detalle</a>
-		<button class="pull-right btn btn-xs datea-btn" ng-if="map_is_present" ng-show="dateo.position" ng-click="dateamap.focusDateo($index)">ver en mapa</button>
+		<button class="pull-right btn btn-xs datea-gray-btn" ng-if="map_is_present" ng-show="dateo.position" ng-click="dateamap.focusDateo($index)">ver en mapa</button>
 		<span class="glyphicon glyphicon-thumbs-up"></span> {{dateo.vote_count}}
 		<span class="glyphicon glyphicon-comment"></span> {{dateo.comment_count}}
 	</div>

@@ -57,10 +57,6 @@ angular.module('dateaWebApp')
 	$scope.flow             = {};
 	$scope.flow.notFound    = false;
 
-	isUserFollowing = function () {
-		return !!~User.data.tags_followed.map( function ( t ) { return t.id; } ).indexOf( $scope.tag.id );
-	}
-
 	isMainTag = function () {
 		var dfd = $q.defer();
 		Api.campaign
@@ -78,10 +74,7 @@ angular.module('dateaWebApp')
 		.getTags( { tag: $routeParams.tagName } )
 		.then( function ( response ) {
 			if ( response.objects[0] ) {
-				console.log( 'buildTag', response );
 				angular.extend($scope.tag, response.objects[0]);
-				$scope.tag.followable = $scope.tag.isUserSignedIn && !isUserFollowing();
-				console.log('getTags', $scope.tag );
 				buildDateos();
 				buildDateosWithImages();
 			} else {
@@ -165,7 +158,7 @@ angular.module('dateaWebApp')
 			markers['marker'+sessionMarkersIdx] = {
 			  lat       : value.position.coordinates[1]
 			, lng       : value.position.coordinates[0]
-			, group			: value.admin_level3
+			, group			: $scope.tag.tag
 			, label     : { message: '#' + value.tags[0].tag }
 			, message   : $interpolate( config.marker )(value)
 			, draggable : false

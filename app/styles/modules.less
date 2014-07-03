@@ -8,6 +8,7 @@
 	Tags: datea, información, participación ciudadana, comparte...
 */
 @import "app/bower_components/bootstrap/less/variables.less";
+@import "app/bower_components/bootstrap/less/mixins.less";
 
 @icon-font-path: "/styles/fonts/";
 
@@ -148,6 +149,11 @@
   &.btn-sm {
   	font-size: 13px !important;
   }
+}
+
+.datea-gray-btn {
+	.datea-button-variant(white, @color-9, transparent, black);
+	border-radius: 5px;
 }
 
 .datea-datear-btn {

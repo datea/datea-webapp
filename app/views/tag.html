@@ -3,11 +3,10 @@
 		<h2 class="title pull-left">#{{tag.tag}}</h2>
 		<div class="stats pull-left">
 			<span class="dateo-count">{{tag.dateo_count}} <ng-pluralize count="tag.dateo_count" when="{'one': 'dateo','other':'dateos'}"></span>
-			<span class="follow-count">{{tag.follow_count}} <ng-pluralize count="tag.follow_count" when="{'one': 'seguidor','other':'seguidores'}"></span>
+			<span class="follow-count" ng-if="tag.follow_count > 0">{{tag.follow_count}} <ng-pluralize count="tag.follow_count" when="{'one': 'seguidor','other':'seguidores'}"></span>
 		</div>
 		<div class="buttons pull-left">
-			<button class="btn datea-btn" ng-show="tag.followable" ng-click="tag.followTag()">+seguir</button>
-			<button class="btn datea-btn" ng-show="!tag.followable && tag.isUserSignedIn" ng-click="tag.unfollowTag()">x no seguir</button>
+			<da-follow follow-obj="tag" follow-id="{{tag.id}}"></da-follow>
 			<button class="btn datea-datear-btn btn-lg" ng-click="tag.datear()">Datea <i class="glyphicon glyphicon-map-marker"></i></button>
 		</div>
 	</div>
@@ -48,7 +47,7 @@
 								</div>
 							</div>
 							<div class="col-md-75 leaflet-map-holder">
-								<leaflet id="leafletCampaign" defaults="tag.leaflet.defaults" markers="tag.leaflet.markers" center="tag.leaflet.center" width="100%"></leaflet>
+								<leaflet id="leafletTag" defaults="tag.leaflet.defaults" markers="tag.leaflet.markers" center="tag.leaflet.center" width="100%"></leaflet>
 							</div>
 						</div>
 					</div>

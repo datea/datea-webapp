@@ -9,16 +9,18 @@ angular
 	, api     : { url    : 'http://173.255.200.68/api/v2/'
 	            , imgUrl : 'http://173.255.200.68/' }
 	, marker  : ['<div class="marker-holder">'
-	              ,'<img src="http://api.datea.pe/{{user.image_small}}" alt="user image">'
+	              ,'<img class="img-circle" src="http://api.datea.pe/{{user.image_small}}" alt="user image">'
 	              ,'<div class="part">'
 	                ,'<h5>{{user.username}}</h5>'
 	                ,'<span class="date">{{_prettyDate}}</span>'
 	              ,'</div>'
 	              // ,'<span class="tag">#{{tags[0].tag}}</span>'
 	              ,'<p>{{extract}}</p>'
-	              ,'<span class="glyphicon glyphicon-thumbs-up datea-glyph"></span>{{vote_count}}'
-	              ,'<span class="glyphicon glyphicon-comment datea-glyph"></span>{{comment_count}}'
-	              ,'<a class="btn datea-btn datea-btn-xs pull-right" href="#{{user.username}}/dateos/{{id}}" target="_blank">Leer más</a>'
+	              ,'<a class="btn datea-gray-btn btn-xs pull-right" href="#{{user.username}}/dateos/{{id}}" target="_blank">ver más</a>'
+	              ,'<div class="stats">'
+	              ,		'<span class="glyphicon glyphicon-thumbs-up datea-glyph"></span>{{vote_count}}'
+	              ,		'<span class="glyphicon glyphicon-comment datea-glyph"></span>{{comment_count}}'
+	              ,'</div>'
 	            ,'</div>'
 	            ].join('')
 	, selectFilter : { 'last'          : ''
@@ -77,7 +79,10 @@ angular
 	, regex : { email: /^([a-zA-Z0-9_\.\-])+\@(([a-zA-Z0-9\-])+\.)+([a-zA-Z0-9]{2,4})+$/
 	          , text : /^([a-záéíóúñÑÁÉÍÓÚA-Z \-])+$/}
 
-	, layout_100: ['tag']        
+	, layout_100: ['tag'] 
+	, visualization: { default_other_color: '#CCCCCC'
+									 , default_color: '#EDFF00'
+	}        
 	}
 );
 

@@ -58,10 +58,11 @@
   -moz-box-sizing: border-box; -webkit-box-sizing: border-box; box-sizing: border-box;
  }
 
- * {
+
+// * {
   /* So 100% means 100% */
-  box-sizing: border-box;
-}
+//  box-sizing: border-box;
+//}
 
 [ng\:cloak], [ng-cloak], .ng-cloak {
   display: none;
@@ -217,6 +218,30 @@ body {
 	color: @color-6;
 	font-size: 11px;
 	font-weight: normal;
+}
+
+//
+//  UI ELEMENTS
+//
+.follow-btn.btn {
+	background-color: @color-5;
+	position: relative;
+	/*.icon { width: 20px; text-align: left;}*/
+	span {margin-right: 0 !important}
+	outline: none;
+	.fa {
+		vertical-align: middle;
+	}
+	&:hover {
+		color: white;
+		background-color: darken(@color-5, 10%);
+		&.remove {
+			background-color: @btn-danger-bg;
+		}
+	}
+	&:focus {
+		color: white;
+	}
 }
 
 
@@ -1575,8 +1600,39 @@ body {
 		.campaign-info {
 			height: 272px;
 			.inner { 
-				padding-top: 40px;
+				padding-top: 30px;
 				.clearfix();
+				.main-info {
+
+					h1 {
+						margin-bottom: 5px;
+						font-size: 32px;
+						font-weight: bold;
+					}
+					h2 {
+						margin: 5px 0 20px 0;
+						font-size: 18px;
+						font-weight: bold;
+					}
+
+					.shortdesc { font-size: 18px;}
+
+					.stats {
+						.clearfix;
+						padding-top: 15px;
+						.stat {margin-right: 25px; font-size: 18px; float: left; line-height: 36px}
+						.share-btn, .follow-btn { float: left;}
+
+						.share-btn { margin-left: 25px; padding-top: 1px;}
+						.follow-btn { margin-left: 25px}
+					}
+				}
+				.main-buttons {
+					float: right;
+					width: 30%;
+					margin-left: 5%;
+					padding-top: 20px;
+				}
 			}
 		}
 
@@ -1585,33 +1641,6 @@ body {
 			background-color: @color-16;
 		}
 
-		.main-info {
-
-			h1 {
-				margin-bottom: 5px;
-				font-size: 32px;
-				font-weight: bold;
-			}
-			h2 {
-				margin: 0 0 5px 0;
-				font-size: 19px;
-				font-weight: bold;
-			}
-
-			.shortdesc { font-size: 18px;}
-
-			.stats {
-				span {margin-right: 15px}
-			}
-
-		}
-		.main-controls {
-			padding-top: 60px;
-			.input-group {
-				position: relative;
-				padding-top: 60px;
-			}
-		}
 	}
 	.extra-info-holder {
 		background-color: @color-15;
@@ -1724,7 +1753,21 @@ body {
 
 }
 
-.tag-holder .viz-holder { height: ~"calc(100% - 177px)"; height: ~"-webkit-calc(100% - 177px)"; height: ~"-moz-calc(~100% - 177px)"; height: ~"-o-calc(100% - 177px)"; }
+.tag-holder {
+	.viz-holder { 
+		height: ~"calc(100% - 177px)"; 
+		height: ~"-webkit-calc(100% - 177px)"; 
+		height: ~"-moz-calc(~100% - 177px)"; 
+		height: ~"-o-calc(100% - 177px)"; 
+		.viz-viewer {		
+			height: 100%;
+			//height:  ~"calc(100% - 46px)";
+			//height: ~"-webkit-calc(100% - 46px)";
+			//height: ~"-moz-calc(100% - 46px)";
+			//height: ~"-o-calc(100% - 46px)";
+		}
+	}
+}
 
 .viz-holder {
 	position: relative;
@@ -1783,10 +1826,6 @@ body {
 	.viz-viewer {
 		//.clearfix();
 		position: relative;
-		//height:  ~"calc(100% - 46px)";
-		//height: ~"-webkit-calc(100% - 46px)";
-		//height: ~"-moz-calc(100% - 46px)";
-		//height: ~"-o-calc(100% - 46px)";
 		.tabbable, 
 		.tab-content, 
 		.tab-pane, 
@@ -1935,9 +1974,53 @@ body {
 			position: relative;
 			height: 100%;
 			#leafletCampaign { height: 100%;}
+			&.has-legend {
+				height: ~"calc(100% - 32px)";
+			}
+		}
+		.legend-holder {
+			//.clearfix;
+			z-index: 1000;
+			position: absolute;
+			left: 0;
+			right: 0;
+			bottom: -32px;
+			@lh: 18px;
+			height: 18px;
+			line-height: @lh;
+			padding: 5px;
+			background-color: white;
+			overflow: hidden;
+			box-sizing: content-box;
+			&.expanded {
+				height: auto !important;
+			}
+			.tag-list { overflow: hidden}
+			.tag-legend {
+				line-height: @lh;
+				height: @lh;
+				float: left;
+				margin-right: 10px;
+				margin-bottom: 5px;
+				.color-sample { display: inline-block; height: @lh; width: 15px; vertical-align: middle}
+				.tag { font-size: 13px; display: inline-block; height: @lh; line-height: @lh}
+			}
+			.expand, .contract {
+				float: right;
+				font-size: 13px;
+				cursor: pointer;
+				color: @link-color;
+				&:hover {
+					color: @link-hover-color;
+				}
+				padding-right: 15px;
+			}
 		}
 	}
 }
+
+.cpie-label { font-size: 11px;}
+body .leaflet-div-icon { border: 0 !important; background-color: transparent !important}
 
 .campaign-holder {
 	.campaign-info .inner { padding-left: 0}
@@ -1953,6 +2036,11 @@ body {
 		.campaign-info .inner { padding-left: 20px}
 		.extra-info-holder .description {padding-left: 20px}
 	}
+	.tag-holder {
+		.tag-card {
+			padding: 0 20px;
+		}
+	}
 	.viz-holder {
 		.viz-nav .search { padding-left: 35px}
 		.viz-viewer .dateo-description-holder { padding-left: 20px}
@@ -1963,9 +2051,14 @@ body {
 		.campaign-info .inner { padding-left: 50px}
 		.extra-info-holder .description {padding-left: 50px}
 	}
+	.tag-holder {
+		.tag-card {
+			padding: 0 40px;
+		}
+	}
 	.viz-holder {
-		.viz-nav .search { padding-left: 65px}
-		.viz-viewer .dateo-description-holder { padding-left: 50px}
+		.viz-nav .search { padding-left: 40px}
+		.viz-viewer .dateo-description-holder { padding-left: 25px}
 	}
 }
 
@@ -2593,14 +2686,16 @@ body {
 	.datea-glyph {
 		position: relative;
 		margin: 0 4px 0 0;
-		top: 4px;
+		top: 3px;
 	}
+	.stats { line-height: 22px;}
 	.glyphicon-comment {
 		margin: 0 4px 0 14px;
 	}
-	a.datea-btn {
+	a.datea-gray-btn {
+		position: relative;
+		top: 2px;
 		color: white;
-		height: 20px;
 	}
 
 }

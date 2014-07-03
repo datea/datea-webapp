@@ -10,7 +10,7 @@
 				<div class="date">{{dateo.date | date:'fullDate'}}</div>
 			</div>
 		</div>
-		<p class="extract">{{dateo.extract}}</p>
+		<p class="extract" ng-bind-html="dateo.extract | linky:'_blank'"></p>
 		<div class="cta-holder">
 			<span class="glyphicon glyphicon-thumbs-up"></span> {{dateo.vote_count}}
 			<span class="glyphicon glyphicon-comment"></span> {{dateo.comments.length}}

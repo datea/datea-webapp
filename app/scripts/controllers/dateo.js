@@ -39,7 +39,7 @@ angular.module('dateaWebApp')
 	$scope.dateo.leaflet     = {};
 	$scope.dateo.messageNext = '';
 	$scope.flow              = {};
-	$scope.flow.notFound     = true;
+	$scope.flow.notFound     = false;
 
 	$scope.dateo.isUserSignedIn = User.isSignedIn();
 

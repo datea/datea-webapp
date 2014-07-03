@@ -1,30 +1,31 @@
 <div class="campaign-holder ff1" ng-hide="flow.notFound">
 	<div class="campaign-card container-fluid">
 		<div class="row">
-			<div class="col-sm-5 col-xs-7 campaign-info">
+			<div class="col-sm-7 campaign-info">
 				<div class="inner">
+					<div class="main-buttons">
+						<button class="btn datea-datear-btn btn-lg" ng-click="campaign.datear()">Datea <i class="glyphicon glyphicon-map-marker"></i></button><span class="time-left" ng-show="campaign.end_date">{{campaign._timeLeft | date:time }}</span>
+					</div>
 					<div class="main-info">
 						<h1>{{campaign.name}}</h1>
 						<h2>#{{campaign.main_tag.tag}}</h2>
 						<p class="shortdesc">{{campaign.short_description}}</p>
 						<div class="stats">
-							<span class="dateo-count" ng-if="campaign.dateo_count > 0">{{campaign.dateo_count}} <ng-pluralize count="campaign.dateo_count" when="{'one':'dateo','other':'dateos'}"></ng-pluralize></span>
-							<span class="follow-count" ng-if="campaign.follow_count > 0">{{campaign.follow_count}} <ng-pluralize count="campaign.follow_count" when="{'one':'seguidor','other':'seguidores'}"></ng-pluralize></span>
+							<div class="dateo-count stat" ng-if="campaign.dateo_count > 0">{{campaign.dateo_count}} <ng-pluralize count="campaign.dateo_count" when="{'one':'dateo','other':'dateos'}"></ng-pluralize></div>
+							<div class="follow-count stat" ng-if="campaign.follow_count > 0">{{campaign.follow_count}} <ng-pluralize count="campaign.follow_count" when="{'one':'seguidor','other':'seguidores'}"></ng-pluralize></div>
+							
+							<da-follow follow-obj="tag" follow-id="{{campaign.id}}" btn-class="follow-campaign"></da-follow>
+
+							<div class="col-xs-3 share-btn">
+								<div class="input-group">
+									<input type="text" class="form-control" ng-model="campaign.shareableUrl">
+									<span class="input-group-btn">
+										<button class="btn btn-default" type="button" ng-click="campaign.share()"><i class="fa fa-share-alt"></i></button>
+									</span>
+								</div>
+							</div>
+
 						</div>
-						<button class="btn datea-btn" ng-click="campaign.followTag()" ng-show="campaign.followable">+seguir</button>
-						<button class="btn datea-btn" ng-click="campaign.unfollowTag()" ng-show="!campaign.followable && $scope.campaign.isUserSignedIn">x no seguir</button>
-					</div>
-				</div>
-			</div>
-			<div class="col-sm-2 col-xs-5 main-controls">
-				<div class="inner">
-					<button class="btn datea-datear-btn btn-lg" ng-click="campaign.datear()">Datea <i class="glyphicon glyphicon-map-marker"></i></button><span class="time-left" ng-show="campaign.end_date">{{campaign._timeLeft | date:time }}</span>
-	
-					<div class="share input-group col-sm-12">
-						<input type="text" class="form-control" ng-model="campaign.shareableUrl">
-						<span class="input-group-btn">
-							<button class="btn btn-default" type="button" ng-click="campaign.share()"><i class="fa fa-share-alt"></i></button>
-						</span>
 					</div>
 				</div>
 			</div>
@@ -64,22 +65,28 @@
 						<div class="row">
 							<div class="hidden-xs col-sm-45 dateos-holder">
 								<div class="dateo-description-holder">
-									
 										<da-dateo-teaser ng-repeat="dateo in campaign.dateos"></da-dateo-teaser>
-										
 								</div>
 							</div>
-							<div class="col-xs-12 col-sm-75 leaflet-map-holder">
-								<leaflet id="leafletCampaign" defaults="campaign.leaflet.defaults" markers="campaign.leaflet.markers" center="campaign.leaflet.center" width="100%"></leaflet>
+							<div class="col-xs-12 col-sm-75 leaflet-map-holder" ng-class="{'has-legend': has_legend}">
+								<leaflet id="leafletCampaign" defaults="campaign.leaflet.defaults" markers="campaign.leaflet.markers" center="campaign.leaflet.center" cluster-options="clusterOptions" width="100%"></leaflet>
+								<div class="legend-holder" ng-if="campaign.secondary_tags.length > 0">
+									<div class="expand" ng-click="expandLegend()" ng-show="showLegendExpandLink">ver todas</div>
+									<div class="contract" ng-click="contractLegend()" ng-show="showLegendContractLink">cerrar</div>
+									<div class="tag-list">
+										<div class="tag-legend" ng-repeat="tag in campaign.secondary_tags" da-on-last-repeat="onLegendRender()">
+											<span class="color-sample" style="background-color: {{colorRange[$index]}}"></span>
+											<span class="tag">#{{tag.tag}}</span>
+										</div>
+									</div>
+								</div>
 							</div>
 						</div>
 					</div>
 				</tab>
 				<tab heading="&nbsp;" class="glyphicon glyphicon-camera datea-glyphtab-fix" ng-show="campaign.dateosWithImages.length > 0">
 					<div class="dateos-with-images-holder dateo-img-viz"> <!-- ng-style="campaign.dateosWithImagesHolderHeight"> -->
-
 						<da-dateo-thumb ng-repeat="dateo in campaign.dateosWithImages"></da-dateo-thumb>
-						
 					</div>
 				</tab>
 			</tabset>
@@ -104,9 +111,9 @@
 						</div>
 						<h4>#{{campaign.main_tag.tag}}</h4>
 						<p class="question">¿Qué buscamos con esta acción?</p>
-						<p class="answer answer1">{{campaign.mission}}</p>
+						<p class="answer answer1" ng-bind-html="campaign.mission | linky:'_blank'"></p>
 						<p class="question">¿Qué pasa con la info?</p>
-						<p class="answer answer2">{{campaign.information_destiny}}</p>
+						<p class="answer answer2" ng-bind-html="campaign.information_destiny | linky:'_blank'"></p>
 					</div>
 				</div>
 			</div>

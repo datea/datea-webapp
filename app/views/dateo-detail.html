@@ -18,13 +18,13 @@
 			<div class="content-holder" ng-show="!dateo.message">
 				<div class="esquina"></div>
 				<div class="row">
-				<div class="col-xs-12 col-md-7half">
+				<div class="col-xs-12 col-md-75">
 					<div class="inner">
 						<div class="tag-row">
 							<a class="tag" href="#/tag/{{tag.tag}}" ng-repeat="tag in dateo.tags">#{{tag.tag}}</a>
 						</div>
 						
-						<p class="dateo-content newline2br">{{dateo.content | linky}}</p>
+						<p class="dateo-content newline2br" ng-bind-html="dateo.content | linky:'_blank'"></p>
 						
 						<a href ng-repeat="img in dateo.images" ng-click="dateo.imgDetail(img.image)">
 							<img class="part" ng-src="{{img.thumb | imgFromApi}}" alt="sorry">
@@ -82,7 +82,7 @@
 						</div>
 					</div>
 				</div>
-				<div class="col-xs-12 col-md-4half map-holder" ng-show="!dateo.message">
+				<div class="col-xs-12 col-md-45 map-holder" ng-show="!dateo.message">
 					<h3>Ubicación</h3>
 					<leaflet id="leafletDateo" defaults="dateo.leaflet.defaults" markers="dateo.leaflet.markers" center="dateo.leaflet.center" height="260px" width="100%"></leaflet>
 					<p ng-if="dateo.address">{{dateo.address}}</p>
@@ -100,5 +100,5 @@
 		</div>
 	</div>
 </div>
-<div class="not-found-holder" ng-if="flow.notFound" ng-include="'views/notFound.html'" ng-hide="!flow.notFound">
+<div class="not-found-holder" ng-if="flow.notFound" ng-include="'views/notFound.html'" ng-show="flow.notFound">
 </div>
