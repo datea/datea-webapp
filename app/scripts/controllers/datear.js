@@ -209,7 +209,10 @@ $scope.datear.doDatear = function () {
 		.then( function ( response ) {
 			$scope.dateo.errorMessage = null;
 			$scope.datear.onFinished  = true;
-			$rootScope.$broadcast( 'user:hasDateado' );
+			$timeout( function () {
+				$modalInstance.close();
+			}, 4000 );
+			// $rootScope.$broadcast( 'user:hasDateado' );
 		} , function ( reason ) {
 			console.log( reason );
 		} )

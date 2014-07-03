@@ -34,6 +34,7 @@ angular.module('dateaWebApp')
 	var sessionMarkersIdx = 0
 	  , markersBounds     = []
 	  , defaultMap
+	  , modalInstance
 	  // fn declarations
 	  , buildCampaign
 	  , buildDateos
@@ -310,7 +311,7 @@ angular.module('dateaWebApp')
 
 	$scope.campaign.datear = function () {
 		if ( $scope.campaign.isUserSignedIn ) {
-			$modal.open( { templateUrl : 'views/datear.html'
+			modalInstance = $modal.open( { templateUrl : 'views/datear.html'
 			             , controller  : 'DatearCtrl'
 			             , windowClass : 'datear-modal'
 			             , resolve     : {
@@ -321,6 +322,19 @@ angular.module('dateaWebApp')
 			                 }
 			               }
 			             } );
+
+			modalInstance.result.then( function ( givens ) {
+				Api.campaign
+				.getCampaigns( { main_tag: $routeParams.campaignName } )
+				.then( function ( response ) {
+					angular.extend( $scope.campaign, response.objects[0] );
+				}, function ( reason ) {
+					console.log( reason );
+				} );
+			}, function ( reason ) {
+				console.log( reason );
+			} );
+
 		} else {
 			$location.path('/registrate');
 		}
