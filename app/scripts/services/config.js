@@ -81,7 +81,7 @@ angular
 
 	, layout_100: ['tag'] 
 	, visualization: { default_other_color: '#CCCCCC'
-									 , default_color: '#EDFF00'
+									 , default_color: '#28BC45'
 	}        
 	}
 );

@@ -160,6 +160,7 @@ $rootScope.$on('duScrollspy:becameActive', function($event, $element){
 	var spy = $element[0].attributes['du-scrollspy'].nodeValue;
 	var step = parseInt(spy.charAt(spy.length-1));
 	$scope.$apply(function() {$scope.datear.step = step});
+	/*
 	var rootElem = angular.element(document.getElementById('modal-body'));
 	if (!$scope.datear.isScrolling) {
 		if (step == 1) {
@@ -172,7 +173,7 @@ $rootScope.$on('duScrollspy:becameActive', function($event, $element){
 			var elem = angular.element(document.getElementById("spy-step3"));
 			rootElem.scrollToElement(elem, 100, 400);
 		}
-	}
+	}*/
 });
 
 // Date picker
@@ -258,7 +259,9 @@ $scope.datear.doDatear = function () {
 		.then( function ( response ) {
 			$scope.dateo.errorMessage = null;
 			$scope.datear.onFinished  = true;
-			$rootScope.$broadcast( 'user:hasDateado' );
+			//$rootScope.$broadcast( 'user:hasDateado' );
+			if (typeof(datearModalGivens.datearSuccessCallback) != 'undefined') datearModalGivens.datearSuccessCallback(response);
+			$scope.datear.loading = false;
 		} , function ( reason ) {
 			console.log( reason );
 		} )
@@ -310,10 +313,6 @@ if ( datearModalGivens.suggestedTags ) {
 	$scope.datear.suggestedTags = datearModalGivens.suggestedTags;
 }
 geo.getLocation( {timeout:10000} ).then( onGeolocation, onGeolocationError );
-
-
-var rootElem = angular.element(document.getElementById('modal-body'));
-console.log("MODAL BODY", rootElem);
 
 
 } ] );

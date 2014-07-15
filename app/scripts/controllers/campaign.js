@@ -36,12 +36,16 @@ angular.module('dateaWebApp')
 	  , defaultMap
 	  // fn declarations
 	  , buildCampaign
+	  , updateCampaign
 	  , buildDateos
 	  , buildDateosWithImages
 	  , buildMarkers
+	  , buildMarker
+	  , addMarker
 	  , buildFollowersList
 	  , buildRelatedCampaigns
 	  , getTagsString
+	  , sessionMarkersIdx = 0
 	  ;
 
 	$scope.campaign         = {};
@@ -58,6 +62,7 @@ angular.module('dateaWebApp')
 	$scope.map_is_present = true;
 	$scope.colorRange =  d3.scale.category10().range();
 	$scope.has_legend = false;
+	$scope.chart = {type: 'pie', typeControl: 'pie'};
 
 
 	buildRelatedCampaigns = function () {
@@ -81,37 +86,16 @@ angular.module('dateaWebApp')
 		sessionMarkersIdx = 0;
 		$scope.campaign.leaflet.markers = {};
 
-		angular.forEach( dateos, function ( value, key ) {
-			
-			value._prettyDate = $filter('date')( value.date, 'fullDate' );
-			var tags = [];
-			var labelTags = []; 
-			angular.forEach(value.tags, function (tag) { 
-				if (angular.isDefined($scope.subTags[tag.tag])) labelTags.push('#'+tag.tag);
-				tags.push(tag.tag);
-			});
-			
-			markers['marker'+sessionMarkersIdx] = {
-			  lat       : value.position.coordinates[1]
-			, lng       : value.position.coordinates[0]
-			, group     : $scope.campaign.main_tag.tag
-			, label     : { message: labelTags.join(',') }
-			, message   : $interpolate( config.marker )(value)
-			, draggable : false
-			, focus     : false
-			, _id       : value.id
-			, tags      : tags
-			, icon 			: buildMarkerIcon(value)
-			};
-			sessionMarkersIdx += 1;
+		angular.forEach( dateos, function ( value, key ) {			
+			addMarker(value);
 			//markersBounds.push( [ value.position.coordinates[1], value.position.coordinates[0] ] );
 			markersBounds.push(L.latLng(value.position.coordinates[1], value.position.coordinates[0]));
 		} );
-		center.lat  = markers.marker0.lat;
-		center.lng  = markers.marker0.lng;
-		center.zoom = config.campaign.mapZoomFocus;
-		angular.extend( $scope.campaign.leaflet.markers, markers );
-		angular.extend( $scope.campaign.leaflet.center, center );
+		//center.lat  = markers.marker0.lat;
+		//center.lng  = markers.marker0.lng;
+		//center.zoom = config.campaign.mapZoomFocus;
+		//angular.extend( $scope.campaign.leaflet.markers, markers );
+		//angular.extend( $scope.campaign.leaflet.center, center );
 		leafletData.getMap("leafletCampaign")
 		.then( function ( map ) {
 			var bounds = L.latLngBounds(markersBounds);
@@ -119,6 +103,29 @@ angular.module('dateaWebApp')
 		} )
 		$scope.campaign.loading.leaflet = false;
 		// $scope.campaign.leaflet.markers.marker0.focus = true;
+	}
+
+	buildMarker = function(dateo) {
+			dateo._prettyDate = $filter('date')( dateo.date, 'fullDate' );
+			var tags = [];
+			var labelTags = []; 
+			angular.forEach(dateo.tags, function (tag) { 
+				if (angular.isDefined($scope.subTags[tag.tag])) labelTags.push('#'+tag.tag);
+				tags.push(tag.tag);
+			});
+			
+			return {
+			  lat       : dateo.position.coordinates[1]
+			, lng       : dateo.position.coordinates[0]
+			, group     : $scope.campaign.main_tag.tag
+			, label     : { message: labelTags.join(',') }
+			, message   : $interpolate( config.marker )(dateo)
+			, draggable : false
+			, focus     : false
+			, _id       : dateo.id
+			, tags      : tags
+			, icon 			: buildMarkerIcon(dateo)
+			};
 	}
 
 	var buildMarkerIcon = function(dateo) {
@@ -147,6 +154,12 @@ angular.module('dateaWebApp')
 		}
 	}
 
+	addMarker = function (dateo) {
+		var marker = buildMarker(dateo);
+		$scope.campaign.leaflet.markers['marker'+sessionMarkersIdx] = marker;
+		sessionMarkersIdx ++; 
+	}
+
 	buildFollowersList = function () {
 		$scope.campaign.followers = [];
 		Api.user
@@ -161,7 +174,6 @@ angular.module('dateaWebApp')
 
 	buildCampaign = function () {
 		var campaignGivens = {};
-
 		campaignGivens.user     = $routeParams.username;
 		campaignGivens.main_tag = $routeParams.campaignName;
 
@@ -179,7 +191,6 @@ angular.module('dateaWebApp')
 				buildDateosWithImages();
 				buildFollowersList();
 				buildRelatedCampaigns();
-
 			} else {
 				$scope.flow.notFound = true;
 			}
@@ -191,7 +202,20 @@ angular.module('dateaWebApp')
 				} );
 			}
 		} );
+	}
 
+	updateCampaign = function () {
+		var campaignGivens = {
+			  user: $routeParams.username
+			, main_tag: $routeParams.campaignName
+		}
+		Api.campaign
+		.getCampaigns(campaignGivens)
+		.then( function (response) {
+			angular.extend( $scope.campaign, response.objects[0] );
+		}, function (reason) {
+			console.log(reason);	
+		} );
 	}
 
 	getTagsString = function ( givens ) {
@@ -218,6 +242,7 @@ angular.module('dateaWebApp')
 		if ( $scope.campaign.selectedMarker !== 'last' ) {
 			dateoGivens.order_by = config.selectFilter[ $scope.campaign.selectedMarker ];
 		}
+		dateoGivens.order_by = '-created';
 		if ( $scope.campaign ) {
 			$scope.campaign.dateos = [];
 			Api.dateo
@@ -256,7 +281,6 @@ angular.module('dateaWebApp')
 			} );
 			$scope.campaign.dateosWithImages = dateos;
 			$scope.campaign.dateosWithImagesHolderHeight = { height : ( Math.ceil( $scope.campaign.dateosWithImages.length / 6 ) * 200 ) + 'px' };
-			//console.log( 'buildDateosWithImages', dateos );
 		}, function ( reason ) {
 			console.log( reason );
 			}
@@ -282,7 +306,78 @@ angular.module('dateaWebApp')
 			subTags[tag.tag] = {obj: tag, color: $scope.colorRange[key]}
 		});
 		$scope.subTags = subTags;
-	} 
+	}
+
+	$scope.buildCharts = function () {
+		Api.stats.getStats({campaign: $scope.campaign.id})
+		.then( function ( response ) {
+			$scope.chart.rawData = response;
+			if ($scope.chart.type == 'pie') {
+				setChartForPie();
+			} else if ($scope.chart.type == 'bar') {
+				setChartForBar();
+			}
+			$scope.statsVisible = true;
+		}, function ( error ) {
+			console.log( error );
+		} );
+	}
+
+	$scope.changeChartType = function (arg) {
+		if ($scope.chart.typeControl == 'pie') {
+			setChartForPie();
+		}else if ($scope.chart.typeControl == 'bar') {
+			setChartForBar();
+		}
+		$scope.chart.type = $scope.chart.typeControl;
+	}
+
+	var setChartForPie = function () {
+		$scope.chart.data = {
+			series : [],
+			data: []
+		};
+		$scope.chart.config = {
+	    title: 'Estadísticas',
+	    tooltips: true,
+	    labels: true,
+	    legend: {
+	      display: true,
+	      position: 'right'
+	    },
+	    innerRadius: 0
+	  };
+	  angular.forEach($scope.chart.rawData.tags, function (val) {
+				$scope.chart.data.data.push({
+					x: '#'+val.tag,
+					y: [val.count],
+					//tooltip: $scope.subTags[val.tag].title
+				});
+				$scope.chart.data.series.push('#'+val.tag);
+				$scope.statsVsisible = true;
+		});
+	}
+
+	var setChartForBar = function () {
+		$scope.chart.data = {
+			series : [],
+			data: [{x: 'por etiquetas', y: []}]
+		};
+		$scope.chart.config = {
+	    title: 'Estadísticas',
+	    tooltips: true,
+	    labels: false,
+	    legend: {
+	      display: true,
+	      position: 'right'
+	    },
+	  };
+	  angular.forEach($scope.chart.rawData.tags, function (val) {
+				$scope.chart.data.data[0].y.push(val.count);
+				$scope.chart.data.series.push('#'+val.tag);
+				$scope.statsVsisible = true;
+		});
+	}
 
 	$scope.dateamap.focusDateo = function ( idx ) {
 		var markerName
@@ -320,6 +415,13 @@ angular.module('dateaWebApp')
 			                datearModalGivens : function () {
 			                  return { defaultTag    : $scope.campaign.main_tag.tag
 			                         , suggestedTags : $scope.campaign.secondary_tags
+			                         , datearSuccessCallback: function (dateo) {
+			                         		$scope.campaign.dateos.unshift(dateo);
+			                         		if (dateo.is_geolocated) addMarker(dateo);
+			                         		if (dateo.has_images) $scope.campaign.dateosWithImages.unshift(dateo);
+			                         		updateCampaign();
+			                         		// TODO: fit bounds if marker outside of map view
+			                         }
 			                         };
 			                 }
 			               }

@@ -14,6 +14,7 @@ angular.module( 'dateaWebApp'
   , 'ngSocial'
   , 'angular-bootstrap-select'
   , 'duScroll'
+  , 'angularCharts'
 ])
 .config(
 [ '$routeProvider'

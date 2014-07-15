@@ -89,6 +89,25 @@
 						<da-dateo-thumb ng-repeat="dateo in campaign.dateosWithImages"></da-dateo-thumb>
 					</div>
 				</tab>
+				<tab heading="&nbsp;" class="glyphicon glyphicon-signal datea-glyphtab-fix" ng-click="buildCharts()">
+					<div class="dateo-stats-holder" ng-if="statsVisible">
+						<div class="container-fluid">
+							<div class="row">
+								<div class="col-xs-12">
+									<div class="inner">
+										<div class="chart-type-select pull-right">
+											<select class="form-control" ng-model="chart.typeControl" ng-change="changeChartType()">
+												<option value="pie">Pie</option>
+												<option value="bar">Barras</option>
+											</select>
+										</div>
+										<div data-ac-chart="chart.type" data-ac-data="chart.data" data-ac-config="chart.config" class="viz-simple-chart"></div>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+				</tab>
 			</tabset>
 		</div>
 	</div>

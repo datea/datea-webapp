@@ -17,7 +17,7 @@
 				</a>
 			</li>
 
-			<li class="scroll-title" du-scrollspy="spy-step3" du-scroll-container="modal-body" offset="300" ng-click="scrollTo($event, 'spy-step3', 100)">
+			<li class="scroll-title" du-scrollspy="spy-step3" du-scroll-container="modal-body" offset="300" ng-click="scrollTo($event, 'spy-step3', 20)">
 				<a href="#spy-step3">
 					<span class="glyphicon glyphicon-tags"></span>
 				</a>
@@ -37,7 +37,7 @@
 				  <div class="step-cover" ng-if="datear.step != 1" ng-click="scrollTo($event, 'spy-step1', 30)"></div>
 					<h4 class="modal-scroll-1 scroll-section">1. Describe tu dateo</h4>
 					<div class="form-group content1">
-						<textarea id="message" class="form-control" msd-elastic="\n" rows="3" placeholder="Ingresa el contenido de su dateo" ng-model="dateo.content"></textarea>
+						<textarea id="message" class="form-control" msd-elastic="\n" rows="3" placeholder="Ingresa aquí el contenido" ng-model="dateo.content"></textarea>
 					</div>
 
 					<div class="parts-holder content2">
@@ -84,7 +84,7 @@
 				<hr>
 
 				<div id="spy-step3" class="step">
-					<div class="step-cover" ng-if="datear.step != 3" ng-click="scrollTo($event, 'spy-step3', 100)"></div>
+					<div class="step-cover" ng-if="datear.step != 3" ng-click="scrollTo($event, 'spy-step3', 20)"></div>
 					<h4 class="modal-scroll-3 scroll-section">3. Etiqueta tu dateo</h4>
 					<h5 ng-show="datear.suggestedTags">etiquetas sugeridas</h5>
 					<div class="btn-group" ng-show="datear.suggestedTags">

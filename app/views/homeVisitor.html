@@ -16,7 +16,7 @@
 						<img src="static/images/landing/dateros-count.png" alt="dateros"> <span class="number">{{landing.user_count}}</span> dateros
 					</div>
 					<p class="question">¿No eres dater@?</p>
-					<a href="#/registrate" class="btn datea-btn ff1">
+					<a href="#/registrate" class="btn datea-btn btn-lg btn-login-landing ff1">
 						regístrate
 					</a>
 				</div>
@@ -25,7 +25,7 @@
 						<img src="static/images/landing/dateo-count.png" alt="dateos"> <span class="number">{{landing.dateo_count}}</span> dateos
 					</div>
 					<p class="question">¿Ya tienes cuenta?</p>
-					<a href="#/signin" class="btn datea-btn ff1">
+					<a href="#/signin" class="btn datea-btn btn-lg btn-login-landing ff1">
 						ingresa
 					</a>
 				</div>
@@ -97,7 +97,7 @@
 					<div class="outstanding-dateo">
 						<div class="parts-holder user-info">
 							<div class="part part-1">
-								<div class="user-img" bg-from-api="{{landing.outstandingDateo.user.image.image_small}}"></div>
+								<div class="user-img img-circle" da-bg-from-api="{{landing.outstandingDateo.user.image.image_small}}" da-img-size="cover" da-img-type="user"></div>
 							</div>
 							<div class="part part-2">
 								<h4>{{landing.outstandingDateo.user.username}}</h4>
@@ -123,7 +123,7 @@
 			<h3 class="ff1">iniciativas destacadas</h3>
 			<div class="parts-holder campaigns-holder">
 				<div class="part campaign-holder" ng-repeat="outstandingCampaign in landing.outstandingCampaigns">
-					<div class="campaign-img" bg-from-api="{{outstandingCampaign.image.image}}" ></div>
+					<div class="campaign-img" da-bg-from-api="{{outstandingCampaign.image.image}}" da-img-type="campaign" da-img-size="cover"></div>
 					<h4>{{outstandingCampaign.name}}</h4>
 					<span class="dateo-count">{{outstandingCampaign.dateo_count}} dateos</span>
 					<span class="status">{{outstandingCampaign.is_active && 'activo' || 'inactivo'}}</span>

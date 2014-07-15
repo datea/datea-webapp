@@ -502,6 +502,8 @@ body {
 		padding: 42px 0 0 0;
 		text-align: center;
 
+		.btn-login-landing { width: 120px; }
+
 		.part {
 			font-size: 21px;
 			text-align: center;
@@ -695,26 +697,30 @@ body {
 			.most-dateo {
 				background: white url('@{imgUrl}/landing/section-4-map.png') no-repeat center 50px;
 				color: @color-10;
-				padding: 15px;
+				padding: 215px 15px 15px 15px;
+				position: relative;
 
 				h4 {
 					font-weight: bold;
 					text-transform: uppercase;
+					position: absolute;
+					top: 10px;
+					left: 15px;
 				}
 
 				.trending-tags-holder {
-					position: relative;
-					top: 170px;
-					width: 220px;
+					.clearfix;
 
 					.datea-tag-btn {
 						margin: 0 10px 0 0;
+						float: left;
+						display: block;
 					}
 				}
 				.datea-btn {
-					left: 255px;
-					position: relative;
-					top: 155px;
+					display: block;
+					float: right;
+					padding-top: 5px;
 				}
 			}
 			.outstanding-dateo-holder {
@@ -1035,7 +1041,7 @@ body {
 			overflow-y: scroll;
 		}
 
-		h4 { font-size: 16px;}
+		h4 { font-size: 18px;}
 
 		.datea-no-margin-bottom {
 			margin-bottom: 0px;
@@ -1844,7 +1850,7 @@ body {
 		top: -46px;
 		line-height: 46px;
 		height: 46px;
-		width: 100px;
+		//width: 100px;
 		li {
 			margin-bottom: 0;
 			line-height: inherit;
@@ -1904,59 +1910,85 @@ body {
 		.dateos-with-images-holder {
 			//height: 100%;
 			//overflow-y: scroll;
+			padding: 1px;
+			//margin: -3px;
+			.clearfix;
 
 			.dateo-with-image {
-				height: 200px;
 				position: relative;
-				width: 230px;
+				//width: 16.66%; -> setting with media queries below
+				float: left;
+				color: darken(@color-6, 15%);
 
-				.info-holder {
-					display: none;
-					padding: 10px;
+				.inner {
+					padding-top: 87%;
 					position: relative;
-					z-index: 1;
-
-					.extract {
-						font-size: 12px;
-						height: 100px;
-						overflow: none;
+					
+					.thumb-holder {
+						position: absolute;
+						top: 0;
+						left: 0;
+						right: 0;
+						bottom: 0;
+						border: 3px solid white;
+						z-index: 0;
 					}
-					.part-1 {
-						width: 38px;
-					}
-					.part-2 {
-						width: 130px;
 
-						h5 {
+					.info-holder {
+						display: none;
+						padding: 10px;
+						position: absolute;
+						top: 0;
+						left: 0;
+						right: 0;
+						bottom: 0;
+						z-index: 2;
+
+						.extract {
 							font-size: 14px;
-							font-weight: bold;
-							margin: 3px 0 0;
+							padding-top: 10px;
+							padding-bottom: 40px;
+							overflow: none;
 						}
-						.date {
-							color: @color-6;
-							font-size: 11px;
+						.part-1 {
+							width: 38px;
+						}
+						.part-2 {
+							width: 160px;
+							h5 {
+								color: black;
+								font-size: 14px;
+								font-weight: bold;
+								margin: 3px 0 0;
+							}
+							.date {
+								color: @color-6;
+								font-size: 12px;
+							}
+						}
+						.user-img {
+							height: 35px;
+							width: 35px;
+						}
+						.cta-holder {
+							position: absolute;
+							bottom: 10px;
+							left: 10px; right: 10px;
+							span {
+								color: @color-12;
+							}
+							span+span {
+								margin: 0 0 0 20px;
+							}
 						}
 					}
-					.user-img {
-						height: 35px;
-						width: 35px;
+					.info-bg {
+						background: rgba(255,255,255, 0.9);
+						display: none;
+						position: absolute;
+						left: 0; right: 0; top: 0; bottom: 0;
+						z-index: 1;
 					}
-					.cta-holder {
-						span {
-							color: @color-12;
-						}
-						span+span {
-							margin: 0 0 0 20px;
-						}
-					}
-				}
-				.info-bg {
-					background: rgba(255,255,255,0.7);
-					display: none;
-					height: 100%;
-					position: absolute;
-					width: 100%;
-					z-index: 0;
 				}
 			}
 			.dateo-with-image:hover {
@@ -1969,6 +2001,15 @@ body {
 				}
 			}
 		}
+		.dateo-stats-holder {
+			//text-align: center;
+			.inner {
+				padding: 15px 20px;
+				.viz-simple-chart { height: 500px;}
+			}
+		}
+
+
 		.leaflet-map-holder {
 			padding: 0 !important;
 			position: relative;
@@ -2060,6 +2101,29 @@ body .leaflet-div-icon { border: 0 !important; background-color: transparent !im
 		.viz-nav .search { padding-left: 40px}
 		.viz-viewer .dateo-description-holder { padding-left: 25px}
 	}
+}
+
+// RESPONSIVE DATEOS WITH IMAGES
+@media (max-width: 664px) {
+	.viz-holder .tab-content .dateos-with-images-holder .dateo-with-image { width: 50%;}
+}
+@media (min-width: 665px) {
+	.viz-holder .tab-content .dateos-with-images-holder .dateo-with-image { width: 33.33%;}
+}
+@media (min-width: 885px) {
+	.viz-holder .tab-content .dateos-with-images-holder .dateo-with-image { width: 25%;}
+}
+@media (min-width: 1110px) {
+	.viz-holder .tab-content .dateos-with-images-holder .dateo-with-image { width: 20%;}
+}
+@media (min-width: 1340px) {
+	.viz-holder .tab-content .dateos-with-images-holder .dateo-with-image { width: 16.66%;}
+}
+@media (min-width: 1570px) {
+	.viz-holder .tab-content .dateos-with-images-holder .dateo-with-image { width: 14.285%;}
+}
+@media (min-width: 1800px) {
+	.viz-holder .tab-content .dateos-with-images-holder .dateo-with-image { width: 12.5%;}
 }
 
 //
@@ -2663,7 +2727,7 @@ body .leaflet-div-icon { border: 0 !important; background-color: transparent !im
 //
 // Marker Holder
 //
-.marker-holder {
+.leaflet-popup-content .marker-holder {
 	color: @color-6;
 
 	img {
@@ -2676,12 +2740,16 @@ body .leaflet-div-icon { border: 0 !important; background-color: transparent !im
 		vertical-align: top;
 
 		h5 {
-			margin: 1px 0 3px 0;
+			margin: 4px 0 0px 0;
 			font-weight: bold;
+			color: black;
 		}
+		.date {color: lighten(@color-6, 15%);}
 	}
 	p {
 		min-width: 280px;
+		margin: 8px 0;
+		font-size: 13px;
 	}
 	.datea-glyph {
 		position: relative;
