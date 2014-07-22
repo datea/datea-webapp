@@ -15,6 +15,7 @@ angular.module('dateaWebApp')
   , '$modal'
   , '$location'
   , 'leafletMarkersHelpers'
+  , '$http'
 , function (
     $scope
   , Api
@@ -29,6 +30,7 @@ angular.module('dateaWebApp')
   , $modal
   , $location
   , leafletMarkersHelpers
+  , $http
 ) {
 
 	var sessionMarkersIdx = 0
@@ -44,8 +46,15 @@ angular.module('dateaWebApp')
 	  , addMarker
 	  , buildFollowersList
 	  , buildRelatedCampaigns
+	  , buildLayerFiles
 	  , getTagsString
 	  , sessionMarkersIdx = 0
+	  , serializeXmlNode
+	  , buildMarkerIcon
+	  , setChartForPie
+	  , setChartForBar
+	  , clusterSizeRange 
+	  , makeSVGPie 
 	  ;
 
 	$scope.campaign         = {};
@@ -63,6 +72,8 @@ angular.module('dateaWebApp')
 	$scope.colorRange =  d3.scale.category10().range();
 	$scope.has_legend = false;
 	$scope.chart = {type: 'pie', typeControl: 'pie'};
+	$scope.showLegendExpandLink = false;
+	$scope.showLegendContractLink = false;
 
 
 	buildRelatedCampaigns = function () {
@@ -100,7 +111,7 @@ angular.module('dateaWebApp')
 		.then( function ( map ) {
 			var bounds = L.latLngBounds(markersBounds);
 			map.fitBounds( bounds );
-		} )
+		} );
 		$scope.campaign.loading.leaflet = false;
 		// $scope.campaign.leaflet.markers.marker0.focus = true;
 	}
@@ -129,7 +140,8 @@ angular.module('dateaWebApp')
 	}
 
 	var buildMarkerIcon = function(dateo) {
-		var colors = [];
+		var colors = [] 
+		  , html;
 		angular.forEach(dateo.tags, function(tag){
 			if (tag.tag != $scope.campaign.main_tag.tag && angular.isDefined($scope.subTags[tag.tag])) {
 				colors.push($scope.subTags[tag.tag].color);
@@ -137,7 +149,7 @@ angular.module('dateaWebApp')
 		});
 		if (colors.length == 0) colors.push(config.visualization.default_color);
 		
-		var html = '<svg width="29" height="40"><g style="clip-path: url(#pinpath);">';
+		html = '<svg width="29" height="40"><g style="clip-path: url(#pinpath);">';
 		angular.forEach(colors, function (color) {
 			html = html + '<rect height="40" width="'+(29 / colors.length)+'" fill="'+color+'" />';
 		});
@@ -145,17 +157,18 @@ angular.module('dateaWebApp')
 				 + '</g></svg>';
 
 		return {
-			type     : 'div',
-			iconSize : [29, 40],
-			iconAnchor:   [14.5, 40],
-			popupAnchor:  [0, -33],
-			labelAnchor: [8, -25],
-			html     : html
+			  type        : 'div'
+			, iconSize    : [29, 40]
+			, iconAnchor  : [14.5, 40]
+			, popupAnchor : [0, -33]
+			, labelAnchor : [8, -25]
+			, html        : html
 		}
 	}
 
 	addMarker = function (dateo) {
-		var marker = buildMarker(dateo);
+		var marker;
+		marker = buildMarker(dateo);
 		$scope.campaign.leaflet.markers['marker'+sessionMarkersIdx] = marker;
 		sessionMarkersIdx ++; 
 	}
@@ -191,6 +204,7 @@ angular.module('dateaWebApp')
 				buildDateosWithImages();
 				buildFollowersList();
 				buildRelatedCampaigns();
+				buildLayerFiles();
 			} else {
 				$scope.flow.notFound = true;
 			}
@@ -250,9 +264,7 @@ angular.module('dateaWebApp')
 			.then( function ( response ) {
 				if ( response.objects.length ) {
 					angular.forEach( response.objects, function ( value, key ){
-						if ( value.position ) {
-							dateos.push( value );
-						}
+						if ( value.position ) dateos.push( value );
 					});
 					$scope.campaign.dateos = dateos;
 					buildMarkers( { dateos : dateos } );
@@ -274,10 +286,8 @@ angular.module('dateaWebApp')
 		Api.dateo
 		.getDateos( { has_images: 1, tags: getTagsString( $scope.campaign ) } )
 		.then( function ( response ) {
-			angular.forEach( response.objects, function ( value, key ){
-				if ( value.position ) {
-					dateos.push( value );
-				}
+			angular.forEach( response.objects, function ( value, key ) {
+				if ( value.position ) dateos.push( value );
 			} );
 			$scope.campaign.dateosWithImages = dateos;
 			$scope.campaign.dateosWithImagesHolderHeight = { height : ( Math.ceil( $scope.campaign.dateosWithImages.length / 6 ) * 200 ) + 'px' };
@@ -300,8 +310,8 @@ angular.module('dateaWebApp')
 	}
 
 	var buildSubTags = function () {
-		if ($scope.campaign.secondary_tags.length > 0) $scope.has_legend = true;
 		var subTags = {};
+		if ($scope.campaign.secondary_tags.length > 0) $scope.has_legend = true;
 		angular.forEach($scope.campaign.secondary_tags, function (tag, key) {
 			subTags[tag.tag] = {obj: tag, color: $scope.colorRange[key]}
 		});
@@ -332,7 +342,7 @@ angular.module('dateaWebApp')
 		$scope.chart.type = $scope.chart.typeControl;
 	}
 
-	var setChartForPie = function () {
+	setChartForPie = function () {
 		$scope.chart.data = {
 			series : [],
 			data: []
@@ -358,7 +368,7 @@ angular.module('dateaWebApp')
 		});
 	}
 
-	var setChartForBar = function () {
+	setChartForBar = function () {
 		$scope.chart.data = {
 			series : [],
 			data: [{x: 'por etiquetas', y: []}]
@@ -406,7 +416,7 @@ angular.module('dateaWebApp')
 		$window.print();
 	}
 
-	$scope.campaign.datear = function () {
+	$scope.flow.datear = function () {
 		if ( $scope.campaign.isUserSignedIn ) {
 			$modal.open( { templateUrl : 'views/datear.html'
 			             , controller  : 'DatearCtrl'
@@ -428,6 +438,30 @@ angular.module('dateaWebApp')
 			             } );
 		} else {
 			$location.path('/registrate');
+		}
+	}
+
+	buildLayerFiles = function () {
+		if ($scope.campaign.layer_files && $scope.campaign.layer_files.length > 0) {
+			leafletData.getMap("leafletCampaign")
+			.then( function ( map ) {
+				angular.forEach($scope.campaign.layer_files, function (lf) {
+					var fname, ext;
+					fname = lf.file.split('/').slice(-1)[0];
+					ext   = fname.split('.').slice(-1)[0].toLowerCase();
+					if (ext === 'kml') {
+						$http.get(config.api.imgUrl+lf.file)
+						.success( function (data) {
+							L.geoJson(gjson, config.geoJSONStyle).addTo(map);
+						} );
+					}else if (ext === 'json') {
+						$http.get(config.api.imgUrl+lf.file)
+						.success( function (data) {
+							L.geoJson(data, config.geoJSONStyle).addTo(map);
+						} );
+					}
+				} );
+			} );
 		}
 	}
 
@@ -466,7 +500,10 @@ angular.module('dateaWebApp')
 		  , d = clusterSizeRange(children.length)
 		  , r = d / 2
 			,	dataObj = {}
-			, data = [];
+			, data = []
+			, html
+			, clusterIcon
+			;
 
 			//console.log("n", n);
 			//console.log("clusterSize", clusterSizeRange(n) );
@@ -486,35 +523,36 @@ angular.module('dateaWebApp')
 			for (var j in dataObj) {
 				data.push(dataObj[j]);
 			}
-			var html = makeSVGPie({
-				 n: n
-				,r: r
-				,d: d
-				,data: data
+			html = makeSVGPie({
+				  n: n
+				, r: r
+				, d: d
+				, data: data
 			});
-			var clusterIcon = new L.DivIcon({
-				html: html,
-				className: 'marker-cluster',
-				iconSize: new L.Point(d,d)
+			clusterIcon = new L.DivIcon({
+				  html: html
+				, className: 'marker-cluster'
+				, iconSize: new L.Point(d,d)
 			});
 			return clusterIcon;
 	}
 
-	var clusterSizeRange = d3.scale.linear()
+	clusterSizeRange = d3.scale.linear()
 		.domain([0, 100])
 		.range([50, 80])
 		.clamp(true); 
 
-	var makeSVGPie = function (opt) {
-		var svg = document.createElementNS(d3.ns.prefix.svg, 'svg');
-		var vis = d3.select(svg).data([opt.data])
+	makeSVGPie = function (opt) {
+		var svg, vis, arc, pie, arcs;
+		svg = document.createElementNS(d3.ns.prefix.svg, 'svg');
+		vis = d3.select(svg).data([opt.data])
 			.attr("width", opt.d)
 			.attr("height", opt.d)
 			.append("svg:g")
 			.attr("transform", "translate(" + opt.r + "," + opt.r + ")");
-		var arc = d3.svg.arc().outerRadius(opt.r);
-		var pie = d3.layout.pie().value(function(d){return d.value;});
-		var arcs = vis.selectAll("g.slice").data(pie).enter().append("svg:g").attr("class", "slice");
+		arc = d3.svg.arc().outerRadius(opt.r);
+		pie = d3.layout.pie().value(function(d){return d.value;});
+		arcs = vis.selectAll("g.slice").data(pie).enter().append("svg:g").attr("class", "slice");
 		arcs.append("svg:path").attr("fill", function(a, i){
 				if ($scope.campaign.secondary_tags.length == 0) return config.visualization.default_color;
 				if (a.data.tag == "Otros") return config.visualization.default_other_color;
@@ -540,16 +578,16 @@ angular.module('dateaWebApp')
 		return serializeXmlNode(svg);
 	}
 
-	var serializeXmlNode = function (xmlNode) {
-    if (typeof window.XMLSerializer != "undefined") {
-        return (new window.XMLSerializer()).serializeToString(xmlNode);
-    } else if (typeof xmlNode.xml != "undefined") {
-        return xmlNode.xml;
-    }
+	serializeXmlNode = function (xmlNode) {
+		if (typeof window.XMLSerializer != "undefined") {
+    	return (new window.XMLSerializer()).serializeToString(xmlNode);
+		} else if (typeof xmlNode.xml != "undefined") {
+    	return xmlNode.xml;
+		}
     return "";
-	}
+  }
 
-	$scope.clusterOptions = { 
+	$scope.campaign.leaflet.clusterOptions = { 
 		iconCreateFunction: $scope.buildClusterIcon,
 		//disableClusteringAtZoom: 17,
 		polygonOptions: {
@@ -564,10 +602,8 @@ angular.module('dateaWebApp')
 		var h = angular.element('.legend-holder .tag-list').height();
 		if (h > 23) $scope.showLegendExpandLink = true;
 	}
-	$scope.showLegendExpandLink = false;
-	$scope.showLegendContractLink = false;
+
 	$scope.expandLegend = function() {
-		console.log("expand");
 		angular.element('.legend-holder').addClass('expanded');
 		$scope.showLegendExpandLink = false;
 		$scope.showLegendContractLink = true;

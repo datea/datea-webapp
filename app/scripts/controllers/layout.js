@@ -1,10 +1,11 @@
 angular.module('dateaWebApp')
 .controller('LayoutCtrl', ['$scope', '$rootScope', '$location', 'User', 'config', 
 	function ($scope, $rootScope, $location, User, config){
-
+		var path
+			, basepath
+		;
 		$rootScope.$on("$locationChangeStart", function(event, next, current) {
-            	var path = $location.path();
-            	$scope.HEY = path;
+            	path = $location.path();
             	if (path == '/') {
             		$scope.autoheight = true;
             		$scope.with_nav = User.isSignedIn();
@@ -14,6 +15,4 @@ angular.module('dateaWebApp')
             		$scope.with_nav = true;
             	}
       			});
-
-
 } ] );

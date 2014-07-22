@@ -72,23 +72,22 @@ angular.module( 'dateaWebApp'
 	  , { templateUrl: 'views/campaign-dashboard.html'
 	    , controller: 'CampaignDashboardCtrl'
 	    } )
-	.when( '/nuevaIniciativa'
-	  , { templateUrl: 'views/campaign-dashboard.html'
-	    , controller: 'CampaignDashboardCtrl'
-	    } )
 	.when( '/crear-iniciativa'
-	  , { templateUrl: 'views/campaign-dashboard.html'
-	    , controller: 'CampaignDashboardCtrl'
+	  , { templateUrl: 'views/campaign-create.html'
+	    //, controller: 'CampaignCreateCtrl'
 	    } )
 	.when( '/tag/:tagName'
 	  , { templateUrl: 'views/tag.html'
 	    , controller: 'TagCtrl'
-	    , style: 'height100'
 	    } )
 	.when( '/:username/:campaignName'
 	  , { templateUrl: 'views/campaign.html'
 	    , controller: 'CampaignCtrl'
 	    } )
+	.when( '/iniciativas/:campaignId/edit'
+		, { templateUrl: 'views/campaign-dashboard.html'
+			,	controller:  'CampaignEditCtrl'
+		} )
 	.when( '/:username'
 	  , { templateUrl: 'views/profile.html'
 	    , controller : 'ProfileCtrl'

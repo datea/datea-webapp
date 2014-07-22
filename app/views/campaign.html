@@ -4,7 +4,7 @@
 			<div class="col-sm-7 campaign-info">
 				<div class="inner">
 					<div class="main-buttons">
-						<button class="btn datea-datear-btn btn-lg" ng-click="campaign.datear()">Datea <i class="glyphicon glyphicon-map-marker"></i></button><span class="time-left" ng-show="campaign.end_date">{{campaign._timeLeft | date:time }}</span>
+						<button class="btn datea-datear-btn btn-lg" ng-click="flow.datear()">Datea <i class="glyphicon glyphicon-map-marker"></i></button><span class="time-left" ng-show="campaign.end_date">{{campaign._timeLeft | date:time }}</span>
 					</div>
 					<div class="main-info">
 						<h1>{{campaign.name}}</h1>
@@ -69,7 +69,7 @@
 								</div>
 							</div>
 							<div class="col-xs-12 col-sm-75 leaflet-map-holder" ng-class="{'has-legend': has_legend}">
-								<leaflet id="leafletCampaign" defaults="campaign.leaflet.defaults" markers="campaign.leaflet.markers" center="campaign.leaflet.center" cluster-options="clusterOptions" width="100%"></leaflet>
+								<leaflet id="leafletCampaign" defaults="campaign.leaflet.defaults" markers="campaign.leaflet.markers" center="campaign.leaflet.center" cluster-options="campaign.leaflet.clusterOptions" width="100%"></leaflet>
 								<div class="legend-holder" ng-if="campaign.secondary_tags.length > 0">
 									<div class="expand" ng-click="expandLegend()" ng-show="showLegendExpandLink">ver todas</div>
 									<div class="contract" ng-click="contractLegend()" ng-show="showLegendContractLink">cerrar</div>
@@ -111,8 +111,6 @@
 			</tabset>
 		</div>
 	</div>
-
-
 
 	<div class="extra-info-holder container-fluid">
 		<div class="row">
@@ -156,7 +154,7 @@
 						</div>
 						<div class="part part-2">
 							<img src="static/images/campaign/btn-print-report.png" alt="imprimir reporte" ng-click="campaign.print()">
-							<img src="static/images/campaign/btn-csv-dl.png" alt="descargar csv">
+							<a href="http://api.datea.pe/csv-export/dateos/tag/{{campaign.main_tag.id}}/" target="_blank"><img src="static/images/campaign/btn-csv-dl.png" alt="descargar csv"></a>
 						</div>
 					</div>
 				</div>

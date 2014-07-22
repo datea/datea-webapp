@@ -47,11 +47,10 @@ $scope.datear.loading			 = false;
 $scope.datear.onFinished   = false;
 $scope.datear.isScrolling  = false;
 $scope.alerts = [];
+$scope.datear.step				 = 1;
 
 var $modal_body = angular.element(document.getElementById('modal-body'));
 if ($modal_body.scrollTop() != 0 ) $modal_body.scrollTop(0);
-
-$scope.datear.step				 = 1;
 
 
 $scope.$on( 'leafletDirectiveMarker.dragend', function ( event ) {

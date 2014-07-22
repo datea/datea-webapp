@@ -1745,6 +1745,32 @@ body {
 	}
 }
 
+.campaign-form-nav {
+	z-index: 9999;
+	&.fix {
+		position: fixed;
+		top: 51px;
+		width: 100%;
+	}
+}
+.campaign-form-container {
+	&.fix {
+		padding-top: 68px;
+	}
+	padding-bottom: 50vh;
+}
+
+.dashboard-holder {
+	position: relative;
+	.tabbable {
+		.nav-tabs {
+			position: absolute;
+			top: 20px;
+			right: 15%;
+		}
+	}
+}
+
 .tag-holder {
 	height: 100%;
 	.tag-card {
@@ -2061,7 +2087,7 @@ body {
 }
 
 .cpie-label { font-size: 11px;}
-body .leaflet-div-icon { border: 0 !important; background-color: transparent !important}
+//body .leaflet-div-icon { border: 0 !important; background-color: transparent !important}
 
 .campaign-holder {
 	.campaign-info .inner { padding-left: 0}
