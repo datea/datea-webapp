@@ -39,7 +39,10 @@ angular.module('dateaWebApp')
 	  , buildDateos
 	  , buildDateosWithImages
 	  , buildMarkers
+	  , buildMarker
+	  , addMarker
 	  , buildTag
+	  , updateTag
 	  , goToMainTag
 	  ;
 
@@ -56,10 +59,6 @@ angular.module('dateaWebApp')
 
 	$scope.flow             = {};
 	$scope.flow.notFound    = false;
-
-	isUserFollowing = function () {
-		return !!~User.data.tags_followed.map( function ( t ) { return t.id; } ).indexOf( $scope.tag.id );
-	}
 
 	isMainTag = function () {
 		var dfd = $q.defer();
@@ -78,10 +77,7 @@ angular.module('dateaWebApp')
 		.getTags( { tag: $routeParams.tagName } )
 		.then( function ( response ) {
 			if ( response.objects[0] ) {
-				console.log( 'buildTag', response );
 				angular.extend($scope.tag, response.objects[0]);
-				$scope.tag.followable = $scope.tag.isUserSignedIn && !isUserFollowing();
-				console.log('getTags', $scope.tag );
 				buildDateos();
 				buildDateosWithImages();
 			} else {
@@ -95,6 +91,16 @@ angular.module('dateaWebApp')
 				} );
 			}
 		} );
+	}
+
+	updateTag = function () {
+		Api.tag
+		.getTags( { tag: $routeParams.tagName } )
+		.then( function ( response ) {
+			angular.extend($scope.tag, response.objects[0]);
+		}, function (reason) {
+			console.log(reason);
+		});
 	}
 
 	buildDateos = function ( givens ) {
@@ -149,6 +155,18 @@ angular.module('dateaWebApp')
 		} )
 	}
 
+	var markerIcon = {
+		  type     		: 'div'
+		, iconSize 		: [29, 40]
+		, iconAnchor	: [14.5, 40]
+		, popupAnchor	: [0, -33]
+		, labelAnchor	: [8, -25]
+		, html     		: '<svg width="29" height="40"><g style="clip-path: url(#pinpath);">'
+					 				+ 	'<rect height="40" width="29" fill="'+config.visualization.default_color+'" />'
+					 				+ 	'<circle cx="14.5" cy="14" r="5" fill="white" />'
+			 		 				+ '</g></svg>'
+	}
+
 	buildMarkers = function ( givens ) {
 		var dateos  = givens && givens.dateos
 		  , markers = {}
@@ -161,28 +179,14 @@ angular.module('dateaWebApp')
 
 		angular.forEach( dateos, function ( value, key ) {
 			// default image for markers
-			value.user.image_small = value.user.image_small
-			? value.user.image_small
-			: config.defaultImgProfile;
-			value._prettyDate = $filter('date')( value.date, 'fullDate' );
-			markers['marker'+sessionMarkersIdx] = {
-			  lat       : value.position.coordinates[1]
-			, lng       : value.position.coordinates[0]
-			, group			: value.admin_level3
-			, label     : { message: '#' + value.tags[0].tag }
-			, message   : $interpolate( config.marker )(value)
-			, draggable : false
-			, focus     : false
-			, _id       : value.id
-			};
-			sessionMarkersIdx += 1;
+			addMarker(value);
 			markersBounds.push( [ value.position.coordinates[1], value.position.coordinates[0] ] );
 		} );
-		center.lat  = markers.marker0.lat;
-		center.lng  = markers.marker0.lng;
-		center.zoom = config.campaign.mapZoomFocus;
-		angular.extend( $scope.tag.leaflet.markers, markers );
-		angular.extend( $scope.tag.leaflet.center, center );
+		//center.lat  = markers.marker0.lat;
+		//center.lng  = markers.marker0.lng;
+		//center.zoom = config.campaign.mapZoomFocus;
+		//angular.extend( $scope.tag.leaflet.markers, markers );
+		//angular.extend( $scope.tag.leaflet.center, center );
 		leafletData.getMap("leafletTag")
 		.then( function ( map ) {
 			map.fitBounds( markersBounds );
@@ -190,8 +194,40 @@ angular.module('dateaWebApp')
 		$scope.tag.loading.leaflet = false;
 	}
 
+	buildMarker = function(dateo) {
+			dateo._prettyDate = $filter('date')( dateo.date, 'fullDate' );
+			return {
+			  lat       : dateo.position.coordinates[1]
+			, lng       : dateo.position.coordinates[0]
+			, group     : $scope.tag.tag
+			, label     : { message: $scope.tag.tag }
+			, message   : $interpolate( config.marker )(dateo)
+			, draggable : false
+			, focus     : false
+			, _id       : dateo.id
+			, icon 			:  markerIcon
+			};
+	}
+
+	addMarker = function (dateo) {
+		var marker = buildMarker(dateo);
+		$scope.tag.leaflet.markers['marker'+sessionMarkersIdx] = marker;
+		sessionMarkersIdx ++; 
+	}
+
+	$scope.clusterOptions = { 
+		//iconCreateFunction: $scope.buildClusterIcon,
+		//disableClusteringAtZoom: 17,
+		polygonOptions: {
+			weight: 1,
+			fillColor: "#999",
+			color: '#999',
+			fillOpacity: 0.4
+		}
+	};
+
 	goToMainTag = function ( givens ) {
-		$location.path( givens.username + '/' + givens.tagName );
+		$location.path( givens.username + '/' + givens.tagName ).replace();
 	}
 
 	$scope.tag.isUserFollowing = function () {
@@ -205,7 +241,16 @@ angular.module('dateaWebApp')
 			             , windowClass : 'datear-modal'
 			             , resolve     : {
 			                datearModalGivens : function () {
-			                   return { defaultTag : $scope.tag.tag };
+			                   return { 
+			                   		defaultTag : $scope.tag.tag
+			                   	, datearSuccessCallback: function (dateo) {
+			                         		$scope.tag.dateos.unshift(dateo);
+			                         		if (dateo.is_geolocated) addMarker(dateo);
+			                         		if (dateo.has_images) $scope.tag.dateosWithImages.unshift(dateo);
+			                         		updateTag();
+			                         		// TODO: fit bounds if marker outside of map view
+			                         }
+			                   };
 			                 }
 			               }
 			             } );

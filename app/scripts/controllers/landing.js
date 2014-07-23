@@ -11,7 +11,7 @@ angular.module( 'dateaWebApp' )
 
 	$scope.landing = {};
 
-	Api.stats.getLandingStats()
+	Api.stats.getStats()
 	.then( function ( response ) {
 		$scope.landing.dateo_count = response.dateo_count;
 		$scope.landing.user_count  = response.user_count;

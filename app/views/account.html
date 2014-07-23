@@ -1,62 +1,84 @@
-<alert ng-repeat="alert in alerts" type="alert.type" close="closeAlert($index)">{{alert.msg}}</alert>
-<div class="account-holder">
-	<h3>Editar usuario</h3>
-	<form role="form" name="form" ng-submit="account.save()">
-		<tabset>
-			<tab heading="Cuenta de Usuario">
-				<div class="form-group">
-					<label for="username">Nombre de usuario</label>
-					<input type="text" class="form-control" id="username" required pattern="^[A-Za-z0-9]{1,32}$" ng-model="account.username">
-				</div>
-				<div class="form-group">
-					<label for="email">Correo electrónico</label>
-					<input type="email" class="form-control" id="email" required ng-model="account.email">
-				</div>
-			</tab>
-			<tab heading="Personalizar Perfil">
-				<div class="form-group">
-					<label for="fullname">Nombre completo</label>
-					<input type="text" class="form-control" id="fullname" pattern="^[A-Za-zñÑ \-]{1,32}$" ng-model="account.full_name">
-				</div>
-				<div class="form-group">
-					<div class="user-img" style="height:40px;width:40px;" ng-show="account.image" ng-hide="flow.img" bg-from-api="{{account.image}}"></div>
-					<label for="image">Suba una imagen</label>
-					<input type="file" fileread="flow.img" filedata="flow.imgData" accept="image/*">
-					<img class="uploaded-img" ng-show="flow.img" ng-src="{{flow.img}}" alt="{{flow.imgData.name}}" width="200px">
-				</div>
-				<div class="form-group">
-					<div class="user-img" style="height:40px;width:40px;" ng-show="account.bg_image" ng-hide="flow.bgImg" bg-from-api="{{account.bg_image}}"></div>
-					<label for="image">Suba su imagen de fondo</label>
-					<input type="file" fileread="flow.bgImg" filedata="flow.bgImgData" accept="image/*">
-					<img class="uploaded-img" ng-show="flow.bgImg" ng-src="{{flow.bgImg}}" alt="{{flow.bgImgData.name}}" width="200px">
-				</div>
-				<div class="form-group">
-					<label for="message">Mensaje / Slogan</label>
-					<input type="text" class="form-control" id="message" pattern="^[A-Za-z0-9ñÑ \-]{1,32}$" ng-model="account.message">
-				</div>
-				<div class="form-group">
-					<label for="url">URL personal o de tu organización</label>
-					<input type="text" class="form-control" id="url" pattern="https?://.+" ng-model="account.url">
-				</div>
-				<p>Los siguiente campos son para los iconos de "sígueme en..."</p>
-				<div class="form-group">
-					<label for="facebookUrl">URL en facebook</label>
-					<input type="text" class="form-control" id="facebookUrl" pattern="https?://.+" ng-model="account.url_facebook">
-				</div>
-				<div class="form-group">
-					<label for="twitterUrl">URL en twitter</label>
-					<input type="text" class="form-control" id="twitterUrl" pattern="https?://.+" ng-model="account.url_twitter">
-				</div>
-				<div class="form-group">
-					<label for="youtubeUrl">Canal de youtube</label>
-					<input type="text" class="form-control" id="youtubeUrl" pattern="https?://.+" ng-model="account.url_youtube">
-				</div>
-			</tab>
-		</tabset>
-		<input type="submit" class="btn btn-info" value="actualizar">
-		<button type="submit" class="btn btn-info" disabled>actualizar</button>
-		<span ng-bind="auth.message"></span>
-	</form>
-	<hr>
-	<pre>Validation: {{form.$error|json}}</pre>
+<div class="container z2">
+	<div class="row">
+		<div class="col-xs-12">
+			<alert ng-repeat="alert in alerts" type="alert.type" close="closeAlert($index)">{{alert.msg}}</alert>
+			<div class="account-holder">
+				<h2>Editar usuario</h2>
+				<alert ng-repeat="alert in alerts" type="alert.type" close="closeAlert($index)">{{alert.msg}}</alert>
+				<form role="form" name="form" ng-submit="account.save()">
+					<tabset>
+						<tab heading="Cuenta de Usuario">
+							<div class="tab-body" ng-class="{'datea-loading': loading}">
+								<div class="form-group">
+									<label for="username">Nombre de usuario</label>
+									<input type="text" class="form-control" id="username" required pattern="^[A-Za-z0-9]{1,32}$" ng-model="account.username">
+								</div>
+								<div class="form-group">
+									<label for="email">Correo electrónico</label>
+									<input type="email" class="form-control" id="email" required ng-model="account.email">
+								</div>
+								<div class="actions">
+									<input type="submit" class="btn btn-success btn-lg" value="actualizar">
+									<span ng-bind="auth.message"></span>
+								</div>
+							</div>
+						</tab>
+						<tab heading="Personalizar Perfil">
+							<div class="tab-body" ng-class="{'datea-loading': loading}">
+								<div class="form-group">
+									<label for="fullname">Nombre completo</label>
+									<input type="text" class="form-control" id="fullname" ng-model="account.full_name">
+								</div>
+								<div class="form-group">
+									<div class="user-img" style="height:40px;width:40px;" ng-show="account.image" ng-hide="flow.img" bg-from-api="{{account.image}}"></div>
+									<label for="image">Suba una imagen</label>
+									<input type="file" fileread="flow.img" filedata="flow.imgData" accept="image/*">
+									<img class="uploaded-img" ng-show="flow.img" ng-src="{{flow.img}}" alt="{{flow.imgData.name}}" width="200px">
+								</div>
+								<div class="form-group">
+									<div class="user-img" style="height:40px;width:40px;" ng-show="account.bg_image" ng-hide="flow.bgImg" bg-from-api="{{account.bg_image}}"></div>
+									<label for="image">Suba su imagen de fondo</label>
+									<input type="file" fileread="flow.bgImg" filedata="flow.bgImgData" accept="image/*">
+									<img class="uploaded-img" ng-show="flow.bgImg" ng-src="{{flow.bgImg}}" alt="{{flow.bgImgData.name}}" width="200px">
+								</div>
+								<div class="form-group">
+									<label for="message">Mensaje / Slogan</label>
+									<input type="text" class="form-control" id="message" ng-model="account.message">
+								</div>
+								<div class="form-group">
+									<label for="url">URL personal o de tu organización</label>
+									<input type="text" class="form-control" id="url" pattern="https?://.+" ng-model="account.url">
+								</div>
+								<p>Los siguiente campos son para los iconos de "sígueme en..."</p>
+								<div class="form-group">
+									<label for="facebookUrl">URL en facebook</label>
+									<input type="text" class="form-control" id="facebookUrl" pattern="https?://.+" ng-model="account.url_facebook">
+								</div>
+								<div class="form-group">
+									<label for="twitterUrl">URL en twitter</label>
+									<input type="text" class="form-control" id="twitterUrl" pattern="https?://.+" ng-model="account.url_twitter">
+								</div>
+								<div class="form-group">
+									<label for="youtubeUrl">Canal de youtube</label>
+									<input type="text" class="form-control" id="youtubeUrl" pattern="https?://.+" ng-model="account.url_youtube">
+								</div>
+
+								<div class="actions">
+									<input type="submit" class="btn btn-success btn-lg" value="actualizar">
+									<button type="submit" class="btn btn-info btn-lg" disabled>actualizar</button>
+									<span ng-bind="auth.message"></span>
+								</div>
+
+							</div>
+						</tab>
+					</tabset>
+				</form>
+				<!--
+				<hr>
+				<pre>Validation: {{form.$error|json}}</pre>
+				-->
+			</div>
+		</div>
+	</div>
 </div>
+<div class="graylight-bg"></div>

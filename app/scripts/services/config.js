@@ -9,16 +9,18 @@ angular
 	, api     : { url    : 'http://173.255.200.68/api/v2/'
 	            , imgUrl : 'http://173.255.200.68/' }
 	, marker  : ['<div class="marker-holder">'
-	              ,'<img src="http://api.datea.pe/{{user.image_small}}" alt="user image">'
+	              ,'<img class="img-circle" src="http://api.datea.pe/{{user.image_small}}" alt="user image">'
 	              ,'<div class="part">'
 	                ,'<h5>{{user.username}}</h5>'
 	                ,'<span class="date">{{_prettyDate}}</span>'
 	              ,'</div>'
 	              // ,'<span class="tag">#{{tags[0].tag}}</span>'
 	              ,'<p>{{extract}}</p>'
-	              ,'<span class="glyphicon glyphicon-thumbs-up datea-glyph"></span>{{vote_count}}'
-	              ,'<span class="glyphicon glyphicon-comment datea-glyph"></span>{{comment_count}}'
-	              ,'<a class="btn datea-btn datea-btn-xs pull-right" href="#{{user.username}}/dateos/{{id}}" target="_blank">Leer más</a>'
+	              ,'<a class="btn datea-gray-btn btn-xs pull-right" href="#{{user.username}}/dateos/{{id}}" target="_blank">ver más</a>'
+	              ,'<div class="stats">'
+	              ,		'<span class="glyphicon glyphicon-thumbs-up datea-glyph"></span>{{vote_count}}'
+	              ,		'<span class="glyphicon glyphicon-comment datea-glyph"></span>{{comment_count}}'
+	              ,'</div>'
 	            ,'</div>'
 	            ].join('')
 	, selectFilter : { 'last'          : ''
@@ -35,9 +37,10 @@ angular
 	               , markers  : {}
 	               }
 	, defaultBoundsRatio : +0.0075
-	, defaultImgProfile : 'static/images/globals/user-profile-default.png'
-	, defaultImgBackground : 'static/images/globals/campaign-default.jpg'
-	, homeSI : { campaignsOffset : 6
+	, defaultImgProfile : 'static/images/globals/user-default.png'
+	, defaultImgBackground : 'static/images/globals/bg-gris.png'
+	, defaultImgCampaign: "static/images/globals/campaign-default.jpg"
+	, homeSI : { campaignsOffset : 12
 	           , paginationLimit : 6
 	           , mapZoomOverride : 15
 	           , activityVerbs : [ 'dateo', 'commented', 'voted' ]
@@ -53,9 +56,9 @@ angular
 	            , dateosLimitByRequest : 100
 	            , defaultMarkersImage : '/static/images/globals/'
 	            }
-	, profile : { dateosOffset    : 3
-	            , campaignsOffset : 3
-	            , paginationLimit : 3
+	, profile : { dateosOffset    : 6
+	            , campaignsOffset : 6
+	            , paginationLimit : 6
 	            }
 	, activityLog : { activityVerbs : [ 'dateo', 'commented', 'voted' ]
 	                , activityContentMsg : { onUser : { 'dateo'     : 'dateó en #{{action_object.tags[0].tag}}'
@@ -75,5 +78,71 @@ angular
 	                                  , http400        : 'El nombre de usuario o correo ya está siendo usado.'} }
 	, regex : { email: /^([a-zA-Z0-9_\.\-])+\@(([a-zA-Z0-9\-])+\.)+([a-zA-Z0-9]{2,4})+$/
 	          , text : /^([a-záéíóúñÑÁÉÍÓÚA-Z \-])+$/}
+
+	, layout_100: ['tag'] 
+	, visualization: { default_other_color: '#CCCCCC'
+									 , default_color: '#28BC45'
+		}
+	, geoJSONStyle: {
+									style: function (feature) {
+										// TRANSLATE MAPBOX SIMPLE STYLE
+										var prop = feature.properties;
+										if (prop.stroke && prop.stroke.charAt(0) === '#') {
+											prop.color = prop.stroke;
+											prop.stroke = true;
+										}
+										if (prop['stroke-opacity']) prop.opacity = prop['stroke-opacity'];
+										if (prop['stroke-width']) prop.weight = prop['stroke-width'];
+										if (prop.fill) prop.fillColor = prop.fill;
+										if (prop['fill-opacity']) prop.fillOpacity = prop['fill-opacity'];
+										return prop;
+									}
+									, pointToLayer: function(feature, latlon) {
+										var marker, label;
+										if (feature.properties['marker-size'] && feature.properties['marker-color']) {
+	                    var sizes = {
+	                        small  : [20, 50]
+	                      , medium : [30, 70]
+	                      , large  : [35, 90]
+	                    };
+	                    var fp     = feature.properties || {};
+	                    var size   = fp['marker-size'] || 'medium';
+	                    var symbol = (fp['marker-symbol']) ? '-' + fp['marker-symbol'] : '';
+	                    var color  = fp['marker-color'] || '7e7e7e';
+	                    color      = color.replace('#', '');
+	 
+	                    var url = 'http://a.tiles.mapbox.com/v3/marker/' +
+	                          'pin-' +
+	                          // Internet Explorer does not support the `size[0]` syntax.
+	                          size.charAt(0) + symbol + '+' + color +
+	                          ((window.devicePixelRatio === 2) ? '@2x' : '') +
+	                          '.png';
+	 
+	                    marker = new L.Marker(latlon, {
+	                        icon: new L.icon({
+	                              iconUrl: url
+	                            , iconSize: sizes[size]
+	                            , iconAnchor: [sizes[size][0] / 2, sizes[size][1] / 2]
+	                            , popupAnchor: [sizes[size][0] / 2, 0]
+	                        })
+	                    });
+	                	}else{
+	                		marker = L.Marker(latlon);
+	                	}
+	                	if (feature.properties.title || feature.properties.name) {
+	                		label = feature.properties.title || feature.properties.name;
+	                		marker.bindLabel(label);
+	                	}
+	                	return marker;
+                }
+                , onEachFeature: function (feature, layer) {
+                	var content;
+                	if (feature.properties.description || feature.properties.popupContent) {
+                		content = feature.properties.description || feature.properties.popupContent;
+                		layer.bindPopup(content);
+                	}
+                }
+    }        
 	}
 );
+

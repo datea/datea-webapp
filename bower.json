@@ -13,12 +13,10 @@
     "angular-facebook": "~0.2.2",
     "birdangular": "*",
     "angular-local-storage": "*",
-    "angular-bootstrap": "~0.7.0",
-    "angular-leaflet-directive": "~0.7.1",
+    "angular-leaflet-directive": "git://github.com/lafactura/angular-leaflet-directive.git#master",
     "angularjs-geolocation": "~0.1.0",
     "angular-i18n": "~1.2.6",
     "leaflet-dist": "~0.7.1",
-    "wxGlobalErrors": "*",
     "angular-ui-bootstrap-bower": "~0.10.0",
     "wxAngularFullscreen": "*",
     "angular-elastic": "~2.3.1",
@@ -27,7 +25,12 @@
     "bootstrap-social": "~4.2.1",
     "leaflet.draw": "~0.2.3",
     "angular-social": "~0.1.1",
-    "jquery": "~2.1.1"
+    "jquery": "~2.1.1",
+    "angular-bootstrap-select": "*",
+    "bootstrap-select": "~1.5.2",
+    "bootstrap": "~3.1.1",
+    "angular-charts": "~0.2.4",
+    "togeojson": "git://github.com/lafactura/togeojson.git#master"
   },
   "devDependencies": {
     "angular-mocks": "~1.2.0",

@@ -472,7 +472,7 @@ console.log( 'user.getUserByUserIdOrUsername token', token );
 
 	// Stats
 
-	stats.getLandingStats = function ( givens ) {
+	stats.getStats = function ( givens ) {
 		var dfd = $q.defer();
 		stats.rsrc.query( givens, function ( response ) {
 			dfd.resolve( response );

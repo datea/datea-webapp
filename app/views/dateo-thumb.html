@@ -1,0 +1,23 @@
+<div class="dateo-with-image">
+	<div class="inner">
+	  <div class="thumb-holder" da-bg-from-api="{{dateo.images[0].image}}" da-img-size="cover"></div>
+		<div class="info-bg"></div>
+		<div class="info-holder">
+			<div class="parts-holder">
+				<div class="part part-1">
+					<div class="user-img img-circle" da-bg-from-api="{{dateo.user.image}}" da-img-type="user" da-img-size="cover"></div>
+				</div>
+				<div class="part part-2">
+					<h5>{{dateo.user.username}}</h5>
+					<div class="date">{{dateo.date | date:'fullDate'}}</div>
+				</div>
+			</div>
+			<p class="extract" ng-bind-html="dateo.extract | linky:'_blank'"></p>
+			<div class="cta-holder">
+				<span class="glyphicon glyphicon-thumbs-up"></span> {{dateo.vote_count}}
+				<span class="glyphicon glyphicon-comment"></span> {{dateo.comments.length}}
+				<a href="#/{{dateo.user.username}}/dateos/{{dateo.id}}" class="btn datea-btn btn-xs pull-right">ver más</a>
+			</div>
+		</div>
+	</div>
+</div>

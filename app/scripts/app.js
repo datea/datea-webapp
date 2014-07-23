@@ -9,10 +9,12 @@ angular.module( 'dateaWebApp'
   , 'ui.bootstrap'
   , 'leaflet-directive'
   , 'geolocation'
-  , 'wxGlobalErrors'
   , 'FSAngular'
   , 'monospaced.elastic'
   , 'ngSocial'
+  , 'angular-bootstrap-select'
+  , 'duScroll'
+  , 'angularCharts'
 ])
 .config(
 [ '$routeProvider'
@@ -70,13 +72,9 @@ angular.module( 'dateaWebApp'
 	  , { templateUrl: 'views/campaign-dashboard.html'
 	    , controller: 'CampaignDashboardCtrl'
 	    } )
-	.when( '/nuevaIniciativa'
-	  , { templateUrl: 'views/campaign-dashboard.html'
-	    , controller: 'CampaignDashboardCtrl'
-	    } )
 	.when( '/crear-iniciativa'
-	  , { templateUrl: 'views/campaign-dashboard.html'
-	    , controller: 'CampaignDashboardCtrl'
+	  , { templateUrl: 'views/campaign-create.html'
+	    //, controller: 'CampaignCreateCtrl'
 	    } )
 	.when( '/tag/:tagName'
 	  , { templateUrl: 'views/tag.html'
@@ -86,10 +84,14 @@ angular.module( 'dateaWebApp'
 	  , { templateUrl: 'views/campaign.html'
 	    , controller: 'CampaignCtrl'
 	    } )
+	.when( '/iniciativas/:campaignId/edit'
+		, { templateUrl: 'views/campaign-dashboard.html'
+			,	controller:  'CampaignEditCtrl'
+		} )
 	.when( '/:username'
 	  , { templateUrl: 'views/profile.html'
 	    , controller : 'ProfileCtrl'
 	    } )
 	.otherwise( { redirectTo: '/' } );
 
-} ] );
+} ] )

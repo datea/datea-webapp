@@ -1,30 +1,46 @@
-<div class="signup-holder container">
-	<div class="signup">
-		<div class="part part-1">
-			<h1>Únete a Datea!</h1>
-			<h4 class="subheading">Comienza a compartir información útil con tu comunidad</h4>
-			<p>Ingresa con tus cuentas de</p>
-				<button class="btn btn-social btn-facebook" ng-click="flow.withFacebook()"><i class="fa fa-facebook"></i>Facebook</button>
-				<button class="btn btn-social btn-twitter" ng-click="flow.withTwitter()"><i class="fa fa-twitter"></i>Twitter</button>
-				<p>(No publicamos en tus cuentas sin tu permiso)</p>
-				<p>O crea una cuenta en Datea:</p>
-			<button class="btn datea-btn" ng-click="flow.withEmail()">Crear cuenta</button>
-		</div>
-		<div class="part part-2">
-			<div class="well">
-				<p>Ya eres dater@?</p>
-				<button class="btn datea-btn" ng-click="flow.signIn()">Ingresa</button>
-			</div>
-			<div class="extra">
-				<a href="/">
-					<p>¿Por qué registrar una cuenta en Datea?</p>
-				</a>
-				<a href="/">
-					<p>¿A quién le pertenece la información que publico en datea?</p>
-				</a>
-				<a href="/">
-					<p>Información sobre privacidad</p>
-				</a>
+<div class="signup-holder">
+	<div class="graydark-bg"></div>
+	<div class="container z2">
+		<div class="signup">
+			<div class="row">
+				<div class="col-xs-12 col-md-10 col-md-offset-1">
+					<div class="row form-wrap">
+						<div class="col-xs-12 col-md-8 main-content">
+							<div class="inner">
+								<h1>Únete a Datea!</h1>
+								<h4 class="subheading">Comienza a compartir información útil con tu comunidad</h4>
+								
+								<div class="row">
+									<div class="register-btns col-xs-9">
+										<button class="btn btn-social btn-facebook btn-block btn-lg" ng-click="flow.withFacebook()"><i class="fa fa-facebook"></i>Ingresar con Facebook</button>
+										<button class="btn btn-social btn-twitter btn-block btn-lg" ng-click="flow.withTwitter()"><i class="fa fa-twitter"></i>Ingresar con Twitter</button>
+										<button class="btn datea-green-btn btn-block btn-social btn-block btn-lg" ng-click="flow.withEmail()"><i class="fa fa-envelope-o"></i>Ingresar con tu correo</button>
+									</div>
+								</div>
+								<p>[No publicamos en tus cuentas sin tu permiso]</p>
+							</div>
+						</div>
+						<div class="hidden-xs hidden-sm col-md-4 sidebar">
+							<div class="inner">
+								<div class="well">
+									<p>Ya eres dater@?</p>
+									<button class="btn datea-btn" ng-click="flow.signIn()">Ingresa</button>
+								</div>
+								<div class="extra">
+									<a href="/">
+										<p>¿Por qué registrar una cuenta en Datea?</p>
+									</a>
+									<a href="/">
+										<p>¿A quién le pertenece la información que publico en datea?</p>
+									</a>
+									<a href="/">
+										<p>Información sobre privacidad</p>
+									</a>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
 			</div>
 		</div>
 	</div>

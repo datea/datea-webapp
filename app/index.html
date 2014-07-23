@@ -13,21 +13,27 @@
 
 	<!-- build:css(.tmp) styles/main.css -->
 	<link rel="stylesheet" href="styles/main.css">
-<!--
+  <!--
 	<link href='http://fonts.googleapis.com/css?family=Oswald' rel='stylesheet' type='text/css'>
 	<link href='http://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400' rel='stylesheet' type='text/css'>
 	 -->
 	<!-- endbuild -->
 	<link rel="stylesheet" href="bower_components/leaflet-dist/leaflet.css">
-	<link rel="stylesheet" href="//netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.min.css">
+	<link href="//netdna.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.min.css" rel="stylesheet">
 	<link rel="stylesheet" href="bower_components/bootstrap-social/bootstrap-social.css">
 	<link rel="stylesheet" href="bower_components/Leaflet.label/dist/leaflet.label.css">
 	<link rel="stylesheet" href="bower_components/leaflet.markerclusterer/dist/MarkerCluster.css">
 	<link rel="stylesheet" href="bower_components/leaflet.markerclusterer/dist/MarkerCluster.Default.css">
 	<link rel="stylesheet" href="bower_components/angular-social/angular-social.css">
 	<link rel="stylesheet" href="bower_components/leaflet.draw/dist/leaflet.draw.css">
+	<link rel="Stylesheet" href="bower_components/bootstrap-select/bootstrap-select.css">
+	<style>
+		.colored-marker {
+				clip-path: url(#clipping);
+			}
+	</style>
 </head>
-<body ng-app="dateaWebApp">
+<body ng-app="dateaWebApp" ng-controller="LayoutCtrl">
 	<!--[if lt IE 7]>
 	<p class="browsehappy">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> to improve your experience.</p>
 	<![endif]-->
@@ -36,16 +42,20 @@
 	<script src="bower_components/es5-shim/es5-shim.js"></script>
 	<script src="bower_components/json3/lib/json3.min.js"></script>
 	<![endif]-->
-
 	<!-- Add your site or application content here -->
 	<div ng-controller="NavCtrl" ng-include="'views/nav.html'"></div>
 
-	<div class="messagesList" app-messages></div>
+	<div id="#page-wrap" class="page-wrap" ng-class="{'autoheight': autoheight, 'with-nav': with_nav}">
+		
+		<div class="messagesList z2" app-messages></div>
 
-	<div class="container page" ng-view=""></div>
+		<div class="page" ng-view=""></div>
 
-	<div class="container colophon">
-		<div class="datea-rights" ng-include="'views/footer.html'"></div>
+		<div class="footer-push"></div>
+	</div>
+
+	<div class="footer-holder container-fluid" ng-cloak>
+			<div class="datea-rights" ng-include="'views/footer.html'"></div>
 	</div>
 
 	<!-- Google Analytics: change UA-XXXXX-X to be your site's ID -->
@@ -62,9 +72,10 @@
 	<script src="bower_components/angular/angular.js"></script>
 	 -->
 	<script src="bower_components/jquery/dist/jquery.js"></script>
-	<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.2.16/angular.min.js"></script>
+	<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.2.16/angular.js"></script>
 	<script src="bower_components/leaflet-dist/leaflet.js"></script>
 	<script src="http://api.datea.pe:6284/download/latest/oauth.js"></script>
+	<script src="//cdnjs.cloudflare.com/ajax/libs/d3/3.4.8/d3.min.js"></script>
 
 <!--
 	<script src="bower_components/birdangular/sha1.js"></script>
@@ -74,6 +85,7 @@
  -->
 
 	<!-- build:js scripts/modules.js -->
+
 	<script src="bower_components/angular-local-storage/angular-local-storage.js"></script>
 	<script src="bower_components/angular-ui-bootstrap-bower/ui-bootstrap.js"></script>
 	<script src="bower_components/angular-ui-bootstrap-bower/ui-bootstrap-tpls.js"></script>
@@ -81,7 +93,6 @@
 	<script src="bower_components/leaflet.markerclusterer/dist/leaflet.markercluster.js"></script>
 	<script src="bower_components/Leaflet.label/dist/leaflet.label.js"></script>
 	<script src="bower_components/angularjs-geolocation/src/geolocation.js"></script>
-	<script src="bower_components/wxGlobalErrors/wxGlobalErrors.js"></script>
 	<script src="bower_components/wxAngularFullscreen/angular-fullscreen.js"></script>
 	<script src="bower_components/angular-i18n/angular-locale_es-pe.js"></script>
 	<script src="bower_components/angular-resource/angular-resource.js"></script>
@@ -91,6 +102,11 @@
 	<script src="bower_components/angular-elastic/elastic.js"></script>
 	<script src="bower_components/angular-social/angular-social.js"></script>
 	<script src="bower_components/leaflet.draw/dist/leaflet.draw-src.js"></script>
+	<script src="bower_components/bootstrap-select/bootstrap-select.js"></script>
+	<script src="bower_components/angular-bootstrap-select/build/angular-bootstrap-select.js"></script>
+	<script src="bower_components/angular-scroll/angular-scroll.js"></script>
+	<script src="bower_components/angular-charts/dist/angular-charts.js"></script>
+	<script src="bower_components/togeojson/togeojson.js"></script>
 	<!-- endbuild -->
 
 	<!-- build:js({.tmp,app}) scripts/scripts.js -->
@@ -117,13 +133,32 @@
 	<script src="scripts/services/activityUrl.js"></script>
 	<script src="scripts/controllers/campaign.js"></script>
 	<script src="scripts/directives/scrollto.js"></script>
-<script src="scripts/directives/scrollspy.js"></script>
-<script src="scripts/controllers/campaign-dashboard.js"></script>
-<script src="scripts/controllers/share.js"></script>
-<script src="scripts/controllers/tag.js"></script>
-<script src="scripts/services/state.js"></script>
-<script src="scripts/controllers/landing.js"></script>
+	<script src="scripts/controllers/landing.js"></script>
+	<script src="scripts/controllers/campaign-dashboard.js"></script>
+	<script src="scripts/controllers/share.js"></script>
+	<script src="scripts/controllers/tag.js"></script>
+	<script src="scripts/services/state.js"></script>
+	<script src="scripts/directives/dateoTeaser.js"></script>
+	<script src="scripts/directives/dateoThumb.js"></script>
+	<script src="scripts/directives/campaignTeaser.js"></script>
+	<script src="scripts/controllers/layout.js"></script>
+	<script src="scripts/directives/onLastRepeat.js"></script>
+	<script src="scripts/directives/follow.js"></script>
+	<script src="scripts/directives/campaign-form.js"></script>
+	<script src="scripts/controllers/campaign-edit.js"></script>
+	<script src="scripts/directives/ngEnter.js"></script>
 	<!-- endbuild -->
+
+	<!-- clip path for individual markers -->
+	<svg height="0" width="0" style="padding:0; margin: 0; position: absolute;">
+    <defs>
+      <clipPath id="pinpath">
+        <!--<path d="M12.499,0.268c-6.782,0-12.282,5.639-12.282,12.597c0,11.026,12.282,18.9,12.282,18.9s12.284-7.678,12.284-18.9C24.783,5.906,19.283,0.268,12.499,0.268"/>-->
+        <path d="M14.499,0C6.492,0,0,7.161,0,15.999C0,30,14.499,40,14.499,40S29,30.248,29,15.999
+                                C29,7.161,22.504,0,14.499,0"/>
+      </clipPath>
+    </defs>
+  </svg>
 
 </body>
 </html>

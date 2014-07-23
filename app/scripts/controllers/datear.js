@@ -41,9 +41,18 @@ $scope.datear              = {};
 $scope.datear.leaflet      = {};
 $scope.datear.autocomplete = {};
 $scope.flow                = {};
+$scope.flow.dp             = {};
 
 $scope.datear.selectedTags = [];
+$scope.datear.loading			 = false;
+$scope.datear.onFinished   = false;
+$scope.datear.isScrolling  = false;
 $scope.alerts = [];
+$scope.datear.step				 = 1;
+
+var $modal_body = angular.element(document.getElementById('modal-body'));
+if ($modal_body.scrollTop() != 0 ) $modal_body.scrollTop(0);
+
 
 $scope.$on( 'leafletDirectiveMarker.dragend', function ( event ) {
 	if ( $scope.datear.leaflet.center.zoom <= 16 ) {
@@ -117,6 +126,18 @@ $scope.$on( 'leafletDirectiveMap.click', function ( event, args ) {
 	}
 } );
 
+
+$scope.scrollTo = function($event, element, offset) {
+	$event.stopPropagation();
+	$event.preventDefault();
+	$scope.datear.isScrolling = true;
+	var rootElem = angular.element(document.getElementById('modal-body'));
+	var elem = angular.element(document.getElementById(element));
+	rootElem.scrollToElement(elem, offset, 400).then(function() {
+		$scope.datear.isScrolling = false;
+	});
+}
+
 $scope.closeAlert = function ( index ) {
 	$scope.alerts.splice(index, 1);
 }
@@ -135,42 +156,68 @@ $rootScope.$on( 'datea:fileLoaded', function ( ev, givens ) {
 	}
 } );
 
-// Date picker
-$scope.flow.today = function() {
-	$scope.flow.dt = new Date();
-};
-$scope.flow.today();
+$rootScope.$on('duScrollspy:becameActive', function($event, $element){
+	var spy = $element[0].attributes['du-scrollspy'].value;
+	var step = parseInt(spy.charAt(spy.length-1));
+	$scope.$apply(function() {$scope.datear.step = step});
+	/*
+	var rootElem = angular.element(document.getElementById('modal-body'));
+	if (!$scope.datear.isScrolling) {
+		if (step == 1) {
+			var elem = angular.element(document.getElementById("spy-step1"));
+			rootElem.scrollToElement(elem, 30, 400);
+		}else if (step == 2) {
+			var elem = angular.element(document.getElementById("spy-step2"));
+			rootElem.scrollToElement(elem, 20, 400);
+		}else if (step == 3) {
+			var elem = angular.element(document.getElementById("spy-step3"));
+			rootElem.scrollToElement(elem, 100, 400);
+		}
+	}*/
+});
 
-$scope.flow.minDate = null;
+// DATE INPUT
+$scope.flow.dp = {
+	// Date picker
+	  dateoDate   : new Date()
+	, dateOptions : {
+			  'year-format': "'yy'"
+			, 'starting-day': 1
+		}
+	, format      : 'yyyy/MM/dd'
+	, opened      : false
+	// Time picker
+	, dateoTime   : new Date()
+	, hstep       : 1
+	, mstep       : 1
+}
 
-$scope.flow.dateOptions = {
-	'year-format': "'yy'",
-	'starting-day': 1
-};
-
-// Time picker
-$scope.flow.timeNow = new Date();
-
-$scope.flow.hstep = 1;
-$scope.flow.mstep = 1;
-
-// Datetime sum
-$scope.$watch( 'flow.dt + flow.timeNow', function () {
-	var datetime = {}
-	if ( $scope.flow.dt && $scope.flow.timeNow ) {
-		datetime.year     = $scope.flow.dt.getUTCFullYear();
-		datetime.month    = $scope.flow.dt.getUTCMonth();
-		datetime.day      = $scope.flow.dt.getDate();
-		datetime.hour     = $scope.flow.timeNow.getHours();
-		datetime.minutes  = $scope.flow.timeNow.getUTCMinutes();
+$scope.flow.dp.openDatepicker = function($event) {
+	$event.stopPropagation();
+	$event.preventDefault();
+	$scope.flow.dp.opened = true;
+}
+$scope.flow.dp.changed = function () {
+	var datetime = {};
+	if ( $scope.flow.dp.dateoDate && $scope.flow.dp.dateoTime ) {
+		datetime.year     = $scope.flow.dp.dateoDate.getUTCFullYear();
+		datetime.month    = $scope.flow.dp.dateoDate.getUTCMonth();
+		datetime.day      = $scope.flow.dp.dateoDate.getDate();
+		datetime.hour     = $scope.flow.dp.dateoTime.getHours();
+		datetime.minutes  = $scope.flow.dp.dateoTime.getUTCMinutes();
 		$scope.dateo.date = new Date( datetime.year
 		, datetime.month
 		, datetime.day
 		, datetime.hour
 		, datetime.minutes
-		, '00' );
-		console.log( 'datetime', $scope.dateo.date );
+		, '00' ).toISOString();
 	}
+	console.log("DATEO DATE", $scope.dateo.date);
+}
+
+// Date watch
+$scope.$watch( 'flow.dp.dateoDate', function () {
+	$scope.flow.dp.changed();
 } );
 
 // /* Static alert close */
@@ -182,6 +229,9 @@ $scope.$watch( 'flow.dt + flow.timeNow', function () {
 
 
 $scope.datear.doDatear = function () {
+	
+	$scope.datear.loading = true;
+
 	var tags = [];
 	// Tags
 	angular.forEach( $scope.datear.selectedTags, function ( value, key ){
@@ -209,10 +259,9 @@ $scope.datear.doDatear = function () {
 		.then( function ( response ) {
 			$scope.dateo.errorMessage = null;
 			$scope.datear.onFinished  = true;
-			$timeout( function () {
-				$modalInstance.close();
-			}, 4000 );
-			// $rootScope.$broadcast( 'user:hasDateado' );
+			//$rootScope.$broadcast( 'user:hasDateado' );
+			if (typeof(datearModalGivens.datearSuccessCallback) != 'undefined') datearModalGivens.datearSuccessCallback(response);
+			$scope.datear.loading = false;
 		} , function ( reason ) {
 			console.log( reason );
 		} )
@@ -225,7 +274,6 @@ $scope.datear.doDatear = function () {
 			$scope.dateo.errorMessage = 'Hubo un error al datear';
 		}
 	}
-
 };
 
 $scope.datear.cancel = function () {
@@ -265,5 +313,6 @@ if ( datearModalGivens.suggestedTags ) {
 	$scope.datear.suggestedTags = datearModalGivens.suggestedTags;
 }
 geo.getLocation( {timeout:10000} ).then( onGeolocation, onGeolocationError );
+
 
 } ] );

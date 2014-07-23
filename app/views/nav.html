@@ -1,7 +1,7 @@
-<nav class="navbar navbar-default datea-navbar" role="navigation" ng-show="nav.visible">
-	<div class="container">
+<nav class="navbar navbar-default datea-navbar navbar-fixed-top" role="navigation" ng-show="nav.visible">
+	<div class="container-fluid">
 		<div class="navbar-header">
-			<a class="navbar-brand" href="#"><img ng-src="static/images/logo-2.png" alt="datea.pe">
+			<a class="navbar-brand" href="#"><img ng-src="static/images/logo-3.png" alt="datea.pe">
 			</a>
 			<button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse" ng-click="nav.isCollapsed = !nav.isCollapsed">
 				<span class="sr-only">Toggle navigation</span>
@@ -17,10 +17,10 @@
 				<li><a href="#/ayuda">Ayuda</a></li>
 <!-- 				<li ng-show="nav.visible"><button type="button" class="btn datea-datear-btn navbar-btn" ng-click="nav.datear()">Datea<i class="glyphicon glyphicon-map-marker"></i></button></li> -->
 <!-- 				<li ng-show="!nav.visible"><button type="button" class="btn btn-success navbar-btn" ng-click="nav.signIn()">Ingresa</button></li> -->
-				<li ng-show="user.username" class="dropdown">
+				<li ng-show="user.username" class="dropdown user-ctrl">
 					<a href="#" class="dropdown-toggle" data-toggle="dropdown">
-					<img ng-src="{{ user.image | imgFromApi }}" alt="" height="25px">
-					{{ user.username }}
+					<img ng-src="{{ user.image | imgFromApi }}" alt="" height="38px" class="img-circle">
+					<!--{{ user.username }}-->
 					<b class="caret"></b></a>
 					<ul class="dropdown-menu">
 						<li><a href="#/{{ user.username }}">Mi Perfil</a></li>

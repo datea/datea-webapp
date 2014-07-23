@@ -40,7 +40,7 @@ angular.module( 'dateaWebApp' )
 	$scope.flow.validInput = {};
 	$scope.flow.messages   = {};
 
-	$scope.newCampaign.leaflet = {};
+	$scope.flow.leaflet = {};
 
 	User.isSignedIn() || $location.path( '/' );
 
@@ -52,12 +52,12 @@ onGeolocation = function ( data ) {
 	                 , zoom : config.dashboard.defaultZoom
 	                 }
 	leaflet.controls = { draw : { marker: false, polyline: false } }
-	angular.extend( $scope.newCampaign.leaflet, leaflet );
+	angular.extend( $scope.flow.leaflet, leaflet );
 }
 
 onGeolocationError = function () {
 	console.log('sup onGeolocationError')
-	// angular.extend( $scope.newCampaign.leaflet, config.defaultMap );
+	// angular.extend( $scope.flow.leaflet, config.defaultMap );
 }
 
 buildCategories = function () {
@@ -73,8 +73,8 @@ buildBoundariesMap = function () {
 	geo.getLocation( { timeout:10000 } )
 	.then( onGeolocationError, onGeolocationError );
 
-	angular.extend( $scope.newCampaign.leaflet, config.defaultMap );
-	angular.extend( $scope.newCampaign.leaflet, { controls : { custom: [drawControl] } });
+	angular.extend( $scope.flow.leaflet, config.defaultMap );
+	angular.extend( $scope.flow.leaflet, { controls : { custom: [drawControl] } });
 
 	$scope.newCampaign.boundary;
 
@@ -189,7 +189,7 @@ $scope.newCampaign.save = function () {
 	campaign.files               = $scope.newCampaign.files.length && $scope.newCampaign.files;
 	campaign.center              = { type: 'Point', coordinates: [ -77.027772, -12.121937 ] };
 	campaign.boundary            = $scope.newCampaign.boundary;
-	campaign.zoom                = $scope.newCampaign.leaflet.center.zoom;
+	campaign.zoom                = $scope.flow.leaflet.center.zoom;
 
 	leafletData.getMap("leafletNewCampaign").then( function ( map ) {
 		campaign.center = map.getCenter();

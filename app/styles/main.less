@@ -13,8 +13,11 @@
 // Import Less
 //
 
-// @import "app/bower_components/bootstrapless/less/mixins.less";
-@import "app/bower_components/bootstrapless/less/bootstrap.less";
+// @import "app/bower_components/bootstrap/less/mixins.less";
+
+
+
+@import "app/bower_components/bootstrap/less/bootstrap.less";
 @import "app/styles/modules.less";
 // @import "app/bower_components/bootstrap-social/bootstrap-social.less";
 
@@ -40,6 +43,11 @@
 // @color-12: #28BC45; // green
 
 
+@link-color:            @color-5;
+@link-hover-color:      darken(@color-5, 15%);
+@input-border-focus:		@color-5;
+@pagination-active-bg:	@link-color;
+
 // URLS
 @imgUrl      : '../static/images/';
 
@@ -49,6 +57,12 @@
 *, *:before, *:after {
   -moz-box-sizing: border-box; -webkit-box-sizing: border-box; box-sizing: border-box;
  }
+
+
+// * {
+  /* So 100% means 100% */
+//  box-sizing: border-box;
+//}
 
 [ng\:cloak], [ng-cloak], .ng-cloak {
   display: none;
@@ -101,11 +115,13 @@ h1, h2, h3, h4, h5, h6, .h1, .h2, .h3, .h4, .h5, .h6 {
 	font-family: @ff1;
 }
 
+html { height: 100%}
+
 body {
   font-family: sans-serif;
   overflow-x: hidden;
   -webkit-font-smoothing: antialiased;
-
+  height: 100%;
   a {
   	text-decoration: none;
   }
@@ -166,12 +182,6 @@ textarea { resize: vertical; }
 	text-transform: uppercase;
 }
 
-.page {
-	background: @color-4;
-	padding: 0;
-	position: relative;
-}
-
 .datea-loading:after {
 	content: " ";
 	background: rgba(255,255,255,.5) url('@{imgUrl}/globals/loading.gif') no-repeat center center;
@@ -182,6 +192,59 @@ textarea { resize: vertical; }
 	left: 0;
 }
 
+
+//
+// Forms and input elements
+//
+body {
+	.form-group .bootstrap-select.btn-group.bar-orderby {
+		margin-bottom: 0px;
+		.btn { 
+			color: @text-color; 
+			&:hover {text-decoration: none !important}
+			.caret { top: 40%}
+		}	
+	}
+}
+
+.caret {
+    border-left: 8px solid transparent;
+    border-right: 8px solid transparent;
+    border-top: 8px solid #000;
+    top: 30%;
+}
+
+.opcional {
+	color: @color-6;
+	font-size: 11px;
+	font-weight: normal;
+}
+
+//
+//  UI ELEMENTS
+//
+.follow-btn.btn {
+	background-color: @color-5;
+	position: relative;
+	/*.icon { width: 20px; text-align: left;}*/
+	span {margin-right: 0 !important}
+	outline: none;
+	.fa {
+		vertical-align: middle;
+	}
+	&:hover {
+		color: white;
+		background-color: darken(@color-5, 10%);
+		&.remove {
+			background-color: @btn-danger-bg;
+		}
+	}
+	&:focus {
+		color: white;
+	}
+}
+
+
 //
 // Navbar
 //
@@ -190,16 +253,23 @@ textarea { resize: vertical; }
 	margin: 0;
 
 	.navbar-brand {
-		padding: 10px 15px;
+		padding: 5px 0 5px 40px;
 	}
 	.navbar-nav {
-		font-size: 18px;
-		margin: 10px 0 0;
+		font-size: 17px;
+		margin: 5px 40px 0px 0px;
 
 		& > li > a {
 			color: black;
 			text-transform: uppercase;
+			padding-bottom: 0;
+			padding-top: 15px;
 		}
+
+		.user-ctrl.dropdown {
+			margin-left: 100px;
+			a.dropdown-toggle {padding: 0;}
+		}  
 	}
 }
 
@@ -207,17 +277,54 @@ textarea { resize: vertical; }
 //
 // Structure
 //
-.colophon {
+.page-wrap {
+	margin: 0px auto -60px;
+	min-height: 100%;
+  height: 100%;
+  position: relative;
+  overflow: hidden;
+	.footer-push { height: 0px}
+
+	&.autoheight {
+		  height: auto !important;
+		  .footer-push { height: 60px}
+	}
+	&.with-nav {
+		padding-top: 50px;
+	}
+}
+
+.page {
+	background: white;//@color-4;
+	padding: 0;
+	//position: relative;
+	//overflow: hidden; 
+	height: inherit;
+	min-height: 100%;
+}
+
+.footer-holder {
 	background-color: #231F20;
 	color: white;
-	min-height: 120px;
+	height: 60px;
 	position: relative;
+	z-index: 2;
 
 	.datea-rights {
-		padding-top: 20px;
+		padding-top: 10px;
 		text-align: right;
 	}
 }
+
+.tag-buttons {
+	.clearfix;
+	.datea-tag-btn {
+		float: left;
+		margin-right: 10px;
+		margin-bottom: 10px;
+	}
+}
+.datea-tag-btn { font-size: 20px}
 
 //
 // Sign In
@@ -234,7 +341,7 @@ textarea { resize: vertical; }
 	.signin {
 		background: white;
 		border-radius: 5px;
-		padding: 40px;
+		padding: 20px 30px 20px 30px;
 		position: relative;
 		top: 187px;
 
@@ -260,33 +367,46 @@ textarea { resize: vertical; }
 // Signup
 //
 
+.register-btns {
+	.btn-social {
+		margin-bottom: 15px;
+	}
+
+}
+
 .signup-holder {
 	@sectionImgUrl: 'signup/';
 
-	background: @color-10 url('@{imgUrl}/signin/bg.png') no-repeat center 20px;
-	height: 682px;
 	width: 100%;
 
 	.signup {
-		background: white;
-		border-radius: 5px;
-		padding: 40px;
 		position: relative;
-		top: 187px;
+		padding-top: 187px;
+		background: @color-10 url('@{imgUrl}/signin/bg.png') no-repeat center 20px;
 
-		h1 {
-			color: @color-5;
-			font-weight: bold;
-		}
-		.subheading {
-			font-weight: bold;
-		}
+		.form-wrap {
+			background-color: white;
+			border-radius: 5px;
+			.sidebar {
+				.inner { padding: 40px 40px 40px 0px;}			
+			}
+			.main-content .inner { padding: 20px 0 30px 30px;}
 
-		.part-1 {
-			width: 65%;
-		}
-		.part-2 {
-			width: 34%;
+			h1 {
+				color: @color-5;
+				font-weight: bold;
+			}
+			.subheading {
+				font-weight: bold;
+				margin-bottom: 35px;
+			}
+
+			.part-1 {
+				width: 65%;
+			}
+			.part-2 {
+				width: 34%;
+			}
 		}
 	}
 }
@@ -326,9 +446,9 @@ textarea { resize: vertical; }
 .landing-holder {
 	@sectionImgUrl : 'landing/';
 
-	left: 0;
-	// position: absolute;
-	top: 0;
+	//left: 0;
+	position: relative;
+	//top: 0;
 	width: 100%;
 
 	.section-holder-1 {
@@ -336,7 +456,10 @@ textarea { resize: vertical; }
 	}
 
 	.section-1 {
-		height: 220px;
+		min-height: 220px;
+		max-height: 320px;
+		height: 32vh;
+		vertical-align: middle;
 		text-align: center;
 
 		.social-holder {
@@ -359,6 +482,7 @@ textarea { resize: vertical; }
 			// }
 		}
 		.main-heading {
+
 			font-size: 73px;
 		}
 		.slogan {
@@ -372,9 +496,13 @@ textarea { resize: vertical; }
 	}
 
 	.section-2 {
-		height: 250px;
+		min-height: 250px;
+		max-height: 320px;
+		height: 36vh;
 		padding: 42px 0 0 0;
 		text-align: center;
+
+		.btn-login-landing { width: 120px; }
 
 		.part {
 			font-size: 21px;
@@ -401,7 +529,9 @@ textarea { resize: vertical; }
 	}
 
 	.section-3 {
-		height: 230px;
+		min-height: 230px;
+		max-height: 300px;
+		height: 32vh;
 
 		h3 {
 			font-size: 36px;
@@ -567,26 +697,30 @@ textarea { resize: vertical; }
 			.most-dateo {
 				background: white url('@{imgUrl}/landing/section-4-map.png') no-repeat center 50px;
 				color: @color-10;
-				padding: 15px;
+				padding: 215px 15px 15px 15px;
+				position: relative;
 
 				h4 {
 					font-weight: bold;
 					text-transform: uppercase;
+					position: absolute;
+					top: 10px;
+					left: 15px;
 				}
 
 				.trending-tags-holder {
-					position: relative;
-					top: 170px;
-					width: 220px;
+					.clearfix;
 
 					.datea-tag-btn {
 						margin: 0 10px 0 0;
+						float: left;
+						display: block;
 					}
 				}
 				.datea-btn {
-					left: 255px;
-					position: relative;
-					top: 155px;
+					display: block;
+					float: right;
+					padding-top: 5px;
 				}
 			}
 			.outstanding-dateo-holder {
@@ -797,9 +931,14 @@ textarea { resize: vertical; }
 	visibility: hidden;
 	width: 0;
 }
-.datear-modal {
 
-	height: 470px;
+.datear-modal {
+  .modal-dialog {
+		//width: 50vw;
+	}
+}
+
+.datear-modal-content {
 
 	.modal-header {
 		h3 {
@@ -807,36 +946,59 @@ textarea { resize: vertical; }
 			font-weight: bold;
 			margin-top: 5px;
 			margin-bottom: 0;
+			font-size: 30px;
+		}
+		.alert {
+			margin-bottom: 0;
+			margin-top: 10px;
 		}
 	}
 
 	.datear-breadcrumb {
 		background-color: transparent;
-		left: 100px;
+		left: 120px;
 		position: absolute;
-		top: 14px;
-		width: 160px;
+		top: 7px;
 
 		.scroll-title {
 			cursor: pointer;
-			padding: 0 0 0 12px;
+			padding: 0 0 0 28px;
 			position: relative;
-			width: 32px;
-		}
-		.scroll-active {
-			color: white;
-			background: @color-12!important;
-		}
-		.scroll-inactive {
-			color: white;
+			width: 60px;
+			line-height: 34px;
+			margin-left: 1px;
 			background: @color-7;
+			a {
+				display: block;
+				float: left;
+				line-height: 34px;
+				height: 34px;
+				&:focus { outline: none; }
+				span {
+					color: white;
+					font-size: 21px;
+					line-height: 32px;
+				}
+			}
+
+			&.first {
+				width: 54px;
+				padding-left: 18px;
+			}
+			
+			&.active {
+				a span {
+					color: white;
+				}
+				background: @color-12!important;
+			}
 		}
 	}
 
 	.datear-breadcrumb > li + li:before {
-		border-top: 10px solid transparent;
-		border-bottom: 10px solid transparent;
-		border-left: 10px solid white;
+		border-top: 17px solid transparent;
+		border-bottom: 17px solid transparent;
+		border-left: 17px solid white;
 		content: " ";
 		height: 0;
 		left: 0;
@@ -846,25 +1008,24 @@ textarea { resize: vertical; }
 	}
 
 	.datear-breadcrumb > li:after {
-		border-top: 10px solid transparent;
-		border-bottom: 10px solid transparent;
-		border-left: 10px solid @color-7;
+		border-top: 17px solid transparent;
+		border-bottom: 17px solid transparent;
+		border-left: 17px solid @color-7;
 		content: " ";
 		height: 0;
-		left: 31px;
+		right: -16px;
 		position: absolute;
 		width: 0;
 		z-index: 1;
 	}
 
-	.datear-breadcrumb > li.scroll-active:after {
-		border-left: 10px solid @color-12!important;
+	.datear-breadcrumb > li.active:after {
+		border-left: 17px solid @color-12!important;
 	}
 
 	.modal-dialog {
-		height: 100%;
+		//height: 100%;
 		margin: 0 auto 0;
-		overflow: scroll;
 	}
 
 	.modal-content {
@@ -873,8 +1034,14 @@ textarea { resize: vertical; }
 	}
 
 	.modal-body {
-		height: 87%;
-		overflow: scroll;
+
+		&.fixed-height {
+			min-height: 500px;
+			height: 75vh;
+			overflow-y: scroll;
+		}
+
+		h4 { font-size: 18px;}
 
 		.datea-no-margin-bottom {
 			margin-bottom: 0px;
@@ -891,14 +1058,16 @@ textarea { resize: vertical; }
 				height: 35px;
 			}
 
-			.datea-custom-imgUL:before {
-				background: url('@{imgUrl}/datear/img-ul.png') no-repeat;
-				content: " ";
+			.datea-custom-imgUL {
+				label { display: block;}
+				background: url('@{imgUrl}/datear/img-ul.png') no-repeat center center;
+				//content: " ";
 				cursor: pointer;
-				display: block;
-				height: 35px;
-				width: 35px;
+				display: inline-block;
+				min-height: 35px;
+				min-width: 35px;
 				-webkit-user-select: none;
+				.img-file-input { position: fixed; top: -1000px }
 			}
 		}
 		.part-2 {
@@ -906,6 +1075,52 @@ textarea { resize: vertical; }
 		}
 
 		.datear-form-holder {
+
+			.step {
+				position: relative;
+				.step-cover {
+						display: block;
+						position: absolute;
+						left: -10px;
+						top: -10px;
+						right: -10px;
+						bottom: -10px;
+						background-color: white;
+						.opacity(0.65);
+						z-index: 5000;
+					}
+			}
+
+			padding: 0 10px;
+
+			.actions { 
+				padding-top: 20px;
+				.btn { min-width: 120px}
+			}
+
+			.form-group label {
+				font-weight: normal;
+				font-size: 13px;
+				color: @text-color;
+			}
+
+			.content1 {
+				padding-bottom: 5px;
+			}
+
+			.date-form-holder {
+				.datetime-inputs {
+					padding-top: 0px;
+
+					.date-input-wrap {
+						float: left;
+						margin-right: 15px;
+						.date-input {
+							width: 90px;
+						}
+					}
+				}
+			}
 
 			.date-picker-holder {
 				display: inline-block;
@@ -919,8 +1134,22 @@ textarea { resize: vertical; }
 			}
 
 			.timepicker-holder {
+				//float: right;
+				display: inline-block;
+				vertical-align: top;
 				position: relative;
-				top: -12px;
+				top: -20px;
+				table, tr, td { padding: 0; text-align: center}
+
+				.btn.btn-link {
+					padding: 0;
+					line-height: 10px;
+					color: @color-6;
+					display: none;
+				}
+
+				input.form-control { .input-sm; padding: 5px; width: 40px; margin-left: auto; margin-right: auto}
+
 			}
 
 			.uploaded-img {
@@ -929,21 +1158,64 @@ textarea { resize: vertical; }
 			}
 
 			.datear-form {
-				margin-bottom: 200px;
+				margin-bottom: 25%;
 
 			}
 
+			.tag-input-form {
+				position: relative;
+				input { position: relative; z-index: 1;}
+				.fa {
+					z-index: 2;
+					position: absolute;
+					right: 40px;
+					top: 10px;
+				}
+			}
+
+			.selected-tags {
+				.clearfix();
+			}
+
+			.tag-input {
+				border: 1px solid @color-6;
+				padding: 5px 10px;
+				border-radius: 5px;
+				float: left;
+				margin-right: 10px;
+				margin-bottom: 10px;
+
+				&.tag-selected {
+					background-color: white;
+					color: #333;
+					a {
+						color: #999;
+						&:hover { color: red}
+					}
+				}
+
+			}
+		}
+		.onFinished-holder {
+			.finished-actions {
+				padding: 20px 0;
+				.btn {
+						min-width: 120px;
+						margin-right: 20px;
+				}
+			}
 		}
 	}
-
 }
 
 //
 // Home Signed In
 //
 
+#leafletHomeSI {height: 450px; height: 50vh}
+
 .homeSI-holder {
-	padding: 20px;
+	padding: 20px 40px;
 
 	.part-1 {
 		width: 60%;
@@ -954,11 +1226,11 @@ textarea { resize: vertical; }
 	.homeSI-map-holder {
 		margin: 0 0 45px;
 		position: relative;
-		width: 90%;
+		//width: 90%;
 
 		.map-frame {
 			padding: 5px;
-			background: @color-3;
+			background: @color-15;
 
 			.form-group {
 				display: inline-block;
@@ -975,7 +1247,7 @@ textarea { resize: vertical; }
 			}
 		}
 		.map-frame-top {
-			border-radius: 5px 5px 0 0;
+			//border-radius: 5px 5px 0 0;
 
 			.order-by {
 				background-color: @color-3;
@@ -1009,79 +1281,52 @@ textarea { resize: vertical; }
 		width: 590px;
 	}
 	.campaigns-holder {
-		background: white;
-		border: 1px solid;
+
+		background: @color-14;
+		border: 0px solid;
 		border-color: #fff #ddd #ddd;
 		border-radius: 3px;
 		padding: 15px 25px;
 		position: relative;
-		width: 590px;
+
+		.campaign-title {
+			h2 {margin: 0px 40px 0 0; display: inline-block; padding-top: 7px;}
+			a.btn {display: inline-block; vertical-align: top}
+			margin-bottom: 40px
+		}
 
 		.search-box {
 			height: 40px;
 			position: relative;
+			width: 200px;
 
 			.input-group {
 				position: absolute;
 				right: 0;
 			}
 		}
-
-		.campaign {
-			border: 1px solid #ddd;
-			color: black;
-			display: inline-block;
-			margin: 0 10px 15px 0;
-			padding: 3px;
-			vertical-align: top;
-			width: 169px;
-
-			&:hover {
-				background: @color-4;
-				text-decoration: none;
-			}
-
-			h4 {
-				font-size: 18px;
-				height: 40px;
-				overflow: hidden;
-				text-overflow: ellipsis;
-				text-transform: capitalize;
-				width: 100%;
-			}
-			.campaign-img {
-				height: 160px;
-				margin: 0 0 5px 0;
-				width: 160px;
-			}
-			.dateo-count {
-				color: @color-6;
-				font-size: 12px;
-			}
-			.status {
-				color: @color-5;
-				font-size: 12px;
-			}
-		}
 	}
 	.homeSI-meta-holder {
+		position: relative;
 		.block-1 {
 			background: white;
-			border-radius: 3px;
-			padding: 10px;
 			position: relative;
+			//border-radius: 3px;
+			//padding: 0;
 		}
 		.user-info {
-			background: @color-7;
-			margin: 29px 0 45px;
-			padding: 10px;
+			background: @color-15;
+			margin: 0 0 30px;
+			position:relative;
+
+			.inner { padding: 10px; }
 
 			a {
 				margin: 0 7px;
 			}
 
 			.parts-holder {
-				margin: 0 0 10px;
+				margin: 0;
 			}
 
 			.part-1 {
@@ -1089,8 +1334,8 @@ textarea { resize: vertical; }
 				text-align: center;
 
 				img {
-					height: 50px;
-					width: 50px;
+					height: 63px;
+					width: 63px;
 				}
 			}
 			.part-2 {
@@ -1109,38 +1354,55 @@ textarea { resize: vertical; }
 
 			.datea-datear-btn {
 				margin: 0 0 0 12px;
+				font-size: 20px;
+				line-height: 20px;
+				font-weight: 500;
+
 			}
+
+			.user-menu {
+				font-size: 16px;
+				padding-top: 20px;
+			}
+
 		}
+
 		.user-info:before {
 			background: @color-1;
 			border-radius: 3px 3px 0 0;
 			content: "dater@";
 			font-family: @ff1;
-			font-weight: bold;
+			font-weight: 600;
+			font-size: 15px;
 			display: block;
 			height: 30px;
-			left: 0;
-			margin: 10px 10px 0 10px;
+			line-height: 30px;
 			padding: 5px 10px;
-			position: absolute;
-			top: 0;
-			width: 421px;
 		}
 		.user-info:after {
-			.well-after( 157px; 10px );
+			.well-after( 200px; 10px );
 		}
+
+
 		.user-follows {
 			padding: 0 15px;
+			margin-bottom: 30px;
 			h5 {
 				font-weight: bold;
 				text-transform: uppercase;
+				line-height: 18px;
 			}
 		}
+
+
 		.trending-tags-holder {
 			padding: 0 15px;
+			margin-bottom: 30px;
+
 			h5 {
 				font-weight: bold;
 				text-transform: uppercase;
+				line-height: 18px;
 			}
 
 			.trending-tags {
@@ -1258,235 +1520,143 @@ textarea { resize: vertical; }
 	width: 100%;
 }
 
+// Campaign teaser
+
+.campaign {
+	color: black;
+	//display: inline-block;
+	//padding: 3px;
+	//vertical-align: top;
+	position: relative;
+	display: block;
+	//height: 240px;
+	padding-bottom: 80px;
+
+	&:hover {
+		//background: @color-4;
+		text-decoration: none;
+		h4 {
+			color: @color-5;
+		}
+	}
+
+	h4 {
+		font-size: 18px;
+		line-height: 22px;
+		min-height: 44px;
+		//overflow: hidden;
+		text-overflow: ellipsis;
+		text-transform: capitalize;
+		position: absolute;
+		left: 0;
+		right: 0;
+		bottom: 15px;
+		background-color: white;
+		margin: 0;
+		padding: 5px 0;
+	}
+	.campaign-img {
+		display: block;
+		height: 160px;
+		margin: 0 0 5px 0;
+		width: auto;
+	}
+	.dateo-count {
+		position: absolute;
+		bottom: 0;
+		left: 0;
+		color: @color-6;
+		font-size: 12px;
+	}
+	.status {
+		position: absolute;
+		bottom: 0;
+		right: 0;
+		color: @color-5;
+		font-size: 12px;
+	}
+}
+
+
 //
 // Campaign
 //
 
 .campaign-holder {
+
+	.viz-holder { 
+		//min-height: 450px; 
+		//height: 75vh;
+		.viz-viewer .dateo-map-viz {
+			min-height: 450px; 
+			height: 75vh;
+		}
+		.dateo-img-viz {
+			height: auto;
+		}
+	}
+
 	.campaign-card {
-		background-color: @color-9!important;
-		background-size: 35% 100%!important;
-		background-position: 100% 0!important;
+		background-color: @color-9;
+		//background-size: 35% 100%!important;
+		//background-position: 100% 0!important;
 		color: white;
-		padding: 35px 0 40px 38px;
+		//padding: 35px 0 40px 38px;
 
-		.part-1 {
-			width: 340px;
+		.campaign-info {
+			height: 272px;
+			.inner { 
+				padding-top: 30px;
+				.clearfix();
+				.main-info {
 
-			h1 {
-				margin-bottom: 5px;
-				font-size: 27px;
-				font-weight: bold;
-			}
-			h2 {
-				margin: 0 0 5px 0;
-				font-size: 18px;
-				font-weight: bold;
-			}
-		}
-		.part-2 {
-			width: 200px;
-
-			.form-group {
-				position: relative;
-				top: 75px;
-			}
-		}
-	}
-	.map-holder {
-		position: relative;
-
-		.form-group {
-			color: black;
-			padding: 5px 0 5px 35px;
-		}
-		.nav-tabs {
-			border: none;
-			left: 250px;
-			position: absolute;
-			top: 12px;
-			width: 500px;
-		}
-		.tab-content {
-			position: relative;
-			top: -15px;
-
-			.dateos-holder {
-				background: white;
-				height: 450px;
-				padding: 0 22px 30px 30px;
-				position: relative;
-				width: 40%;
-
-				.order-by-holder {
-					left: 200px;
-					position: absolute;
-					width: 250px;
-
-					.form-group {
-						left: 110px;
-						padding: 0;
-						position: absolute;
-						width: 200px;
-						top: 0px;
-
-						select {
-							width: 120px
-						}
+					h1 {
+						margin-bottom: 5px;
+						font-size: 32px;
+						font-weight: bold;
 					}
-					.order-by {
-						border: none;
-						box-shadow: none;
-						cursor: pointer;
-						-webkit-appearance: none;
-						-moz-appearance:    none;
-						appearance:         none;
+					h2 {
+						margin: 5px 0 20px 0;
+						font-size: 18px;
+						font-weight: bold;
 					}
-					.order-by-label {
-						position: relative;
-						top: 7px;
-					}
-					.select-arrow-down {
-						left: 220px;
-						position: absolute;
-						top: 13px;
+
+					.shortdesc { font-size: 18px;}
+
+					.stats {
+						.clearfix;
+						padding-top: 15px;
+						.stat {margin-right: 25px; font-size: 18px; float: left; line-height: 36px}
+						.share-btn, .follow-btn { float: left;}
+
+						.share-btn { margin-left: 25px; padding-top: 1px;}
+						.follow-btn { margin-left: 25px}
 					}
 				}
-
-				.dateo-description-holder {
-					height: 380px;
-					position: relative;
-					overflow: scroll;
-					top: 30px;
-
-					.dateo-description {
-						h4 {
-							font-weight: bold;
-							font-size: 15px;
-							margin: 0 0 8px 0;
-						}
-						.user-img {
-							height: 36px;
-							width: 36px;
-						}
-						.part-2 {
-							margin: 0 0 0 10px;
-							font-size: 10px;
-						}
-						.tag {
-							margin: 0 2px;
-						}
-						p {
-							margin: 10px 0 5px;
-						}
-						.glyphicon {
-							margin: 0 0 0 10px;
-						}
-					}
+				.main-buttons {
+					float: right;
+					width: 30%;
+					margin-left: 5%;
+					padding-top: 20px;
 				}
 			}
-			.dateos-with-images-holder {
-				height: 600px;
-
-				.dateo-with-image {
-					height: 200px;
-					position: relative;
-					width: 230px;
-
-					.info-holder {
-						display: none;
-						padding: 10px;
-						position: relative;
-						z-index: 1;
-
-						.extract {
-							font-size: 12px;
-							height: 100px;
-							overflow: none;
-						}
-						.part-1 {
-							width: 38px;
-						}
-						.part-2 {
-							width: 130px;
-
-							h5 {
-								font-size: 14px;
-								font-weight: bold;
-								margin: 3px 0 0;
-							}
-							.date {
-								color: @color-6;
-								font-size: 11px;
-							}
-						}
-						.user-img {
-							height: 35px;
-							width: 35px;
-						}
-						.cta-holder {
-							span {
-								color: @color-12;
-							}
-							span+span {
-								margin: 0 0 0 20px;
-							}
-						}
-					}
-					.info-bg {
-						background: rgba(255,255,255,0.7);
-						display: none;
-						height: 100%;
-						position: absolute;
-						width: 100%;
-						z-index: 0;
-					}
-				}
-				.dateo-with-image:hover {
-
-					.info-holder {
-						display: block;
-					}
-					.info-bg {
-						display: block;
-					}
-				}
-			}
-			.leaflet-map-holder {
-				position: relative;
-				width: 59%;
-			}
 		}
-	}
-	.datea-glyphtab-fix {
-		font-size: 20px;
-		height: 25px;
-		margin: 0 10px 0 0;
-		position: relative;
-		top: -16px;
-		width: 25px;
 
-		a {
-			background-color: transparent!important;
-			border: none!important;
+		.campaign-img {
+			height: 272px;
+			background-color: @color-16;
 		}
-		.active {
-			background-color: @color-8!important;
-		}
-	}
-	.datea-glyphtab-fix:before {
-		position: relative;
-		top: 16px;
+
 	}
 	.extra-info-holder {
-		padding: 15px 0;
+		background-color: @color-15;
+		padding-top: 35px;
+		padding-bottom: 35px;
 
 		.description {
 			padding: 0 30px;
-			width: 430px;
 
 			.user-info {
-
 				.parts-holder {
 					.part-1 {
 						padding: 0;
@@ -1494,11 +1664,12 @@ textarea { resize: vertical; }
 					}
 					.part-2 {
 						width: 150px;
-
 						p {
-							margin: 5px 0 5px;
+							color: @color-6;
+							margin: 0px 0 0px;
 						}
 						h3 {
+							font-size: 20px;
 							margin: 5px 0 0;
 							font-weight: bold;
 						}
@@ -1508,16 +1679,25 @@ textarea { resize: vertical; }
 						width: 52px;
 					}
 				}
-
 				h4 {
 					color: @color-5;
-					font-size: 18px;
+					font-size: 20px;
+					padding-top: 5px;
 				}
 				.question {
 					color: @color-6;
+					margin-bottom: 2px;
+					font-size: @font-size-base + 1px;
+				}
+				.answer {
+					color: black;
+					&.answer1 {
+						margin-bottom: 20px;
+					}
 				}
 			}
 		}
+		
 		.social {
 			background: white;
 			border-radius: 3px;
@@ -1562,8 +1742,576 @@ textarea { resize: vertical; }
 				}
 			}
 		}
+	}
+}
+
+.dashboard-holder, .campaign-create-holder {
+	.title-holder {
+		background-color: @color-9;
+		h2 { color: white; font-size: 22px; font-weight: bold; padding-left: 20px; margin: 8px 0 0 0; line-height: 52px;}
+		height: 60px;
+		line-height: 52px;
+	}
+	position: relative;
+	.tabbable {
+		//position: relative;
+		ul.nav-tabs {
+			position: absolute;
+			top: 18px;
+			right: 15%;
+			border-bottom: 0;	
+			font-size: 16px;
+			li {
+				a {
+					color: #555;
+					background-color: lighten(#ecefee, 5%);
+				}
+				&.active {
+					a {
+						background-color: #d5dbd8;
+					}
+				}
+			}
+		}
+	}
+}
+.campaign-form-nav {
+	z-index: 9999;
+	background-color: #d5dbd8;
+	font-size: 16px;
+	&.navbar {
+		border: 0;
+	}
+	&.fix {
+		position: fixed;
+		top: 51px;
+		width: 100%;
+	}
+	ul.nav {
+		padding-left: 20px;
+		li.active {
+			a {
+				color: black;
+				//text-decoration: underline;
+				background-color: darken(#d5dbd8, 5%) !important;
+			}
+		}
+	}
+	.navbar-right {
+		padding-top: 4px;
+		margin-right: 3%;
+		.btn.btn-success {
+			padding: 8px 16px;
+			font-size: 18px;
+			line-height: 24px;
+		}
+		.btn.btn-link {
+			color: #555;
+			&:hover {
+				color: red;
+			}
+		}
+	}
+}
+.campaign-form-container {
+	&.fix {
+		padding-top: 60px;
+		.fix-alert {
+			position: fixed;
+			top: 120px;
+			z-index: 10000;
+			width: inherit;
+		}
+	}
+	padding-bottom: 55vh;
+	.form {
+		margin-top: 20px;
+		h4 {
+			font-size: 22px;
+			line-height: 25px;
+			margin-bottom: 20px;
+		}
+
+		hr {
+				border-top: 5px solid #eeeeee;
+				margin: 50px 0 30px;
+				margin-right: 20px;
+		}
+
+		.form-group {
+			margin-bottom: 30px;
+			padding-right: 20px;
+		}
+		.form-inline .form-group { margin-bottom: 0;}
+
+		.form-group.maintag-holder {
+			.form-control-feedback {
+				z-index: 10;
+				top: 2px;
+			}
+		}
+
+		.date-field-group {
+			input.form-control {width: 120px;}
+		}
+
+		.layerfiles-holder, .selected-tags-box {
+			margin-right: 20px;
+		}
+		.layerfiles-input {
+			margin-bottom: 10px;
+		}
+		.viz-mode {
+			.radio-options {
+				margin-top: 10px;
+			}
+		}
+		.popover-inner { min-width: 220px;}
 
 	}
+}
+
+ul.input-list {
+	list-style: none; 
+	padding: 0;
+	li {
+		padding: 10px 0;
+		line-height: 45px;
+		border-top: 1px solid #eee;
+		border-bottom: 1px solid #eee;
+		position: relative;
+		.arrows {
+			line-height: 20px;
+			margin-right: 30px;
+			.abtn {
+				display: block;
+				line-height: 20px;
+				height: 20px;
+				overflow: hidden;
+				i.fa {
+					font-size: 40px;
+					color: #ddd;
+					&:hover {
+						color: #555;
+						cursor: pointer;
+					}
+				}
+				&.up {
+					margin-bottom: 5px;
+				}
+				&.down {
+					margin-top: 5px;
+					position: relative;
+					i.fa {
+						position: relative;
+						top: -20px;
+					}
+				}
+			}
+		}
+		.line-content {
+			font-size: 18px;
+		}
+		.delete {
+			display: none;
+			position: absolute;
+			right: 10px;
+			top: 15px;
+			i.fa {
+				font-size: 25px;
+				height: 24px;
+				line-height: 24px;
+				color: #aaa;
+				&:hover { color: #555; cursor: pointer}
+			} 
+		}
+		&:hover {
+			.delete {
+				display: inline-block;
+			}
+		}
+	}
+}
+
+.tag-holder {
+	height: 100%;
+	.tag-card {
+		line-height: 70px;
+		height: 70px;
+		background-color: @color-9;
+		color: white;
+		.title { margin-right: 50px}
+		.stats { margin-right: 50px; span {margin-right: 15px;}}
+		.buttons { button { margin-right: 30px}}
+	}
+
+}
+
+.tag-holder {
+	.viz-holder { 
+		height: ~"calc(100% - 177px)"; 
+		height: ~"-webkit-calc(100% - 177px)"; 
+		height: ~"-moz-calc(~100% - 177px)"; 
+		height: ~"-o-calc(100% - 177px)"; 
+		.viz-viewer {		
+			height: 100%;
+			//height:  ~"calc(100% - 46px)";
+			//height: ~"-webkit-calc(100% - 46px)";
+			//height: ~"-moz-calc(100% - 46px)";
+			//height: ~"-o-calc(100% - 46px)";
+		}
+	}
+}
+
+.viz-holder {
+	position: relative;
+	//height: 100%;
+	min-height: 450px;
+	//padding-bottom: 60px;
+
+	.viz-nav {
+		.clearfix();
+		height: 46px;
+		background-color: @color-17;
+		.search {
+			padding-top: 5px;
+			float: left;
+			.search-form {
+				float: left;
+				.input-group {
+					color: black;
+					margin-bottom: 0;
+					width: 240px;
+				}
+			}
+			.order-by-holder {
+				float: left;
+				margin-left: 15px;
+				line-height: 36px;
+				.order-by-label {
+					line-height: 36px;
+					display: inline-block;
+					vertical-align: middle;
+				}
+				.bootstrap-select.btn-group {
+					width: auto !important;
+					margin-bottom: 0;
+					.btn {
+						color: @text-color;
+						padding-left: 3px;
+						height: 36px;
+						margin: 0 !important;
+						border: 0;
+						padding-top: 0 !important;
+						padding-bottom: 0 !important;
+						line-height: 36px;
+						&:hover {
+							text-decoration: none;
+						}
+						.caret {
+							top: 40%;
+							right: 8px;
+						}
+					}
+				}
+			}
+		}
+	}
+	.viz-viewer {
+		//.clearfix();
+		position: relative;
+		.tabbable, 
+		.tab-content, 
+		.tab-pane, 
+		.container-fluid, 
+		.row, 
+		.dateos-holder, 
+		.leaflet-map-holder, 
+		.angular-leaflet-map, 
+		.dateo-description-holder { height: 100%}
+	}
+
+	.nav-tabs {
+		border: none;
+		left: 500px;
+		position: absolute;
+		top: -46px;
+		line-height: 46px;
+		height: 46px;
+		//width: 100px;
+		li {
+			margin-bottom: 0;
+			line-height: inherit;
+			top: 0;
+			position: relative;
+			background-color: transparent;
+			width: 50px;
+			text-align: center;
+			font-size: 28px;
+			color: @color-10;
+			&:hover {
+				color: @color-10;
+				border: 0;
+			}
+			&.active {
+				background-color: white;
+				color: @color-10 !important;
+				a { background-color: transparent !important; border: 0 !important }
+			}
+			a {
+				display: block;
+				line-height: inherit;
+				position: absolute;
+				top: 0;
+				bottom: 0;
+				left: 0;
+				right: 0;
+				background-color: transparent;
+				margin: 0;
+				border: 0;
+				padding: 0;
+			}	
+		}
+	}
+	.tab-content {
+		position: relative;
+
+		.dateos-holder {
+			background: white;
+			//height: 450px;
+			//height: -webkit-calc(100vh);
+			//margin-bottom: -300px;
+			//height: calc(100% - 156px);
+			//padding: 0 22px 30px 30px;
+			position: relative;
+			padding-right: 0;
+
+			.dateo-description-holder {
+				position: relative;
+				overflow-y: scroll;
+				height: 100%;
+				padding-top: 20px;
+			}
+		}
+
+
+		.dateos-with-images-holder {
+			//height: 100%;
+			//overflow-y: scroll;
+			padding: 1px;
+			//margin: -3px;
+			.clearfix;
+
+			.dateo-with-image {
+				position: relative;
+				//width: 16.66%; -> setting with media queries below
+				float: left;
+				color: darken(@color-6, 15%);
+
+				.inner {
+					padding-top: 87%;
+					position: relative;
+					
+					.thumb-holder {
+						position: absolute;
+						top: 0;
+						left: 0;
+						right: 0;
+						bottom: 0;
+						border: 3px solid white;
+						z-index: 0;
+					}
+
+					.info-holder {
+						display: none;
+						padding: 10px;
+						position: absolute;
+						top: 0;
+						left: 0;
+						right: 0;
+						bottom: 0;
+						z-index: 2;
+
+						.extract {
+							font-size: 14px;
+							padding-top: 10px;
+							padding-bottom: 40px;
+							overflow: none;
+						}
+						.part-1 {
+							width: 38px;
+						}
+						.part-2 {
+							width: 160px;
+							h5 {
+								color: black;
+								font-size: 14px;
+								font-weight: bold;
+								margin: 3px 0 0;
+							}
+							.date {
+								color: @color-6;
+								font-size: 12px;
+							}
+						}
+						.user-img {
+							height: 35px;
+							width: 35px;
+						}
+						.cta-holder {
+							position: absolute;
+							bottom: 10px;
+							left: 10px; right: 10px;
+							span {
+								color: @color-12;
+							}
+							span+span {
+								margin: 0 0 0 20px;
+							}
+						}
+					}
+					.info-bg {
+						background: rgba(255,255,255, 0.9);
+						display: none;
+						position: absolute;
+						left: 0; right: 0; top: 0; bottom: 0;
+						z-index: 1;
+					}
+				}
+			}
+			.dateo-with-image:hover {
+
+				.info-holder {
+					display: block;
+				}
+				.info-bg {
+					display: block;
+				}
+			}
+		}
+		.dateo-stats-holder {
+			//text-align: center;
+			.inner {
+				padding: 15px 20px;
+				.viz-simple-chart { height: 500px;}
+			}
+		}
+
+
+		.leaflet-map-holder {
+			padding: 0 !important;
+			position: relative;
+			height: 100%;
+			#leafletCampaign { height: 100%;}
+			&.has-legend {
+				height: ~"calc(100% - 32px)";
+			}
+		}
+		.legend-holder {
+			//.clearfix;
+			z-index: 1000;
+			position: absolute;
+			left: 0;
+			right: 0;
+			bottom: -32px;
+			@lh: 18px;
+			height: 18px;
+			line-height: @lh;
+			padding: 5px;
+			background-color: white;
+			overflow: hidden;
+			box-sizing: content-box;
+			&.expanded {
+				height: auto !important;
+			}
+			.tag-list { overflow: hidden}
+			.tag-legend {
+				line-height: @lh;
+				height: @lh;
+				float: left;
+				margin-right: 10px;
+				margin-bottom: 5px;
+				.color-sample { display: inline-block; height: @lh; width: 15px; vertical-align: middle}
+				.tag { font-size: 13px; display: inline-block; height: @lh; line-height: @lh}
+			}
+			.expand, .contract {
+				float: right;
+				font-size: 13px;
+				cursor: pointer;
+				color: @link-color;
+				&:hover {
+					color: @link-hover-color;
+				}
+				padding-right: 15px;
+			}
+		}
+	}
+}
+
+.cpie-label { font-size: 11px;}
+//body .leaflet-div-icon { border: 0 !important; background-color: transparent !important}
+
+.campaign-holder {
+	.campaign-info .inner { padding-left: 0}
+	.extra-info-holder .description {padding-left: 0}
+}
+.viz-holder {
+	.viz-nav .search { padding-left: 15px}
+	.viz-viewer .dateo-description-holder { padding-left: 0; padding-right: 25px;}
+}
+@media (min-width: @screen-sm-min) {}
+@media (min-width: @screen-md-min) {
+	.campaign-holder {
+		.campaign-info .inner { padding-left: 20px}
+		.extra-info-holder .description {padding-left: 20px}
+	}
+	.tag-holder {
+		.tag-card {
+			padding: 0 20px;
+		}
+	}
+	.viz-holder {
+		.viz-nav .search { padding-left: 35px}
+		.viz-viewer .dateo-description-holder { padding-left: 20px}
+	}
+}
+@media (min-width: @screen-lg-min) {
+	.campaign-holder {
+		.campaign-info .inner { padding-left: 50px}
+		.extra-info-holder .description {padding-left: 50px}
+	}
+	.tag-holder {
+		.tag-card {
+			padding: 0 40px;
+		}
+	}
+	.viz-holder {
+		.viz-nav .search { padding-left: 40px}
+		.viz-viewer .dateo-description-holder { padding-left: 25px}
+	}
+}
+
+// RESPONSIVE DATEOS WITH IMAGES
+@media (max-width: 664px) {
+	.viz-holder .tab-content .dateos-with-images-holder .dateo-with-image { width: 50%;}
+}
+@media (min-width: 665px) {
+	.viz-holder .tab-content .dateos-with-images-holder .dateo-with-image { width: 33.33%;}
+}
+@media (min-width: 885px) {
+	.viz-holder .tab-content .dateos-with-images-holder .dateo-with-image { width: 25%;}
+}
+@media (min-width: 1110px) {
+	.viz-holder .tab-content .dateos-with-images-holder .dateo-with-image { width: 20%;}
+}
+@media (min-width: 1340px) {
+	.viz-holder .tab-content .dateos-with-images-holder .dateo-with-image { width: 16.66%;}
+}
+@media (min-width: 1570px) {
+	.viz-holder .tab-content .dateos-with-images-holder .dateo-with-image { width: 14.285%;}
+}
+@media (min-width: 1800px) {
+	.viz-holder .tab-content .dateos-with-images-holder .dateo-with-image { width: 12.5%;}
 }
 
 //
@@ -1593,7 +2341,7 @@ textarea { resize: vertical; }
 			.dateos-holder {
 				background: white;
 				height: 450px;
-				padding: 0 22px 30px 30px;
+				padding-right: 0 22px 30px 30px;
 				position: relative;
 				width: 40%;
 
@@ -1737,46 +2485,80 @@ textarea { resize: vertical; }
 			}
 		}
 	}
-	.datea-glyphtab-fix {
-		font-size: 20px;
-		height: 25px;
-		margin: 0 10px 0 0;
-		position: relative;
-		top: -16px;
-		width: 25px;
-
-		a {
-			background-color: transparent!important;
-			border: none!important;
-		}
-		.active {
-			background-color: @color-8!important;
-		}
-	}
-	.datea-glyphtab-fix:before {
-		position: relative;
-		top: 16px;
-	}
 }
 
 //
 // Dateo
 //
 
-.dateo-holder {
+.dateo {
+	.tags {
+		.clearfix();
+		margin: 10px 0 0 0;
+
+		.tag {
+			font-size: 16px;
+			font-weight: 500;
+			float: left;
+			margin-right: 10px;
+			margin-bottom: 5px;
+		}
+	}
+
+	.user-img { height: 40px; width: 40px}
+
+	.user-info {
+			margin-left: 5px;
+			h4.username { margin-bottom: 2px;}
+			.date { font-size: 12px; color: @color-9; }
+	}
+
+	.content { margin-top: 0 !important}
+
+	.social-holder {
+		.btn.btn-link {padding-left: 0} 
+	}
+
+	&.dateo-teaser{
+		.username { 
+			margin-top: 6px;
+			font-size: @font-size-base;
+			font-weight: bold;
+			color: black;
+			a {color: black}
+		}
+
+	}
+}
+
+.tag-row {
+	.clearfix();
+	.tag {
+		font-size: 18px;
+		display: block;
+		float: left;
+		margin-right: 10px;
+		margin-bottom: 8px;
+	}
+}
+
+.dateo-detail-holder {
+
+	margin-bottom: 30px;
 
 	.user-holder {
-		background: @color-4;
-		height: 75px;
+		height: 80px;
 		padding: 16px 0 0 31px;
 
-		h4 {
-			font-weight: bold;
-			margin: 3px 0 0px 0;
+		a { 
+			color: black; 
+			h4 { margin-top: 6px; margin-bottom: 2px;}
 		}
+
 		p {
 			color: @color-6;
 			margin: 0;
+			font-size: 13px;
 		}
 		img {
 			position: relative;
@@ -1787,21 +2569,66 @@ textarea { resize: vertical; }
 			margin: 0 10px 0 0;
 		}
 		.next-holder {
-			a,
-			a:hover {
+			line-height: 45px;
+			height: 45px;
+			vertical-align: middle;
+			a{
+				display: inline-block;
+				vertical-align: middle;
+				line-height: inherit;
 				color: @color-6;
 				margin: 0 10px 0 0;
 				font-size: 14px;
 				text-decoration: none;
+				.glyphicon {
+					font-size: 27px;
+					position: relative;
+					top: 6px;
+					color: @color-18;
+				}
+				&:hover {
+					text-decoration: none;
+					color: darken(@color-6, 20%);
+					.glyphicon {
+						color: @text-color;
+					}
+				}
 			}
 		}
 
 	}
 
 	.content-holder {
+		position: relative;
+
+		.esquina {
+			background: url("@{imgUrl}dateo/esquina_dateo.png") no-repeat left top;
+			height: 17px;
+			width: 27px;
+			position: absolute;
+			top: -16px;
+			left: 37px;
+		}
+
+
+		.inner {
+
+			padding-right: 35px;
+		}
+
+		h3 {
+			font-size: 16px;
+		}
+
 		background: white;
 		border: @color-3 solid 1px;
 		padding: 35px 50px;
+
+		.dateo-content {
+			color: #444;
+			font-size: @font-size-base + 1px;
+			padding-bottom: 15px;
+		}
 
 		.part-1 {
 			padding: 10px;
@@ -1820,7 +2647,13 @@ textarea { resize: vertical; }
 		}
 
 		.social-holder {
+			.clearfix;
 			position: relative;
+			border-top: 1px dashed @color-20;
+			border-bottom: 1px solid @color-20;
+			padding: 20px 0 10px 0;
+			margin-bottom: 60px;
+
 			.share {
 				margin-right: 20px;
 				position: relative;
@@ -1832,35 +2665,11 @@ textarea { resize: vertical; }
 			text-align: right;
 			position: absolute;
 			width: 100%;
-		}
-
-		.comments-holder {
-			h3 {
-				font-weight: bold;
-				text-transform: uppercase;
-			}
-
-			.comment-holder {
-				margin: 0 0 30px 0;
-				position: relative;
-				.user {
-					img {
-						margin: 0 10px 0 0;
-					}
-					a {
-						color: black;
-						margin: 0 5px 0 0;
-					}
-					.date {
-						color: @color-6;
-						font-size: 12px;
-					}
-					.denounce-holder {
-						position: absolute;
-						width: 100%;
-						text-align: right;
-					}
-				}
+			bottom: 3px;
+			a {
+				color: @color-20;
+				font-size: 11px;
+				&:hover { color: red}
 			}
 		}
 	}
@@ -1872,6 +2681,67 @@ textarea { resize: vertical; }
 		}
 		p {
 			margin: 10px 0;
+		}
+	}
+}
+
+.comments-holder {
+	h3 {
+		font-weight: bold;
+		text-transform: uppercase;
+	}
+
+	.comment-form-holder {
+		padding-top: 10px;
+	}
+
+	.comment-holder {
+		margin: 0 0 30px 0;
+		position: relative;
+		padding-bottom: 10px;
+		margin-bottom: 15px;
+		border-bottom: 1px dashed @color-19;
+
+		&:last-child {
+			border-bottom: 0 !important;
+		}
+
+		&:hover {
+			.denounce-holder { display: block;}
+		}
+
+		.user {
+			img {
+				height: 30px;
+				width: 30px;
+				margin: 0 5px 0 0;
+			}
+			a {
+				color: black;
+				font-weight: bold;
+				margin: 0 5px 0 0;
+			}
+			.date {
+				color: @color-6;
+				font-size: 12px;
+			}
+		}
+
+		.denounce-holder {
+			display: none;
+			position: absolute;
+			width: 100%;
+			bottom: 3px;
+			text-align: right;
+			a {
+				color: @color-20;
+				font-size: 11px;
+				&:hover { color: red}
+			}
+		}
+
+		.comment-content {
+			margin-top: 7px;
 		}
 	}
 }
@@ -1909,45 +2779,73 @@ textarea { resize: vertical; }
 //
 // Profile
 //
+
 .profile-holder {
 	.profile-card {
-		padding: 30px 30% 30px;
+		//padding: 30px 30% 30px;
+		padding-left: 35%;
+		padding-top: 30px;
+		height: 234px;
 		position: relative;
+		margin-bottom: 0;
 
 		.user-img {
-			height: 185px;
+			height: 182px;
 			margin: 0 20px 0 0;
-			width: 185px;
+			width: 182px;
+			border: 3px solid white;
 		}
+
 		.user-extra {
 			color: white;
 			width: 250px;
-			text-shadow: 0px 0px 2px rgba(0, 0, 0, 1);
-
-			.votes-count {
-				margin: 0 0 20px;
+			font-size: 16px;
+			text-shadow: 0px 0px 2px rgba(0, 0, 0, 0.5);
+			font-weight: 500;
+			h2 {
+				font-size: 24px;
+				font-weight: bold;
+				margin-top: 38px;
+				margin-bottom: 5px;
 			}
+			p {
+				margin-bottom: 5px;
+			}
+			.dateo-count {
+				margin-right: 20px;
+			}
+			
 		}
-	}
-	.social-share {
-		position: relative;
-		top: -70px;
-		right: 20px;
-		width: 200px;
-
+		.social-share {
+			position: absolute;
+			bottom: 20px;
+			right: 10%;
+			width: 150px;
+		}
+		
 	}
 	.content-holder {
-		.part-1 {
+
+		.main-col {
+			position: relative;
+			.gray-bg {
+				position: absolute;
+				z-index: 1;
+				background-color: @color-15;
+				left: -1500px;
+				right: 0;
+				top: 0;
+				bottom: -1000px;
+			}
+		}
+
+		.main-content {
 			padding: 0 20px;
-			width: 69%;
-
+			position: relative;
+			margin: 30px 0 80px;
+			z-index:2 ;
 			.tab-body {
-				background: white;
-				border: 1px solid;
-				border-color: #fff #ddd #ddd;
-				border-radius: 3px;
-				padding: 15px 25px;
-
+				position: relative;
 				p {
 					margin: 10px 0 0;
 				}
@@ -1981,12 +2879,18 @@ textarea { resize: vertical; }
 				}
 			}
 		}
-		.part-2 {
-			width: 31%;
-
+		.sidebar-content {
+			margin: 80px 0 80px;
 			h4 {
 				text-transform: uppercase;
+				font-size: 14px;
+				font-weight: bold;
 			}
+
+			.user-tag {
+				font-size: 18px;
+			}
+
 			.user-history {
 				list-style: none;
 				margin: 0;
@@ -1995,6 +2899,11 @@ textarea { resize: vertical; }
 		}
 	}
 }
+
+.account-holder {
+	margin-bottom: 50px;
+}
+
 
 .dateo-detailImg {
 	.img-holder,
@@ -2006,7 +2915,7 @@ textarea { resize: vertical; }
 //
 // Marker Holder
 //
-.marker-holder {
+.leaflet-popup-content .marker-holder {
 	color: @color-6;
 
 	img {
@@ -2019,24 +2928,30 @@ textarea { resize: vertical; }
 		vertical-align: top;
 
 		h5 {
-			margin: 1px 0 3px 0;
+			margin: 4px 0 0px 0;
 			font-weight: bold;
+			color: black;
 		}
+		.date {color: lighten(@color-6, 15%);}
 	}
 	p {
 		min-width: 280px;
+		margin: 8px 0;
+		font-size: 13px;
 	}
 	.datea-glyph {
 		position: relative;
 		margin: 0 4px 0 0;
-		top: 4px;
+		top: 3px;
 	}
+	.stats { line-height: 22px;}
 	.glyphicon-comment {
 		margin: 0 4px 0 14px;
 	}
-	a.datea-btn {
+	a.datea-gray-btn {
+		position: relative;
+		top: 2px;
 		color: white;
-		height: 20px;
 	}
 
 }
