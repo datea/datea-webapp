@@ -139,7 +139,7 @@ angular
                 	var content;
                 	if (feature.properties.description || feature.properties.popupContent) {
                 		content = feature.properties.description || feature.properties.popupContent;
-                		layer.bindPopup(feature.properties.popupContent);
+                		layer.bindPopup(content);
                 	}
                 }
     }        
