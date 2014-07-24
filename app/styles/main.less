@@ -192,6 +192,20 @@ textarea { resize: vertical; }
 	left: 0;
 }
 
+.title-fix {
+	position: fixed !important;
+	top: 0;
+	left: 80px;
+	color: black !important;
+	font-size: 30px !important;
+	font-weight: normal !important;
+	background-color: @color-1 !important;
+	height: 40px !important;
+	line-height: 40px !important;
+	z-index: 20000;
+	margin: 0 !important;
+	padding: 10px 0 0 15px !important; 
+}
 
 //
 // Forms and input elements
@@ -251,6 +265,7 @@ body {
 .datea-navbar {
 	background: @color-1;
 	margin: 0;
+	z-index: 20000;
 
 	.navbar-brand {
 		padding: 5px 0 5px 40px;
@@ -1623,6 +1638,34 @@ body {
 
 					.shortdesc { font-size: 18px;}
 
+					.main-btns {
+						float: right;
+						width: 70%;
+						.inner {
+							margin-left: auto;
+							margin-right: auto;
+							padding-top: 15px;
+						}
+						.mbtn {
+							float: left;
+							margin-right: 35px;
+							&:last-child {
+								margin-right: 0;
+							}
+						}
+						.follow-camp-btn {
+							position: relative;
+							top: -1px;
+						}
+						.datear-btn {
+							position: relative;
+							top: -6px;
+						}
+						.share-btn {
+							width: 30%;
+						}
+					}
+
 					.stats {
 						.clearfix;
 						padding-top: 15px;
@@ -1630,14 +1673,8 @@ body {
 						.share-btn, .follow-btn { float: left;}
 
 						.share-btn { margin-left: 25px; padding-top: 1px;}
-						.follow-btn { margin-left: 25px}
+						.follow-btn { margin-left: 0px}
 					}
-				}
-				.main-buttons {
-					float: right;
-					width: 30%;
-					margin-left: 5%;
-					padding-top: 20px;
 				}
 			}
 		}
@@ -1702,44 +1739,32 @@ body {
 			background: white;
 			border-radius: 3px;
 			padding: 15px;
-			width: 600px;
 
 			h5 {
 				font-weight: bold;
 				text-transform: uppercase;
 			}
-			.part-1 {
-				border-right: 1px @color-7 solid;
-				width: 250px;
 
-				.followers-holder {
-					margin: 20px 0;
-				}
-				.follower-image {
-					display: inline-block;
-					height: 36px;
-					margin: 0 4px 4px 0;
-					vertical-align: top;
-					width: 36px;
+			.followers-holder {
+				margin: 20px 0;
 
-					span {
-						display: block;
-						height: 100%;
-						width: 100%;
-					}
-				}
-				.see-more-peers {
-					left: 140px;
-					position: relative;
+			}
+			.follower-image {
+				display: inline-block;
+				height: 36px;
+				margin: 0 4px 4px 0;
+				vertical-align: top;
+				width: 36px;
+
+				span {
+					display: block;
+					height: 100%;
+					width: 100%;
 				}
 			}
-			.part-2 {
-				padding: 20px;
-
-				img {
-					cursor: pointer;
-					margin: 0 10px 0 0;
-				}
+			.see-more-peers {
+				left: 140px;
+				position: relative;
 			}
 		}
 	}
@@ -1968,26 +1993,46 @@ ul.input-list {
 	//height: 100%;
 	min-height: 450px;
 	//padding-bottom: 60px;
+	@viz-nav-height: 46px;
 
 	.viz-nav {
 		.clearfix();
-		height: 46px;
+		height: @viz-nav-height;
 		background-color: @color-17;
+		position: relative;
 		.search {
-			padding-top: 5px;
-			float: left;
+			//padding-top: 5px;
+			width: 100%;
+			position: absolute;
+			left: 0;
+			right: 0;
+			height: @viz-nav-height;
+			overflow: hidden;
 			.search-form {
+				padding-top: 6px;
 				float: left;
 				.input-group {
 					color: black;
 					margin-bottom: 0;
 					width: 240px;
+					input.form-control { border: 0}
+					.input-group-btn {
+						.btn { 
+							border: 1px solid @color-18; 
+							background-color: @color-18; 
+							color: white; 
+							font-size: 22px; 
+							overflow: hidden; 
+							padding: 1px 12px 0;
+						}
+					}
 				}
 			}
 			.order-by-holder {
 				float: left;
 				margin-left: 15px;
 				line-height: 36px;
+				padding-top: 5px;
 				.order-by-label {
 					line-height: 36px;
 					display: inline-block;
@@ -2014,6 +2059,120 @@ ul.input-list {
 						}
 					}
 				}
+				.dropdown-menu { z-index: 10001}
+			}
+			.filter-control {
+				margin-left: 15px;
+				display: block;
+				float: left;
+				&:hover {
+					.filter-toggle-link, .query-text {
+						color: darken(@color-10, 15%);
+					}
+					cursor: pointer;
+				}
+
+				.filter-toggle-link {
+					color: @color-18;
+					font-size: 32px;
+					display: block;
+					float: left;
+					height: @viz-nav-height;
+					width: @viz-nav-height;
+					line-height: @viz-nav-height;
+					overflow: hidden;
+					text-align: center;
+					i {
+						position: relative;
+						top: 3px;
+					}
+					&.active {
+						background-color: white;
+						color: darken(@color-10, 15%);
+					}
+				}
+				.query-text {
+					max-width: 60%;
+					overflow: hidden;
+					float: left;
+					line-height: @viz-nav-height;
+					height: @viz-nav-height;
+					font-size: 16px;
+					color: lighten(@text-color, 10%);
+					.query-text-item {
+						margin-right: 15px;
+					}
+				}
+			}
+		}
+		.menu-right {
+			float: right;
+			margin-right: 0px;
+			z-index: 3;
+			position: relative;
+			background-color: @color-17;
+			height: @viz-nav-height;
+			width: 140px;
+			.main-menu-btn {
+				float: right;
+				.btn {
+					font-size: 30px;
+					overflow:hidden;
+					height: 40px;
+					color: @color-18;
+					&:hover {
+						color: darken(@color-10, 15%);
+					}
+				}
+			}
+		}
+		.filter-holder {
+			border-top: 1px solid white;
+			position: absolute;
+			z-index: 10001;
+			background-color: lighten(@color-17, 20%);
+			//background-color: white;
+			top: 46px;
+			left: 0;
+			right: 0;
+			//height: 200px;
+			padding: 30px 0 20px;
+			.container-fluid {
+				padding: 0 40px;
+				.query-item {
+					display: block;
+					float: left;
+					margin-right: 45px;
+					.form-group {
+						margin-bottom: 25px;
+					}
+					&:last-child {
+						margin-right: 0;
+					}
+				}
+				.apply {
+					padding-left: 20px;
+					border-left: 1px solid #eee;
+					float: right;
+					//margin-left: 30px;
+					//padding-top: 20px;
+					.apply-btn {
+						margin-top: 14px;
+					}
+				}
+				.date-filter {
+					.form-inline {
+						//label { width: 30px;}
+						.form-control {
+							width: 100px;
+							&.since { margin-right: 10px;}
+						}
+					}
+				}
+				.limit-slider {
+					width: 195px;
+					.slider {padding-top: 10px;}
+				}
 			}
 		}
 	}
@@ -2029,33 +2188,87 @@ ul.input-list {
 		.leaflet-map-holder, 
 		.angular-leaflet-map, 
 		.dateo-description-holder { height: 100%}
+
+		.protect-cover {
+			position: absolute;
+			top: 0;
+			bottom: 0;
+			left: 0;
+			right: 0;
+			z-index: 10000;
+			background-color: rgba(0, 0, 0, 0.3);
+		}
+	}
+
+	.nav-tabs-contract() {
+		padding-top: @viz-nav-height;
+		width: 50px;
+		&:hover, &.showTabs {
+			li {
+				display: block !important; 
+				background-color: white;
+				&.active {
+					background-color: white;
+				}
+			}
+		}
+		li {
+			display:none;
+			float: none !important;
+			&.active {
+				position: absolute;
+				top: 0;
+				left: 0;
+				display: block;
+				background-color: transparent;
+				color: @color-10;
+				&:after {
+					content: ' ';
+					border-top: 5px solid @color-10;
+					border-left: 5px solid transparent;
+					border-right: 5px solid transparent;
+					position: absolute;
+					right: 3px;
+					top: 36px;
+					width: 5px;
+					height: 5px;
+				}
+			}
+		}
 	}
 
 	.nav-tabs {
 		border: none;
-		left: 500px;
+		right: 80px;
 		position: absolute;
-		top: -46px;
-		line-height: 46px;
-		height: 46px;
+		top: -@viz-nav-height;
+		line-height: @viz-nav-height;
+		height: @viz-nav-height;
 		//width: 100px;
+		z-index: 10002;
+		background-color: @color-17;
 		li {
 			margin-bottom: 0;
 			line-height: inherit;
-			top: 0;
 			position: relative;
-			background-color: transparent;
+			top: 0;
+			//background-color: transparent;
 			width: 50px;
 			text-align: center;
 			font-size: 28px;
-			color: @color-10;
+			color: @color-18;
+			float: left;
+			line-height: @viz-nav-height;
+			height: @viz-nav-height;
+			//background-color: white;
 			&:hover {
-				color: @color-10;
+				color: darken(@color-10, 15%);
 				border: 0;
 			}
 			&.active {
-				background-color: white;
-				color: @color-10 !important;
+				//background-color: @color-17;
+				color: white;
+				background-color: @color-18;
 				a { background-color: transparent !important; border: 0 !important }
 			}
 			a {
@@ -2091,6 +2304,11 @@ ul.input-list {
 				overflow-y: scroll;
 				height: 100%;
 				padding-top: 20px;
+				.no-results {
+					margin: 40px 0;
+					text-align: center;
+					font-size: 16px;
+				}
 			}
 		}
 
@@ -2100,6 +2318,7 @@ ul.input-list {
 			//overflow-y: scroll;
 			padding: 1px;
 			//margin: -3px;
+			min-height: 300px;
 			.clearfix;
 
 			.dateo-with-image {
@@ -2249,7 +2468,7 @@ ul.input-list {
 }
 
 .cpie-label { font-size: 11px;}
-//body .leaflet-div-icon { border: 0 !important; background-color: transparent !important}
+.datea-pin-icon { border: 0 !important; background-color: transparent !important}
 
 .campaign-holder {
 	.campaign-info .inner { padding-left: 0}
@@ -2257,13 +2476,24 @@ ul.input-list {
 }
 .viz-holder {
 	.viz-nav .search { padding-left: 15px}
+	.viz-nav .menu-right { padding-right: 15px}
 	.viz-viewer .dateo-description-holder { padding-left: 0; padding-right: 25px;}
+	.nav-tabs { 
+		right: 80px; 
+	}
 }
+/* NOT MOBILE FIRST: less than medium */
+@media (max-width: 1000px) {
+	.viz-holder .nav-tabs {
+		.viz-holder > .nav-tabs-contract();
+	}
+}
+
 @media (min-width: @screen-sm-min) {}
 @media (min-width: @screen-md-min) {
 	.campaign-holder {
-		.campaign-info .inner { padding-left: 20px}
-		.extra-info-holder .description {padding-left: 20px}
+		.campaign-info .inner { padding-left: 0px}
+		.extra-info-holder .description {padding-left: 0px}
 	}
 	.tag-holder {
 		.tag-card {
@@ -2272,13 +2502,15 @@ ul.input-list {
 	}
 	.viz-holder {
 		.viz-nav .search { padding-left: 35px}
+		.viz-nav .menu-right { padding-right: 20px}
+		.nav-tabs { right: 100px; }
 		.viz-viewer .dateo-description-holder { padding-left: 20px}
 	}
 }
 @media (min-width: @screen-lg-min) {
 	.campaign-holder {
-		.campaign-info .inner { padding-left: 50px}
-		.extra-info-holder .description {padding-left: 50px}
+		.campaign-info .inner { padding-left: 25px}
+		.extra-info-holder .description {padding-left: 25px}
 	}
 	.tag-holder {
 		.tag-card {
@@ -2287,6 +2519,8 @@ ul.input-list {
 	}
 	.viz-holder {
 		.viz-nav .search { padding-left: 40px}
+		.viz-nav .menu-right { padding-right: 25px}
+		.nav-tabs { right: 140px; }
 		.viz-viewer .dateo-description-holder { padding-left: 25px}
 	}
 }

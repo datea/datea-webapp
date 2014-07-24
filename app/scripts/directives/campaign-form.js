@@ -32,7 +32,6 @@ angular.module("dateaWebApp")
 					  , buildBoundariesMap
 					  , onGeolocation
 					  , onGeolocationError
-					  , newCampaignInstance
 					  , b64_to_utf8
 					  , validateCampaign
 					;
@@ -40,7 +39,6 @@ angular.module("dateaWebApp")
 					User.isSignedIn() || $location.path( '/' );
 	    		mode = $attrs.mode;
 
-					$scope.loading  = false;
 	    		$scope.campaign = { 
 	    			  main_tag: {}
 	    			, secondary_tags: []
@@ -49,13 +47,14 @@ angular.module("dateaWebApp")
 	    			, layer_files: []
 	    		}; 
 
-					$scope.newCampaign      = {};
-					$scope.flow             = {};
 					$scope.help							= {};
+					$scope.flow             = {};
 					$scope.flow.categories;
+					$scope.flow.loading     = false;
 					$scope.flow.validInput  = {};
 					$scope.flow.messages    = {};
 					$scope.flow.alerts      = [];
+					$scope.flow.mode        = mode;
 					$scope.flow.leaflet     = {
 							controls   : { custom: [drawControl] }
 						, center     : config.defaultMap.center
@@ -90,7 +89,7 @@ angular.module("dateaWebApp")
 
 	    		// GET CAMPAIGN MODEL FROM API IF EDITING
 	    		if (mode == 'edit') {
-	    			$scope.loading = true;
+	    			$scope.flow.loading = true;
 	    			campaignGivens = {
 	    				  id     : $scope.campaignId
 	    			}
@@ -162,10 +161,11 @@ angular.module("dateaWebApp")
 
 									});
 								}
-								$scope.loading = false;
+								$scope.flow.loading = false;
 								// only edit ones own campaigns (protected in api anyway)
 								//if (User.data.id != $scope.campaign.user.id) $location.path( '/' );
 							}, function (reason) {
+								$scope.flow.loading = false;
 								console.log(reason);
 						} );
 	    		}
@@ -340,12 +340,13 @@ angular.module("dateaWebApp")
 		                        						}
 		                      						];
 						}
-						
+			
 						center = $scope.flow.leaflet.map.getCenter();
 						$scope.campaign.center = { coordinates : [ center.lng, center.lat ]
 	                        					 , type        : 'Point'
 	                        					 }
 	          if (validateCampaign()) {
+	          	$scope.flow.loading = true;
 							Api.campaign
 							.postCampaign( $scope.campaign )
 							.then( function ( response ) {
@@ -353,6 +354,7 @@ angular.module("dateaWebApp")
 								$location.path( '/'+User.data.username+'/'+response.main_tag.tag );
 							}, function ( reason ) {
 								console.log( 'postCampaign reason: ', reason );
+								$scope.flow.loading = false;
 							} );
 						}
 					}
@@ -385,7 +387,7 @@ angular.module("dateaWebApp")
 
 					// HELP FOR INDIVIDUAL FIELDS/SECTIONS
 					$scope.help = {
-						  title : {
+						  name : {
 						  	content : 'Escoge un título llamativo, que describa e identifique tu iniciativa.'
 						  }
 						, mainTag : {
@@ -402,7 +404,7 @@ angular.module("dateaWebApp")
 							  content : 'La imágen que identifica a tu iniciativa en la plataforma. '
 							          + 'Elige una que sea legible en varios tamaños.'
 						}
-						, enddate : {
+						, endDate : {
 							  content : 'Opcionalmente puedes indicar una fecha de cierre de tu iniciativa.'
 						}
 						, category : {
@@ -466,9 +468,14 @@ angular.module("dateaWebApp")
 
 				$document.on('scroll', function() {
 					//console.log($document.scrollTop());
-					$scope.$apply(function() { $scope.fixMenu = $document.scrollTop() > menuFixThold; });
-					var new_width = $('.form').width();
-					$('.form-alert').width(new_width);
+					$scope.$apply(function() { $scope.flow.fixMenu = $document.scrollTop() > menuFixThold; });
+				});
+
+				$scope.$watch('flow.fixMenu', function () {
+					if ($scope.flow.fixMenu) {
+						var new_width = $('.form').width();
+						$('.form-alert').width(new_width);
+					}
 				});
 
 	  	}  

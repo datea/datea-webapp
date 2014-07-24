@@ -3,28 +3,33 @@
 		<div class="row">
 			<div class="col-sm-7 campaign-info">
 				<div class="inner">
-					<div class="main-buttons">
-						<button class="btn datea-datear-btn btn-lg" ng-click="flow.datear()">Datea <i class="glyphicon glyphicon-map-marker"></i></button><span class="time-left" ng-show="campaign.end_date">{{campaign._timeLeft | date:time }}</span>
-					</div>
 					<div class="main-info">
-						<h1>{{campaign.name}}</h1>
+						<h1 ng-class="{'title-fix' : flow.titleFix}">{{campaign.name}}</h1>
 						<h2>#{{campaign.main_tag.tag}}</h2>
 						<p class="shortdesc">{{campaign.short_description}}</p>
-						<div class="stats">
-							<div class="dateo-count stat" ng-if="campaign.dateo_count > 0">{{campaign.dateo_count}} <ng-pluralize count="campaign.dateo_count" when="{'one':'dateo','other':'dateos'}"></ng-pluralize></div>
-							<div class="follow-count stat" ng-if="campaign.follow_count > 0">{{campaign.follow_count}} <ng-pluralize count="campaign.follow_count" when="{'one':'seguidor','other':'seguidores'}"></ng-pluralize></div>
-							
-							<da-follow follow-obj="tag" follow-id="{{campaign.id}}" btn-class="follow-campaign"></da-follow>
-
-							<div class="col-xs-3 share-btn">
-								<div class="input-group">
-									<input type="text" class="form-control" ng-model="campaign.shareableUrl">
-									<span class="input-group-btn">
-										<button class="btn btn-default" type="button" ng-click="campaign.share()"><i class="fa fa-share-alt"></i></button>
-									</span>
+						<div class="main-btns">
+							<div class="inner">
+								<div class="mbtn follow-camp-btn">
+									<da-follow follow-obj="tag" follow-id="{{campaign.id}}" btn-class="follow-campaign"></da-follow>
+								</div>
+								<div class="mbtn share-btn">
+									<div class="input-group">
+										<input type="text" class="form-control" ng-model="campaign.shareableUrl">
+										<span class="input-group-btn">
+											<button class="btn btn-default" type="button" ng-click="campaign.share()"><i class="fa fa-share-alt"></i></button>
+										</span>
+									</div>
+								</div>
+								<div class="mbtn datear-btn">
+									<button class="btn datea-datear-btn btn-lg" ng-click="flow.datear()">Datea <i class="glyphicon glyphicon-map-marker"></i></button><span class="time-left" ng-show="campaign.end_date">{{campaign._timeLeft | date:time }}</span>
 								</div>
 							</div>
-
+						</div>
+						<div class="stats">
+							<div class="count-stats" ng-if="campaign.dateo_count > 0 || campaign.follow_count > 0">
+								<div class="dateo-count stat" ng-if="campaign.dateo_count > 0">{{campaign.dateo_count}} <ng-pluralize count="campaign.dateo_count" when="{'one':'dateo','other':'dateos'}"></ng-pluralize></div>
+								<div class="follow-count stat" ng-if="campaign.follow_count > 0">{{campaign.follow_count}} <ng-pluralize count="campaign.follow_count" when="{'one':'seguidor','other':'seguidores'}"></ng-pluralize></div>
+							</div>
 						</div>
 					</div>
 				</div>
@@ -37,35 +42,115 @@
 
 	<div class="viz-holder">
 		<div class="viz-nav">
+			<div class="menu-right" ng-hide="flow.showFilter">
+				<div class="btn-group main-menu-btn" dropdown is-open="status.isopen">
+		      <button type="button" class="btn btn-link dropdown-toggle" ng-disabled="disabled">
+		  			<i class="fa fa-bars"></i>
+		      </button>
+		      <ul class="dropdown-menu dropdown-menu-right" role="menu">
+		        <li ng-if="flow.userIsOwner"><a href="#/iniciativas/{{campaign.id}}/edit">Administrar</a></li>
+		        <li><a href="#">Insertar (embed)</a></li>
+		        <li><a href="#" target="_blank">Imprimir reporte</a></li>
+		        <li><a href="http://api.datea.pe/csv-export/dateos/tag/{{campaign.main_tag.id}}/" target="_blank">Descargar dateos en CSV</a></li>
+		      </ul>
+		    </div>
+			</div>
 			<div class="search">
-				<form class="form search-form" ng-submit="campaign.searchDateos()">
+				<form class="form search-form" ng-submit="flow.getDateos()">
 					<!--<div class="form-group">-->
 						<div class="input-group">
-							<input type="text" class="form-control" ng-model="campaign.searchDateosKeyword">
+							<input type="text" class="form-control" ng-model="query.search">
 							<span class="input-group-btn">
-								<button class="btn btn-default" type="button"><i class="fa fa-search" ng-click="campaign.searchDateos()"></i></button>
+								<button class="btn btn-default" type="button"><i class="fa fa-search" ng-click="flow.getDateos()"></i></button>
 							</span>
 						</div>
 					<!--</div>-->
 				</form>
+				<!--
 				<div class="order-by-holder" ng-hide="search.show_orderby">
 					<span class="order-by-label">ordernar por:</span>
-						<select class="selectpicker" data-style="btn-link" name="orderBy" ng-model="campaign.selectedMarker" ng-change="campaign.onSelectFilterChange()">
-							<option value="last">últimos</option>
-							<option value="mostVoted">más apoyados</option>
-							<option value="mostCommented">más comentados</option>
+						<select class="selectpicker" data-style="btn-link" name="orderBy" ng-model="query.orderBy" ng-change="flow.getDateos()">
+							<option value="-created">últimos</option>
+							<option value="-vote_count">más apoyados</option>
+							<option value="-comment_count">más comentados</option>
 						</select>
 			  </div>
+			  -->
+			  <div class="filter-control" ng-click="flow.showFilter = !flow.showFilter">
+			  	<div class="filter-toggle-link" ng-class="{active: flow.showFilter}"><i class="fa fa-filter"></i></div>
+			  	<div class="query-text" ng-hide="flow.showFilter">
+			  		<span class="query-text-item" ng-repeat="text in query.textRep" ng-bind-html="text"></span>
+			  	</div>
+			  </div>
+			</div>
+			<div class="filter-holder" ng-show="flow.showFilter">
+				<div class="container-fluid">
+					<div class="row">
+						<div class="col-xs-8 col-sm-7 col-md-7 col-lg-7">
+							<div class="owner-filter query-item">
+								<div class="form-group">
+									<label>Aprobados por</label>
+									<div class="checkbox">
+										<label>
+											<input type="checkbox" ng-model="query.owner" /> <strong>{{campaign.user.username}}</strong>
+										</label>
+									</div>
+								</div>
+							</div>
+							<div class="date-filter query-item">
+								<div class="form-group">
+									<label>filtrar fecha</label>
+									<div class="form-inline">
+										<label>del</label>
+										<input type="text" class="form-control since" ng-model="query.since" datepicker-popup="yyyy/MM/dd" is-open="flow.sincePopup" ng-focus="flow.sincePopup = true" />
+										<label>al</label>
+										<input type="text" class="form-control until" ng-model="query.until" datepicker-popup="yyyy/MM/dd" is-open="flow.untilPopup" ng-focus="flow.untilPopup = true" />
+									</div>
+								</div>
+							</div>
+							<div class="category-filter query-item" ng-show="campaign.secondary_tags.length > 0">
+								<div class="form-group">
+									<label>filtrar etiqueta</label>
+									<select class="form-control" ng-model="query.tag" ng-options="item.value as item.label for item in query.tagFilterOptions"></select>
+								</div>
+							</div>
+						</div>
+						<div class="col-xs-4 col-sm-5 col-md-5 col-lg-5">
+							<!--<h4>Filtros:</h4>-->
+							<div class="apply">
+								<div class="limit-slider query-item">
+									<div class="form-group">
+										<label>Cargar {{query.limitLabel}} dateos</label>
+										<div class="slider">
+											<input type="range" name="points" min="50" max="500" step="50" ng-model="query.limit"> 
+										</div>
+									</div>
+								</div>
+								<div class="orderby-control query-item">
+									<div class="form-group">
+										<label>Ordenar por</label>
+										<select class="form-control" ng-model="query.orderBy" ng-options="opt.val as opt.label for opt in query.orderByOptions"></select>
+									</div>
+								</div>
+								<button class="btn btn-lg btn-success pull-left apply-btn" ng-click="query.apply()">APLICAR</button> 
+							</div>
+						</div>
+					</div>
+				</div>
 			</div>
 		</div>
-		<div class="viz-viewer" ng-class="{'datea-loading': campaign.loading.dateos }">
+		<div class="viz-viewer" ng-class="{'datea-loading': flow.loading }">
+			<div class="protect-cover" ng-show="flow.showFilter" ng-click="flow.showFilter = false"></div>
 			<tabset>
-				<tab heading="&nbsp;" class="glyphicon glyphicon-map-marker datea-glyphtab-fix">
+				<tab heading="&nbsp;" class="glyphicon glyphicon-map-marker datea-glyphtab-fix" ng-click="flow.activeTab = 'map'" ng-hide="flow.showFilter">
 					<div class="container-fluid dateo-map-viz">
 						<div class="row">
 							<div class="hidden-xs col-sm-45 dateos-holder">
 								<div class="dateo-description-holder">
 										<da-dateo-teaser ng-repeat="dateo in campaign.dateos"></da-dateo-teaser>
+										<div class="no-results" ng-show="campaign.dateos.length == 0 && flow.query.done">
+										Aún no hay dateos en esta iniciativa. ¡Datea!
+										</div>
 								</div>
 							</div>
 							<div class="col-xs-12 col-sm-75 leaflet-map-holder" ng-class="{'has-legend': has_legend}">
@@ -84,19 +169,19 @@
 						</div>
 					</div>
 				</tab>
-				<tab heading="&nbsp;" class="glyphicon glyphicon-camera datea-glyphtab-fix" ng-show="campaign.dateosWithImages.length > 0">
+				<tab heading="&nbsp;" class="glyphicon glyphicon-camera datea-glyphtab-fix" ng-click="flow.activeTab = 'images'" ng-hide="flow.showFilter">
 					<div class="dateos-with-images-holder dateo-img-viz"> <!-- ng-style="campaign.dateosWithImagesHolderHeight"> -->
 						<da-dateo-thumb ng-repeat="dateo in campaign.dateosWithImages"></da-dateo-thumb>
 					</div>
 				</tab>
-				<tab heading="&nbsp;" class="glyphicon glyphicon-signal datea-glyphtab-fix" ng-click="buildCharts()">
+				<tab heading="&nbsp;" class="glyphicon glyphicon-signal datea-glyphtab-fix" ng-click="chart.buildCharts()" ng-show="campaign.dateo_count > 0" ng-click="flow.activeTab = 'stats'" ng-hide="flow.showFilter">
 					<div class="dateo-stats-holder" ng-if="statsVisible">
 						<div class="container-fluid">
 							<div class="row">
 								<div class="col-xs-12">
 									<div class="inner">
 										<div class="chart-type-select pull-right">
-											<select class="form-control" ng-model="chart.typeControl" ng-change="changeChartType()">
+											<select class="form-control" ng-model="chart.typeControl" ng-change="chart.changeChartType()">
 												<option value="pie">Pie</option>
 												<option value="bar">Barras</option>
 											</select>
@@ -114,7 +199,7 @@
 
 	<div class="extra-info-holder container-fluid">
 		<div class="row">
-			<div class="col-xs-4">
+			<div class="col-xs-45">
 				<div class="description">
 					<div class="user-info">
 						<div class="parts-holder">
@@ -134,30 +219,28 @@
 					</div>
 				</div>
 			</div>
-			<div class="col-lg-6 col-md-6 col-sm-8 col-xs-8">
+			<div class="col-lg-4 col-md-4 col-sm-8 col-xs-8">
 				<div class="social">
-					<div class="parts-holder">
-						<div class="part part-1">
-							<h5>{{campaign.follow_count}} <ng-pluralize count="campaign.follow_count" when="{'one':'seguidor','other':'seguidores'}"></ng-pluralize></h5>
-							<!--<button class="btn datea-btn">invita a tus amigos</button>-->
-							<div class="followers-holder">
-								<a class="follower-image" target="_blank" ng-href="#/{{follower.username}}" ng-repeat="follower in campaign.followers">
-									<span da-bg-from-api="{{follower.image}}" da-img-size="cover" da-img-type="user"></span>
-								</a>
-							</div>
-							<!--<button class="btn datea-btn datea-btn-xs see-more-peers">ver todos</button>-->
+					<h5 ng-show="campaign.follow_count > 0">{{campaign.follow_count}} <ng-pluralize count="campaign.follow_count" when="{'one':'seguidor','other':'seguidores'}"></ng-pluralize></h5>
+					<!--<button class="btn datea-btn">invita a tus amigos</button>-->
+					<div class="followers-holder">
+						<a class="follower-image" target="_blank" ng-href="#/{{follower.username}}" ng-repeat="follower in campaign.followers" tooltip="{{follower.username}}" tooltip-trigger="mouseenter">
+							<span class="" da-bg-from-api="{{follower.image}}" da-img-size="cover" da-img-type="user"></span>
+						</a>
+					</div>
+					<!--<button class="btn datea-btn datea-btn-xs see-more-peers">ver todos</button>-->
 
-							<div class="related" ng-if="campaign.relatedCampaigns.length > 0">
-								<h5>iniciativas relacionadas</h5>
-								<span class="tags" ng-repeat="tag in campaign.relatedCampaigns">#{{tag.tag}}</span>
-							</div>
-						</div>
-						<div class="part part-2">
-							<img src="static/images/campaign/btn-print-report.png" alt="imprimir reporte" ng-click="campaign.print()">
-							<a href="http://api.datea.pe/csv-export/dateos/tag/{{campaign.main_tag.id}}/" target="_blank"><img src="static/images/campaign/btn-csv-dl.png" alt="descargar csv"></a>
-						</div>
+					<div class="related" ng-if="campaign.relatedCampaigns.length > 0">
+						<h5>iniciativas relacionadas</h5>
+						<span class="tags" ng-repeat="tag in campaign.relatedCampaigns">#{{tag.tag}}</span>
 					</div>
 				</div>
+				<!--
+				<div class="part part-2" ng-if="campaign.dateo_count > 0">
+					<img src="static/images/campaign/btn-print-report.png" alt="imprimir reporte" ng-click="campaign.print()">
+					<a href="http://api.datea.pe/csv-export/dateos/tag/{{campaign.main_tag.id}}/" target="_blank"><img src="static/images/campaign/btn-csv-dl.png" alt="descargar csv"></a>
+				</div>
+				-->
 			</div>
 		</div>
 	</div>

@@ -16,6 +16,7 @@ angular.module('dateaWebApp')
   , '$location'
   , 'leafletMarkersHelpers'
   , '$http'
+  , '$document'
 , function (
     $scope
   , Api
@@ -31,12 +32,15 @@ angular.module('dateaWebApp')
   , $location
   , leafletMarkersHelpers
   , $http
+  , $document
 ) {
 
 	var sessionMarkersIdx = 0
 	  , markersBounds     = []
 	  , defaultMap
 	  , modalInstance
+	  , queryCache        = {}
+	  , cardHeight
 	  // fn declarations
 	  , buildCampaign
 	  , updateCampaign
@@ -56,16 +60,20 @@ angular.module('dateaWebApp')
 	  , setChartForBar
 	  , clusterSizeRange 
 	  , makeSVGPie 
-	  ;
+	  , initQueryOptions
+	  , buildQueryParams
+	  , queryParamsToText
+	;
 
 	$scope.campaign         = {};
 	$scope.campaign.leaflet = {};
 	$scope.campaign.dateos  = {};
+	$scope.query            = {}
 	$scope.flow             = {};
 	$scope.flow.notFound    = false;
-	$scope.campaign.loading = {};
-	$scope.campaign.loading.leaflet = true;
-	$scope.campaign.loading.dateos  = true;
+	$scope.flow.userIsOwner = false;
+	$scope.flow.activeTab   = 'map';
+	$scope.flow.loading     = false;
 	$scope.campaign.isUserSignedIn = User.isSignedIn();
 	$scope.campaign.selectedMarker = 'last';
 	$scope.dateamap = {};
@@ -75,7 +83,6 @@ angular.module('dateaWebApp')
 	$scope.chart = {type: 'pie', typeControl: 'pie'};
 	$scope.showLegendExpandLink = false;
 	$scope.showLegendContractLink = false;
-
 
 	buildRelatedCampaigns = function () {
 		var tags = getTagsString( $scope.campaign );
@@ -113,7 +120,6 @@ angular.module('dateaWebApp')
 			var bounds = L.latLngBounds(markersBounds);
 			map.fitBounds( bounds );
 		} );
-		$scope.campaign.loading.leaflet = false;
 		// $scope.campaign.leaflet.markers.marker0.focus = true;
 	}
 
@@ -142,17 +148,20 @@ angular.module('dateaWebApp')
 
 	var buildMarkerIcon = function(dateo) {
 		var colors = [] 
-		  , html;
+		  , html
+		  , catWidth
+		;
 		angular.forEach(dateo.tags, function(tag){
 			if (tag.tag != $scope.campaign.main_tag.tag && angular.isDefined($scope.subTags[tag.tag])) {
 				colors.push($scope.subTags[tag.tag].color);
 			}
 		});
 		if (colors.length == 0) colors.push(config.visualization.default_color);
+		catWidth = (29 / colors.length)
 		
 		html = '<svg width="29" height="40"><g style="clip-path: url(#pinpath);">';
-		angular.forEach(colors, function (color) {
-			html = html + '<rect height="40" width="'+(29 / colors.length)+'" fill="'+color+'" />';
+		angular.forEach(colors, function (color, i) {
+			html = html + '<rect height="40" width="'+catWidth+'" fill="'+color+'" x="'+(i*catWidth)+'" />';
 		});
 		html = html + '<circle cx="14.5" cy="14" r="5" fill="white" />'
 				 + '</g></svg>';
@@ -164,6 +173,7 @@ angular.module('dateaWebApp')
 			, popupAnchor : [0, -33]
 			, labelAnchor : [8, -25]
 			, html        : html
+			, className   : 'datea-pin-icon'
 		}
 	}
 
@@ -201,11 +211,16 @@ angular.module('dateaWebApp')
 				                               + $scope.campaign.main_tag.tag;
 				$scope.flow.notFound = false;
 				buildSubTags();
-				buildDateos();
-				buildDateosWithImages();
+				$scope.flow.getDateos();
+				//buildDateos();
+				//buildDateosWithImages();
 				buildFollowersList();
 				buildRelatedCampaigns();
 				buildLayerFiles();
+				initQueryOptions();
+				if (User.isSignedIn() && User.data.id == $scope.campaign.user.id) {
+					$scope.flow.userIsOwner = true;
+				}
 			} else {
 				$scope.flow.notFound = true;
 			}
@@ -244,70 +259,135 @@ angular.module('dateaWebApp')
 		return !secondaryTags.length ? mainTag.tag : mainTag.tag + ',' + secondaryTagsArray.join(',');
 	}
 
-	buildDateos = function ( givens ) {
-		var dateoGivens = {}
-		  , dateos      = []
-		  , q           = givens && givens.q
-		  , withMedia   = givens && givens.withMedia
-		  ;
+	/* QUERY PARAMS INIT */
+	$scope.query = {
+		  tagFilterOptions : []
+		, tag              : ''
+		, limit            : 100
+		, orderBy          : '-created'
+		, done             : false
+		, orderByOptions   : [
+			  { val: '-created', label: 'últimos'}
+			, { val: '-vote_count', label: 'más apoyados'}
+			, { val: '-comment_count', label: 'más comentados'}
+		]
+	};
 
-		// dateoGivens.tags = getTagsString( $scope.campaign );
-		dateoGivens.tags = $scope.campaign.main_tag.tag;
-		dateoGivens.q    = q;
-		if ( $scope.campaign.selectedMarker !== 'last' ) {
-			dateoGivens.order_by = config.selectFilter[ $scope.campaign.selectedMarker ];
-		}
-		dateoGivens.order_by = '-created';
-		if ( $scope.campaign ) {
-			$scope.campaign.dateos = [];
-			Api.dateo
-			.getDateos( dateoGivens )
-			.then( function ( response ) {
-				if ( response.objects.length ) {
-					angular.forEach( response.objects, function ( value, key ){
-						if ( value.position ) dateos.push( value );
-					});
-					$scope.campaign.dateos = dateos;
-					buildMarkers( { dateos : dateos } );
-					$scope.campaign.loading.dateos = false;
-				} else {
-					$scope.campaign.leaflet.markers = {};
-					$scope.campaign.loading.dateos  = false;
-					$scope.campaign.loading.leaflet = false;
-				}
+	$scope.$watch( 'query.limit', function () {
+		$scope.query.limitLabel = ($scope.query.limit < 1000) ? 'máximo '+$scope.query.limit : 'todos los';
+	});
 
-			}, function ( reason ) {
-				console.log( reason );
+	initQueryOptions = function () {
+		if ($scope.campaign.secondary_tags) {
+			$scope.query.tagFilterOptions.push({value: '', label: '-- todas -- '});
+			angular.forEach($scope.campaign.secondary_tags, function (tag) {
+				$scope.query.tagFilterOptions.push({value: tag.tag, label: '#'+tag.tag});
 			} );
 		}
 	}
 
-	buildDateosWithImages = function () {
-		var dateos = [];
+	buildQueryParams = function () {
+		var tags = [$scope.campaign.main_tag.tag]
+			, params = {}
+		;
+		if ($scope.query.tag && $scope.query.tag != '') tags.push($scope.query.tag);
+		params.tags = tags.join(',');
+		if (tags.length > 0) params.tag_operator = 'and';
+		params.order_by = $scope.query.orderBy;
+		params.limit = $scope.query.limit;
+		if ($scope.query.since) params['created__gt'] = $scope.query.since.toISOString();
+		if ($scope.query.until) params['created__lt'] = $scope.query.until.toISOString();
+		if ($scope.query.search && $scope.query.search.trim() != '') params.q = $scope.query.search;
+		if ($scope.query.owner) params.user_id = $scope.campaign.user.id;
+		//console.log(User.data);
+		queryParamsToText();
+		return params;
+	}
+
+	queryParamsToText = function () {
+		var text = []
+			, q    = $scope.query
+		;
+		// order by
+		if (q.orderBy === '-created') text.push('últimos dateos');
+		if (q.orderBy === '-vote_count') text.push('más apoyados');
+		if (q.orderBy === '-comment_count') text.push('más comentados');
+		// tag
+		if (q.tag) text.push('en #'+q.tag);
+		// owner
+		if (q.owner) text.push('aprobados por '+$scope.campaign.user.username);
+		// date
+		if (q.since && q.until) {
+			text.push($filter('date')(q.since, 'd/M/yy') + ' > '+ $filter('date')(q.until, 'd/M/yy'));
+		}else{
+			if (q.since) text.push('desde &nbsp;'+$filter('date')(q.since, 'd/M/yy'));
+			if (q.until) text.push('hasta &nbsp;'+$filter('date')(q.until, 'd/M/yy'));
+		}
+
+		$scope.query.textRep = text;
+	}
+
+	$scope.flow.getDateos = function () {
+		if ( !$scope.campaign.id ) return;
+
+		var givens    = buildQueryParams()
+			, activeTab = $scope.flow.activeTab
+			, dateos    = []
+			, paramStr
+		; 
+
+		if (activeTab === 'images') givens.has_images = 1;
+
+		paramStr = JSON.stringify(givens);
+		if (queryCache[activeTab] && queryCache[activeTab] === paramStr) return;
+		queryCache[activeTab] = paramStr; 
+		
+		$scope.flow.loading = true;
+		$scope.query.done   = false;
+
+		switch (activeTab) {
+			case 'map':
+				$scope.campaign.dateos           = [];
+				$scope.campaign.leaflet.markers  = {};
+				break;
+			case 'images':
+				$scope.campaign.dateosWithImages = [];
+				break;
+		}
+		
 		Api.dateo
-		.getDateos( { has_images: 1, tags: getTagsString( $scope.campaign ) } )
+		.getDateos( givens )
 		.then( function ( response ) {
-			angular.forEach( response.objects, function ( value, key ) {
-				if ( value.position ) dateos.push( value );
-			} );
-			$scope.campaign.dateosWithImages = dateos;
-			$scope.campaign.dateosWithImagesHolderHeight = { height : ( Math.ceil( $scope.campaign.dateosWithImages.length / 6 ) * 200 ) + 'px' };
+			console.log(response);
+			if (response.objects.length) {
+				switch (activeTab) {
+					case 'map':
+						angular.forEach( response.objects, function ( value, key ){
+							if ( value.position ) dateos.push( value );
+						});
+						$scope.campaign.dateos = dateos;
+						buildMarkers( { dateos : dateos } );
+						break;
+					
+					case 'images':
+						$scope.campaign.dateosWithImages = response.objects;
+						break;
+				}
+			}
+			$scope.flow.loading = false;
+			$scope.query.done   = true;
 		}, function ( reason ) {
 			console.log( reason );
-			}
-		);
+		} );
 	}
 
-	$scope.campaign.searchDateos = function () {
-		if ( $scope.campaign.searchDateosKeyword ) {
-			buildDateos( { q : $scope.campaign.searchDateosKeyword } );
-			$scope.campaign.loading.leaflet = true;
-			$scope.campaign.loading.dateos = true;
-		} else {
-			buildDateos();
-			$scope.campaign.loading.leaflet = true;
-			$scope.campaign.loading.dateos = true;
-		}
+	$scope.$watch( 'flow.activeTab', function () {
+		$scope.flow.getDateos();
+	});
+
+	$scope.query.apply = function () {
+		$scope.flow.showFilter = false;
+		$scope.flow.getDateos();
 	}
 
 	var buildSubTags = function () {
@@ -319,7 +399,7 @@ angular.module('dateaWebApp')
 		$scope.subTags = subTags;
 	}
 
-	$scope.buildCharts = function () {
+	$scope.chart.buildCharts = function () {
 		Api.stats.getStats({campaign: $scope.campaign.id})
 		.then( function ( response ) {
 			$scope.chart.rawData = response;
@@ -334,7 +414,7 @@ angular.module('dateaWebApp')
 		} );
 	}
 
-	$scope.changeChartType = function (arg) {
+	$scope.chart.changeChartType = function (arg) {
 		if ($scope.chart.typeControl == 'pie') {
 			setChartForPie();
 		}else if ($scope.chart.typeControl == 'bar') {
@@ -408,8 +488,6 @@ angular.module('dateaWebApp')
 	}
 
 	$scope.campaign.onSelectFilterChange = function () {
-		$scope.campaign.loading.leaflet = true;
-		$scope.campaign.loading.dateos = true;
 		buildDateos();
 	}
 
@@ -510,22 +588,22 @@ angular.module('dateaWebApp')
 
 	$scope.buildClusterIcon = function (cluster) {
 		var children = cluster.getAllChildMarkers()
-		  , n = children.length
-		  , d = clusterSizeRange(children.length)
-		  , r = d / 2
-			,	dataObj = {}
-			, data = []
+		  , n        = children.length
+		  , d        = clusterSizeRange(children.length)
+		  , di       = d + 1
+		  , r        = d / 2
+			,	dataObj  = {}
+			, data     = []
 			, html
 			, clusterIcon
 			;
 
-			//console.log("n", n);
-			//console.log("clusterSize", clusterSizeRange(n) );
-
 			angular.forEach(children, function (marker) {
 				angular.forEach(marker.options.tags, function(tag) {
-					if (tag != $scope.campaign.main_tag.tag) {
-						tag = angular.isDefined($scope.subTags[tag]) ? tag : "Otros";
+					// taking out the "other color" for tags not in secondar_tags
+					//if (tag != $scope.campaign.main_tag.tag) {
+					if (tag != $scope.campaign.main_tag.tag && angular.isDefined($scope.subTags[tag])) {
+						//tag = angular.isDefined($scope.subTags[tag]) ? tag : "Otros";
 						if (angular.isDefined(dataObj[tag])) {
 							dataObj[tag].value ++;
 						}else{
@@ -534,20 +612,24 @@ angular.module('dateaWebApp')
 					}
 				});
 			});
+
 			for (var j in dataObj) {
 				data.push(dataObj[j]);
 			}
+
 			html = makeSVGPie({
 				  n: n
 				, r: r
 				, d: d
 				, data: data
 			});
+
 			clusterIcon = new L.DivIcon({
 				  html: html
 				, className: 'marker-cluster'
-				, iconSize: new L.Point(d,d)
+				, iconSize: new L.Point(di,di)
 			});
+
 			return clusterIcon;
 	}
 
@@ -627,6 +709,13 @@ angular.module('dateaWebApp')
 		$scope.showLegendExpandLink = true;
 		$scope.showLegendContractLink = false;
 	}
+
+	$document.on('scroll', function() {
+		var st = $document.scrollTop();
+		if (typeof(cardHeight) == 'undefined') cardHeight = angular.element('.viz-holder').position().top;
+		$scope.$apply(function() { $scope.flow.titleFix = st > cardHeight - 60; });
+		console.log($scope.flow.titleFix);
+	});
 
 
 

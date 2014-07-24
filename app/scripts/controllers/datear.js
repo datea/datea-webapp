@@ -128,11 +128,12 @@ $scope.$on( 'leafletDirectiveMap.click', function ( event, args ) {
 
 
 $scope.scrollTo = function($event, element, offset) {
+	var rootElem, elem;
 	$event.stopPropagation();
 	$event.preventDefault();
 	$scope.datear.isScrolling = true;
-	var rootElem = angular.element(document.getElementById('modal-body'));
-	var elem = angular.element(document.getElementById(element));
+	rootElem = angular.element(document.getElementById('modal-body'));
+	elem = angular.element(document.getElementById(element));
 	rootElem.scrollToElement(elem, offset, 400).then(function() {
 		$scope.datear.isScrolling = false;
 	});

@@ -1,4 +1,4 @@
-<nav class="navbar navbar-default campaign-form-nav" ng-class="{fix: fixMenu}">
+<nav class="navbar navbar-default campaign-form-nav" ng-class="{fix: flow.fixMenu}">
 	<div class="container-fluid">
 		<ul class="nav navbar-nav">
 			<li du-scrollspy="spy-step1" offset="200"><a href="#spy-step1" ng-click="scrollTo($event, 'spy-step1', 200)">Configuración general</a></li>
@@ -7,21 +7,21 @@
 			<li du-scrollspy="spy-step4" offset="200"><a href="#spy-step4" ng-click="scrollTo($event, 'spy-step4', 130)">opciones de visualización</a></li>
 		</ul>
 		<div class="navbar-right">
-			<button class="btn btn-link btn-default">CANCELAR</button>
+			<a class="btn btn-link btn-default" ng-if="flow.mode == 'edit'" href="#/{{campaign.user.username}}/{{campaign.main_tag.tag}}">CANCELAR</a>
 			<button class="btn btn-success btn-lg" ng-click="flow.save()">GUARDAR</button>
 		</div>
 	</div>
 </nav>
 
-<div class="container campaign-form-container" ng-class="{fix: fixMenu, 'datea-loading': loading}">
-	<form class="form">
+<div class="container campaign-form-container" ng-class="{fix: flow.fixMenu}">
+	<form class="form" ng-class="{'datea-loading': flow.loading}">
 		<alert ng-repeat="alert in flow.alerts" type="'danger'" close="flow.closeAlert($index)" class="fix-alert form-alert">{{alert}}</alert>
 		<div class="row">
 			<div class="col-xs-8">
 				<div class="section" id="spy-step1">
 					<h4>Configuración general</h4>
 					<div class="form-group" 
-							 popover="{{help.title.content}}" popover-placement="right" popover-trigger="mouseenter" popover-popup-delay="600"
+							 popover="{{help.name.content}}" popover-placement="right" popover-trigger="mouseenter" popover-popup-delay="600"
 							 ng-class="{null: '', false: 'has-error has-feedback'}[flow.validInput.name]">
 						<label for="title">Título</label>
 						<div class="row">
