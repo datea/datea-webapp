@@ -58,6 +58,7 @@ angular.module('dateaWebApp')
 	  , buildMarkerIcon
 	  , setChartForPie
 	  , setChartForBar
+	  , buildClusterIcon
 	  , clusterSizeRange 
 	  , makeSVGPie 
 	  , initQueryOptions
@@ -65,24 +66,27 @@ angular.module('dateaWebApp')
 	  , queryParamsToText
 	;
 
-	$scope.campaign         = {};
-	$scope.campaign.leaflet = {};
-	$scope.campaign.dateos  = {};
-	$scope.query            = {}
-	$scope.flow             = {};
-	$scope.flow.notFound    = false;
-	$scope.flow.userIsOwner = false;
-	$scope.flow.activeTab   = 'map';
-	$scope.flow.loading     = false;
+	$scope.campaign          = {};
+	$scope.campaign.leaflet  = {};
+	$scope.campaign.dateos   = {};
+	$scope.query             = {}
+	$scope.flow              = {};
+	$scope.flow.notFound     = false;
+	$scope.flow.userIsOwner  = false;
+	$scope.flow.activeTab    = 'map';
+	$scope.flow.loading      = false;
+	$scope.flow.mapIsPresent = true;
+	$scope.flow.colorRange   =  d3.scale.category10().range();
+	$scope.flow.hasLegend    = false;
+	$scope.flow.showLegendExpandLink = false;
+	$scope.flow.showLegendContractLink = false;
 	$scope.campaign.isUserSignedIn = User.isSignedIn();
-	$scope.campaign.selectedMarker = 'last';
-	$scope.dateamap = {};
-	$scope.map_is_present = true;
-	$scope.colorRange =  d3.scale.category10().range();
-	$scope.has_legend = false;
-	$scope.chart = {type: 'pie', typeControl: 'pie'};
-	$scope.showLegendExpandLink = false;
-	$scope.showLegendContractLink = false;
+	$scope.dateamap          = {};
+	$scope.chart             = {type: 'pie', typeControl: 'pie'};
+	$scope.flow.dateoDetail  = {
+		  dateo : null
+		, show  : false 
+	};
 
 	buildRelatedCampaigns = function () {
 		var tags = getTagsString( $scope.campaign );
@@ -392,9 +396,9 @@ angular.module('dateaWebApp')
 
 	var buildSubTags = function () {
 		var subTags = {};
-		if ($scope.campaign.secondary_tags.length > 0) $scope.has_legend = true;
+		if ($scope.campaign.secondary_tags.length > 0) $scope.flow.hasLegend = true;
 		angular.forEach($scope.campaign.secondary_tags, function (tag, key) {
-			subTags[tag.tag] = {obj: tag, color: $scope.colorRange[key]}
+			subTags[tag.tag] = {obj: tag, color: $scope.flow.colorRange[key]}
 		});
 		$scope.subTags = subTags;
 	}
@@ -486,6 +490,25 @@ angular.module('dateaWebApp')
 		}
 		console.log( 'focusDateo', idx, $scope.campaign.leaflet.markers[markerName].focus );
 	}
+	$scope.flow.openDateoDetail = function (index) {
+		$scope.flow.dateoDetail.dateo       = $scope.campaign.dateos[index];
+		$scope.flow.dateoDetail.markerIndex = index;
+		$scope.flow.dateoDetail.show        = true;
+	}
+	$scope.flow.closeDateoDetail = function (index) {
+		$scope.flow.dateoDetail.dateo = null;
+		$scope.flow.dateoDetail.show  = false;
+	}
+
+	$scope.$on('focus-dateo', function (event, args) {
+		$scope.dateamap.focusDateo(args.index);
+	} );
+	$scope.$on('open-dateo-detail', function (event, args) {
+		$scope.flow.openDateoDetail(args.index);
+	} );
+	$scope.$on('close-dateo-detail', function () {
+		$scope.flow.closeDateoDetail();
+	} );
 
 	$scope.campaign.onSelectFilterChange = function () {
 		buildDateos();
@@ -586,7 +609,7 @@ angular.module('dateaWebApp')
 		CUSTOM MARKERCLUSTER ICONS: PIES
 	***************************************************/
 
-	$scope.buildClusterIcon = function (cluster) {
+	buildClusterIcon = function (cluster) {
 		var children = cluster.getAllChildMarkers()
 		  , n        = children.length
 		  , d        = clusterSizeRange(children.length)
@@ -684,30 +707,30 @@ angular.module('dateaWebApp')
   }
 
 	$scope.campaign.leaflet.clusterOptions = { 
-		iconCreateFunction: $scope.buildClusterIcon,
-		//disableClusteringAtZoom: 17,
-		polygonOptions: {
-			weight: 1,
-			fillColor: "#999",
-			color: '#999',
-			fillOpacity: 0.4
+		  iconCreateFunction : buildClusterIcon
+		//, disableClusteringAtZoom: 17
+		, polygonOptions     : {
+			  weight      : 1
+			, fillColor   : "#999"
+			, color       : '#999'
+			, fillOpacity : 0.4
 		}
 	};
 
-	$scope.onLegendRender = function () {
+	$scope.flow.onLegendRender = function () {
 		var h = angular.element('.legend-holder .tag-list').height();
-		if (h > 23) $scope.showLegendExpandLink = true;
+		if (h > 23) $scope.flow.showLegendExpandLink = true;
 	}
 
-	$scope.expandLegend = function() {
+	$scope.flow.expandLegend = function() {
 		angular.element('.legend-holder').addClass('expanded');
-		$scope.showLegendExpandLink = false;
-		$scope.showLegendContractLink = true;
+		$scope.flow.showLegendExpandLink = false;
+		$scope.flow.showLegendContractLink = true;
 	}
-	$scope.contractLegend = function() {
+	$scope.flow.contractLegend = function() {
 		angular.element('.legend-holder').removeClass('expanded');
-		$scope.showLegendExpandLink = true;
-		$scope.showLegendContractLink = false;
+		$scope.flow.showLegendExpandLink = true;
+		$scope.flow.showLegendContractLink = false;
 	}
 
 	$document.on('scroll', function() {

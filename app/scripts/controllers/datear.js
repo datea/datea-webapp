@@ -228,6 +228,16 @@ $scope.$watch( 'flow.dp.dateoDate', function () {
 // 	$this.parent().remove();
 // }
 
+$scope.flow.removeImg = function () {
+	$scope.datear.img = null;
+	$scope.datear.imgData = null;
+} 
+
+$scope.flow.removeFile = function () {
+	$scope.datear.file = null;
+	$scope.datear.fileData = null;
+}
+
 
 $scope.datear.doDatear = function () {
 	
@@ -249,6 +259,16 @@ $scope.datear.doDatear = function () {
 	if ( $scope.datear.imgData ) {
 		$scope.dateo.images = [ { image : { name     : $scope.datear.imgData.name
 		                                  , data_uri : $scope.datear.img
+		                                  }
+		                        , order : 0
+		                        }
+		                      ];
+	}
+
+	// Files
+	if ( $scope.datear.fileData) {
+		$scope.dateo.files = [ { file   : { name     : $scope.datear.fileData.name
+		                                  , data_uri : $scope.datear.file
 		                                  }
 		                        , order : 0
 		                        }

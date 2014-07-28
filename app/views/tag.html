@@ -10,16 +10,15 @@
 			<button class="btn datea-datear-btn btn-lg" ng-click="tag.datear()">Datea <i class="glyphicon glyphicon-map-marker"></i></button>
 		</div>
 	</div>
-	
 	<div class="viz-holder">
 		<div class="viz-nav">
 			<div class="search">
-				<form class="form search-form" ng-submit="tag.searchDateos()">
+				<form class="form search-form" ng-submit="flow.searchDateos()">
 					<!--<div class="form-group">-->
 						<div class="input-group">
-							<input type="text" class="form-control" ng-model="tag.searchDateosKeyword">
+							<input type="text" class="form-control" ng-model="flow.searchDateosKeyword">
 							<span class="input-group-btn">
-								<button class="btn btn-default" type="button"><i class="fa fa-search" ng-click="tag.searchDateos()"></i></button>
+								<button class="btn btn-default" type="button"><i class="fa fa-search" ng-click="flow.searchDateos()"></i></button>
 							</span>
 						</div>
 					<!--</div>-->
@@ -34,34 +33,33 @@
 			  </div>
 			</div>
 		</div>
-		<div class="viz-viewer" ng-class="{'datea-loading': tag.loading.dateos }">
+		<div class="viz-viewer" ng-class="{'datea-loading': flow.loading }">
 			<tabset>
 				<tab heading="&nbsp;" class="glyphicon glyphicon-map-marker datea-glyphtab-fix">
 					<div class="container-fluid">
 						<div class="row">
 							<div class="col-md-45 dateos-holder">
-								<div class="dateo-description-holder">
-									
-										<da-dateo-teaser ng-repeat="dateo in tag.dateos"></da-dateo-teaser>
-										
+								<div class="dateo-detail-content-holder" ng-show="flow.dateoDetail.show">
+									<da-dateo-detail-inline dateo="flow.dateoDetail.dateo" marker-index="flow.dateoDetail.markerIndex"></da-dateo-detail-content>
+								</div>
+								<div class="dateo-description-holder" ng-hide="flow.dateoDetail.show">
+									<da-dateo-teaser ng-repeat="dateo in tag.dateos"></da-dateo-teaser>
 								</div>
 							</div>
 							<div class="col-md-75 leaflet-map-holder">
-								<leaflet id="leafletTag" defaults="tag.leaflet.defaults" markers="tag.leaflet.markers" center="tag.leaflet.center" width="100%" cluster-options="clusterOptions"></leaflet>
+								<leaflet id="leafletTag" defaults="flow.leaflet.defaults" markers="flow.leaflet.markers" center="flow.leaflet.center" width="100%" cluster-options="flow.leaflet.clusterOptions"></leaflet>
 							</div>
 						</div>
 					</div>
 				</tab>
-				<tab heading="&nbsp;" class="glyphicon glyphicon-camera datea-glyphtab-fix" ng-show="tag.dateosWithImages.length > 0">
+				<tab heading="&nbsp;" class="glyphicon glyphicon-camera datea-glyphtab-fix" ng-show="tag.image_count > 0">
 					<div class="dateos-with-images-holder" ng-style="tag.dateosWithImagesHolderHeight">
-							<da-dateo-thumb ng-repeat="dateo in tag.dateosWithImages"></da-dateo-thumb>
+						<da-dateo-thumb ng-repeat="dateo in tag.dateosWithImages"></da-dateo-thumb>
 					</div>
 				</tab>
 			</tabset>
 		</div>
 	</div>
-
-
 </div>
 <div class="not-found" ng-if="flow.notFound" ng-include="'views/notFound.html'" ng-hide="!flow.notFound">
 </div>

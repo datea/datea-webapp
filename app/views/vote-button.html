@@ -1,0 +1,6 @@
+<div class="vote-btn datea-glyph-holder" ng-click="flow.doVote()" ng-class="{'active': flow.isActive, 'disabled': flow.disabled, 'loading': flow.loading}">
+	<span class="check glyphicon glyphicon-ok"></span>
+	<i class="fa fa-circle-o-notch fa-spin" ng-show="flow.loading"></i>
+	<span class="glyphicon glyphicon-thumbs-up datea-glyph" ng-hide="flow.loading"></span> <span class="datea-glyph-text" ng-show="voteCount > 0"><p>{{voteCount}}</p> <p><ng-pluralize count="voteCount" when="{'one':
+		'apoyo','other':'apoyos'}"></p></span>
+</div>

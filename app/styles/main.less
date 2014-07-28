@@ -265,7 +265,7 @@ body {
 .datea-navbar {
 	background: @color-1;
 	margin: 0;
-	z-index: 20000;
+	z-index: 1001;
 
 	.navbar-brand {
 		padding: 5px 0 5px 40px;
@@ -1049,7 +1049,7 @@ body {
 	}
 
 	.modal-body {
-
+		overflow-x: visible;
 		&.fixed-height {
 			min-height: 500px;
 			height: 75vh;
@@ -1062,31 +1062,137 @@ body {
 			margin-bottom: 0px;
 		}
 
-		.part-1 {
-			width: 50%;
-
-
-			input[type="file"] {
-				color: transparent;
-				cursor: pointer;
-				width: 35px;
-				height: 35px;
-			}
-
-			.datea-custom-imgUL {
-				label { display: block;}
-				background: url('@{imgUrl}/datear/img-ul.png') no-repeat center center;
-				//content: " ";
-				cursor: pointer;
-				display: inline-block;
-				min-height: 35px;
-				min-width: 35px;
-				-webkit-user-select: none;
-				.img-file-input { position: fixed; top: -1000px }
+		.dropdown-menu {
+			z-index: 5001;
+			border: 0;
+			background-color: transparent;
+			li {
+				position: relative;
+				left: -50px;
+				background-color: @color-3;
+				tr.h6 {
+					th {
+						line-height: 22px;
+						padding-top: 5px;
+					}
+				}
+				&:last-child {
+					border-bottom: 10px solid @color-3;
+				}
 			}
 		}
-		.part-2 {
-			width: 49%;
+
+		.media-fields {
+
+			.file-fields {
+
+				input[type="file"] {
+					color: transparent;
+					cursor: pointer;
+					width: 35px;
+					height: 35px;
+				}
+
+				.ul-btn {
+					.file-input { position: fixed; top: -1000px }
+					cursor: pointer;
+					display: inline-block;
+					min-height: 35px;
+					min-width: 35px;
+					height: 35px;
+					margin-right: 10px;
+					-webkit-user-select: none;
+					//text-align: center;
+					line-height: 35px;
+					position: relative;
+					
+					label {
+						min-height: 35px;
+						min-width: 35px;
+						cursor: pointer;
+						display: inline-block;
+					}
+					.ul-icon-holder {
+						position: absolute;
+						top: 0;
+						left: 0;
+						height: 35px;
+						width: 35px;
+						background-color: @color-18;
+						border-radius: 50%;
+						.ul-icon {
+							position: absolute;
+							color: white;
+							font-size: 22px;
+							top: 5px;
+						}
+					}
+					.remove {
+						vertical-align: middle;
+						i {
+							font-size: 20px;
+							color: @color-3;
+							margin-left: 15px;
+							cursor: pointer;
+							&:hover {
+								color: red;
+							}
+						} 
+					}
+
+					&.full {
+						display: table;
+						height: auto;
+						label {
+							display: table-cell;
+						}
+						.remove {
+							display: table-cell;
+						}
+					}
+
+					&.img-ul-btn {
+						.ul-icon {
+							left: 7px;
+						}
+
+						&.full {
+							margin-bottom: 20px;
+							.uploaded-img {
+								max-width: 220px;
+							}
+							.ul-icon-holder {
+								display: none;
+							}
+						}
+					}
+					&.file-ul-btn {
+						.ul-icon {
+							left: 7px;
+						}
+						.remove {
+							i {
+								position: relative;
+								top: 0px;
+							}
+						}
+						&.full {
+							.uploaded-filename { margin-left: 40px;}
+							.ul-icon-holder {
+								background-color: white;
+								.ul-icon {
+									color: @color-18;
+									font-size: 28px;
+								}
+							}
+						}
+					}
+				}
+			}
+
+			.date-field {
+				float: right;
+			}
 		}
 
 		.datear-form-holder {
@@ -1121,6 +1227,10 @@ body {
 
 			.content1 {
 				padding-bottom: 5px;
+			}
+
+			.content2{
+
 			}
 
 			.date-form-holder {
@@ -1991,7 +2101,7 @@ ul.input-list {
 .viz-holder {
 	position: relative;
 	//height: 100%;
-	min-height: 450px;
+	min-height: 300px;
 	//padding-bottom: 60px;
 	@viz-nav-height: 46px;
 
@@ -2007,7 +2117,7 @@ ul.input-list {
 			left: 0;
 			right: 0;
 			height: @viz-nav-height;
-			overflow: hidden;
+			//overflow: hidden;
 			.search-form {
 				padding-top: 6px;
 				float: left;
@@ -2108,12 +2218,13 @@ ul.input-list {
 		.menu-right {
 			float: right;
 			margin-right: 0px;
-			z-index: 3;
+			z-index: 999;
 			position: relative;
 			background-color: @color-17;
 			height: @viz-nav-height;
 			width: 140px;
 			.main-menu-btn {
+				position: relative;
 				float: right;
 				.btn {
 					font-size: 30px;
@@ -2123,6 +2234,9 @@ ul.input-list {
 					&:hover {
 						color: darken(@color-10, 15%);
 					}
+				}
+				.dropdown-menu {
+					z-index: 10003;
 				}
 			}
 		}
@@ -2245,7 +2359,7 @@ ul.input-list {
 		line-height: @viz-nav-height;
 		height: @viz-nav-height;
 		//width: 100px;
-		z-index: 10002;
+		z-index: 999;
 		background-color: @color-17;
 		li {
 			margin-bottom: 0;
@@ -2308,6 +2422,81 @@ ul.input-list {
 					margin: 40px 0;
 					text-align: center;
 					font-size: 16px;
+				}
+			}
+			.dateo-detail-content-holder {
+				position: relative;
+				overflow-y: scroll;
+				height: 100%;
+				padding-top: 30px;
+				.dateo-detail {
+					.username a {color: black}
+
+					.detail-close-btn {
+						position: absolute;
+						right: -10px;
+						top: -30px;
+						font-size: 40px;
+						font-weight: 900;
+					}
+					.tags { font-size: 17px;}
+
+					.content {
+						margin-bottom: 35px;
+						font-size: 16px;
+					}
+					.social-holder {
+						//background-color: #efefef;
+						border-top: 1px solid #eee;
+						border-bottom: 1px solid #eee;
+						.controls-right {
+							padding: 15px 0 10px;
+							.pin {
+								float: right;
+								position: relative;
+								&:hover {
+									color: @color-12;
+								}
+							}
+						}
+						.controls-left {
+							padding: 15px 0;
+							width: 90%;
+							position: relative;
+
+							.permalink {
+								float: right;
+								a { 
+									color: @color-18; 
+									&:hover {
+										color: @color-12;
+									}
+								}
+							}
+
+							.denounce-holder {
+								position: absolute;
+								right: 0;
+								bottom: 10px;
+								font-size: 11px;
+								a {
+									color: @color-18;
+									&:hover {
+										color: red;
+									}
+								}
+							}
+							&:hover {
+								.denounce-holder {
+									display: block;
+								}
+							}
+						}
+					}
+					.comments-holder {
+						padding: 30px 15px 40px 5px;
+						h3 {font-size: 14px; margin-bottom: 20px;}
+					}
 				}
 			}
 		}
@@ -2477,7 +2666,10 @@ ul.input-list {
 .viz-holder {
 	.viz-nav .search { padding-left: 15px}
 	.viz-nav .menu-right { padding-right: 15px}
-	.viz-viewer .dateo-description-holder { padding-left: 0; padding-right: 25px;}
+	.viz-viewer {
+		.dateo-detail-content-holder,
+		.dateo-description-holder  { padding-left: 0; padding-right: 25px;}
+	}
 	.nav-tabs { 
 		right: 80px; 
 	}
@@ -2504,7 +2696,10 @@ ul.input-list {
 		.viz-nav .search { padding-left: 35px}
 		.viz-nav .menu-right { padding-right: 20px}
 		.nav-tabs { right: 100px; }
-		.viz-viewer .dateo-description-holder { padding-left: 20px}
+		.viz-viewer {
+			.dateo-detail-content-holder,
+			.dateo-description-holder { padding-left: 20px}
+		}
 	}
 }
 @media (min-width: @screen-lg-min) {
@@ -2521,7 +2716,10 @@ ul.input-list {
 		.viz-nav .search { padding-left: 40px}
 		.viz-nav .menu-right { padding-right: 25px}
 		.nav-tabs { right: 140px; }
-		.viz-viewer .dateo-description-holder { padding-left: 25px}
+		.viz-viewer {
+			.dateo-detail-content-holder,
+			.dateo-description-holder { padding-left: 25px}
+		}
 	}
 }
 
@@ -2726,6 +2924,7 @@ ul.input-list {
 //
 
 .dateo {
+	position: relative;
 	.tags {
 		.clearfix();
 		margin: 10px 0 0 0;
@@ -2745,6 +2944,21 @@ ul.input-list {
 			margin-left: 5px;
 			h4.username { margin-bottom: 2px;}
 			.date { font-size: 12px; color: @color-9; }
+	}
+
+	.pin {
+		position: absolute;
+		right: 0;
+		top: 0;
+		font-size: 28px;
+		line-height: 30px;
+		height: 30px;
+		width: 30px;
+		color: @color-18;
+		&:hover {
+			color: @color-10;
+			cursor: pointer;
+		}
 	}
 
 	.content { margin-top: 0 !important}
@@ -2929,7 +3143,7 @@ ul.input-list {
 		padding-top: 10px;
 	}
 
-	.comment-holder {
+	div.comment-holder {
 		margin: 0 0 30px 0;
 		position: relative;
 		padding-bottom: 10px;
@@ -2937,7 +3151,7 @@ ul.input-list {
 		border-bottom: 1px dashed @color-19;
 
 		&:last-child {
-			border-bottom: 0 !important;
+			border-bottom: none !important;
 		}
 
 		&:hover {
@@ -2952,7 +3166,7 @@ ul.input-list {
 			}
 			a {
 				color: black;
-				font-weight: bold;
+				font-weight: normal;
 				margin: 0 5px 0 0;
 			}
 			.date {
@@ -2975,7 +3189,8 @@ ul.input-list {
 		}
 
 		.comment-content {
-			margin-top: 7px;
+			margin-top: 2px;
+			margin-left: 38px;
 		}
 	}
 }
@@ -2983,30 +3198,97 @@ ul.input-list {
 .datea-glyph-holder {
 	display: inline-block;
 	vertical-align: top;
+	margin-right: 45px;
+	position: relative;
 	span {
 		display: inline-block;
 	}
 	p {
-		font-size: 11px;
-		line-height: 10px;
+		font-size: 14px;
+		line-height: 14px;
 		margin: 0!important;
+		color: @color-18;
+		font-weight: bold;
 	}
 	p+p {
-		color: @color-12;
-		font-size: 10px;
+		color: @color-10;
+		font-size: 13px;
+		display: none;
 	}
+
 	.datea-glyph {
-		background: @color-12;
+		background: @color-3;
 		border-radius: 50%;
 		color: white;
-		font-size: 15px;
-		line-height: 23px;
+		font-size: 20px;
+		line-height: 40px;
+		height: 40px;
 		text-align: center;
-		width: 23px!important;
-		top: -2px;
+		width: 40px!important;
+		top: 0px;
+		margin-right: 3px;
 	}
+	&:hover {
+		cursor: pointer;
+		.datea-glyph, .fa {
+			background-color: @color-12;
+		}
+	}
+	&.disabled:hover {
+		cursor: not-allowed;
+		background-color: white;
+		.datea-glyph{		
+			background-color: @color-3;
+		}
+	}
+	.check {
+		display: none;
+	}
+	&.active {
+		.check {
+			z-index: 2;
+			display: block;
+			position: absolute;
+			font-size: 8px;
+			color: white;
+			left: 27px;
+			top: 6px;
+		}
+		.datea-glyph{		
+			background-color: @color-12;
+		}
+	}
+
+	&.loading {
+		.datea-glyph, .fa {
+			background-color: @color-12;
+		}
+		&.active {
+			.check { display: none}
+		}
+	}
+
+	.fa {
+		color: white;
+		display: inline-block;
+		line-height: 40px;
+		height: 40px;
+		width: 40px;
+		text-align: center;
+		position: relative;
+		border-radius: 50%;
+		background-color: @color-3;
+		font-size: 20px; 
+	}
+
 	.datea-glyph-2 {
 		background: @color-3;
+	}
+}
+
+.vote-btn {
+	&.has-voted {
+		cursor: pointer;
 	}
 }
 

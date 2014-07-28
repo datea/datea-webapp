@@ -56,20 +56,21 @@
 						<div class="comments-holder">
 							<h3>Comentarios</h3>
 
-							<div class="comment-holder" ng-repeat="comment in dateo.comments">
-								<div class="user">
-									<img class="img-circle" ng-src="{{comment.user.image_small | imgFromApi}}" alt="{{comment.user.username}}">
-									<a href="#/{{comment.user.username}}"><span>{{comment.user.username}}</span></a>
-									<span class="date">el {{comment.created | date:'fullDate'}}</span>
-								</div>
-								
-								<p class="comment-content newline2br">{{comment.comment | linky}}</p>
+							<div class="comments">
+								<div class="comment-holder" ng-repeat="comment in dateo.comments">
+									<div class="user">
+										<img class="img-circle" ng-src="{{comment.user.image_small | imgFromApi}}" alt="{{comment.user.username}}">
+										<a href="#/{{comment.user.username}}"><span>{{comment.user.username}}</span></a>
+										<span class="date">el {{comment.created | date:'fullDate'}}</span>
+									</div>
+									
+									<p class="comment-content newline2br">{{comment.comment | linky}}</p>
 
-								<div class="denounce-holder">
-									<a class="denounce" href="" ng-click="dateo.denounce( 'comment', $event )">denunciar</a>
+									<div class="denounce-holder">
+										<a class="denounce" href="" ng-click="dateo.denounce( 'comment', $event )">denunciar</a>
+									</div>
 								</div>
 							</div>
-
 
 							<div class="comment-form-holder" ng-show="dateo.isUserSignedIn">
 								<form role="form" name="form">

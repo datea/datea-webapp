@@ -146,21 +146,24 @@
 					<div class="container-fluid dateo-map-viz">
 						<div class="row">
 							<div class="hidden-xs col-sm-45 dateos-holder">
-								<div class="dateo-description-holder">
+								<div class="dateo-detail-content-holder" ng-show="flow.dateoDetail.show">
+									<da-dateo-detail-inline dateo="flow.dateoDetail.dateo" marker-index="flow.dateoDetail.markerIndex"></da-dateo-detail-content>
+								</div>
+								<div class="dateo-description-holder" ng-hide="flow.dateoDetail.show">
 										<da-dateo-teaser ng-repeat="dateo in campaign.dateos"></da-dateo-teaser>
 										<div class="no-results" ng-show="campaign.dateos.length == 0 && flow.query.done">
 										Aún no hay dateos en esta iniciativa. ¡Datea!
 										</div>
 								</div>
 							</div>
-							<div class="col-xs-12 col-sm-75 leaflet-map-holder" ng-class="{'has-legend': has_legend}">
+							<div class="col-xs-12 col-sm-75 leaflet-map-holder" ng-class="{'has-legend': flow.hasLegend}">
 								<leaflet id="leafletCampaign" defaults="campaign.leaflet.defaults" markers="campaign.leaflet.markers" center="campaign.leaflet.center" cluster-options="campaign.leaflet.clusterOptions" width="100%"></leaflet>
-								<div class="legend-holder" ng-if="campaign.secondary_tags.length > 0">
-									<div class="expand" ng-click="expandLegend()" ng-show="showLegendExpandLink">ver todas</div>
-									<div class="contract" ng-click="contractLegend()" ng-show="showLegendContractLink">cerrar</div>
+								<div class="legend-holder" ng-show="campaign.secondary_tags.length > 0">
+									<div class="expand" ng-click="flow.expandLegend()" ng-show="flow.showLegendExpandLink">ver todas</div>
+									<div class="contract" ng-click="flow.contractLegend()" ng-show="flow.showLegendContractLink">cerrar</div>
 									<div class="tag-list">
-										<div class="tag-legend" ng-repeat="tag in campaign.secondary_tags" da-on-last-repeat="onLegendRender()">
-											<span class="color-sample" style="background-color: {{colorRange[$index]}}"></span>
+										<div class="tag-legend" ng-repeat="tag in campaign.secondary_tags" da-on-last-repeat="flow.onLegendRender()">
+											<span class="color-sample" style="background-color: {{flow.colorRange[$index]}}"></span>
 											<span class="tag">#{{tag.tag}}</span>
 										</div>
 									</div>

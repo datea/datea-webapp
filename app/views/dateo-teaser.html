@@ -6,11 +6,16 @@
 			<div class="date">{{dateo.created | date:'fullDate'}}</div>
 		</div>
 	</div>
+
+	<div ng-show="mapPresent" class="pin" ng-click="focusDateo()" tooltip="ver en mapa" tooltip-trigger="mouseenter" tooltip-placement="left" tooltip-popup-delay="800">
+		<span class="glyphicon glyphicon-map-marker"></span>
+	</div>
+
 	<p class="tags"><a class="tag" ng-repeat="tag in dateo.tags" href="/#/tag/{{tag.tag}}">#{{tag.tag}}</a></p>
 	<p class="content" ng-bind-html="dateo.content | linky:'_blank'"></p>
 	<div class="social-holder">
-		<a class="btn" ng-class="{'pull-right datea-btn btn-xs': !map_is_present,'btn-link': map_is_present}" href="#/{{dateo.user.username}}/dateos/{{dateo.id}}" >ver detalle</a>
-		<button class="pull-right btn btn-xs datea-gray-btn" ng-if="map_is_present" ng-show="dateo.position" ng-click="dateamap.focusDateo($index)">ver en mapa</button>
+		<!--<a class="btn datea-gray-btn btn-sm pull-right" href="#/{{dateo.user.username}}/dateos/{{dateo.id}}" >ver detalle</a>-->
+		<button class="btn datea-gray-btn btn-sm pull-right" ng-click="openDetail()">ver detalle</button>
 		<span class="glyphicon glyphicon-thumbs-up"></span> {{dateo.vote_count}}
 		<span class="glyphicon glyphicon-comment"></span> {{dateo.comment_count}}
 	</div>

@@ -44,21 +44,23 @@ angular.module('dateaWebApp')
 	  , buildTag
 	  , updateTag
 	  , goToMainTag
-	  ;
+	  , buildClusterIcon
+	  , makeSVGClusterIcon
+	  , clusterSizeRange
+	  , serializeXmlNode
+	;
 
-	$scope.tag = {};
-	$scope.tag.leaflet = {};
-
-	$scope.tag.isUserSignedIn = User.isSignedIn();
-
-	$scope.tag.selectedMarker = 'last';
-
-	$scope.tag.loading = {};
-	$scope.tag.loading.leaflet = true;
-	$scope.tag.loading.dateos  = true;
-
-	$scope.flow             = {};
-	$scope.flow.notFound    = false;
+	$scope.tag                  = {};
+	$scope.tag.selectedMarker   = 'last';
+	$scope.flow                 = {};
+	$scope.flow.loading 		    = true;
+	$scope.flow.notFound        = false;
+	$scope.flow.leaflet         = {};
+	$scope.flow.isUserSignedIn  = User.isSignedIn();
+	$scope.flow.dateoDetail     = {
+		  dateo : null
+		, show  : false 
+	};
 
 	isMainTag = function () {
 		var dfd = $q.defer();
@@ -126,12 +128,10 @@ angular.module('dateaWebApp')
 					});
 					$scope.tag.dateos = dateos;
 					buildMarkers( { dateos: dateos } );
-					$scope.tag.loading.dateos = false;
 				} else {
-					$scope.tag.leaflet.markers = {};
-					$scope.tag.loading.dateos  = false;
-					$scope.tag.loading.leaflet = false;
+					$scope.flow.leaflet.markers = {};
 				}
+				$scope.flow.loading = false;
 			}, function ( reason ) {
 				console.log( reason );
 			} )
@@ -176,7 +176,7 @@ angular.module('dateaWebApp')
 		console.log( 'buildMarkers' );
 		// Cleaning
 		sessionMarkersIdx = 0;
-		$scope.tag.leaflet.markers = {};
+		$scope.flow.leaflet.markers = {};
 
 		angular.forEach( dateos, function ( value, key ) {
 			// default image for markers
@@ -186,13 +186,12 @@ angular.module('dateaWebApp')
 		//center.lat  = markers.marker0.lat;
 		//center.lng  = markers.marker0.lng;
 		//center.zoom = config.campaign.mapZoomFocus;
-		//angular.extend( $scope.tag.leaflet.markers, markers );
-		//angular.extend( $scope.tag.leaflet.center, center );
+		//angular.extend( $scope.flow.leaflet.markers, markers );
+		//angular.extend( $scope.flow.leaflet.center, center );
 		leafletData.getMap("leafletTag")
 		.then( function ( map ) {
 			map.fitBounds( markersBounds );
 		} );
-		$scope.tag.loading.leaflet = false;
 	}
 
 	buildMarker = function(dateo) {
@@ -212,7 +211,7 @@ angular.module('dateaWebApp')
 
 	addMarker = function (dateo) {
 		var marker = buildMarker(dateo);
-		$scope.tag.leaflet.markers['marker'+sessionMarkersIdx] = marker;
+		$scope.flow.leaflet.markers['marker'+sessionMarkersIdx] = marker;
 		sessionMarkersIdx ++; 
 	}
 
@@ -236,7 +235,7 @@ angular.module('dateaWebApp')
 	}
 
 	$scope.tag.datear = function () {
-		if ( $scope.tag.isUserSignedIn  ) {
+		if ( $scope.flow.isUserSignedIn  ) {
 			$modal.open( { templateUrl : 'views/datear.html'
 			             , controller  : 'DatearCtrl'
 			             , windowClass : 'datear-modal'
@@ -245,12 +244,12 @@ angular.module('dateaWebApp')
 			                   return { 
 			                   		defaultTag : $scope.tag.tag
 			                   	, datearSuccessCallback: function (dateo) {
-			                         		$scope.tag.dateos.unshift(dateo);
-			                         		if (dateo.is_geolocated) addMarker(dateo);
-			                         		if (dateo.has_images) $scope.tag.dateosWithImages.unshift(dateo);
-			                         		updateTag();
-			                         		// TODO: fit bounds if marker outside of map view
-			                         }
+	                         		$scope.tag.dateos.unshift(dateo);
+	                         		if (dateo.is_geolocated) addMarker(dateo);
+	                         		if (dateo.has_images) $scope.tag.dateosWithImages.unshift(dateo);
+	                         		updateTag();
+	                         		// TODO: fit bounds if marker outside of map view
+	                         }
 			                   };
 			                 }
 			               }
@@ -260,91 +259,159 @@ angular.module('dateaWebApp')
 		}
 	}
 
-	$scope.tag.focusDateo = function ( idx ) {
+	$scope.flow.focusDateo = function ( idx ) {
 		var markerName
 		  , center = {}
 		  ;
 		markerName = 'marker'+idx;
-		if ( $scope.tag.leaflet.markers[markerName] ) {
-			center.lat  = $scope.tag.leaflet.markers[markerName].lat;
-			center.lng  = $scope.tag.leaflet.markers[markerName].lng;
-			center.zoom = $scope.tag.leaflet.center.zoom < 15 ? 15 : $scope.tag.leaflet.center.zoom;
-			angular.extend( $scope.tag.leaflet.center, center );
+		if ( $scope.flow.leaflet.markers[markerName] ) {
+			center.lat  = $scope.flow.leaflet.markers[markerName].lat;
+			center.lng  = $scope.flow.leaflet.markers[markerName].lng;
+			center.zoom = $scope.flow.leaflet.center.zoom < 15 ? 15 : $scope.flow.leaflet.center.zoom;
+			angular.extend( $scope.flow.leaflet.center, center );
 			// $timeout( function () {
-				$scope.tag.leaflet.markers[markerName].focus = true;
+				$scope.flow.leaflet.markers[markerName].focus = true;
 			// }, 1000 );
 		}
-		console.log( 'focusDateo', idx, $scope.tag.leaflet.markers[markerName].focus );
+		console.log( 'focusDateo', idx, $scope.flow.leaflet.markers[markerName].focus );
+	}
+	$scope.flow.openDateoDetail = function (index) {
+		$scope.flow.dateoDetail.dateo       = $scope.tag.dateos[index];
+		$scope.flow.dateoDetail.markerIndex = index;
+		$scope.flow.dateoDetail.show        = true;
+		$scope.flow.focusDateo(index);
+	}
+	$scope.flow.closeDateoDetail = function (index) {
+		$scope.flow.dateoDetail.dateo = null;
+		$scope.flow.dateoDetail.show  = false;
 	}
 
-	$scope.tag.followTag = function () {
-		var id = $scope.tag.id;
-		console.log( 'followTag' );
-		if ( $scope.tag.followable ) {
-			$scope.tag.followable = false;
-			Api.follow
-			.doFollow( { content_type: 'tag', object_id: id } )
-			.then( function ( response ) {
-				User.updateUserDataFromApi();
-			}, function ( reason ) {
-				$scope.tag.followable = true;
-				console.log( reason );
-			} );
-		}
-	}
-
-	$scope.tag.unfollowTag = function () {
-		var id = $scope.tag.id;
-		if ( !$scope.tag.followable ) {
-			$scope.tag.followable = true;
-			Api.follow
-			.doUnfollow( { user: User.data.id, content_type: 'tag', object_id: id } )
-			.then( function ( response ) {
-				User.updateUserDataFromApi();
-			}, function ( reason ) {
-				$scope.tag.followable = false;
-				console.log( reason );
-			} );
-		}
-	}
+	$scope.$on('focus-dateo', function (event, args) {
+		$scope.flow.focusDateo(args.index);
+	} );
+	$scope.$on('open-dateo-detail', function (event, args) {
+		$scope.flow.openDateoDetail(args.index);
+	} );
+	$scope.$on('close-dateo-detail', function () {
+		$scope.flow.closeDateoDetail();
+	} );
 
 	$scope.tag.searchDateos = function () {
 		if ( $scope.tag.searchDateosKeyword ) {
 			buildDateos( { q: $scope.tag.searchDateosKeyword } );
-			$scope.tag.loading.leaflet = true;
-			$scope.tag.loading.dateos = true;
 		} else {
 			buildDateos();
-			$scope.tag.loading.leaflet = true;
-			$scope.tag.loading.dateos = true;
 		}
+		$scope.flow.loading = false;
 	}
 
 	$scope.tag.onSelectFilterChange = function () {
-		$scope.campaign.loading.leaflet = true;
-		$scope.campaign.loading.dateos = true;
+		$scope.flow.loading = true;
 		buildDateos();
 	}
 
-if ( $routeParams.tagName ) {
-	isMainTag().then( function ( givens ) {
-		if ( givens.isMainTag ) {
-			goToMainTag( { username: givens.tagObj[0].user.username
-			             , tagName : givens.tagObj[0].main_tag.tag
-			             } );
-		} else {
-			buildTag();
-		}
-	}, function ( reason ) {
-		console.log( reason );
-	} );
-	angular.extend( $scope.tag.leaflet, config.defaultMap );
-}
+	clusterSizeRange = d3.scale.linear()
+		.domain([0, 100])
+		.range([50, 80])
+		.clamp(true);
 
-$scope.$on('$destroy', function () {
-	markersBounds   = [];
-	$scope.tag = {};
-	leafletMarkersHelpers.resetCurrentGroups();
-});
+	buildClusterIcon = function (cluster) {
+		var children = cluster.getAllChildMarkers()
+		  , n        = children.length
+		  , d        = clusterSizeRange(children.length)
+		  , di       = d + 1
+		  , r        = d / 2
+			, html
+			, clusterIcon
+		;
+
+		html = makeSVGClusterIcon({
+				  n: n
+				, r: r
+				, d: d
+			});
+
+		clusterIcon = new L.DivIcon({
+			  html: html
+			, className: 'marker-cluster'
+			, iconSize: new L.Point(di,di)
+		});
+
+		return clusterIcon;
+	}
+
+	makeSVGClusterIcon = function (opt) {
+		var svg, vis, arc, pie, arcs;
+		svg = document.createElementNS(d3.ns.prefix.svg, 'svg');
+		vis = d3.select(svg).data([opt.data])
+			.attr("width", opt.d)
+			.attr("height", opt.d)
+			.append("svg:g")
+			.attr("transform", "translate(" + opt.r + "," + opt.r + ")");
+
+		vis.append('circle')
+			.attr("fill", config.visualization.default_color)
+			.attr("r", opt.r)
+			.attr("cx", 0)
+			.attr("cy", 0)
+			.attr("opacity", 0.75);
+
+		vis.append("circle")
+			.attr("fill", "#ffffff")
+			.attr("r", opt.r / 2.2)
+			.attr("cx", 0)
+			.attr("cy", 0);
+
+		vis.append("text")
+			.attr("x", 0)
+			.attr("y", 0)
+			.attr("class", "cpie-label")
+			.attr("text-anchor", "middle")
+			.attr("dy", '.3em')
+			.text(opt.n);
+
+		return serializeXmlNode(svg);
+	}
+
+	$scope.flow.leaflet.clusterOptions = { 
+		  iconCreateFunction : buildClusterIcon
+		//, disableClusteringAtZoom: 17
+		, polygonOptions     : {
+			  weight      : 1
+			, fillColor   : "#999"
+			, color       : '#999'
+			, fillOpacity : 0.4
+		}
+	};
+
+	serializeXmlNode = function (xmlNode) {
+		if (typeof window.XMLSerializer != "undefined") {
+    	return (new window.XMLSerializer()).serializeToString(xmlNode);
+		} else if (typeof xmlNode.xml != "undefined") {
+    	return xmlNode.xml;
+		}
+    return "";
+  }
+
+	if ( $routeParams.tagName ) {
+		isMainTag().then( function ( givens ) {
+			if ( givens.isMainTag ) {
+				goToMainTag( { username: givens.tagObj[0].user.username
+				             , tagName : givens.tagObj[0].main_tag.tag
+				             } );
+			} else {
+				buildTag();
+			}
+		}, function ( reason ) {
+			console.log( reason );
+		} );
+		angular.extend( $scope.flow.leaflet, config.defaultMap );
+	}
+
+	$scope.$on('$destroy', function () {
+		markersBounds   = [];
+		$scope.tag = {};
+		leafletMarkersHelpers.resetCurrentGroups();
+	});
 
 } ] );

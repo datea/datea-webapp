@@ -153,7 +153,6 @@ angular.module('dateaWebApp')
 		} else {
 			$location.path('/registrate');
 		}
-
 	}
 
 	$scope.dateo.share = function () {
