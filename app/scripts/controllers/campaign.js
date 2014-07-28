@@ -109,7 +109,8 @@ angular.module('dateaWebApp')
 		sessionMarkersIdx = 0;
 		$scope.campaign.leaflet.markers = {};
 
-		angular.forEach( dateos, function ( value, key ) {			
+		angular.forEach( dateos, function ( value, index ) {
+			value.index = index;			
 			addMarker(value);
 			//markersBounds.push( [ value.position.coordinates[1], value.position.coordinates[0] ] );
 			markersBounds.push(L.latLng(value.position.coordinates[1], value.position.coordinates[0]));
@@ -494,6 +495,7 @@ angular.module('dateaWebApp')
 		$scope.flow.dateoDetail.dateo       = $scope.campaign.dateos[index];
 		$scope.flow.dateoDetail.markerIndex = index;
 		$scope.flow.dateoDetail.show        = true;
+		$scope.dateamap.focusDateo(index);
 	}
 	$scope.flow.closeDateoDetail = function (index) {
 		$scope.flow.dateoDetail.dateo = null;
@@ -509,6 +511,12 @@ angular.module('dateaWebApp')
 	$scope.$on('close-dateo-detail', function () {
 		$scope.flow.closeDateoDetail();
 	} );
+	$scope.$on('leafletDirectiveMap.popupopen', function(event, args){
+    $('.popup-detail-btn').click(function () {
+    	var index = parseInt($(this).data('index'));
+    	$scope.flow.openDateoDetail(index);
+    });
+  });
 
 	$scope.campaign.onSelectFilterChange = function () {
 		buildDateos();
@@ -737,7 +745,6 @@ angular.module('dateaWebApp')
 		var st = $document.scrollTop();
 		if (typeof(cardHeight) == 'undefined') cardHeight = angular.element('.viz-holder').position().top;
 		$scope.$apply(function() { $scope.flow.titleFix = st > cardHeight - 60; });
-		console.log($scope.flow.titleFix);
 	});
 
 

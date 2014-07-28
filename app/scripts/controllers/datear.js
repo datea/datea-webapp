@@ -12,6 +12,7 @@ angular.module('dateaWebApp')
 , 'datearModalGivens'
 , '$timeout'
 , 'leafletData'
+, 'User'
 // , 'leafletEvents'
 , function (
   $scope
@@ -24,6 +25,7 @@ angular.module('dateaWebApp')
 , datearModalGivens
 , $timeout
 , leafletData
+, User
 // , leafletEvents
 ) {
 	var headers
@@ -33,6 +35,10 @@ angular.module('dateaWebApp')
 	  // fn declarations
 	  , onGeolocation
 	  , onGeolocationError
+	  , geocode
+	  , reverseGeocode
+	  , mapToAddress
+	  , addressCache = {}
 	  ;
 
 // Object to be sent
@@ -117,13 +123,31 @@ $scope.$on( 'leafletDirectiveMap.click', function ( event, args ) {
 	            , draggable : true
 	            }
 
-	angular.extend( $scope.datear.leaflet.markers.draggy, newDraggy );
-
+	/*
 	if ( $scope.datear.leaflet.center.zoom <= 16 ) {
-		$scope.datear.leaflet.center.zoom = $scope.datear.leaflet.center.zoom + 1;
 		$scope.datear.leaflet.center.lat  = $scope.datear.leaflet.markers.draggy.lat;
 		$scope.datear.leaflet.center.lng  = $scope.datear.leaflet.markers.draggy.lng;
-	}
+		setTimeout(function () {
+			$scope.datear.leaflet.center.zoom = $scope.datear.leaflet.center.zoom + 1;
+		}, 300);
+	}*/
+	leafletData.getMap("leafletDatear")
+		.then( function ( map ) {
+			var zoom   = $scope.datear.leaflet.center.zoom;
+			if (zoom <= 16) {
+				var center = L.latLng(leafEvent.latlng.lat, leafEvent.latlng.lng); 
+			 	zoom+=2;
+				map.setZoomAround(center, zoom);
+				angular.extend( $scope.datear.leaflet.markers.draggy, newDraggy );
+			} else {
+				angular.extend( $scope.datear.leaflet.markers.draggy, newDraggy );
+			} 
+	} );
+
+	
+
+	//reverseGeocode(leafEvent.latlng.lat, leafEvent.latlng.lng);
+
 } );
 
 
@@ -323,6 +347,107 @@ $scope.datear.addTag = function ( tag ) {
 $scope.datear.removeTag = function ( idx ) {
 	$scope.datear.selectedTags.splice( idx, 1 );
 }
+
+reverseGeocode = function (lat, lng) {
+	if (!$scope.dateo.address || $scope.dateo.address.trim() != '') {
+		$http({
+			  method : 'GET'
+			, url    : 'http://nominatim.openstreetmap.org/reverse'
+			, params : {
+					lat               : lat
+				, lon               : lng
+				, format            : 'json'
+				, 'accept-language' : 'es,en' 
+ 			}
+		}).success(function (data, status){
+			console.log("NOMINATIM REVERSE", data);
+			$scope.dateo.address = data.display_name;
+		}); 
+	}
+}
+
+geocode = function (query) {
+	$scope.flow.addressSearchLoading = true;
+	$http({
+		  method : 'GET'
+		, url    : 'http://nominatim.openstreetmap.org/search'
+		, params : {
+				q                 : query
+			, format            : 'json'
+			, 'accept-language' : 'es,en'
+			, countrycodes      : User.data.ip_country
+			}
+	}).success(function (data, status){
+		console.log("NOMINATIM SEARCH", data);
+		if (data.length == 1) {
+			mapToAddress(data[0]);
+		} else if (data.length > 1) {
+			$scope.flow.addressSearchResults = data;
+		} else {
+			$scope.flow.addressNotFound = true;
+			setTimeout(function () {
+				$scope.$apply(function() {$scope.flow.addressNotFound = false;});
+			}, 2000);
+		}
+		$scope.flow.addressSearchLoading = false;
+		addressCache[query] = data;
+	}).error(function (data, status) {
+		$scope.flow.addressSearchLoading = false;
+	}); 
+}
+
+mapToAddress = function (address) {
+	var newDraggy, lat, lng;
+	lat = parseFloat(address.lat);
+	lng = parseFloat(address.lon);
+	newDraggy = { 
+		 			  lat : lat
+          , lng : lng
+          , draggable : true
+          }
+  angular.extend( $scope.datear.leaflet.markers.draggy, newDraggy );
+  $scope.datear.leaflet.center.lat  = lat;
+	$scope.datear.leaflet.center.lng  = lng;
+	$scope.datear.leaflet.center.zoom = 16;
+}
+
+$scope.flow.searchAddressInMap = function () {
+	var query, results;
+	$('.address-search-btn').focus();
+	if ($scope.dateo.address && $scope.dateo.address.trim() !== '' && !$scope.flow.addressSearchLoading) {
+		query = $scope.dateo.address.trim();
+		if (addressCache[query]) {
+			results = addressCache[query];
+			if (results.length > 1) {
+				$scope.flow.addressSearchResults = results;
+			} else if (results.length == 1) {
+				mapToAddress(results[0]);
+			} else {
+				$scope.flow.addressNotFound = true;
+				setTimeout(function () {
+					$scope.$apply(function() {$scope.flow.addressNotFound = false;});
+				}, 2000);
+			}
+		}else {
+			geocode(query);
+		}
+	}
+}
+
+$scope.flow.selectAddress = function (idx) {
+	var address = $scope.flow.addressSearchResults[idx];
+	console.log("SELECTED ADDRESS", address);
+	mapToAddress(address);
+	$scope.flow.addressSearchResults = null;
+}
+
+$scope.flow.closeSelectAddress = function () {
+	if (!$scope.flow.mouseOverSelectAddress) {
+		$scope.flow.addressSearchResults = null;
+	}
+	$scope.flow.addressNotFound = false;
+}
+
 
 // Map defaults
 defaultMap = angular.copy( config.defaultMap );

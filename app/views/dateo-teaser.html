@@ -16,8 +16,8 @@
 	<div class="social-holder">
 		<!--<a class="btn datea-gray-btn btn-sm pull-right" href="#/{{dateo.user.username}}/dateos/{{dateo.id}}" >ver detalle</a>-->
 		<button class="btn datea-gray-btn btn-sm pull-right" ng-click="openDetail()">ver detalle</button>
-		<span class="glyphicon glyphicon-thumbs-up"></span> {{dateo.vote_count}}
-		<span class="glyphicon glyphicon-comment"></span> {{dateo.comment_count}}
+		<span class="stat" ng-show="dateo.vote_count > 0"><span class="glyphicon glyphicon-thumbs-up"></span> {{dateo.vote_count}}</span>
+		<span class="stat" ng-show="dateo.comment_count > 0"><span class="glyphicon glyphicon-comment"></span> {{dateo.comment_count}}</span>
 	</div>
 	<hr>
 </div>

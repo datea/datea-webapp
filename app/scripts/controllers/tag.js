@@ -295,6 +295,12 @@ angular.module('dateaWebApp')
 	$scope.$on('close-dateo-detail', function () {
 		$scope.flow.closeDateoDetail();
 	} );
+	$scope.$on('leafletDirectiveMap.popupopen', function(event, args){
+    $('.popup-detail-btn').click(function () {
+    	var index = parseInt($(this).data('index'));
+    	$scope.flow.openDateoDetail(index);
+    });
+  });
 
 	$scope.tag.searchDateos = function () {
 		if ( $scope.tag.searchDateosKeyword ) {

@@ -86,8 +86,16 @@
 				<div id="spy-step2" class="step">
 					<div class="step-cover" ng-if="datear.step != 2" ng-click="scrollTo($event, 'spy-step2', 20)"></div>
 					<h4 class="">2. Ayúdanos a ubicar tu dateo</h4>
-					<div class="form-group">
-						<input type="text" class="form-control" id="address" placeholder="Dirección o descripción de la ubicación" ng-model="dateo.address">
+					<div class="form-group address-field">
+						<input type="text" class="form-control" id="address" placeholder="{{ flow.addressNotFound || 'Dirección o descripción de la ubicación'}}" ng-model="dateo.address" ng-enter="flow.searchAddressInMap()">
+						<i class="loading fa fa-circle-o-notch fa-spin" ng-show="flow.addressSearchLoading"></i>
+						<button class="btn address-search-btn" ng-click="flow.searchAddressInMap()" ng-blur="flow.closeSelectAddress()"><span class="glyphicon glyphicon-search"></span></button>
+						<ul class="result-dropdown" ng-mouseenter="flow.mouseOverSelectAddress = true" ng-mouseleave="flow.mouseOverSelectAddress = false">
+							<li ng-repeat="address in flow.addressSearchResults">
+								<div class="address-result" ng-click="flow.selectAddress($index)">{{address.display_name}}</div>
+							</li>
+						</ul>
+						<div class="no-results" ng-show="flow.addressNotFound">No se encontraron resultados :|</div>
 					</div>
 					<div class="form-group datea-no-margin-bottom">
 						<label for="map">Coloca el marcador en la ubicación exacta</label>
