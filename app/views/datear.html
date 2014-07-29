@@ -90,7 +90,7 @@
 						<input type="text" class="form-control" id="address" placeholder="{{ flow.addressNotFound || 'Dirección o descripción de la ubicación'}}" ng-model="dateo.address" ng-enter="flow.searchAddressInMap()">
 						<i class="loading fa fa-circle-o-notch fa-spin" ng-show="flow.addressSearchLoading"></i>
 						<button class="btn address-search-btn" ng-click="flow.searchAddressInMap()" ng-blur="flow.closeSelectAddress()"><span class="glyphicon glyphicon-search"></span></button>
-						<ul class="result-dropdown" ng-mouseenter="flow.mouseOverSelectAddress = true" ng-mouseleave="flow.mouseOverSelectAddress = false">
+						<ul class="result-dropdown" ng-mouseenter="flow.mouseOverSelectAddress = true" ng-mouseleave="flow.mouseOverSelectAddress = false" ng-show="flow.addressSearchResults">
 							<li ng-repeat="address in flow.addressSearchResults">
 								<div class="address-result" ng-click="flow.selectAddress($index)">{{address.display_name}}</div>
 							</li>

@@ -458,6 +458,7 @@ angular.module( 'dateaWebApp' )
 		$modal.open( { templateUrl : 'views/datear.html'
 		             , controller  : 'DatearCtrl'
 		             , windowClass : 'datear-modal'
+		             , backdrop    : 'static'
 		             , resolve     : {
 		                datearModalGivens : function () {
 		                   return {};

@@ -1282,10 +1282,10 @@ body {
 
 			.address-field {
 				position: relative;
-				padding-right: 46px;
+				padding-right: 48px;
 				.loading {
 					position: absolute;
-					right: 54px;
+					right: 56px;
 					top: 10px;
 				}
 				.form-control { 
@@ -1294,6 +1294,11 @@ body {
 					position: absolute;
 					right: 0;
 					top: 0;
+					color: white;
+					background-color: @color-18;
+					&:hover {
+						background-color: @color-10;
+					}
 				}
 				.result-dropdown {
 					border-radius: 0px;
@@ -1323,7 +1328,6 @@ body {
 					top: 33px;
 					padding: 5px 10px;
 					left: 0;
-					right: 0;
 					border: 1px solid #ccc;
 					border-radius: 0px;
 					z-index: 5000;
@@ -1725,8 +1729,8 @@ body {
 		text-overflow: ellipsis;
 		text-transform: capitalize;
 		position: absolute;
-		left: 0;
-		right: 0;
+		left: 4px;
+		right: 4px;
 		bottom: 15px;
 		background-color: white;
 		margin: 0;
@@ -1740,17 +1744,45 @@ body {
 	}
 	.dateo-count {
 		position: absolute;
-		bottom: 0;
-		left: 0;
+		bottom: 4px;
+		left: 4px;
 		color: @color-6;
 		font-size: 12px;
 	}
 	.status {
 		position: absolute;
-		bottom: 0;
-		right: 0;
+		bottom: 4px;
+		right: 4px;
 		color: @color-5;
 		font-size: 12px;
+	}
+}
+
+.campaign-list-holder {
+	.container-fluid {padding: 0px 40px;}
+	.search-bar {
+		h1 {margin-top: 0;}
+		background-color: white;
+		padding: 30px 0;
+		.search-input {
+			width: 280px;
+		}
+		.form-group {
+			margin-right: 20px;
+			&:last-child {
+				margin-right: 0;
+			}
+		}
+	}
+	.search-results {
+		background-color: #ddd;
+		.num-results {
+			padding: 15px 0;
+			text-align: right;
+		}
+		.campaign-list {
+			min-height: 65vh;
+		}
 	}
 }
 
@@ -1791,6 +1823,7 @@ body {
 						margin-bottom: 5px;
 						font-size: 32px;
 						font-weight: bold;
+						line-height: 35px;
 					}
 					h2 {
 						margin: 5px 0 20px 0;

@@ -32,14 +32,14 @@ angular.module('dateaWebApp')
 	  , dateo        = {}
 	  , alertIndexes = {}
 	  , defaultMap
+	  , addressCache = {}
 	  // fn declarations
 	  , onGeolocation
 	  , onGeolocationError
 	  , geocode
 	  , reverseGeocode
 	  , mapToAddress
-	  , addressCache = {}
-	  ;
+	;
 
 // Object to be sent
 $scope.dateo               = {};
@@ -391,8 +391,10 @@ geocode = function (query) {
 		}
 		$scope.flow.addressSearchLoading = false;
 		addressCache[query] = data;
+		$('.address-search-btn').blur();
 	}).error(function (data, status) {
 		$scope.flow.addressSearchLoading = false;
+		$('.address-search-btn').blur();
 	}); 
 }
 
@@ -409,6 +411,7 @@ mapToAddress = function (address) {
   $scope.datear.leaflet.center.lat  = lat;
 	$scope.datear.leaflet.center.lng  = lng;
 	$scope.datear.leaflet.center.zoom = 16;
+	$('.address-search-btn').blur();
 }
 
 $scope.flow.searchAddressInMap = function () {
@@ -428,6 +431,7 @@ $scope.flow.searchAddressInMap = function () {
 					$scope.$apply(function() {$scope.flow.addressNotFound = false;});
 				}, 2000);
 			}
+			$('.address-search-btn').blur();
 		}else {
 			geocode(query);
 		}
@@ -436,7 +440,6 @@ $scope.flow.searchAddressInMap = function () {
 
 $scope.flow.selectAddress = function (idx) {
 	var address = $scope.flow.addressSearchResults[idx];
-	console.log("SELECTED ADDRESS", address);
 	mapToAddress(address);
 	$scope.flow.addressSearchResults = null;
 }

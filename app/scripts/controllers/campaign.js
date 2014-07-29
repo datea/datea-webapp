@@ -211,6 +211,9 @@ angular.module('dateaWebApp')
 		.then( function ( response ) {
 			if ( response.objects[0] ) {
 				angular.extend( $scope.campaign, response.objects[0] );
+				if ($scope.campaign.secondary_tags && $scope.campaign.secondary_tags.length > 10) {
+					$scope.flow.colorRange = d3.scale.category20().range();
+				}
 				$scope.campaign.shareableUrl = config.app.url
 				                               + $scope.campaign.user.username + '/'
 				                               + $scope.campaign.main_tag.tag;
@@ -531,6 +534,7 @@ angular.module('dateaWebApp')
 			modalInstance = $modal.open( { templateUrl : 'views/datear.html'
 			             , controller  : 'DatearCtrl'
 			             , windowClass : 'datear-modal'
+			             , backdrop    : 'static'
 			             , resolve     : {
 			                datearModalGivens : function () {
 			                  return { defaultTag    : $scope.campaign.main_tag.tag
