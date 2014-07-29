@@ -1,70 +1,6 @@
 <div class="homeSI-holder container-fluid">
 	<div class="row">
 
-		<div class="col-lg-8">
-			<div class="homeSI-map-holder" ng-class="{ 'datea-loading': homeSI.loading.leaflet }" id="homeSI-map-holder">
-				<div class="map-frame-top map-frame">
-					<div class="form-group search-box">
-						<form ng-submit="homeSI.searchDateos()">
-							<div class="input-group">
-								<input type="text" class="form-control" placeholder="buscar" ng-model="homeSI.searchDateosKeyword">
-								<span class="input-group-btn">
-									<button class="btn btn-default" type="button" ng-click="homeSI.searchDateos()"><i class="glyphicon glyphicon-search"></i></button>
-								</span>
-							</div>
-						</form>
-					</div>
-					<span class="order-by-label">ordernar por:</span>
-					<div class="form-group">
-						<select class="selectpicker span1 bar-orderby" data-style="btn-link" name="orderBy" ng-model="homeSI.selectedMarker" ng-change="homeSI.onSelectFilterChange()">
-							<option value="last">últimos</option>
-							<option value="mostVoted">más apoyados</option>
-							<option value="mostCommented">más comentados</option>
-						</select>
-					</div>
-					<button class="btn btn-default pull-right" type="button" ng-click="homeSI.searchDateosWithImages()"><i class="glyphicon glyphicon-camera"></i></button>
-					<button class="btn btn-default pull-right" type="button" ng-click="homeSI.geolocate()"><i class="glyphicon glyphicon-map-marker"></i></button>
-				</div>
-				<leaflet class="leaflet-map" id="leafletHomeSI" defaults="homeSI.leaflet.defaults" bounds="homeSI.leaflet.bounds" markers="homeSI.leaflet.markers" center="homeSI.leaflet.center" width="100%"></leaflet>
-				<div class="map-frame-bottom map-frame">
-					<button class="btn btn-default fix-center" type="button" ng-click="homeSI.focusNextMarker( { direction : 0 } )"><i class="glyphicon glyphicon-chevron-left"></i></button>
-					<button class="btn btn-default" type="button" ng-click="homeSI.focusNextMarker( { direction : 1 } )"><i class="glyphicon glyphicon-chevron-right"></i></button>
-					<button class="btn btn-default pull-right" type="button" ng-click="homeSI.fullscreen()"><i class="glyphicon glyphicon-fullscreen"></i></button>
-					<button class="btn btn-default pull-right" type="button" ng-click="flow.share()"><i class="glyphicon glyphicon-share"></i></button>
-				</div>
-			</div>
-
-					<div class="campaigns-holder" ng-class="{'datea-loading': homeSI.loading.campaigns }">
-						
-						<form ng-submit="homeSI.searchCampaigns()" class="pull-right search-form">
-							<div class="form-group search-box">
-								<div class="input-group span4">
-									<input type="text" class="form-control" placeholder="buscar" ng-model="homeSI.searchCampaignsKeyword">
-									<span class="input-group-btn">
-										<button class="btn btn-default" type="button" ng-click="homeSI.searchCampaigns()"><i class="glyphicon glyphicon-search"></i></button>
-									</span>
-								</div>
-							</div>
-						</form>
-
-						<div class="campaign-title">
-							<h2>INICIATIVAS</h2>
-							<a class="btn datea-btn ff1" href="#/crear-iniciativa">Crear iniciativa</a>
-						</div>
-
-	<!-- 					<button class="btn btn-default">Crear iniciativa</button> -->
-						<div class="campaign-list row">
-							<div class="col-lg-3 col-md-4 col-sm-6 col-xs-12" ng-repeat="campaign in homeSI.campaigns">
-								<da-campaign-teaser></da-campaign-teaser>
-							</div>
-						</div>
-
-						<pagination boundary-links="true" items-per-page="pagination.itemsPerPage" total-items="pagination.totalItems" max-size="5" page="pagination.currentPage" class="pagination-lg" previous-text="&lsaquo;" next-text="&rsaquo;" first-text="&laquo;" last-text="&raquo;"></pagination>
-					
-					</div>
-
-		</div>
-
 		<div class="col-lg-4 homeSI-meta-holder ">
 			
 			<div class="block block-1">
@@ -152,6 +88,70 @@
 				</div>
 			</div>
 		</div>
+
+		<div class="col-lg-8">
+			<div class="homeSI-map-holder" ng-class="{ 'datea-loading': homeSI.loading.leaflet }" id="homeSI-map-holder">
+				<div class="map-frame-top map-frame">
+					<div class="form-group search-box">
+						<form ng-submit="homeSI.searchDateos()">
+							<div class="input-group">
+								<input type="text" class="form-control" placeholder="buscar" ng-model="homeSI.searchDateosKeyword">
+								<span class="input-group-btn">
+									<button class="btn btn-default" type="button" ng-click="homeSI.searchDateos()"><i class="glyphicon glyphicon-search"></i></button>
+								</span>
+							</div>
+						</form>
+					</div>
+					<span class="order-by-label">ordernar por:</span>
+					<div class="form-group">
+						<select class="selectpicker span1 bar-orderby" data-style="btn-link" name="orderBy" ng-model="homeSI.selectedMarker" ng-change="homeSI.onSelectFilterChange()">
+							<option value="last">últimos</option>
+							<option value="mostVoted">más apoyados</option>
+							<option value="mostCommented">más comentados</option>
+						</select>
+					</div>
+					<button class="btn btn-default pull-right" type="button" ng-click="homeSI.searchDateosWithImages()"><i class="glyphicon glyphicon-camera"></i></button>
+					<button class="btn btn-default pull-right" type="button" ng-click="homeSI.geolocate()"><i class="glyphicon glyphicon-map-marker"></i></button>
+				</div>
+				<leaflet class="leaflet-map" id="leafletHomeSI" defaults="homeSI.leaflet.defaults" bounds="homeSI.leaflet.bounds" markers="homeSI.leaflet.markers" center="homeSI.leaflet.center" width="100%"></leaflet>
+				<div class="map-frame-bottom map-frame">
+					<button class="btn btn-default fix-center" type="button" ng-click="homeSI.focusNextMarker( { direction : 0 } )"><i class="glyphicon glyphicon-chevron-left"></i></button>
+					<button class="btn btn-default" type="button" ng-click="homeSI.focusNextMarker( { direction : 1 } )"><i class="glyphicon glyphicon-chevron-right"></i></button>
+					<button class="btn btn-default pull-right" type="button" ng-click="homeSI.fullscreen()"><i class="glyphicon glyphicon-fullscreen"></i></button>
+				</div>
+			</div>
+
+			<div class="campaigns-holder" ng-class="{'datea-loading': homeSI.loading.campaigns }">
+				
+				<form ng-submit="homeSI.searchCampaigns()" class="pull-right search-form">
+					<div class="form-group search-box">
+						<div class="input-group span4">
+							<input type="text" class="form-control" placeholder="buscar" ng-model="homeSI.searchCampaignsKeyword">
+							<span class="input-group-btn">
+								<button class="btn btn-default" type="button" ng-click="homeSI.searchCampaigns()"><i class="glyphicon glyphicon-search"></i></button>
+							</span>
+						</div>
+					</div>
+				</form>
+
+				<div class="campaign-title">
+					<h2>INICIATIVAS</h2>
+					<a class="btn datea-btn ff1" href="#/crear-iniciativa">Crear iniciativa</a>
+				</div>
+
+<!-- 					<button class="btn btn-default">Crear iniciativa</button> -->
+				<div class="campaign-list row">
+					<div class="col-lg-3 col-md-4 col-sm-6 col-xs-12" ng-repeat="campaign in homeSI.campaigns">
+						<da-campaign-teaser></da-campaign-teaser>
+					</div>
+				</div>
+
+				<pagination boundary-links="true" items-per-page="pagination.itemsPerPage" total-items="pagination.totalItems" max-size="5" page="pagination.currentPage" class="pagination-lg" previous-text="&lsaquo;" next-text="&rsaquo;" first-text="&laquo;" last-text="&raquo;"></pagination>
+			
+			</div>
+		</div>
+
+
 
 	</div>
 </div>
