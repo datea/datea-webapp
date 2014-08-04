@@ -138,16 +138,17 @@ angular.module('dateaWebApp')
 			});
 			
 			return {
-			  lat       : dateo.position.coordinates[1]
-			, lng       : dateo.position.coordinates[0]
-			, group     : $scope.campaign.main_tag.tag
-			, label     : { message: labelTags.join(',') }
-			, message   : $interpolate( config.marker )(dateo)
-			, draggable : false
-			, focus     : false
-			, _id       : dateo.id
-			, tags      : tags
-			, icon 			: buildMarkerIcon(dateo)
+			  lat         : dateo.position.coordinates[1]
+			, lng         : dateo.position.coordinates[0]
+			, group       : $scope.campaign.main_tag.tag
+			, label       : { message: labelTags.join(',') }
+			, message     : $interpolate( config.marker )(dateo)
+			, draggable   : false
+			, focus       : false
+			, _id         : dateo.id
+			, tags        : tags
+			, icon 			  : buildMarkerIcon(dateo)
+			, riseOnHover : true
 			};
 	}
 
@@ -168,7 +169,8 @@ angular.module('dateaWebApp')
 		angular.forEach(colors, function (color, i) {
 			html = html + '<rect height="40" width="'+catWidth+'" fill="'+color+'" x="'+(i*catWidth)+'" />';
 		});
-		html = html + '<circle cx="14.5" cy="14" r="5" fill="white" />'
+		html = html 
+				 + '<circle cx="14.5" cy="14" r="5" fill="white" />'
 				 + '</g></svg>';
 
 		return {
@@ -317,9 +319,9 @@ angular.module('dateaWebApp')
 			, q    = $scope.query
 		;
 		// order by
-		if (q.orderBy === '-created') text.push('últimos dateos');
-		if (q.orderBy === '-vote_count') text.push('más apoyados');
-		if (q.orderBy === '-comment_count') text.push('más comentados');
+		if (q.orderBy === '-created') text.push('últimos '+q.limit);
+		if (q.orderBy === '-vote_count') text.push(q.limit+' más apoyados');
+		if (q.orderBy === '-comment_count') text.push(q.limit+' más comentados');
 		// tag
 		if (q.tag) text.push('en #'+q.tag);
 		// owner
@@ -515,7 +517,8 @@ angular.module('dateaWebApp')
 		$scope.flow.closeDateoDetail();
 	} );
 	$scope.$on('leafletDirectiveMap.popupopen', function(event, args){
-    $('.popup-detail-btn').click(function () {
+    $('.popup-detail-btn').click(function (ev) {
+    	ev.preventDefault();
     	var index = parseInt($(this).data('index'));
     	$scope.flow.openDateoDetail(index);
     });
@@ -637,9 +640,9 @@ angular.module('dateaWebApp')
 				angular.forEach(marker.options.tags, function(tag) {
 					// taking out the "other color" for tags not in secondar_tags
 					//if (tag != $scope.campaign.main_tag.tag) {
-					if (tag != $scope.campaign.main_tag.tag && angular.isDefined($scope.subTags[tag])) {
+					if (tag != $scope.campaign.main_tag.tag && !!$scope.subTags[tag]) {
 						//tag = angular.isDefined($scope.subTags[tag]) ? tag : "Otros";
-						if (angular.isDefined(dataObj[tag])) {
+						if (!!dataObj[tag]) {
 							dataObj[tag].value ++;
 						}else{
 							dataObj[tag] = { label: '#'+tag, value : 1, tag: tag};

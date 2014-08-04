@@ -111,8 +111,14 @@
 					<div class="step-cover" ng-if="datear.step != 3" ng-click="scrollTo($event, 'spy-step3', 20)"></div>
 					<h4 class="modal-scroll-3 scroll-section">3. Etiqueta tu dateo</h4>
 					<h5 ng-show="datear.suggestedTags">etiquetas sugeridas</h5>
-					<div class="btn-group" ng-show="datear.suggestedTags">
+					<div class="suggested-tag-links btn-group" ng-show="datear.suggestedTags && !datear.suggestedTags2">
 						<button type="button" class="btn btn-default" ng-repeat="tag in datear.suggestedTags" ng-click="datear.addTag( tag.tag )">#{{tag.tag}}</button>
+					</div>
+					<div class="suggested-tag-links btn-group" ng-show="datear.suggestedTags2">
+						<button class="back-btn btn-link btn" ng-click="datear.suggestedTagsBack()"><span class="glyphicon glyphicon-chevron-left"></span></button>
+						<div class="tag-links2">
+								<button type="button" class="btn btn-default" ng-repeat="tag in datear.suggestedTags2" ng-click="datear.addTag( tag.tag )">#{{tag.tag}}</button>
+						</div>
 					</div>
 
 					<h5>buscar / agregar etiquetas</h5>
@@ -134,7 +140,7 @@
 				</div>
 
 				<div class="actions">
-					<div class="alert alert-danger" ng-show="dateo.errorMessage">{{dateo.errorMessage}}</div>
+					<div class="alert alert-danger" ng-show="datear.errorMessage">{{datear.errorMessage}}</div>
 					<button class="btn btn-success pull-right btn-lg" ng-click="datear.doDatear()">Enviar</button>
 					<button class="btn btn-default btn-lg" ng-click="datear.cancel()">Cancelar</button>
 				</div>

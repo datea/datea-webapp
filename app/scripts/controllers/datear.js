@@ -29,10 +29,12 @@ angular.module('dateaWebApp')
 // , leafletEvents
 ) {
 	var headers
-	  , dateo        = {}
-	  , alertIndexes = {}
+	  , dateo           = {}
+	  , alertIndexes    = {}
 	  , defaultMap
-	  , addressCache = {}
+	  , addressCache    = {}
+	  , drillDownTags   = {}
+	  , doDrillDownTags = false
 	  // fn declarations
 	  , onGeolocation
 	  , onGeolocationError
@@ -302,8 +304,9 @@ $scope.datear.doDatear = function () {
 	if ( $scope.dateo.content && $scope.dateo.tags.length ) {
 		Api.dateo.postDateo( $scope.dateo )
 		.then( function ( response ) {
-			$scope.dateo.errorMessage = null;
+			$scope.datear.errorMessage = null;
 			$scope.datear.onFinished  = true;
+			angular.extend($scope.dateo, dateo);
 			//$rootScope.$broadcast( 'user:hasDateado' );
 			if (typeof(datearModalGivens.datearSuccessCallback) != 'undefined') datearModalGivens.datearSuccessCallback(response);
 			$scope.datear.loading = false;
@@ -312,11 +315,11 @@ $scope.datear.doDatear = function () {
 		} )
 	} else {
 		if ( !$scope.dateo.content ) {
-			$scope.dateo.errorMessage = 'Escriba una descripción de su dateo';
+			$scope.datear.errorMessage = 'Escriba una descripción de su dateo';
 		} else if ( !$scope.dateo.tags.length ) {
-			$scope.dateo.errorMessage = 'Elija una etiqueta';
+			$scope.datear.errorMessage = 'Elija una etiqueta';
 		} else {
-			$scope.dateo.errorMessage = 'Hubo un error al datear';
+			$scope.datear.errorMessage = 'Hubo un error al datear';
 		}
 	}
 };
@@ -326,7 +329,7 @@ $scope.datear.cancel = function () {
 };
 
 $scope.datear.autocompleteTag = function ( val ) {
-	return Api.tag.getAutocompleteByKeyword( { q: val } )
+	return Api.tag.getAutocompleteByKeyword( { q: val.replace('#', '') } )
 	.then( function ( response ) {
 		var tags = [];
 		angular.forEach( response.suggestions, function( item ){
@@ -337,15 +340,36 @@ $scope.datear.autocompleteTag = function ( val ) {
 }
 
 $scope.datear.addTag = function ( tag ) {
+	var dtag, moreTags;
+
 	$scope.dateo.nextTag = null;
 	if ( !~$scope.datear.selectedTags.indexOf( tag )
 	&& $scope.datear.selectedTags.length < config.dateo.tagsMax ) {
 		tag = tag.replace('#','');
 		$scope.datear.selectedTags.push( tag );
 	}
+	// drill down to secondary tags contained in campaigns (if tag has campaigns)
+	if (doDrillDownTags && !!drillDownTags[tag]) {
+		dtag = drillDownTags[tag];
+		if (dtag.campaigns.length > 0) {
+			moreTags = [];
+			for (var i in dtag.campaigns) {
+				if (dtag.campaigns[i].secondary_tags && dtag.campaigns[i].secondary_tags.length) {
+					moreTags = moreTags.concat(dtag.campaigns[i].secondary_tags.map(function(t){ return {tag: t}}));
+				}
+			}
+			if (moreTags.length) {
+				$scope.datear.suggestedTags2 = moreTags;
+			}
+		}
+	}
 }
 $scope.datear.removeTag = function ( idx ) {
 	$scope.datear.selectedTags.splice( idx, 1 );
+}
+
+$scope.datear.suggestedTagsBack = function () {
+		$scope.datear.suggestedTags2 = null;
 }
 
 reverseGeocode = function (lat, lng) {
@@ -460,6 +484,13 @@ if ( datearModalGivens.defaultTag ) {
 }
 if ( datearModalGivens.suggestedTags ) {
 	$scope.datear.suggestedTags = datearModalGivens.suggestedTags;
+}else{
+	$scope.datear.suggestedTags = User.data.tags_followed;
+	doDrillDownTags = true;
+	for (var i in User.data.tags_followed) {
+		var t = User.data.tags_followed[i]
+		drillDownTags[t.tag] = t; 
+	}
 }
 geo.getLocation( {timeout:10000} ).then( onGeolocation, onGeolocationError );
 

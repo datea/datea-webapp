@@ -201,11 +201,12 @@ angular.module('dateaWebApp')
 			, lng       : dateo.position.coordinates[0]
 			, group     : $scope.tag.tag
 			, label     : { message: $scope.tag.tag }
-			, message   : $interpolate( config.marker )(dateo)
-			, draggable : false
-			, focus     : false
-			, _id       : dateo.id
-			, icon 			:  markerIcon
+			, message     : $interpolate( config.marker )(dateo)
+			, draggable   : false
+			, focus       : false
+			, _id         : dateo.id
+			, icon 			  :  markerIcon
+			, riseOnHover : true
 			};
 	}
 
@@ -297,7 +298,8 @@ angular.module('dateaWebApp')
 		$scope.flow.closeDateoDetail();
 	} );
 	$scope.$on('leafletDirectiveMap.popupopen', function(event, args){
-    $('.popup-detail-btn').click(function () {
+    $('.popup-detail-btn').click(function (ev) {
+    	ev.preventDefault();
     	var index = parseInt($(this).data('index'));
     	$scope.flow.openDateoDetail(index);
     });

@@ -4,12 +4,15 @@ angular.module( 'dateaWebApp' )
 .controller( 'LandingCtrl'
 , [ '$scope'
   , 'Api'
+  , 'config'
 , function (
     $scope
   , Api
+  , config
 ) {
 
 	$scope.landing = {};
+	$scope.dateFormat = config.defaultDateFormat;
 
 	Api.stats.getStats()
 	.then( function ( response ) {

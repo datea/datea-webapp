@@ -85,35 +85,16 @@
 			<div class="parts-holder meta-info-holder">
 				<div class="part part-1 most-dateo">
 					<h4 class="ff1">lo más dateado</h4>
+					<div class="btn datea-btn ff1">ir a mapa de dateos</div>
 					<div class="trending-tags-holder">
 						<a class="datea-tag-btn trending-tag" ng-href="#/tag/{{tag.tag}}" ng-repeat="tag in landing.trendingTags">
 							#{{tag.tag}}
 						</a>
 					</div>
-					<div class="btn datea-btn ff1">ir a mapa de dateos</div>
 				</div>
 				<div class="part part-2 outstanding-dateo-holder">
 					<h4 class="ff1">dateo destacado</h4>
-					<div class="outstanding-dateo">
-						<div class="parts-holder user-info">
-							<div class="part part-1">
-								<div class="user-img img-circle" da-bg-from-api="{{landing.outstandingDateo.user.image.image_small}}" da-img-size="cover" da-img-type="user"></div>
-							</div>
-							<div class="part part-2">
-								<h4>{{landing.outstandingDateo.user.username}}</h4>
-								<span class="date">el {{landing.outstandingDateo.created | date:'fullDate'}}</span>
-							</div>
-						</div>
-						<p>{{landing.outstandingDateo.extract}}</p>
-						<div class="outstanding-dateo-img" bg-from-api="{{landing.outstandingDateo.images[$index].image}}" ng-repeat="img in landing.outstandingDateo.images"></div>
-						<div class="icon-holder part">
-							<span class="glyphicon glyphicon-thumbs-up"></span> {{landing.outstandingDateo.vote_count}}
-						</div>
-						<div class="icon-holder part">
-							<span class="glyphicon glyphicon-comment"></span> {{landing.outstandingDateo.comment_count}}
-						</div>
-						<a class="btn datea-btn ff1 outstanding-dateo-more-btn" href="#/{{landing.outstandingDateo.user.username}}/dateos/{{landing.outstandingDateo.id}}">ver detalle</a>
-					</div>
+					<da-dateo-outstanding ng-repeat="dateo in [landing.outstandingDateo]"></da-dateo-outstanding>
 				</div>
 			</div>
 		</div>
@@ -121,16 +102,12 @@
 	<div class="section-holder section-holder-5 ff1">
 		<div class="container section section-5">
 			<h3 class="ff1">iniciativas destacadas</h3>
-			<div class="parts-holder campaigns-holder">
-				<div class="part campaign-holder" ng-repeat="outstandingCampaign in landing.outstandingCampaigns">
-					<div class="campaign-img" da-bg-from-api="{{outstandingCampaign.image.image}}" da-img-type="campaign" da-img-size="cover"></div>
-					<h4>{{outstandingCampaign.name}}</h4>
-					<span class="dateo-count">{{outstandingCampaign.dateo_count}} dateos</span>
-					<span class="status">{{outstandingCampaign.is_active && 'activo' || 'inactivo'}}</span>
-					<a class="btn datea-btn datea-btn-xs ff1 outstanding-campaign-more-btn" href="#/{{outstandingCampaign.user.username}}/{{outstandingCampaign.main_tag.tag}}" target="_blank">ver más</a>
+			<div class="campaigns-holder row">
+				<div class="col-xs-3" ng-repeat="campaign in landing.outstandingCampaigns">
+					<da-campaign-teaser></da-campaign-teaser>
 				</div>
 			</div>
-			<div class="btn datea-btn ff1 more-campaigns-btn">ver iniciatvias</div>
+			<a class="btn btn-lg datea-btn ff1 more-campaigns-btn" href="#/iniciativas">ver iniciatvias</a>
 		</div>
 	</div>
 	<div class="section-holder section-holder-6 ff1">

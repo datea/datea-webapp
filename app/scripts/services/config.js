@@ -17,7 +17,7 @@ angular
 	              // ,'<span class="tag">#{{tags[0].tag}}</span>'
 	              ,'<p>{{extract}}</p>'
 	              //,'<a class="btn datea-gray-btn btn-xs pull-right" href="#{{user.username}}/dateos/{{id}}" target="_blank">ver más</a>'
-	              , '<button class="popup-detail-btn btn datea-gray-btn btn-xs pull-right" data-index="{{index}}">ver detalle</button>'
+	              , '<a class="popup-detail-btn btn datea-gray-btn btn-xs pull-right" data-index="{{index}}" href="#{{user.username}}/dateos/{{id}}">ver detalle</a>'
 	              ,'<div class="stats">'
 	              ,		'<span class="stat"><span class="glyphicon glyphicon-thumbs-up"></span>{{vote_count}}</span>'
 	              ,		'<span class="stat"><span class="glyphicon glyphicon-comment"></span>{{comment_count}}</span>'
@@ -37,13 +37,15 @@ angular
 	               , defaults : { scrollWheelZoom: false }
 	               , markers  : {}
 	               }
+	, defaultDateFormat : "d 'de' MMMM yyyy - H:mm" 
 	, defaultBoundsRatio : +0.0075
 	, defaultImgProfile : 'static/images/globals/user-default.png'
 	, defaultImgBackground : 'static/images/globals/bg-gris.png'
 	, defaultImgCampaign: "static/images/globals/campaign-default.jpg"
-	, homeSI : { campaignsOffset : 12
+	, homeSI : { campaignsOffset : 8
 	           , paginationLimit : 6
-	           , mapZoomOverride : 15
+	           , mapZoomOverride : 13
+	           , zoomAfterDatear : 16
 	           , activityVerbs : [ 'dateo', 'commented', 'voted' ]
 	           , activityContentMsg : { onUser : { 'dateo'     : 'dateó en #{{action_object.tags[0].tag}}'
 	                                             , 'commented' : 'comentó tu dateo en #{{action_object.tags[0].tag}}'

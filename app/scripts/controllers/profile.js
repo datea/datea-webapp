@@ -43,7 +43,7 @@ angular.module('dateaWebApp')
 	$scope.paginationCampaigns = {};
 	$scope.paginationDateos = {};
 	$scope.flow = {};
-	$scope.flow.notFound = true;
+	$scope.flow.notFound = false;
 	$scope.map_is_present = false;
 
 	buildUserFollows = function () {
