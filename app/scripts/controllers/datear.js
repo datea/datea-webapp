@@ -44,19 +44,21 @@ angular.module('dateaWebApp')
 	;
 
 // Object to be sent
-$scope.dateo               = {};
-$scope.datear              = {};
-$scope.datear.leaflet      = {};
-$scope.datear.autocomplete = {};
-$scope.flow                = {};
-$scope.flow.dp             = {};
+$scope.dateo                = {};
+$scope.datear               = {};
+$scope.datear.leaflet       = {};
+$scope.datear.autocomplete  = {};
+$scope.datear.link				  = {};
+$scope.datear.selectedMedia = [];
+$scope.flow                 = {};
+$scope.flow.dp              = {};
 
-$scope.datear.selectedTags = [];
-$scope.datear.loading			 = false;
-$scope.datear.onFinished   = false;
-$scope.datear.isScrolling  = false;
-$scope.alerts = [];
-$scope.datear.step				 = 1;
+$scope.datear.selectedTags  = [];
+$scope.datear.loading			  = false;
+$scope.datear.onFinished    = false;
+$scope.datear.isScrolling   = false;
+$scope.alerts               = [];
+$scope.datear.step				  = 1;
 
 var $modal_body = angular.element(document.getElementById('modal-body'));
 if ($modal_body.scrollTop() != 0 ) $modal_body.scrollTop(0);
@@ -254,17 +256,6 @@ $scope.$watch( 'flow.dp.dateoDate', function () {
 // 	$this.parent().remove();
 // }
 
-$scope.flow.removeImg = function () {
-	$scope.datear.img = null;
-	$scope.datear.imgData = null;
-} 
-
-$scope.flow.removeFile = function () {
-	$scope.datear.file = null;
-	$scope.datear.fileData = null;
-}
-
-
 $scope.datear.doDatear = function () {
 	
 	$scope.datear.loading = true;
@@ -296,9 +287,15 @@ $scope.datear.doDatear = function () {
 		$scope.dateo.files = [ { file   : { name     : $scope.datear.fileData.name
 		                                  , data_uri : $scope.datear.file
 		                                  }
+		                        , title : $scope.datear.fileTitle || $scope.datear.fileData.name
 		                        , order : 0
 		                        }
 		                      ];
+	}
+
+	// Link 
+	if ($scope.dateo.link == null) {
+		$scope.dateo.link = undefined;
 	}
 
 	if ( $scope.dateo.content && $scope.dateo.tags.length ) {
@@ -475,6 +472,82 @@ $scope.flow.closeSelectAddress = function () {
 	$scope.flow.addressNotFound = false;
 }
 
+
+$scope.datear.removeMedia = function (idx) {
+
+	var mediaType = $scope.datear.selectedMedia[idx].type;
+	$scope.datear.selectedMedia.splice(idx, 1);
+	switch (mediaType) {
+		case 'image':
+			$scope.datear.img = null;
+			$scope.datear.imgData = null;
+			break;
+		case 'file':
+			$scope.datear.file = null;
+			$scope.datear.fileData = null;
+			break;
+		case 'link':
+			$scope.dateo.link = null;
+			break;
+	}
+}
+
+$scope.$watch('datear.imgData', function () {
+	if (!!$scope.datear.imgData) {
+		$scope.datear.selectedMedia.unshift({type: 'image', order: 0});
+	}
+});
+
+$scope.$watch('datear.fileData', function () {
+	if (!!$scope.datear.fileData) {
+		$scope.datear.selectedMedia.unshift({type: 'file', order: 0});
+	}
+});
+
+$scope.datear.link.add = function () {
+	if (!$scope.dateo.link) {
+		$scope.dateo.link = {};
+		$scope.datear.selectedMedia.unshift({type: 'link', order: 0});
+	}
+}
+$scope.datear.link.loadUrl = function () {
+	if ($scope.dateo.link.url) {
+		$scope.datear.link.loading = true;
+		$scope.datear.link.urlPH = '';
+		$http({
+			  method : 'GET'
+			, url    : config.api.url + 'url_info/'
+			, params : {
+					url: $scope.dateo.link.url
+			}
+		}).success(function (data, status) {
+			$scope.dateo.link.title = data.title;
+			$scope.dateo.link.description = data.description;
+			if (data.images.length) {
+				$scope.dateo.link.img_url = data.images[0];
+				$scope.datear.link.images = data.images;
+				$scope.datear.link.imgIndex = 0;
+			}
+			$scope.datear.link.loading = false;
+		}).error(function (data, status) {
+			//console.log("ERROR IN LINK LOOKUP", data);
+			$scope.dateo.link.url = '';
+			$scope.datear.link.urlPH = 'No se pudo encontrar la dirección. Inténtalo denuevo.';
+			$scope.datear.link.loading = false;
+		});
+	}else {
+		$scope.dateo.link.url = '';
+		$scope.datear.link.urlPH = 'Dirección con formato inválido. Falta "http.." ?.';
+	}
+}
+$scope.datear.link.prevImg = function () {
+	$scope.datear.link.imgIndex--;
+	$scope.dateo.link.img_url = $scope.datear.link.images[$scope.datear.link.imgIndex];
+}
+$scope.datear.link.nextImg = function () {
+	$scope.datear.link.imgIndex++;
+	$scope.dateo.link.img_url = $scope.datear.link.images[$scope.datear.link.imgIndex];
+}
 
 // Map defaults
 defaultMap = angular.copy( config.defaultMap );

@@ -31,6 +31,8 @@ angular.module('dateaWebApp')
 	$scope.alerts  = [];
 	$scope.loading = false;
 
+	console.log("USER DATA", User);
+
 	$scope.closeAlert = function(index) {
 		$scope.alerts.splice(index, 1);
 	};

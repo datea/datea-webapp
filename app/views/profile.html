@@ -31,14 +31,17 @@
 					<tabset>
 						
 						<tab heading="dateos">
-							<div class="dateos-holder tab-body" ng-class="{'datea-loading': targetUser.dateo_loading}">
+							<div class="dateos-holder tab-body" ng-class="{'datea-loading': targetUser.dateoLoading}">
+								<p class="msg no-results" ng-show="targetUser.dateos.length === 0 && targetUser.dateoLoading === false">
+								No ha dateado todavia <i class="fa fa-meh-o"></i> 
+								</p>
 								<da-dateo-teaser ng-repeat="dateo in targetUser.dateos" map-present="false" detail-inline="false"></da-dateo-teaser>
 								<pagination ng-if="paginationDateos.totalItems > paginationDateos.itemsPerPage" boundary-links="true" items-per-page="paginationDateos.itemsPerPage" total-items="paginationDateos.totalItems" page="paginationDateos.currentPage" class="pagination pagination-lg" previous-text="&lsaquo;" next-text="&rsaquo;" first-text="&laquo;" last-text="&raquo;"></pagination>
 							</div>
 						</tab>
 
 						<tab heading="iniciativas" ng-show="targetUser.campaigns.length">
-							<div class="campaigns-holder tab-body" ng-class="{'datea-loading': targetUser.campaign_loading}">
+							<div class="campaigns-holder tab-body" ng-class="{'datea-loading': targetUser.campaignLoading}">
 								<div class="campaign-list row">
 									<div class="col-lg-4 col-md-3 col-sm-6 col-xs-12" ng-repeat="campaign in targetUser.campaigns">
 										<da-campaign-teaser></da-campaign-teaser>
@@ -51,19 +54,23 @@
 				</div>
 			</div><div class="col-md-4">
 				<div class="sidebar-content">
-					<h4 ng-show="!targetUser.isSameAsUser">{{targetUser.username}} sigue:</h4>
-					<h4 ng-show="targetUser.isSameAsUser">Etiquetas que sigo:</h4>
-					<span class="user-tag" ng-repeat="tag in targetUser.follows">
-						<a href="#/tag/{{tag.tag}}">#{{tag.tag}}</a>
-					</span>
+					<div class="block block-follow" ng-show="targetUser.follows.length">
+						<h4 ng-show="!targetUser.isSameAsUser">{{targetUser.username}} sigue:</h4>
+						<h4 ng-show="targetUser.isSameAsUser">Etiquetas que sigo:</h4>
+						<span class="user-tag" ng-repeat="tag in targetUser.follows">
+							<a href="#/tag/{{tag.tag}}">#{{tag.tag}}</a>
+						</span>
+					</div>
 					<hr>
-					<h4>últimas acciones:</h4>
-					<ul class="user-history">
-						<li class="user-history-item" ng-repeat="item in targetUser.history">
-							<a href="#{{item._url}}" >{{item._message}}</a>
-							<p>{{item.data.extract}}</p>
-						</li>
-					</ul>
+					<div class="block block-history" ng-show="targetUser.history.length">
+						<h4>últimas acciones:</h4>
+						<ul class="user-history">
+							<li class="user-history-item" ng-repeat="item in targetUser.history">
+								<a href="#{{item._url}}" >{{item._message}}</a>
+								<p>{{item.data.extract}}</p>
+							</li>
+						</ul>
+					</div>
 				</div>
 			</div>
 		</div>

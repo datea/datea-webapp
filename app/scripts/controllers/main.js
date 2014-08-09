@@ -79,10 +79,12 @@ angular.module( 'dateaWebApp' )
 	  , buildFollowingTags
 	  , buildTrendingTags
 	  , buildWeeklyDateo
-	  , getOutstandingDateos
 	  , buildMarkerIcon
 	  , buildClusterIcon
+	  , buildPieClusterIcon
+	  , selectClusterFunction
 	  , clusterSizeRange
+	 	, makeSVGClusterIcon
 	  , makeSVGPie
 	  , serializeXmlNode
 	;
@@ -118,7 +120,12 @@ angular.module( 'dateaWebApp' )
 
 	$scope.$watch('query.orderBy', function() {
 		//alert($scope.query.orderBy);
-		console.log("ORDER BY", $scope.query.orderBy);
+		$scope.homeSI.onFilterChange();
+	});
+
+	$scope.$watch('query.followFilter', function() {
+		//alert($scope.query.orderBy);
+		$scope.homeSI.onFilterChange();
 	});
 
 	$scope.homeSI.leaflet = angular.copy( config.defaultMap );
@@ -325,7 +332,6 @@ angular.module( 'dateaWebApp' )
 			dateosGivens.updateCenter  = true;
 		}
 		angular.extend( $scope.homeSI.leaflet, map );
-		console.log("BEFORE BUILDMARKERS");
 		buildMarkers( dateosGivens );
 	}
 
@@ -392,7 +398,7 @@ angular.module( 'dateaWebApp' )
 			dontCheckCenterOutOfBounds = true;
 			givens.updateCenter        = true;
 		}
-		if ( $scope.query.search && $scope.query.search.trim() != '') {
+		if ( $scope.query.search && $scope.query.search != '') {
 			givens.q                   = $scope.query.search;
 			dontCheckCenterOutOfBounds = true;
 			givens.updateCenter        = true;
@@ -418,9 +424,9 @@ angular.module( 'dateaWebApp' )
 					
 					if ( value.position && !isMarkerDup( { marker : value } ) ) {
 						// default image for markers
-						value.user.image_small = value.user.image_small
- 						? value.user.image_small
-						: config.defaultImgProfile;
+						value.user.markerImage = value.user.image_small
+ 						? config.api.imgUrl+value.user.image_small
+						: '/' + config.defaultImgProfile;
 						value._prettyDate = $filter('date')( value.date, config.defaultDateFormat );
 						markers['marker'+sessionMarkersIdx] = {
 						  lat         : value.position.coordinates[1]
@@ -430,12 +436,12 @@ angular.module( 'dateaWebApp' )
 						, draggable   : false
 						, focus       : false
 						, _id         : value.id
-						, tags        : tags
+						, _tags       : tags
 						, icon 			  : buildMarkerIcon(value)
 						, riseOnHover : true
 						, group       : '1'
 						}
-						markers['marker'+sessionMarkersIdx].label = { message: labelTags.join(', ') };
+
 						if ($scope.homeSI.leaflet.focusOnId && $scope.homeSI.leaflet.focusOnId == value.id) {
 							markers['marker'+sessionMarkersIdx].focus = true;
 						}
@@ -479,7 +485,7 @@ angular.module( 'dateaWebApp' )
 	geolocateAndBuildMap = function ( givens ) {
 		// buildMap( givens );
 		// no spam
-		geo.getLocation( { timeout:10000 } )
+		geo.getLocation( { timeout:3000 } )
 		.then( function ( data ) {
 			console.log( 'geolocatedCenter', data );
 			buildMap( { center : data } );
@@ -534,7 +540,6 @@ angular.module( 'dateaWebApp' )
 		buildWeeklyDateo();
 		buildTrendingTags();
 		buildFollowingTags();
-		getOutstandingDateos();
 		console.log("HOME SI", $scope.homeSI);
 	}
 
@@ -609,8 +614,9 @@ angular.module( 'dateaWebApp' )
 	$scope.homeSI.geolocate = function () {
 		$scope.homeSI.loading.leaflet = true;
 		resetMarkers();
-		//$scope.query.search = '';
-		dontCheckCenterOutOfBounds        = false;
+		$scope.query.orderBy = '-created';
+		$scope.query.search  = '';
+		dontCheckCenterOutOfBounds = false;
 		geolocateAndBuildMap( { dateosGivens : { updateCenter : true } } );
 	}
 
@@ -771,7 +777,7 @@ angular.module( 'dateaWebApp' )
 		isCenterOutOfBounds();
 	}
 
-	$scope.homeSI.onSelectFilterChange = function () {
+	$scope.homeSI.onFilterChange = function () {
 		$scope.homeSI.loading.leaflet = true;
 		resetMarkers();
 		buildMarkers();
@@ -783,34 +789,21 @@ angular.module( 'dateaWebApp' )
 		}
 	}
 
-	getOutstandingDateos = function () {
-		var params = {};
-		//console.log("User", User);
-		if (User.data.tags_followed.length > 0) {
-			params.tags = User.data.tags_followed.map(function (t) { return t.tag}).join(',');
-			params.limit = 3;
-			params.order_by = '-vote_count,-comment_count,-created';
-			Api.dateo
-			.getDateos( params )
-			.then( function ( response ) {
-				$scope.homeSI.outstandingDateos = response.objects;
-			}, function ( reason ) {
-				console.log( reason );
-			} );
-		}
-	}
-
-	var buildMarkerIcon = function(dateo) {
+	buildMarkerIcon = function(dateo) {
 		var colors = [] 
 		  , html
 		  , catWidth
 		;
-		angular.forEach(dateo.tags, function(tag){
-			if (angular.isDefined($scope.homeSI.userTags[tag.tag])) {
-				colors.push($scope.homeSI.userTags[tag.tag].color);
-			}
-		});
-		if (colors.length == 0) colors.push(config.visualization.default_color);
+		if ($scope.query.followFilter === 'follow') {
+			angular.forEach(dateo.tags, function(tag){
+				if (angular.isDefined($scope.homeSI.userTags[tag.tag])) {
+					colors.push($scope.homeSI.userTags[tag.tag].color);
+				}
+			});
+			if (colors.length == 0) colors.push(config.visualization.default_color);
+		}else {
+			colors.push(config.visualization.default_color);
+		}
 		catWidth = (29 / colors.length)
 		
 		html = '<svg width="29" height="40"><g style="clip-path: url(#pinpath);">';
@@ -835,7 +828,14 @@ angular.module( 'dateaWebApp' )
 		CUSTOM MARKERCLUSTER ICONS: PIES
 	***************************************************/
 
-	buildClusterIcon = function (cluster) {
+	selectClusterFunction = function (cluster) {
+		if ($scope.query.followFilter === 'follow') {
+			return buildPieClusterIcon(cluster);
+		}
+		return buildClusterIcon(cluster);
+	}
+
+	buildPieClusterIcon = function (cluster) {
 		var children = cluster.getAllChildMarkers()
 		  , n        = children.length
 		  , d        = clusterSizeRange(children.length)
@@ -848,7 +848,7 @@ angular.module( 'dateaWebApp' )
 		;
 
 		angular.forEach(children, function (marker) {
-			angular.forEach(marker.options.tags, function(tag) {
+			angular.forEach(marker.options._tags, function(tag) {
 				// taking out the "other color" for tags not in secondar_tags
 				//if (tag != $scope.campaign.main_tag.tag) {
 				if (!!$scope.homeSI.userTags[tag]) {
@@ -880,6 +880,10 @@ angular.module( 'dateaWebApp' )
 		});
 
 		return clusterIcon;
+	}
+
+	buildClusterIcon = {
+
 	}
 
 	clusterSizeRange = d3.scale.linear()
@@ -923,6 +927,64 @@ angular.module( 'dateaWebApp' )
 		return serializeXmlNode(svg);
 	}
 
+	buildClusterIcon = function (cluster) {
+		var children = cluster.getAllChildMarkers()
+		  , n        = children.length
+		  , d        = clusterSizeRange(children.length)
+		  , di       = d + 1
+		  , r        = d / 2
+			, html
+			, clusterIcon
+		;
+
+		html = makeSVGClusterIcon({
+				  n: n
+				, r: r
+				, d: d
+			});
+
+		clusterIcon = new L.DivIcon({
+			  html: html
+			, className: 'marker-cluster'
+			, iconSize: new L.Point(di,di)
+		});
+
+		return clusterIcon;
+	}
+
+	makeSVGClusterIcon = function (opt) {
+		var svg, vis, arc, pie, arcs;
+		svg = document.createElementNS(d3.ns.prefix.svg, 'svg');
+		vis = d3.select(svg).data([opt.data])
+			.attr("width", opt.d)
+			.attr("height", opt.d)
+			.append("svg:g")
+			.attr("transform", "translate(" + opt.r + "," + opt.r + ")");
+
+		vis.append('circle')
+			.attr("fill", config.visualization.default_color)
+			.attr("r", opt.r)
+			.attr("cx", 0)
+			.attr("cy", 0)
+			.attr("opacity", 0.75);
+
+		vis.append("circle")
+			.attr("fill", "#ffffff")
+			.attr("r", opt.r / 2.2)
+			.attr("cx", 0)
+			.attr("cy", 0);
+
+		vis.append("text")
+			.attr("x", 0)
+			.attr("y", 0)
+			.attr("class", "cpie-label")
+			.attr("text-anchor", "middle")
+			.attr("dy", '.3em')
+			.text(opt.n);
+
+		return serializeXmlNode(svg);
+	}
+
 	serializeXmlNode = function (xmlNode) {
 		if (typeof window.XMLSerializer != "undefined") {
     	return (new window.XMLSerializer()).serializeToString(xmlNode);
@@ -933,8 +995,8 @@ angular.module( 'dateaWebApp' )
   }
 
   $scope.homeSI.leaflet.clusterOptions = { 
-	  iconCreateFunction : buildClusterIcon
-		//, disableClusteringAtZoom: 17
+	  iconCreateFunction : selectClusterFunction
+		//, disableClusteringAtZoom: 16
 		, polygonOptions     : {
 			  weight      : 1
 			, fillColor   : "#999"

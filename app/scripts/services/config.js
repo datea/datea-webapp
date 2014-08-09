@@ -7,9 +7,10 @@ angular
 	            , url  : 'http://localhost:9000/#/'
 	            }
 	, api     : { url    : 'http://173.255.200.68/api/v2/'
-	            , imgUrl : 'http://173.255.200.68/' }
+	            , imgUrl : 'http://173.255.200.68/' 
+	          	} 
 	, marker  : ['<div class="marker-holder">'
-	              ,'<img class="img-circle" src="http://api.datea.pe/{{user.image_small}}" alt="user image">'
+	              ,'<img class="img-circle" src="{{user.markerImage}}" alt="user image">'
 	              ,'<div class="part">'
 	                ,'<h5>{{user.username}}</h5>'
 	                ,'<span class="date">{{_prettyDate}}</span>'
@@ -36,6 +37,11 @@ angular
 	               , center   : { lat: -12.05, lng: -77.06, zoom: 13 }
 	               , defaults : { scrollWheelZoom: false }
 	               , markers  : {}
+	               , tiles    : { url     : 'http://{s}.mqcdn.com/tiles/1.0.0/osm/{z}/{x}/{y}.png'
+															, options : { attribution : 'Tiles by <a href="http://www.mapquest.com/">MapQuest</a> &mdash; Map data &copy; <a href="http://openstreetmap.org">OpenStreetMap</a> contributors, <a href="http://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>'
+																					, subdomains  : ['otile1','otile2','otile3','otile4']
+																					}
+	               							}
 	               }
 	, defaultDateFormat : "d 'de' MMMM yyyy - H:mm" 
 	, defaultBoundsRatio : +0.0075

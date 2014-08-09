@@ -82,7 +82,7 @@ angular.module('dateaWebApp')
 		var index
 		  , defaultQuery
 		  ;
-		$scope.targetUser.dateo_loading = true;
+		$scope.targetUser.dateoLoading = true;
 		index = givens && givens.index * config.profile.dateosOffset;
 		defaultQuery = { limit  : config.profile.dateosOffset
 		               , offset : index || 0
@@ -95,7 +95,7 @@ angular.module('dateaWebApp')
 			console.log( response );
 			$scope.targetUser.dateos = response.objects;
 			buildPaginationDateos( response );
-			$scope.targetUser.dateo_loading = false;
+			$scope.targetUser.dateoLoading = false;
 		}, function ( reason ) {
 			console.log( reason );
 		} )

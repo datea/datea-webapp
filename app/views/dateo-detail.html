@@ -11,7 +11,7 @@
 					</a>
 					<p class="ff1">el {{dateo.modified | date:'fullDate'}}</p>
 				</div>
-				<div class="next-holder pull-right" ng-show="dateo.next_by_user">
+				<div class="next-holder pull-right no-print" ng-show="dateo.next_by_user">
 					<a href ng-click="dateo.nextDateo()">ver {{ dateo.messageNext }} dateo de {{dateo.user.username}} <i class="glyphicon glyphicon-play"></i></a>
 				</div>
 			</div>
@@ -32,29 +32,34 @@
 						
 						<div class="social-holder">
 							<div class="datea-glyph-holder">
-								<span class="glyphicon glyphicon-thumbs-up datea-glyph"></span> <span class="datea-glyph-text"><p>{{dateo.vote_count}}</p> <p><ng-pluralize count="dateo.vote_count" when="{'one':
+								<span class="glyphicon glyphicon-thumbs-up datea-glyph"></span> <span class="datea-glyph-text" ng-show="dateo.vote_count > 0"><p>{{dateo.vote_count}}</p> <p><ng-pluralize count="dateo.vote_count" when="{'one':
 									'apoyo','other':'apoyos'}"></p></span>
 							</div>
 							<div class="datea-glyph-holder">
-								<span class="glyphicon glyphicon-comment datea-glyph"></span> <span class="datea-glyph-text"><p>{{dateo.comments.length}}</p><p><ng-pluralize count="dateo.comments.length" when="{'one':
+								<span class="glyphicon glyphicon-comment datea-glyph"></span> <span class="datea-glyph-text" ng-show="dateo.comment_count > 0"><p>{{dateo.comments.length}}</p><p><ng-pluralize count="dateo.comments.length" when="{'one':
 									'comentario','other':'comentarios'}"></p></span>
 							</div>
+
+							<div class="datea-glyph-holder share-btn" ng-click="dateo.share()">
+									<i class="fa fa-share-alt"></i>
+							</div>
+
 							<span class="glyphicon glyphicon-print pull-right datea-glyph datea-glyph-2" ng-click="dateo.print()"></span>
-							<div class="form-group pull-right share">
+							<!--<div class="form-group pull-right share">
 								<div class="input-group input-group-sm">
 									<input type="text" class="form-control" value="{{dateo.shareableUrl}}">
 									<span class="input-group-btn">
 										<button class="btn btn-default" type="button" ng-click="dateo.share()"><i class="fa fa-share-alt"></i></button>
 									</span>
 								</div>
-							</div>
-							<div class="denounce-holder">
+							</div>-->
+							<div class="denounce-holder no-print">
 								<a class="denounce" href="" ng-click="dateo.denounce( 'dateo', $event )">denunciar</a>
 							</div>
 						</div>
 						
 						<div class="comments-holder">
-							<h3>Comentarios</h3>
+							<h3 ng-show="dateo.comments.length > 0">Comentarios</h3>
 
 							<div class="comments">
 								<div class="comment-holder" ng-repeat="comment in dateo.comments">
@@ -72,7 +77,7 @@
 								</div>
 							</div>
 
-							<div class="comment-form-holder" ng-show="dateo.isUserSignedIn">
+							<div class="comment-form-holder no-print" ng-show="dateo.isUserSignedIn">
 								<form role="form" name="form">
 									<div class="form-group">
 										<textarea id="message" class="form-control" msd-elastic="" rows="1" ng-model="dateo.form.comment" placeholder="Tu comentario"></textarea>
@@ -85,7 +90,7 @@
 				</div>
 				<div class="col-xs-12 col-md-45 map-holder" ng-show="!dateo.message">
 					<h3>Ubicación</h3>
-					<leaflet id="leafletDateo" defaults="dateo.leaflet.defaults" markers="dateo.leaflet.markers" center="dateo.leaflet.center" height="260px" width="100%"></leaflet>
+					<leaflet id="leafletDateo" defaults="dateo.leaflet.defaults" markers="dateo.leaflet.markers" center="dateo.leaflet.center" height="260px" width="100%" tiles="dateo.leaflet.tiles"></leaflet>
 					<p ng-if="dateo.address">{{dateo.address}}</p>
 					<p ng-if="dateo.admin_level1">{{dateo.admin_level1}} > {{dateo.admin_level2}} > {{dateo.admin_level3}}</p>
 					<hr>

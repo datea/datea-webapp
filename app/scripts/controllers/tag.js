@@ -62,6 +62,7 @@ angular.module('dateaWebApp')
 		, show  : false 
 	};
 
+
 	isMainTag = function () {
 		var dfd = $q.defer();
 		Api.campaign
@@ -195,6 +196,9 @@ angular.module('dateaWebApp')
 	}
 
 	buildMarker = function(dateo) {
+			dateo.user.markerImage = dateo.user.image_small
+ 						? config.api.imgUrl+dateo.user.image_small
+						: '/' + config.defaultImgProfile;
 			dateo._prettyDate = $filter('date')( dateo.date, 'fullDate' );
 			return {
 			  lat       : dateo.position.coordinates[1]

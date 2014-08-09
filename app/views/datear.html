@@ -54,27 +54,85 @@
 								</div>
 							</div>
 						</div>
-						<div class="file-fields">
+						<div class="media-btns">
 							<div class="form-group">
 								<label>Sube una imagen o archivo (opcional)</label>
 								<div>
-									<div class="ul-btn img-ul-btn" ng-class="{full: datear.img}">
+									<div class="ul-btn img-ul-btn" ng-class="{selected: datear.imgData}">
 										<label for="image">
-											<div class="ul-icon-holder"><i class="ul-icon glyphicon glyphicon-camera" ng-hide="datear.img"></i></div>
-											<input class="file-input" type="file" id="image" fileread="datear.img" filedata="datear.imgData" accept="image/*" />
-											<img class="uploaded-img" ng-show="datear.img" ng-src="{{datear.img}}" alt="{{datear.imgData.name}}" />
+											<div class="ul-icon-holder"><i class="ul-icon glyphicon glyphicon-camera"></i></div>
+											<input class="file-input" type="file" id="image" fileread="datear.img" filedata="datear.imgData" accept="image/*" ng-disabled="datear.imgData" />
 										</label>
-										<div class="remove" ng-click="flow.removeImg()" ng-show="datear.img"><i class="fa fa-times"></i></div>
 									</div>
 
-									<div class="ul-btn file-ul-btn" ng-class="{full: datear.file}">
+									<div class="ul-btn file-ul-btn" ng-class="{selected: datear.fileData}">
 										<label for="file">
 											<div class="ul-icon-holder"><i class="ul-icon glyphicon glyphicon-file"></i></div>
-											<div class="uploaded-filename">{{datear.fileData.name}}</div>
-											<input class="file-input" type="file" id="file" fileread="datear.file" filedata="datear.fileData" />
+											<input class="file-input" type="file" id="file" fileread="datear.file" filedata="datear.fileData" ng-disabled="datear.fileData" />
 										</label>
-										<div class="remove" ng-click="flow.removeFile()" ng-show="datear.file"><i class="fa fa-times"></i></div>
 									</div>
+
+									<div class="ul-btn link-ul-btn" ng-class="{selected: dateo.link}" ng-click="datear.link.add()">
+										<div class="ul-icon-holder"><i class="ul-icon fa fa-chain"></i></div>
+									</div>
+								</div>
+
+							</div>
+							<div class="selected-media">
+								<div class="selected-media-item" ng-repeat="item in datear.selectedMedia">
+
+									<div class="media-item-inner item-image" ng-if="item.type == 'image'">
+										<div class="i-icon-holder"><i class="glyphicon glyphicon-camera"></i></div>
+										<p class="i-title">Imagen</p>
+										<img class="uploaded-img" ng-show="datear.img" ng-src="{{datear.img}}" alt="{{datear.imgData.name}}" />
+									</div>
+
+									<div class="media-item-inner item-file" ng-if="item.type == 'file'">
+										<div class="i-icon-holder"><i class="ul-icon glyphicon glyphicon-file"></i></div>
+										<p class="i-title">Archivo</p>
+										<div class="form-group file-title-field">
+											<label for="dateo-file-title">Título</label>
+											<input id="dateo-link-description" type="text" class="form-control input-sm" ng-model="datear.fileTitle" placeholder="Ingresa el título del archivo"/>
+										</div>
+										<div class="uploaded-filename">{{datear.fileData.name}}</div>
+									</div>
+
+									<div class="media-item-inner item-link" ng-if="item.type === 'link'">
+										<div class="i-icon-holder"><i class="fa fa-chain"></i></div>
+										<p class="i-title">Enlace</p>
+										<p>{{datear.link.show}}</p>
+										<p class="i-help">Para extraer automáticamente información del enlace, ingresa la url y oprime cargar.</p>
+										<div class="link-image-box" ng-show="dateo.link.img_url">
+											<img class="link-image" ng-src="{{dateo.link.img_url}}" />
+											<button class="btn btn-link prev" ng-click="datear.link.prevImg()" ng-show="datear.link.imgIndex > 0"><span class="glyphicon glyphicon-chevron-left"></span></button>
+											<button class="btn btn-link next" ng-click="datear.link.nextImg()" ng-show="datear.link.imgIndex < datear.link.images.length -1"><span class="glyphicon glyphicon-chevron-right"></span></button>
+										</div>
+										<div class="link-fields">
+											<div class="form-group link-url-field">
+												<label for="dateo-link-url">URL</label>
+												<div class="input-group input-group-sm">
+													<input id="dateo-link-url" type="url" placeholder="{{datear.link.urlPH}}" class="form-control" ng-model="dateo.link.url" ng-enter="datear.link.loadUrl()"/>
+													<span class="input-group-btn">
+														<div class="link-loading" ng-show="datear.link.loading"><i class="loading-icon fa fa-circle-o-notch fa-spin"></i></div>
+    												<button class="btn btn-default" type="button" ng-click="datear.link.loadUrl()">Cargar!</button>
+  												</span>
+  											</div>
+  										</div>
+
+  										<div class="form-group link-title-field">
+  											<label for="dateo-link-title">Título</label>
+  											<input id="dateo-link-title" type="text" class="form-control input-sm" ng-model="dateo.link.title" maxlength="255"/>
+  										</div>
+
+  										<div class="form-group link-description-field">
+  											<label for="dateo-link-description">Descripción</label>
+  											<textarea id="dateo-link-description" class="form-control input-sm" rows="2" msd-elastic="\n" maxlength="500" ng-model="dateo.link.description"></textarea>
+  										</div>
+
+  									</div>
+									</div>
+
+									<div class="remove" ng-click="datear.removeMedia($index)"><i class="fa fa-times"></i></div>
 								</div>
 							</div>
 						</div>
@@ -102,7 +160,7 @@
 						<input type="text" class="hide form-control" id="lng" ng-model="datear.leaflet.markers.draggy.lng" placeholder="lng hidden">
 						<input type="text" class="hide form-control" id="lat" ng-model="datear.leaflet.markers.draggy.lat" placeholder="lat hidden">
 					</div>
-					<leaflet id="leafletDatear" defaults="datear.leaflet.defaults" markers="datear.leaflet.markers" center="datear.leaflet.center" height="400px" width="100%"></leaflet>
+					<leaflet id="leafletDatear" defaults="datear.leaflet.defaults" markers="datear.leaflet.markers" center="datear.leaflet.center" height="400px" width="100%" tiles="datear.leaflet.tiles"></leaflet>
 				</div>
 
 				<hr>

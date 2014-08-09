@@ -157,7 +157,7 @@
 								</div>
 							</div>
 							<div class="col-xs-12 col-sm-75 leaflet-map-holder" ng-class="{'has-legend': flow.hasLegend}">
-								<leaflet id="leafletCampaign" defaults="campaign.leaflet.defaults" markers="campaign.leaflet.markers" center="campaign.leaflet.center" cluster-options="campaign.leaflet.clusterOptions" width="100%"></leaflet>
+								<leaflet id="leafletCampaign" defaults="campaign.leaflet.defaults" markers="campaign.leaflet.markers" center="campaign.leaflet.center" cluster-options="campaign.leaflet.clusterOptions" width="100%" tiles="campaign.leaflet.tiles"></leaflet>
 								<div class="legend-holder" ng-show="campaign.secondary_tags.length > 0">
 									<div class="expand" ng-click="flow.expandLegend()" ng-show="flow.showLegendExpandLink">ver todas</div>
 									<div class="contract" ng-click="flow.contractLegend()" ng-show="flow.showLegendContractLink">cerrar</div>

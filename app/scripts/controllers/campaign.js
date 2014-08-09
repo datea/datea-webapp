@@ -130,6 +130,9 @@ angular.module('dateaWebApp')
 
 	buildMarker = function(dateo) {
 			dateo._prettyDate = $filter('date')( dateo.date, 'fullDate' );
+			dateo.user.markerImage = dateo.user.image_small
+ 						? config.api.imgUrl+dateo.user.image_small
+						: '/' + config.defaultImgProfile;
 			var tags = [];
 			var labelTags = []; 
 			angular.forEach(dateo.tags, function (tag) { 
