@@ -417,13 +417,13 @@ angular.module("dateaWebApp")
 							  content : 'Explícale a los usuarios la razón por la que deben participar de la iniciativa: objetivos, que se espera lograr.'
 						}
 						, informationDestiny : {
-							  content : 'Indica que sucederá con la información que se recopila, si se va a mandar a algún lugar, quién la va a recibir etc.'
+							  content : 'Indica qué sucederá con la información que se recopila, si se va a mandar a algún lugar, quién la va a recibir etc.'
 						}
 						, secondaryTags : {
 							  title   : 'Etiquetas'
 							, content : 'Estas etiquetas le son sugeridas a los usuarios para categorizar sus dateos. ' 
 												+ 'Por ello, ayudan luego a analizar mejor la información. Recomendamos elegir ' 
-												+ 'con cuidado, reutilizar etiquetas existentes y no utilizar demasiadas (idealmente no más de 7).'
+												+ 'con cuidado, reutilizar etiquetas cuando sea pertinente y no usar demasiadas (idealmente no más de 7).'
 						} 
 						, map : {
 								title   : 'Opciones de ubicación'

@@ -6,7 +6,7 @@
 
 				<div class="form-group search-field">
 					<label class="sr-only" for="campaign-search-input">Buscar Frase</label>
-					<div class="input-group search-input input-group-lg">
+					<div class="input-group search-input">
 						<input id="campaign-search-input" type="text" class="form-control" ng-model="query.search" placeholder="buscar frase">
 						<span class="input-group-btn">
 							<button class="btn" ng-click="flow.doQuery()">
@@ -17,13 +17,13 @@
 				</div>
 
 				<div class="form-group category-field">
-					<label class="sr-only" for="category-select">Categoria</label>
-					<select class="form-control input-lg" ng-model="query.category" ng-options="category.id as category.name for category in flow.categories"></select>
+					<label for="category-select">Categoria: </label>
+					<select class="form-control" ng-model="query.category" ng-options="category.id as category.name for category in flow.categories"></select>
 				</div>
 
 				<div class="form-group orderby-field">
-					<label class="sr-only" for="orderby-select">Ordenar por</label>
-					<select class="form-control input-lg" ng-model="query.orderBy"  ng-options="opt.val as opt.label for opt in flow.orderByOptions"></select> 
+					<label for="orderby-select">Ordenar por: </label>
+					<select class="form-control" ng-model="query.orderBy"  ng-options="opt.val as opt.label for opt in flow.orderByOptions"></select> 
 				</div>
 
 				<button class="btn btn-success btn-lg" ng-click="flow.doQuery()">buscar</button>

@@ -19,16 +19,34 @@
 				<div class="esquina"></div>
 				<div class="row">
 				<div class="col-xs-12 col-md-75">
-					<div class="inner">
+					<div class="inner dateo dateo-detail">
 						<div class="tag-row">
 							<a class="tag" href="#/tag/{{tag.tag}}" ng-repeat="tag in dateo.tags">#{{tag.tag}}</a>
 						</div>
 						
 						<p class="dateo-content newline2br" ng-bind-html="dateo.content | linky:'_blank'"></p>
 						
-						<a href ng-repeat="img in dateo.images" ng-click="dateo.imgDetail(img.image)">
-							<img class="part" ng-src="{{img.thumb | imgFromApi}}" alt="sorry">
+						<a href ng-repeat="img in dateo.images" ng-click="dateo.imgDetail(img.image)" class="image">
+							<img class="part" ng-src="{{img.image | imgFromApi}}" alt="sorry">
 						</a>
+
+						<div class="link" ng-show="dateo.link">
+							<i class="fa fa-chain licon"></i>
+							<a href="{{dateo.link.url}}" class="limage" ng-show="dateo.link.img_url">
+								<img src="{{dateo.link.img_url}}" alt="" />
+							</a>
+							<div class="lcontent">
+								<h4 class="ltitle"><a href="{{dateo.link.url}}">{{dateo.link.title}}</a></h4>
+								<p class="ldesc">{{dateo.link.description}}</p>
+							</div> 
+						</div>
+
+						<div class="files" ng-show="dateo.files.length">
+							<a class="file" ng-repeat="file in dateo.files" href="{{file.file | imgFromApi}}">
+								<i class="ul-icon glyphicon glyphicon-file"></i>
+								<span class="file-title">{{file.title}}</span>
+							</a>
+						</div>
 						
 						<div class="social-holder">
 							<div class="datea-glyph-holder">

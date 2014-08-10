@@ -12,7 +12,30 @@
 	</div>
 
 	<p class="tags"><a class="tag" ng-repeat="tag in dateo.tags" href="/#/tag/{{tag.tag}}">#{{tag.tag}}</a></p>
-	<p class="content" ng-bind-html="dateo.content | linky:'_blank'"></p>
+	<p class="content" ng-bind-html="dateo.extract | linky:'_blank'"></p>
+
+	<a class="image" href ng-repeat="img in dateo.images" ng-click="flow.imgDetail(img.image)">
+		<img class="part" ng-src="{{img.thumb | imgFromApi}}" alt="sorry">
+	</a>
+
+	<div class="link" ng-show="dateo.link">
+		<i class="fa fa-chain licon"></i>
+		<a href="{{dateo.link.url}}" class="limage" ng-show="dateo.link.img_url">
+			<img src="{{dateo.link.img_url}}" alt="" />
+		</a>
+		<div class="lcontent">
+			<h4 class="ltitle"><a href="{{dateo.link.url}}">{{dateo.link.title}}</a></h4>
+			<!--<p class="ldesc">{{dateo.link.description}}</p>-->
+		</div> 
+	</div>
+
+	<div class="files" ng-show="dateo.files.length">
+		<a class="file" ng-repeat="file in dateo.files" href="{{file.file | imgFromApi}}">
+			<i class="ul-icon glyphicon glyphicon-file"></i>
+			<span class="file-title">{{file.title}}</span>
+		</a>
+	</div>
+
 	<div class="social-holder">
 		<!--<a class="btn datea-gray-btn btn-sm pull-right" href="#/{{dateo.user.username}}/dateos/{{dateo.id}}" >ver detalle</a>-->
 		<button class="btn datea-gray-btn btn-sm pull-right" ng-click="openDetail()">ver detalle</button>

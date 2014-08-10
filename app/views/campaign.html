@@ -9,19 +9,28 @@
 						<p class="shortdesc">{{campaign.short_description}}</p>
 						<div class="main-btns">
 							<div class="inner">
+								<div class="mbtn datear-btn">
+									<button class="btn datea-datear-btn btn-lg" ng-click="flow.datear()">Datea <i class="glyphicon glyphicon-map-marker"></i></button><span class="time-left" ng-show="campaign.end_date">{{campaign._timeLeft | date:time }}</span>
+								</div>
 								<div class="mbtn follow-camp-btn">
 									<da-follow follow-obj="tag" follow-id="{{campaign.id}}" btn-class="follow-campaign"></da-follow>
 								</div>
 								<div class="mbtn share-btn">
+								
+									<div class="datea-glyph-holder" ng-click="campaign.share()">
+										<i class="fa fa-share-alt"></i>
+									</div>
+									<!--
+									<button class="btn btn-default" ng-click="campaign.share()">
+										<i class="fa fa-share-alt"></i> compartir
+									</button>-->
+									<!--
 									<div class="input-group">
 										<input type="text" class="form-control" ng-model="campaign.shareableUrl">
 										<span class="input-group-btn">
 											<button class="btn btn-default" type="button" ng-click="campaign.share()"><i class="fa fa-share-alt"></i></button>
 										</span>
-									</div>
-								</div>
-								<div class="mbtn datear-btn">
-									<button class="btn datea-datear-btn btn-lg" ng-click="flow.datear()">Datea <i class="glyphicon glyphicon-map-marker"></i></button><span class="time-left" ng-show="campaign.end_date">{{campaign._timeLeft | date:time }}</span>
+									</div>-->
 								</div>
 							</div>
 						</div>
@@ -34,7 +43,7 @@
 					</div>
 				</div>
 			</div>
-			<div class="col-sm-5 hidden-xs campaign-img" da-bg-from-api="{{campaign.image.image}}" da-img-size="cover"></div>
+			<div class="col-sm-5 hidden-xs campaign-img" da-bg-from-api="{{campaign.image.image}}" da-img-size="contain"></div>
 		</div>
 	</div>
 
@@ -45,7 +54,7 @@
 			<div class="menu-right" ng-hide="flow.showFilter">
 				<div class="btn-group main-menu-btn" dropdown is-open="status.isopen">
 		      <button type="button" class="btn btn-link dropdown-toggle" ng-disabled="disabled">
-		  			<i class="fa fa-bars"></i>
+		  			<span class="glyphicon glyphicon-cog"></span>
 		      </button>
 		      <ul class="dropdown-menu dropdown-menu-right" role="menu">
 		        <li ng-if="flow.userIsOwner"><a href="#/iniciativas/{{campaign.id}}/edit">Administrar</a></li>

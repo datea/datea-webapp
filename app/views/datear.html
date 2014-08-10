@@ -170,12 +170,12 @@
 					<h4 class="modal-scroll-3 scroll-section">3. Etiqueta tu dateo</h4>
 					<h5 ng-show="datear.suggestedTags">etiquetas sugeridas</h5>
 					<div class="suggested-tag-links btn-group" ng-show="datear.suggestedTags && !datear.suggestedTags2">
-						<button type="button" class="btn btn-default" ng-repeat="tag in datear.suggestedTags" ng-click="datear.addTag( tag.tag )">#{{tag.tag}}</button>
+						<button type="button" class="btn btn-link suggested-tag" ng-repeat="tag in datear.suggestedTags" ng-click="datear.addTag( tag.tag )">#{{tag.tag}}</button>
 					</div>
 					<div class="suggested-tag-links btn-group" ng-show="datear.suggestedTags2">
 						<button class="back-btn btn-link btn" ng-click="datear.suggestedTagsBack()"><span class="glyphicon glyphicon-chevron-left"></span></button>
 						<div class="tag-links2">
-								<button type="button" class="btn btn-default" ng-repeat="tag in datear.suggestedTags2" ng-click="datear.addTag( tag.tag )">#{{tag.tag}}</button>
+								<button type="button" class="btn btn-link suggested-tag" ng-repeat="tag in datear.suggestedTags2" ng-click="datear.addTag( tag.tag )">#{{tag.tag}}</button>
 						</div>
 					</div>
 

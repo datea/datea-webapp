@@ -12,6 +12,10 @@
 			<p class="url" ng-if="targetUser.url"><strong>url</strong>: {{targetUser.url}}</p>
 		</div>
 		<div class="social-share pull-right">
+			<div class="datea-glyph-holder" ng-click="targetUser.share()">
+				<i class="fa fa-share-alt"></i>
+			</div>
+			<!--
 			<div class="form-group">
 				<div class="input-group input-group-sm">
 					<input type="text" class="form-control" ng-model="targetUser.url">
@@ -20,6 +24,7 @@
 					</span>
 				</div>
 			</div>
+			-->
 		</div>
 	</div>
 
@@ -57,11 +62,13 @@
 					<div class="block block-follow" ng-show="targetUser.follows.length">
 						<h4 ng-show="!targetUser.isSameAsUser">{{targetUser.username}} sigue:</h4>
 						<h4 ng-show="targetUser.isSameAsUser">Etiquetas que sigo:</h4>
-						<span class="user-tag" ng-repeat="tag in targetUser.follows">
-							<a href="#/tag/{{tag.tag}}">#{{tag.tag}}</a>
-						</span>
+						<div class="tag-buttons">
+							<a class="datea-tag-btn user-tag" ng-href="#/tag/{{tag.tag}}" ng-repeat="tag in targetUser.follows">
+								#{{tag.tag}}
+							</a>
+						</div>
 					</div>
-					<hr>
+					<hr ng-show="targetUser.follows.length">
 					<div class="block block-history" ng-show="targetUser.history.length">
 						<h4>últimas acciones:</h4>
 						<ul class="user-history">

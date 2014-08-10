@@ -40,6 +40,7 @@ angular.module('dateaWebApp')
 	$scope.dateo.messageNext = '';
 	$scope.flow              = {};
 	$scope.flow.notFound     = false;
+	$scope.flow.imgUrl       = config.api.imgUrl; 
 
 	$scope.dateo.isUserSignedIn = User.isSignedIn();
 

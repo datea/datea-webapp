@@ -1430,9 +1430,25 @@ body {
 			}
 			.suggested-tag-links {
 				position: relative;
+
+				.suggested-tag {
+					background-color: @color-15;
+					float: left;
+					display: block;
+					margin-right: 5px;
+					margin-bottom: 5px;
+					color: #444;
+					border-radius: 4px;
+					&:hover {
+						background-color: darken(@color-15, 5%);
+						color: black;
+						text-decoration: none;
+					}
+				}
+
 				.back-btn {
 					position: absolute;
-					bottom: 0;
+					bottom: 5px;
 					top: 0;
 					left: 0;
 					width: 28px;
@@ -1445,7 +1461,7 @@ body {
 					}
 				}
 				.tag-links2 {
-					margin-left: 28px;
+					margin-left: 33px;
 				}
 			}
 
@@ -2306,7 +2322,7 @@ body {
 						font-weight: bold;
 					}
 
-					.shortdesc { font-size: 18px;}
+					.shortdesc { font-size: 17px;}
 
 					.main-btns {
 						float: right;
@@ -2318,7 +2334,7 @@ body {
 						}
 						.mbtn {
 							float: left;
-							margin-right: 35px;
+							margin-right: 30px;
 							&:last-child {
 								margin-right: 0;
 							}
@@ -2332,14 +2348,33 @@ body {
 							top: -6px;
 						}
 						.share-btn {
-							width: 30%;
+							.btn {
+								background-color: @color-10;
+								color: white;
+								border-color: @color-18;
+								i.fa {
+									font-size: 17px;
+									color: white;
+								}
+							}
+							.datea-glyph-holder {
+								position: relative;
+								top: -3px;
+								margin: 0;
+								i.fa {
+									background-color: @color-10;
+									&:hover {
+										background-color: @color-12;
+									}
+								}
+							}	
 						}
 					}
 
 					.stats {
 						.clearfix;
 						padding-top: 15px;
-						.stat {margin-right: 25px; font-size: 18px; float: left; line-height: 36px}
+						.stat {margin-right: 25px; font-size: 16px; float: left; line-height: 36px}
 						.share-btn, .follow-btn { float: left;}
 
 						.share-btn { margin-left: 25px; padding-top: 1px;}
@@ -2351,7 +2386,8 @@ body {
 
 		.campaign-img {
 			height: 272px;
-			background-color: @color-16;
+			//background-color: @color-16;
+			background-color: @color-9;
 		}
 
 	}
@@ -2359,6 +2395,9 @@ body {
 		background-color: @color-15;
 		padding-top: 35px;
 		padding-bottom: 35px;
+		box-shadow: 0px -1px 10px 0px rgba(255, 255, 255, 0.5);
+		position: relative;
+		z-index: 2;
 
 		.description {
 			padding: 0 30px;
@@ -2455,7 +2494,7 @@ body {
 			top: 18px;
 			right: 15%;
 			border-bottom: 0;	
-			font-size: 16px;
+			font-size: 14px;
 			li {
 				a {
 					color: #555;
@@ -3002,11 +3041,12 @@ ul.input-list {
 					.tags { font-size: 17px;}
 
 					.content {
-						margin-bottom: 35px;
+						margin-bottom: 20px;
 						font-size: 16px;
 					}
 					.social-holder {
 						//background-color: #efefef;
+						margin-top: 30px;
 						border-top: 1px solid #eee;
 						border-bottom: 1px solid #eee;
 						.controls-right {
@@ -3525,6 +3565,56 @@ ul.input-list {
 
 	.content { margin-top: 0 !important}
 
+	.image {
+		display: block;
+		margin-bottom: 20px;
+	}
+
+	.files {
+		//padding: 10px;
+		//background-color: @color-15;
+		margin: 15px 0;
+		border-radius: 6px;
+		.file {
+			display: block;
+			line-height: 20px;
+			color: @color-10;
+			&:hover {
+				color: @color-12;
+			}
+			i.fa, i.glyphicon {
+				font-size: 22px;
+				position: relative;
+				top: 5px;
+			}
+		}
+	}
+
+	.link {
+		.clearfix;
+		background-color: @color-15;
+		padding: 15px;
+		margin: 15px 0;
+		position: relative;
+		.licon {
+			font-size: 18px;
+			color: @color-18;
+			position: absolute;
+			right: 6px;
+			top: 10px;
+		}
+		.limage {
+			img {
+				max-width: 220px;
+				max-height: 180px;
+			}
+			display: block;
+			text-decoration: none;
+			float: left;
+			margin-right: 15px;
+		}
+	}
+
 	.social-holder {
 		.btn.btn-link {padding-left: 0} 
 	}
@@ -3536,6 +3626,27 @@ ul.input-list {
 			font-weight: bold;
 			color: black;
 			a {color: black}
+		}
+
+		.image {
+			img {
+				max-width: 33%;
+				max-height: 160px;
+			}
+		}
+
+		.link {
+			padding: 10px;
+			background-color: #efefef;
+			.limage {
+				img {
+					max-width: 120px;
+					max-height: 120px;
+				}
+			}
+			.ltitle {
+				font-size: 14px;
+			}
 		}
 
 		.social-holder {
@@ -3551,6 +3662,22 @@ ul.input-list {
 					font-size: 18px;
 					color: @color-3;
 				}
+			}
+		}
+	}
+	&.dateo-detail {
+
+		.image {
+			img {
+				max-width: 50%;
+				max-height: 220px;
+			}
+		}
+
+		.link .limage {
+			img {
+				max-width: 220px;
+				max-height: 180px;
 			}
 		}
 	}
@@ -3717,6 +3844,15 @@ ul.input-list {
 			padding: 7px 0 20px 0;
 		}
 
+		.image {
+			display: block;
+			img {
+				max-width: 50%;
+				max-height: 220px;
+			}
+			margin-bottom: 20px;
+		}
+
 		.part-1 {
 			padding: 10px;
 			width: 60%;
@@ -3736,10 +3872,10 @@ ul.input-list {
 		.social-holder {
 			.clearfix;
 			position: relative;
-			border-top: 1px dashed @color-20;
-			border-bottom: 1px solid @color-20;
-			padding: 20px 0 10px 0;
-			margin-bottom: 60px;
+			border-top: 1px solid @color-3;
+			border-bottom: 0px solid @color-3;
+			padding: 10px 0 10px 0;
+			margin-bottom: 40px;
 
 			.share {
 				margin-right: 20px;
@@ -3974,8 +4110,17 @@ ul.input-list {
 		.social-share {
 			position: absolute;
 			bottom: 20px;
-			right: 10%;
-			width: 150px;
+			right: 1%;
+			//width: 150px;
+			.datea-glyph-holder {
+				i.fa {
+					background-color: white; color: @color-10;
+					&:hover {
+						background-color: @color-12;
+						color: white;
+					}
+				}
+			}
 		}
 		
 	}
@@ -3999,6 +4144,11 @@ ul.input-list {
 			position: relative;
 			margin: 30px 0 80px;
 			z-index:2 ;
+
+			.dateos-holder {
+				min-height: 250px;
+			}
+
 			.no-results {
 				text-align: center;
 				padding: 40px 0;
@@ -4047,7 +4197,7 @@ ul.input-list {
 			}
 
 			.user-tag {
-				font-size: 18px;
+				font-size: 16px;
 			}
 
 			.user-history {
@@ -4131,9 +4281,11 @@ ul.input-list {
 		color: white;
 		display: block;
 	}
-
 }
 
+.leaflet-control-attribution {
+	font-size: 8px !important;
+}
 
 //
 // Media Queries

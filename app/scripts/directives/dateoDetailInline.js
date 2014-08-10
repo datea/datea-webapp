@@ -110,6 +110,21 @@ angular.module("dateaWebApp")
 				$scope.flow.focusCommentForm = function () {
 					angular.element('#comment-input').focus();
 				}
+
+				$scope.flow.imgDetail = function ( img ) {
+					var givens;
+
+					givens = { templateUrl : 'views/dateo-detail-img.html'
+					         , controller  : 'DateoimgCtrl'
+					         , resolve     : {
+					             img : function () {
+					               return img;
+					             }
+					           }
+					         }
+
+					$modal.open( givens );
+				}
 				
 		}
 	}
