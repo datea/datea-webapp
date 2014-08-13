@@ -9,7 +9,7 @@
 					<a href="#/{{dateo.user.username}}">
 						<h4>{{dateo.user.username}}</h4>
 					</a>
-					<p class="ff1">el {{dateo.modified | date:'fullDate'}}</p>
+					<p class="ff1">el {{dateo.created | date:dateFormat}}</p>
 				</div>
 				<div class="next-holder pull-right no-print" ng-show="dateo.next_by_user">
 					<a href ng-click="dateo.nextDateo()">ver {{ dateo.messageNext }} dateo de {{dateo.user.username}} <i class="glyphicon glyphicon-play"></i></a>

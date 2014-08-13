@@ -6,8 +6,8 @@ angular
 	{ app     : { name : 'Datea.pe'
 	            , url  : 'http://localhost:9000/#/'
 	            }
-	, api     : { url    : 'http://173.255.200.68/api/v2/'
-	            , imgUrl : 'http://173.255.200.68/' 
+	, api     : { url    : 'http://127.0.0.1:8000/api/v2/' //http://173.255.200.68/api/v2/'
+	            , imgUrl : 'http://127.0.0.1:8000' 
 	          	} 
 	, marker  : ['<div class="marker-holder">'
 	              ,'<img class="img-circle" src="{{user.markerImage}}" alt="user image">'
@@ -43,7 +43,8 @@ angular
 																					}
 	               							}
 	               }
-	, defaultDateFormat : "d 'de' MMMM yyyy - H:mm" 
+	, defaultDateFormat : "d 'de' MMMM yyyy - H:mm"
+	, shortDateFormat : "d/MM/yyyy - H:mm" 
 	, defaultBoundsRatio : +0.0075
 	, defaultImgProfile : 'static/images/globals/user-default.png'
 	, defaultImgBackground : 'static/images/globals/bg-gris.png'

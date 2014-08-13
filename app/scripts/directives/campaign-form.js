@@ -126,7 +126,7 @@ angular.module("dateaWebApp")
 									
 									// check if polygon is in map bounds, otherwise adjust viewport
 									polygonBounds = polygon.getBounds();
-									if (!map.getBounds().contains(polygonBounds)) {
+									if (!$scope.flow.leaflet.map.getBounds().contains(polygonBounds)) {
 										setTimeout(function() {
 											$scope.flow.leaflet.map.fitBounds(polygonBounds);
 										}, 300);

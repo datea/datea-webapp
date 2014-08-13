@@ -43,6 +43,7 @@ angular.module('dateaWebApp')
 	$scope.flow.imgUrl       = config.api.imgUrl; 
 
 	$scope.dateo.isUserSignedIn = User.isSignedIn();
+	$scope.dateFormat = config.defaultDateFormat;
 
 	hasUserVoted = function () {
 		Api.vote

@@ -39,7 +39,6 @@ angular.module( 'dateaWebApp' )
 	$scope.flow.categories;
 	$scope.flow.validInput = {};
 	$scope.flow.messages   = {};
-
 	$scope.flow.leaflet = {};
 
 	User.isSignedIn() || $location.path( '/' );

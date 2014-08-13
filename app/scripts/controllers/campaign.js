@@ -69,7 +69,7 @@ angular.module('dateaWebApp')
 	$scope.campaign          = {};
 	$scope.campaign.leaflet  = {};
 	$scope.campaign.dateos   = {};
-	$scope.query             = {}
+	$scope.dateFormat        = config.defaultDateFormat;
 	$scope.flow              = {};
 	$scope.flow.notFound     = false;
 	$scope.flow.userIsOwner  = false;
@@ -87,6 +87,7 @@ angular.module('dateaWebApp')
 		  dateo : null
 		, show  : false 
 	};
+	$scope.query             = {}
 
 	buildRelatedCampaigns = function () {
 		var tags = getTagsString( $scope.campaign );
@@ -215,6 +216,7 @@ angular.module('dateaWebApp')
 		.getCampaigns( campaignGivens )
 		.then( function ( response ) {
 			if ( response.objects[0] ) {
+				console.log("CAMPAIGN", response.objects[0]);
 				angular.extend( $scope.campaign, response.objects[0] );
 				if ($scope.campaign.secondary_tags && $scope.campaign.secondary_tags.length > 10) {
 					$scope.flow.colorRange = d3.scale.category20().range();

@@ -2487,28 +2487,178 @@ body {
 		line-height: 52px;
 	}
 	position: relative;
-	.tabbable {
-		//position: relative;
-		ul.nav-tabs {
-			position: absolute;
-			top: 18px;
-			right: 15%;
-			border-bottom: 0;	
-			font-size: 14px;
-			li {
+	//position: relative;
+	ul.nav-tabs.dashboard-tabs {
+		position: absolute;
+		top: 18px;
+		right: 15%;
+		border-bottom: 0;	
+		font-size: 14px;
+		li {
+			a {
+				color: #555;
+				background-color: lighten(#ecefee, 5%);
+			}
+			&.active {
 				a {
-					color: #555;
-					background-color: lighten(#ecefee, 5%);
+					background-color: #d5dbd8;
 				}
-				&.active {
-					a {
-						background-color: #d5dbd8;
+			}
+		}
+	}
+}
+
+.dateos-admin-holder {
+
+	.campaign-back-btn {
+		font-size: 16px;
+		color: #555;
+		&:hover {
+			color: black;
+		}
+	}
+
+	.navbar.admin-nav {
+		padding-top: 7px;
+		margin-bottom: 0;
+
+		.list-actions {
+			.num-results {
+				padding-top: 8px;
+				color: #777;
+				.num {
+					font-weight: bold;
+					margin: 0 5px;
+				}
+			}
+		}
+
+		.detail-actions {
+			.set-status-control {
+				.control-label {
+					margin-right: 15px;
+				}
+				margin-left: 30px;
+				display: inline-block;
+				font-size: 14px;
+			}
+		}
+	}
+
+	.admin-container {
+
+		&.fix {
+			padding-top: 60px;
+			.fix-alert {
+				position: fixed;
+				top: 120px;
+				z-index: 10000;
+				width: inherit;
+			}
+		}
+
+		.query-controls {
+			padding-top: 30px;
+			position: relative;
+			padding: 40px 0px;
+			.bg {
+				position: absolute;
+				z-index: -1;
+				top: 0;
+				bottom: 0;
+				left: -15px;
+				right: 0;
+				background-color: @color-15;
+			}
+			.date-field {
+				.form-inline {
+					label { 
+						width: 40px;
+						font-weight: normal;
+						text-align: center;
+						display: inline-block;
+					}
+					input.form-control {
+						width: 100px;
+					}
+					margin-bottom: 15px;
+					&:last-child {
+						margin-bottom: 0;
+					}
+				}
+			}
+
+		}
+
+		.dateo-list-col {
+
+			.dateo-detail-admin {
+				border-left: 1px solid @color-3;
+				//background-color: @color-15;
+				padding: 30px 30px;
+				.container-fluid {
+					background-color: white;
+					.dateo-detail {
+						padding-right: 20px;
+						.social-holder{
+							.controls-left {
+								width: 100%;
+							}
+							.controls-right {
+								display: none;
+							}
+						}
+					}
+				}
+			}
+			.dateo-list {
+				border-left: 1px solid @color-3;
+				min-height: 300px;
+				.no-results {
+					color: @color-10;
+					font-size: 20px;
+					text-align: center;
+					padding: 40px
+				}
+				.dateos-table.table-striped {
+					tbody tr {
+						td {
+							&.username {
+								font-size: 13px;
+								font-weight: bold;
+							}
+							&.created {
+								font-size: 12px;
+							}
+							&.tags {
+								.inner {
+									.clearfix;
+									.tag {
+										display: block;
+										float: left;
+										margin-right: 5px;
+										margin-bottom: 5px;
+										background-color: black;
+									}
+								}
+							}
+							&.extract {
+								width: 50%;
+							}
+						}
+						&:hover {
+							cursor: pointer;
+							td {
+								background-color: @color-3;
+							}
+						}
 					}
 				}
 			}
 		}
 	}
 }
+
 .campaign-form-nav {
 	z-index: 9999;
 	background-color: #d5dbd8;
@@ -3029,7 +3179,6 @@ ul.input-list {
 				height: 100%;
 				padding-top: 30px;
 				.dateo-detail {
-					.username a {color: black}
 
 					.detail-close-btn {
 						position: absolute;
@@ -3043,59 +3192,6 @@ ul.input-list {
 					.content {
 						margin-bottom: 20px;
 						font-size: 16px;
-					}
-					.social-holder {
-						//background-color: #efefef;
-						margin-top: 30px;
-						border-top: 1px solid #eee;
-						border-bottom: 1px solid #eee;
-						.controls-right {
-							padding: 15px 0 10px;
-							.pin {
-								float: right;
-								position: relative;
-								&:hover {
-									color: @color-12;
-								}
-							}
-						}
-						.controls-left {
-							padding: 15px 0;
-							width: 90%;
-							position: relative;
-
-							.permalink {
-								float: right;
-								a { 
-									color: @color-18; 
-									&:hover {
-										color: @color-12;
-									}
-								}
-							}
-
-							.denounce-holder {
-								position: absolute;
-								right: 0;
-								bottom: 10px;
-								font-size: 11px;
-								a {
-									color: @color-18;
-									&:hover {
-										color: red;
-									}
-								}
-							}
-							&:hover {
-								.denounce-holder {
-									display: block;
-								}
-							}
-						}
-					}
-					.comments-holder {
-						padding: 30px 15px 40px 5px;
-						h3 {font-size: 14px; margin-bottom: 20px;}
 					}
 				}
 			}
@@ -3544,7 +3640,10 @@ ul.input-list {
 
 	.user-info {
 			margin-left: 5px;
-			h4.username { margin-bottom: 2px;}
+			h4.username { 
+				margin-bottom: 2px;
+				a {color: black}
+			}
 			.date { font-size: 12px; color: @color-9; }
 	}
 
@@ -3679,6 +3778,60 @@ ul.input-list {
 				max-width: 220px;
 				max-height: 180px;
 			}
+		}
+
+		.social-holder {
+			//background-color: #efefef;
+			margin-top: 30px;
+			border-top: 1px solid #eee;
+			border-bottom: 1px solid #eee;
+			.controls-right {
+				padding: 15px 0 10px;
+				.pin {
+					float: right;
+					position: relative;
+					&:hover {
+						color: @color-12;
+					}
+				}
+			}
+			.controls-left {
+				padding: 15px 0;
+				width: 90%;
+				position: relative;
+
+				.permalink {
+					float: right;
+					a { 
+						color: @color-18; 
+						&:hover {
+							color: @color-12;
+						}
+					}
+				}
+
+				.denounce-holder {
+					position: absolute;
+					right: 0;
+					bottom: 10px;
+					font-size: 11px;
+					a {
+						color: @color-18;
+						&:hover {
+							color: red;
+						}
+					}
+				}
+				&:hover {
+					.denounce-holder {
+						display: block;
+					}
+				}
+			}
+		}
+		.comments-holder {
+			padding: 30px 15px 40px 5px;
+			h3 {font-size: 14px; margin-bottom: 20px;}
 		}
 	}
 }

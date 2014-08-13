@@ -31,6 +31,8 @@ angular.module('dateaWebApp')
 		, {val: '-dateo_count,-created', label: 'más dateadas'}
 	];
 
+	$scope.dateFormat        = config.defaultDateFormat;
+
 	getCategories = function () {
 		Api.category
 		.getCategories( {} )

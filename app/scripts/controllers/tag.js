@@ -62,6 +62,8 @@ angular.module('dateaWebApp')
 		, show  : false 
 	};
 
+	$scope.dateFormat = config.defaultDateFormat;
+
 
 	isMainTag = function () {
 		var dfd = $q.defer();

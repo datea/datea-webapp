@@ -96,6 +96,11 @@ angular.module( 'dateaWebApp'
 		, { templateUrl: 'views/campaign-dashboard.html'
 			,	controller:  'CampaignEditCtrl'
 		} )
+	.when( '/iniciativas/:campaignId/admin'
+		, { templateUrl: 'views/campaign-dashboard.html'
+			,	controller:  'DateosAdminCtrl'
+			, reloadOnSearch: false
+		} )
 	.when( '/:username'
 	  , { templateUrl: 'views/profile.html'
 	    , controller : 'ProfileCtrl'

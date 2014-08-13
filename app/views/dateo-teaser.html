@@ -3,7 +3,7 @@
 		<div class="user-img part part-1 img-circle" da-bg-from-api="{{dateo.user.image_small}}" da-img-size="cover" da-img-type="user"></div>
 		<div class="part part-2 user-info">
 			<h4 class="username"><a href="/#/{{dateo.user.username}}">{{dateo.user.username}}</a></h4>
-			<div class="date">{{dateo.created | date:'fullDate'}}</div>
+			<div class="date">{{dateo.created | date:dateFormat}}</div>
 		</div>
 	</div>
 
@@ -17,11 +17,10 @@
 	<a class="image" href ng-repeat="img in dateo.images" ng-click="flow.imgDetail(img.image)">
 		<img class="part" ng-src="{{img.thumb | imgFromApi}}" alt="sorry">
 	</a>
-
 	<div class="link" ng-show="dateo.link">
 		<i class="fa fa-chain licon"></i>
 		<a href="{{dateo.link.url}}" class="limage" ng-show="dateo.link.img_url">
-			<img src="{{dateo.link.img_url}}" alt="" />
+			<img ng-src="{{dateo.link.img_url}}" alt="" />
 		</a>
 		<div class="lcontent">
 			<h4 class="ltitle"><a href="{{dateo.link.url}}">{{dateo.link.title}}</a></h4>

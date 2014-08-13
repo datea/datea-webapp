@@ -17,6 +17,7 @@ angular.module('dateaWebApp')
 	var headers
 	  , ls          = localStorageService
 	  , dateo       = {}
+	  , dateoStatus = {}
 	  , comment     = {}
 	  , account     = {}
 	  , user        = {}
@@ -62,6 +63,23 @@ angular.module('dateaWebApp')
 	, 'post' : { method  : 'POST'
 	           , headers : headers || ls.get('token')
 	           }
+	} );
+	dateoStatus.rsrc   = $resource( config.api.url + 'dateo_status/'  , {},
+	{ 'query': { method  : 'GET' }
+	, 'post' : { method  : 'POST'
+	           , headers : headers || ls.get('token')
+	           }
+	, 'patch': { method  : 'PATCH'
+	           , params  : { id: '@id' }
+	           , headers : headers || ls.get('token')
+	           }
+	, 'put'  : { method  : 'PUT'
+	           , params  : { id: '@id' }
+	           , headers : headers || ls.get('token')
+	           }
+	, 'delete' : { method : 'DELETE'
+	             , headers : headers || ls.get('token')
+	             }
 	} );
 	comment.rsrc = $resource( config.api.url + 'comment/', {},
 	{ 'query': { method : 'GET' }
@@ -152,7 +170,7 @@ console.log( 'api', headers );
 		  ;
 		givens.id = givens && givens.username ? givens.username : givens.id;
 		reconfigUserRsrc();
-console.log( 'user.getUserByUserIdOrUsername token', token );
+		//console.log( 'user.getUserByUserIdOrUsername token', token );
 		user.rsrc.get( givens
 		, function ( response ) {
 			dfd.resolve( response );
@@ -291,6 +309,53 @@ console.log( 'user.getUserByUserIdOrUsername token', token );
 			dfd.resolve( response );
 		}, function ( error ) {
 			dfd.reject( error );
+		} );
+		return dfd.promise;
+	}
+
+	// DateoStatus
+	dateoStatus.postList = function(givens) {
+		var dfd = $q.defer();
+		dateoStatus.rsrc.post(givens, function(response) {
+			dfd.resolve(response);
+		}, function (error) {
+			dfd.reject(error);
+		} );
+		return dfd.promise;
+	}
+	dateoStatus.putList = function(givens) {
+		var dfd = $q.defer();
+		dateoStatus.rsrc.put(givens, function(response) {
+			dfd.resolve(response);
+		}, function (error) {
+			dfd.reject(error);
+		} );
+		return dfd.promise;
+	}
+	dateoStatus.patchList = function(givens) {
+		var dfd = $q.defer();
+		dateoStatus.rsrc.patch(givens, function(response) {
+			dfd.resolve(response);
+		}, function (error) {
+			dfd.reject(error);
+		} );
+		return dfd.promise;
+	}
+	dateoStatus.getList = function(givens) {
+		var dfd = $q.defer();
+		dateoStatus.rsrc.query(givens, function(response) {
+			dfd.resolve(response);
+		}, function (error) {
+			dfd.reject(error);
+		} );
+		return dfd.promise;
+	}
+	dateoStatus.deleteList = function (givens) {
+		var dfd = $q.defer();
+		dateoStatus.rsrc.delete(givens, function(response) {
+			dfd.resolve(response);
+		}, function (error) {
+			dfd.reject(error);
 		} );
 		return dfd.promise;
 	}
@@ -483,6 +548,7 @@ console.log( 'user.getUserByUserIdOrUsername token', token );
 	}
 
 	return { dateo       : dateo
+				 , dateoStatus : dateoStatus
 	       , comment     : comment
 	       , account     : account
 	       , user        : user

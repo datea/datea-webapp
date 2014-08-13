@@ -5,11 +5,13 @@ angular.module("dateaWebApp")
 ,	'$modal'
 , 'User'
 , 'Api'
+, 'config'
 ,	function (
 		$rootScope
 	, $modal
 	, User
 	, Api
+	, config
 ) {
 	return {
 			restrict    : "E"
@@ -23,6 +25,7 @@ angular.module("dateaWebApp")
 				
 				var updateComments;
 
+				$scope.dateFormat           = config.defaultDateFormat;
 				$scope.dateo 								= {};
 				$scope.comment 							= {}
 				$scope.flow  								= {};

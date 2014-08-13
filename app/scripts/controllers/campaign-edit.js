@@ -9,4 +9,6 @@ angular.module( 'dateaWebApp' )
 	, $routeParams
 ) {
 	$scope.campaignId = $routeParams.campaignId;
+	$scope.flow = {};
+	$scope.flow.dashboardMode = 'edit';
 } ] );
