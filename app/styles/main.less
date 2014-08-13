@@ -158,6 +158,17 @@ img { vertical-align: middle; }
 // Allow only vertical resizing of textareas.
 textarea { resize: vertical; }
 
+.autocomplete-group {
+	position: relative;
+	input { position: relative; z-index: 1;}
+	.autocomplete-loading {
+		z-index: 2;
+		position: absolute;
+		right: 40px;
+		top: 10px;
+	}
+}
+
 .block {
 	display: block;
 }
@@ -1397,14 +1408,6 @@ body {
 			}
 
 			.tag-input-form {
-				position: relative;
-				input { position: relative; z-index: 1;}
-				.fa {
-					z-index: 2;
-					position: absolute;
-					right: 40px;
-					top: 10px;
-				}
 			}
 
 			.selected-tags {
@@ -2490,10 +2493,10 @@ body {
 	//position: relative;
 	ul.nav-tabs.dashboard-tabs {
 		position: absolute;
-		top: 18px;
+		top: 20px;
 		right: 15%;
 		border-bottom: 0;	
-		font-size: 14px;
+		font-size: 13px;
 		li {
 			a {
 				color: #555;
@@ -2523,8 +2526,10 @@ body {
 		margin-bottom: 0;
 
 		.list-actions {
+			padding: 0 15px;
 			.num-results {
 				padding-top: 8px;
+				font-size: 15px;
 				color: #777;
 				.num {
 					font-weight: bold;
@@ -2534,6 +2539,7 @@ body {
 		}
 
 		.detail-actions {
+			padding: 0 15px;
 			.set-status-control {
 				.control-label {
 					margin-right: 15px;
@@ -2728,10 +2734,15 @@ body {
 		}
 		.form-inline .form-group { margin-bottom: 0;}
 
-		.form-group.maintag-holder {
-			.form-control-feedback {
-				z-index: 10;
-				top: 2px;
+		.form-group.maintag-field {
+			.input-group {
+				position: relative;
+				.form-control-feedback {
+					position: absolute;
+					right: 0px;
+					top: 0px;
+					z-index: 10;
+				}
 			}
 		}
 
@@ -2825,13 +2836,15 @@ ul.input-list {
 		background-color: @color-9;
 		color: white;
 		.title { margin-right: 50px}
-		.stats { margin-right: 50px; span {margin-right: 15px;}}
+		.stats { 
+			margin-right: 50px;
+			font-size: 16px;
+			span {margin-right: 15px;}
+		}
 		.buttons { button { margin-right: 30px}}
 	}
 
-}
-
-.tag-holder {
+	/*
 	.viz-holder { 
 		height: ~"calc(100% - 177px)"; 
 		height: ~"-webkit-calc(100% - 177px)"; 
@@ -2844,6 +2857,25 @@ ul.input-list {
 			//height: ~"-moz-calc(100% - 46px)";
 			//height: ~"-o-calc(100% - 46px)";
 		}
+	}*/
+
+	.viz-holder { 
+		//min-height: 450px; 
+		//height: 75vh;
+		.viz-viewer .dateo-map-viz {
+			min-height: 450px; 
+			height: 75vh;
+		}
+		.dateo-img-viz {
+			height: auto;
+		}
+	}
+	.campaign-teasers {
+		h3 {
+			margin: 0px 0 15px;
+		}
+		background-color: @color-15;
+		padding: 30px 20px;
 	}
 }
 

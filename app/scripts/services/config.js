@@ -83,13 +83,13 @@ angular
 	                }
 	, campaign : { mapZoomFocus : 15 }
 	, dashboard : { defaultZoom : 14
-	              , validationMsgs : { mainTagExists : 'La etiqueta ya está siendo usada, por favor usar otra.' } }
+	              , validationMsgs : { mainTagExists : 'La etiqueta ya está siendo usada en otra iniciativa. Al menos que quieras compartirla, usa otra.' } }
 	, signupForm : { validationMsgs : { usernameExists : 'El nombre de usuario ya ha sido usado.'
 	                                  , http400        : 'El nombre de usuario o correo ya está siendo usado.'} }
 	, regex : { email: /^([a-zA-Z0-9_\.\-])+\@(([a-zA-Z0-9\-])+\.)+([a-zA-Z0-9]{2,4})+$/
 	          , text : /^([a-záéíóúñÑÁÉÍÓÚA-Z \-])+$/}
 
-	, layout_100: ['tag'] 
+	, layout_100: [] 
 	, visualization: { default_other_color: '#CCCCCC'
 									 , default_color: '#28BC45'
 		}

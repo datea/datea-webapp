@@ -30,14 +30,14 @@
 							</div>
 						</div>
 					</div>
-					<div class="form-group"
-					     ng-class="{null: '',true: 'has-success has-feedback',false: 'has-error has-feedback'}[flow.validInput.main_tag]"
+					<div class="form-group maintag-field"
+					     ng-class="{null: '',true: 'has-success has-feedback','warning': 'has-warning has-feedback', false: 'has-error has-feedback'}[flow.validInput.mainTag]"
 					     popover="{{help.mainTag.content}}" popover-title="{{help.mainTag.title}}" 
 					     popover-placement="right" popover-trigger="mouseenter" popover-popup-delay="600">
 						<label for="main-hashtag">Etiqueta (hashtag) principal</label>
 						<div class="input-group col-xs-5">
 							<span class="input-group-addon">#</span>
-							<span class="glyphicon form-control-feedback" ng-class="{null: '',true: 'glyphicon-ok',false: 'glyphicon-remove'}[flow.validInput.mainTag]"></span>
+							<span class="glyphicon form-control-feedback" ng-class="{null: '',true: 'glyphicon-ok',false: 'glyphicon-remove', 'warning': 'glyphicon-warning-sign'}[flow.validInput.mainTag]"></span>
 							<input type="text" class="form-control" id="main-hashtag" ng-model="campaign.main_tag.tag" ng-blur="flow.checkMainTag()" ng-enter="flow.checkMainTag()">
 						</div>
 						<p class="help-block">{{ flow.messages.mainTagExists }}</p>
@@ -105,8 +105,9 @@
 					<h4>Etiquetas (hashtags)</h4>
 					<div class="form-group">
 						<label for="new-tag">Introduce una etiqueta y agregalas una por una</label>
-						<div class="input-group col-xs-5">
-							<input type="text" ng-model="flow.nextTag" class="form-control" ng-enter="flow.addTag()">
+						<div class="input-group col-xs-5 autocomplete-group">
+							<input type="text" ng-model="flow.nextTag" class="form-control" ng-enter="flow.addTag()" typeahead="tags for tags in flow.autocompleteTag($viewValue) | filter:$viewValue" typeahead-loading="loadingLocations">
+							<i ng-show="loadingLocations" class="autocomplete-loading fa fa-circle-o-notch fa-spin"></i>
 							<span class="input-group-btn">
 								<button class="btn btn-default" type="button" ng-click="flow.addTag()">+</button>
 							</span>

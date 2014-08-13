@@ -237,12 +237,17 @@ angular.module("dateaWebApp")
 									$scope.flow.validInput.mainTag = true;
 									$scope.flow.messages.mainTagExists = '';
 									return;
+								}else{
+									$scope.flow.validInput.mainTag     = !response.objects.length ? true : 'warning';
+									$scope.flow.messages.mainTagExists = !response.objects.length ? '' : config.dashboard.validationMsgs.mainTagExists;
 								}
-								$scope.flow.validInput.main_tag     = !response.objects.length;
-								$scope.flow.messages.mainTagExists = !response.objects.length ? '' : config.dashboard.validationMsgs.mainTagExists;
+								console.log($scope.flow.validInput);
 							}, function ( reason ) {
 								console.log( reason	);
 							} );
+						}else{
+							$scope.flow.validInput.mainTag = null;
+							$scope.flow.messages.mainTagExists = '';
 						}
 					}
 
@@ -266,8 +271,8 @@ angular.module("dateaWebApp")
 					// Add File
 					$rootScope.$on('datea:fileLoaded', function ( ev, givens ) {
 						var xmlStr, xmlDom, gjson, ext, layer;
-						if (givens.data.name) { 
-							ext = givens.data.name.split('.').slice(-1)[0].toLowerCase();
+						ext = givens.data.name.split('.').slice(-1)[0].toLowerCase();
+						if (givens.data.name && (ext === 'kml' || ext === 'json')) { 
 							$scope.campaign.layer_files.push( { file: { name: givens.data.name , data_uri: givens.file }});
 							if (ext === 'kml') {
 								xmlStr = b64_to_utf8(givens.file.split(';base64,')[1]);
@@ -383,6 +388,17 @@ angular.module("dateaWebApp")
 
 					$scope.flow.closeAlert = function (index) {
 						$scope.flow.alerts.splice(index, 1);
+					}
+
+					$scope.flow.autocompleteTag = function ( val ) {
+						return Api.tag.getAutocompleteByKeyword( { q: val.replace('#', '') } )
+						.then( function ( response ) {
+							var tags = [];
+							angular.forEach( response.suggestions, function( item ){
+								tags.push( item );
+							});
+							return tags;
+						} );
 					}
 
 					// HELP FOR INDIVIDUAL FIELDS/SECTIONS

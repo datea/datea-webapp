@@ -36,7 +36,7 @@
 		<div class="viz-viewer" ng-class="{'datea-loading': flow.loading }">
 			<tabset>
 				<tab heading="&nbsp;" class="glyphicon glyphicon-map-marker datea-glyphtab-fix">
-					<div class="container-fluid">
+					<div class="container-fluid dateo-map-viz">
 						<div class="row">
 							<div class="col-md-45 dateos-holder">
 								<div class="dateo-detail-content-holder" ng-show="flow.dateoDetail.show">
@@ -58,6 +58,16 @@
 					</div>
 				</tab>
 			</tabset>
+		</div>
+	</div>
+	<div class="campaign-teasers" ng-show="campaignsInTag">
+		<div class="container-fluid">
+			<h3>Iniciativas en esta etiqueta</h3>
+			<div class="campaign-list row">
+				<div class="col-lg-2 col-md-3 col-sm-4 col-xs-12" ng-repeat="campaign in campaignsInTag">
+					<da-campaign-teaser></da-campaign-teaser>
+				</div>
+			</div>
 		</div>
 	</div>
 </div>

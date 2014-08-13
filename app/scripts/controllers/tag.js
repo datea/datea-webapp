@@ -42,6 +42,7 @@ angular.module('dateaWebApp')
 	  , buildMarker
 	  , addMarker
 	  , buildTag
+	  , buildCampaignsInTag
 	  , updateTag
 	  , goToMainTag
 	  , buildClusterIcon
@@ -410,11 +411,15 @@ angular.module('dateaWebApp')
 
 	if ( $routeParams.tagName ) {
 		isMainTag().then( function ( givens ) {
-			if ( givens.isMainTag ) {
+			console.log("TAG MAINTAG", givens);
+			if ( givens.isMainTag && givens.tagObj.length === 1) {
 				goToMainTag( { username: givens.tagObj[0].user.username
 				             , tagName : givens.tagObj[0].main_tag.tag
 				             } );
 			} else {
+				if (givens.tagObj.length > 0) {
+					$scope.campaignsInTag = givens.tagObj;
+				}
 				buildTag();
 			}
 		}, function ( reason ) {

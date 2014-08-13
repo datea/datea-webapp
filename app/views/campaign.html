@@ -57,7 +57,8 @@
 		  			<span class="glyphicon glyphicon-cog"></span>
 		      </button>
 		      <ul class="dropdown-menu dropdown-menu-right" role="menu">
-		        <li ng-if="flow.userIsOwner"><a href="#/iniciativas/{{campaign.id}}/edit">Administrar</a></li>
+		        <li ng-if="flow.userIsOwner"><a href="#/iniciativas/{{campaign.id}}/edit">Configuración</a></li>
+		        <li ng-if="flow.userIsOwner"><a href="#/iniciativas/{{campaign.id}}/admin">Administrar dateos</a></li>
 		        <li><a href="#">Insertar (embed)</a></li>
 		        <li><a href="#" target="_blank">Imprimir reporte</a></li>
 		        <li><a href="http://api.datea.pe/csv-export/dateos/tag/{{campaign.main_tag.id}}/" target="_blank">Descargar dateos en CSV</a></li>
