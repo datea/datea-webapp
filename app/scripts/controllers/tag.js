@@ -40,6 +40,7 @@ angular.module('dateaWebApp')
 	  , buildDateosWithImages
 	  , buildMarkers
 	  , buildMarker
+	  , openSpiderfy
 	  , addMarker
 	  , buildTag
 	  , updateTag
@@ -273,11 +274,13 @@ angular.module('dateaWebApp')
 		if ( $scope.flow.leaflet.markers[markerName] ) {
 			center.lat  = $scope.flow.leaflet.markers[markerName].lat;
 			center.lng  = $scope.flow.leaflet.markers[markerName].lng;
-			center.zoom = $scope.flow.leaflet.center.zoom < 15 ? 15 : $scope.flow.leaflet.center.zoom;
+			// center.zoom = $scope.flow.leaflet.center.zoom < 15 ? 15 : $scope.flow.leaflet.center.zoom;
+			center.zoom = 18;
 			angular.extend( $scope.flow.leaflet.center, center );
-			// $timeout( function () {
+			$timeout( function () {
+				openSpiderfy(idx);
 				$scope.flow.leaflet.markers[markerName].focus = true;
-			// }, 1000 );
+			}, 1000 );
 		}
 		console.log( 'focusDateo', idx, $scope.flow.leaflet.markers[markerName].focus );
 	}
@@ -357,6 +360,7 @@ angular.module('dateaWebApp')
 		var svg, vis, arc, pie, arcs;
 		svg = document.createElementNS(d3.ns.prefix.svg, 'svg');
 		vis = d3.select(svg).data([opt.data])
+			.attr( 'class', 'datea-svg-cluster' )
 			.attr("width", opt.d)
 			.attr("height", opt.d)
 			.append("svg:g")
@@ -405,6 +409,10 @@ angular.module('dateaWebApp')
 		}
     return "";
   }
+
+	openSpiderfy = function ( idx ) {
+		$('.datea-svg-cluster').parents('div.marker-cluster').click();
+	};
 
 	if ( $routeParams.tagName ) {
 		isMainTag().then( function ( givens ) {
