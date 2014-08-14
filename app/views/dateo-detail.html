@@ -49,30 +49,35 @@
 						</div>
 						
 						<div class="social-holder">
-							<div class="datea-glyph-holder">
-								<span class="glyphicon glyphicon-thumbs-up datea-glyph"></span> <span class="datea-glyph-text" ng-show="dateo.vote_count > 0"><p>{{dateo.vote_count}}</p> <p><ng-pluralize count="dateo.vote_count" when="{'one':
-									'apoyo','other':'apoyos'}"></p></span>
-							</div>
-							<div class="datea-glyph-holder">
-								<span class="glyphicon glyphicon-comment datea-glyph"></span> <span class="datea-glyph-text" ng-show="dateo.comment_count > 0"><p>{{dateo.comments.length}}</p><p><ng-pluralize count="dateo.comments.length" when="{'one':
-									'comentario','other':'comentarios'}"></p></span>
-							</div>
+							<div class="controls-left pull-left">
+								<div class="dateo-actions">
+									<da-vote vote-obj="dateo" vote-id="dateo.id" vote-count="dateo.vote_count"></da-vote>
 
-							<div class="datea-glyph-holder share-btn" ng-click="dateo.share()">
-									<i class="fa fa-share-alt"></i>
-							</div>
+									<div class="datea-glyph-holder hover-enabled" ng-click="flow.focusCommentForm()">	
+										<span class="glyphicon glyphicon-comment datea-glyph"></span> <span class="datea-glyph-text" ng-show="dateo.comment_count > 0"><p>{{dateo.comments.length}}</p><p><ng-pluralize count="dateo.comments.length" when="{'one':
+										'comentario','other':'comentarios'}"></ng-pluralize></p></span>
+									</div>
 
-							<span class="glyphicon glyphicon-print pull-right datea-glyph datea-glyph-2" ng-click="dateo.print()"></span>
-							<!--<div class="form-group pull-right share">
-								<div class="input-group input-group-sm">
-									<input type="text" class="form-control" value="{{dateo.shareableUrl}}">
-									<span class="input-group-btn">
-										<button class="btn btn-default" type="button" ng-click="dateo.share()"><i class="fa fa-share-alt"></i></button>
-									</span>
+									<da-redateo dateo-id="dateo.id" redateo-count="dateo.redateo_count"></da-redateo>
+
+									<div class="datea-glyph-holder hover-enabled share-btn" ng-click="flow.share()">
+										<i class="fa fa-share-alt"></i>
+									</div>
 								</div>
-							</div>-->
-							<div class="denounce-holder no-print">
-								<a class="denounce" href="" ng-click="dateo.denounce( 'dateo', $event )">denunciar</a>
+							</div>
+							<div class="controls-right">
+								<span class="glyphicon glyphicon-print pull-right datea-glyph datea-glyph-2 green-hover" ng-click="dateo.print()"></span>
+								<!--<div class="form-group pull-right share">
+									<div class="input-group input-group-sm">
+										<input type="text" class="form-control" value="{{dateo.shareableUrl}}">
+										<span class="input-group-btn">
+											<button class="btn btn-default" type="button" ng-click="dateo.share()"><i class="fa fa-share-alt"></i></button>
+										</span>
+									</div>
+								</div>-->
+								<div class="denounce-holder no-print">
+									<a class="denounce" href="" ng-click="dateo.denounce( 'dateo', $event )">denunciar</a>
+								</div>
 							</div>
 						</div>
 						
@@ -106,16 +111,17 @@
 						</div>
 					</div>
 				</div>
-				<div class="col-xs-12 col-md-45 map-holder" ng-show="!dateo.message">
-					<h3>Ubicación</h3>
-					<leaflet id="leafletDateo" defaults="dateo.leaflet.defaults" markers="dateo.leaflet.markers" center="dateo.leaflet.center" height="260px" width="100%" tiles="dateo.leaflet.tiles"></leaflet>
-					<p ng-if="dateo.address">{{dateo.address}}</p>
-					<p ng-if="dateo.admin_level1">{{dateo.admin_level1}} > {{dateo.admin_level2}} > {{dateo.admin_level3}}</p>
-					<hr>
-					<div class="related-campaigns">
+				<div class="col-xs-12 col-md-45 sidebar" ng-show="!dateo.message">
+					<div class="side-block" ng-show="dateo.position">
+						<h3>Ubicación</h3>
+						<leaflet id="leafletDateo" defaults="dateo.leaflet.defaults" markers="dateo.leaflet.markers" center="dateo.leaflet.center" height="260px" width="100%" tiles="dateo.leaflet.tiles"></leaflet>
+						<p ng-if="dateo.address">{{dateo.address}}</p>
+						<p ng-if="dateo.admin_level1">{{dateo.admin_level1}} > {{dateo.admin_level2}} > {{dateo.admin_level3}}</p>
+					</div>
+					<div class="side-block related-campaigns" ng-show="dateo.campaigns.length > 0">
 						<h3>Iniciativas relacionadas</h3>
 						<div class="tag-row">
-							<a class="tag" href="#/tag/{{tag.campaigns[0].username}}" ng-repeat="tag in dateo.tags" ng-if="tag.campaigns[0]">#{{tag.campaigns[0].username}}</a>
+							<a class="tag" href="#/{{camp.username}}/{{camp.tag}}" ng-repeat="camp in dateo.campaigns">{{camp.name}}</a>
 						</div>
 					</div>
 				</div>

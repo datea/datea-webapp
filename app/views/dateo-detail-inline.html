@@ -38,17 +38,28 @@
 
 		<div class="controls-left pull-left">
 
-			<da-vote vote-obj="dateo" vote-id="dateo.id" vote-count="dateo.vote_count"></da-vote>
-
-			<div class="datea-glyph-holder" ng-click="flow.focusCommentForm()">
-				<span class="glyphicon glyphicon-comment datea-glyph"></span> <span class="datea-glyph-text" ng-show="dateo.comment_count > 0"><p>{{dateo.comments.length}}</p><p><ng-pluralize count="dateo.comments.length" when="{'one':
-					'comentario','other':'comentarios'}"></p></ng-pluralize></span>
+			<div class="permalink">
+				<a href="#/{{dateo.user.username}}/dateos/{{dateo.id}}" tooltip="ver en pantalla completa" tootltip-trigger="mouseenter" tooltip-placement="bottom" tooltip-popup-delay="500">permalink</a>
+			</div>
+			
+			<div class="denounce-holder">
+				<a class="denounce" href="" ng-click="dateo.denounce( 'dateo', $event )">denunciar</a>
 			</div>
 
-			<div class="datea-glyph-holder share-btn" ng-click="flow.share()">
-				<i class="fa fa-share-alt"></i>
-			</div>
+			<div class="dateo-actions">
+				<da-vote vote-obj="dateo" vote-id="dateo.id" vote-count="dateo.vote_count"></da-vote>
 
+				<div class="datea-glyph-holder hover-enabled" ng-click="flow.focusCommentForm()">	
+					<span class="glyphicon glyphicon-comment datea-glyph"></span> <span class="datea-glyph-text" ng-show="dateo.comment_count > 0"><p>{{dateo.comments.length}}</p><p><ng-pluralize count="dateo.comments.length" when="{'one':
+					'comentario','other':'comentarios'}"></ng-pluralize></p></span>
+				</div>
+
+				<da-redateo dateo-id="dateo.id" redateo-count="dateo.redateo_count"></da-redateo>
+
+				<div class="datea-glyph-holder hover-enabled share-btn" ng-click="flow.share()">
+					<i class="fa fa-share-alt"></i>
+				</div>
+			</div>
 
 			<!--
 			<div class="form-group pull-right share">
@@ -61,13 +72,6 @@
 			</div>
 			-->
 
-			<div class="permalink">
-				<a href="#/{{dateo.user.username}}/dateos/{{dateo.id}}" tooltip="ver en pantalla completa" tootltip-trigger="mouseenter" tooltip-placement="bottom" tooltip-popup-delay="500">permalink</a>
-			</div>
-			
-			<div class="denounce-holder">
-				<a class="denounce" href="" ng-click="dateo.denounce( 'dateo', $event )">denunciar</a>
-			</div>
 		</div>
 
 		<div class="controls-right pull-right">

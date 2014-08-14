@@ -2832,7 +2832,7 @@ ul.input-list {
 	height: 100%;
 	.tag-card {
 		line-height: 70px;
-		height: 70px;
+		min-height: 70px;
 		background-color: @color-9;
 		color: white;
 		.title { margin-right: 50px}
@@ -2864,7 +2864,7 @@ ul.input-list {
 		//height: 75vh;
 		.viz-viewer .dateo-map-viz {
 			min-height: 450px; 
-			height: 75vh;
+			height: 72vh;
 		}
 		.dateo-img-viz {
 			height: auto;
@@ -3229,102 +3229,6 @@ ul.input-list {
 			}
 		}
 
-
-		.dateos-with-images-holder {
-			//height: 100%;
-			//overflow-y: scroll;
-			padding: 1px;
-			//margin: -3px;
-			min-height: 300px;
-			.clearfix;
-
-			.dateo-with-image {
-				position: relative;
-				//width: 16.66%; -> setting with media queries below
-				float: left;
-				color: darken(@color-6, 15%);
-
-				.inner {
-					padding-top: 87%;
-					position: relative;
-					
-					.thumb-holder {
-						position: absolute;
-						top: 0;
-						left: 0;
-						right: 0;
-						bottom: 0;
-						border: 3px solid white;
-						z-index: 0;
-					}
-
-					.info-holder {
-						display: none;
-						padding: 10px;
-						position: absolute;
-						top: 0;
-						left: 0;
-						right: 0;
-						bottom: 0;
-						z-index: 2;
-
-						.extract {
-							font-size: 14px;
-							padding-top: 10px;
-							padding-bottom: 40px;
-							overflow: none;
-						}
-						.part-1 {
-							width: 38px;
-						}
-						.part-2 {
-							width: 160px;
-							h5 {
-								color: black;
-								font-size: 14px;
-								font-weight: bold;
-								margin: 3px 0 0;
-							}
-							.date {
-								color: @color-6;
-								font-size: 12px;
-							}
-						}
-						.user-img {
-							height: 35px;
-							width: 35px;
-						}
-						.cta-holder {
-							position: absolute;
-							bottom: 10px;
-							left: 10px; right: 10px;
-							span {
-								color: @color-12;
-							}
-							span+span {
-								margin: 0 0 0 20px;
-							}
-						}
-					}
-					.info-bg {
-						background: rgba(255,255,255, 0.9);
-						display: none;
-						position: absolute;
-						left: 0; right: 0; top: 0; bottom: 0;
-						z-index: 1;
-					}
-				}
-			}
-			.dateo-with-image:hover {
-
-				.info-holder {
-					display: block;
-				}
-				.info-bg {
-					display: block;
-				}
-			}
-		}
 		.dateo-stats-holder {
 			//text-align: center;
 			.inner {
@@ -3453,27 +3357,122 @@ ul.input-list {
 	}
 }
 
+
+.dateo-thumbs-holder {
+	padding: 1px;
+	min-height: 300px;
+	.clearfix;
+
+	.dateo-thumb {
+		position: relative;
+		//width: 16.66%; -> setting with media queries below
+		float: left;
+		color: darken(@color-6, 15%);
+
+		.inner {
+			padding-top: 87%;
+			position: relative;
+			
+			.img-holder {
+				position: absolute;
+				top: 0;
+				left: 0;
+				right: 0;
+				bottom: 0;
+				border: 3px solid white;
+				z-index: 0;
+			}
+
+			.info-holder {
+				display: none;
+				padding: 10px;
+				position: absolute;
+				top: 0;
+				left: 0;
+				right: 0;
+				bottom: 0;
+				z-index: 2;
+
+				.extract {
+					font-size: 14px;
+					padding-top: 10px;
+					padding-bottom: 40px;
+					overflow: none;
+				}
+				.part-1 {
+					width: 38px;
+				}
+				.part-2 {
+					width: 160px;
+					h5 {
+						color: black;
+						font-size: 14px;
+						font-weight: bold;
+						margin: 3px 0 0;
+					}
+					.date {
+						color: @color-6;
+						font-size: 12px;
+					}
+				}
+				.user-img {
+					height: 35px;
+					width: 35px;
+				}
+				.stat-holder {
+					position: absolute;
+					bottom: 10px;
+					left: 10px; right: 10px;
+					.stat {
+						color: black;
+						margin-right: 10px;
+						&:last-child {
+							margin-right: 0;
+						}
+					}
+				}
+			}
+			.info-bg {
+				background: rgba(255,255,255, 0.9);
+				display: none;
+				position: absolute;
+				left: 0; right: 0; top: 0; bottom: 0;
+				z-index: 1;
+			}
+		}
+	}
+	.dateo-thumb:hover {
+
+		.info-holder {
+			display: block;
+		}
+		.info-bg {
+			display: block;
+		}
+	}
+}
+
 // RESPONSIVE DATEOS WITH IMAGES
 @media (max-width: 664px) {
-	.viz-holder .tab-content .dateos-with-images-holder .dateo-with-image { width: 50%;}
+	.viz-holder .tab-content .dateo-thumbs-holder .dateo-thumb { width: 50%;}
 }
 @media (min-width: 665px) {
-	.viz-holder .tab-content .dateos-with-images-holder .dateo-with-image { width: 33.33%;}
+	.viz-holder .tab-content .dateo-thumbs-holder .dateo-thumb { width: 33.33%;}
 }
 @media (min-width: 885px) {
-	.viz-holder .tab-content .dateos-with-images-holder .dateo-with-image { width: 25%;}
+	.viz-holder .tab-content .dateo-thumbs-holder .dateo-thumb { width: 25%;}
 }
 @media (min-width: 1110px) {
-	.viz-holder .tab-content .dateos-with-images-holder .dateo-with-image { width: 20%;}
+	.viz-holder .tab-content .dateo-thumbs-holder .dateo-thumb { width: 20%;}
 }
 @media (min-width: 1340px) {
-	.viz-holder .tab-content .dateos-with-images-holder .dateo-with-image { width: 16.66%;}
+	.viz-holder .tab-content .dateo-thumbs-holder .dateo-thumb { width: 16.66%;}
 }
 @media (min-width: 1570px) {
-	.viz-holder .tab-content .dateos-with-images-holder .dateo-with-image { width: 14.285%;}
+	.viz-holder .tab-content .dateo-thumbs-holder .dateo-thumb { width: 14.285%;}
 }
 @media (min-width: 1800px) {
-	.viz-holder .tab-content .dateos-with-images-holder .dateo-with-image { width: 12.5%;}
+	.viz-holder .tab-content .dateo-thumbs-holder .dateo-thumb { width: 12.5%;}
 }
 
 //
@@ -3574,73 +3573,7 @@ ul.input-list {
 					}
 				}
 			}
-			.dateos-with-images-holder {
-				height: 600px;
-
-				.dateo-with-image {
-					height: 200px;
-					position: relative;
-					width: 230px;
-
-					.info-holder {
-						display: none;
-						padding: 10px;
-						position: relative;
-						z-index: 1;
-
-						.extract {
-							font-size: 12px;
-							height: 100px;
-							overflow: none;
-						}
-						.part-1 {
-							width: 38px;
-						}
-						.part-2 {
-							width: 130px;
-
-							h5 {
-								font-size: 14px;
-								font-weight: bold;
-								margin: 3px 0 0;
-							}
-							.date {
-								color: @color-6;
-								font-size: 11px;
-							}
-						}
-						.user-img {
-							height: 35px;
-							width: 35px;
-						}
-						.cta-holder {
-							span {
-								color: @color-12;
-							}
-							span+span {
-								margin: 0 0 0 20px;
-							}
-						}
-					}
-					.info-bg {
-						background: rgba(255,255,255,0.7);
-						display: none;
-						height: 100%;
-						position: absolute;
-						width: 100%;
-						z-index: 0;
-					}
-				}
-				.dateo-with-image:hover {
-
-					.info-holder {
-						display: block;
-					}
-					.info-bg {
-						display: block;
-					}
-				}
-			}
+			
 			.leaflet-map-holder {
 				position: relative;
 				width: 59%;
@@ -3728,11 +3661,12 @@ ul.input-list {
 		margin: 15px 0;
 		position: relative;
 		.licon {
-			font-size: 18px;
+			font-size: 15px;
+			border-radius: 50%;
 			color: @color-18;
 			position: absolute;
 			right: 6px;
-			top: 10px;
+			top: 6px;
 		}
 		.limage {
 			img {
@@ -3787,11 +3721,18 @@ ul.input-list {
 				font-size: 13px;
 				line-height: 20px;
 				margin-right: 15px;
+				font-weight: bold;
+				font-size: 12px;
 				.glyphicon {
 					position: relative;
 					top: 3px;
 					font-size: 18px;
 					color: @color-3;
+					margin-right: 2px
+				}
+				.glyphicon-retweet {
+					top: 1px;
+					font-size: 17px;
 				}
 			}
 		}
@@ -3805,10 +3746,19 @@ ul.input-list {
 			}
 		}
 
-		.link .limage {
-			img {
-				max-width: 220px;
-				max-height: 180px;
+		.link {
+			.ltitle {
+				margin-top: 0;
+			} 
+			.limage {
+				float: none;
+				margin-bottom: 10px;
+				margin-right: 0;
+				img {
+					width: 100%;
+					max-width: none;
+					max-height: none;
+				}
 			}
 		}
 
@@ -3829,7 +3779,7 @@ ul.input-list {
 			}
 			.controls-left {
 				padding: 15px 0;
-				width: 90%;
+				width: 86%;
 				position: relative;
 
 				.permalink {
@@ -3864,6 +3814,23 @@ ul.input-list {
 		.comments-holder {
 			padding: 30px 15px 40px 5px;
 			h3 {font-size: 14px; margin-bottom: 20px;}
+		}
+	}
+}
+
+@media (min-width: @screen-lg-min) {
+	.dateo.dateo-detail .link {
+		.ltitle {
+			margin-top: 0;
+		} 
+		.limage {
+			float: left;
+			margin-right: 15px;
+			margin-bottom: 3px;
+			img {
+				max-width: 220px;
+				max-height: 180px;
+			}
 		}
 	}
 }
@@ -4058,9 +4025,9 @@ ul.input-list {
 			.clearfix;
 			position: relative;
 			border-top: 1px solid @color-3;
-			border-bottom: 0px solid @color-3;
-			padding: 10px 0 10px 0;
-			margin-bottom: 40px;
+			border-bottom: 1px solid @color-3;
+			padding: 0px 0 0px 0;
+			margin-bottom: 5px;
 
 			.share {
 				margin-right: 20px;
@@ -4082,13 +4049,25 @@ ul.input-list {
 		}
 	}
 
-	.map-holder {
+	.sidebar {
 		h3 {
 			text-transform: uppercase;
 			font-weight: bold;
+			margin-top: 0;
+			font-size: 14px;
 		}
 		p {
 			margin: 10px 0;
+		}
+		.side-block {
+			padding-bottom: 25px;
+			margin-bottom: 25px;
+			border-bottom: 1px solid @color-3;
+			&:last-child {
+				border-bottom: 0;
+				margin-bottom: 0;
+				padding-bottom: 0;
+			}
 		}
 	}
 }
@@ -4158,8 +4137,13 @@ ul.input-list {
 .datea-glyph-holder {
 	display: inline-block;
 	vertical-align: top;
-	margin-right: 45px;
+	margin-right: 35px;
 	position: relative;
+
+	@on-color             : lighten(@color-12, 20%);
+	@inactive-hover-color : @color-18;
+	@delete-color         : lighten(red, 20%);
+
 	span {
 		display: inline-block;
 	}
@@ -4176,35 +4160,51 @@ ul.input-list {
 		display: none;
 	}
 
-	.datea-glyph {
+	.datea-glyph, .fa {
 		background: @color-3;
 		border-radius: 50%;
 		color: white;
-		font-size: 20px;
-		line-height: 40px;
-		height: 40px;
 		text-align: center;
-		width: 40px!important;
 		top: 0px;
-		margin-right: 3px;
+		//margin-right: 3px;
+		display: block;
 	}
-	&:hover {
-		cursor: pointer;
-		.datea-glyph, .fa {
-			background-color: @color-12;
+
+	&.hover-enabled {
+		&:hover {
+			cursor: pointer;
+			.datea-glyph, .fa {
+				background-color: @inactive-hover-color;
+			}
+		}
+
+		&.disabled:hover {
+			cursor: not-allowed;
+			background-color: white;
+			.datea-glyph{		
+				background-color: @color-3;
+			}
+		}
+		&.active.can-delete:hover {
+			cursor: pointer;
+			.datea-glyph {
+				background-color: @delete-color;
+			}
+			.check {
+				display: none;
+			}
+			.delete {
+				display: block;
+			}
 		}
 	}
-	&.disabled:hover {
-		cursor: not-allowed;
-		background-color: white;
-		.datea-glyph{		
-			background-color: @color-3;
-		}
-	}
+
 	.check {
 		display: none;
 	}
+
 	&.active {
+		/*
 		.check {
 			z-index: 2;
 			display: block;
@@ -4213,36 +4213,140 @@ ul.input-list {
 			color: white;
 			left: 27px;
 			top: 6px;
-		}
+		}*/
 		.datea-glyph{		
-			background-color: @color-12;
+			background-color: @on-color;
 		}
 	}
 
 	&.loading {
 		.datea-glyph, .fa {
-			background-color: @color-12;
+			background-color: @inactive-hover-color;
 		}
 		&.active {
 			.check { display: none}
 		}
 	}
 
+	&.can-delete.loading.active {
+		.datea-glyph, .fa {
+			background-color: @delete-color  !important;
+		}
+		&:hover {
+			.datea-glyph, .fa {
+				background-color: @delete-color !important;
+			}
+		}
+		.check {
+			display: none !important;
+		}
+		.delete {
+			display: none !important;
+		}
+	}
+
+	.delete {
+		color: white;
+		position: absolute;
+		z-index: 10;
+		display: none;
+		left: 0;
+		right: 0;
+		text-align: center;
+		top: 0;
+	}
+
 	.fa {
 		color: white;
 		display: inline-block;
-		line-height: 40px;
-		height: 40px;
-		width: 40px;
 		text-align: center;
 		position: relative;
 		border-radius: 50%;
 		background-color: @color-3;
-		font-size: 20px; 
 	}
 
 	.datea-glyph-2 {
 		background: @color-3;
+	}
+}
+
+.dateo-actions {
+	padding-bottom: 10px;
+}
+.datea-glyph-holder {
+	margin-right: 8px;
+	.datea-glyph, .fa {
+		line-height: 32px;
+		height: 32px;
+		width: 32px;
+		font-size: 16px;
+	}
+	p {
+		font-size: 11px;
+		line-height: 11px;
+	}
+	.delete {
+		font-size: 14px;
+		line-height: 14px;
+	}
+	.datea-glyph-text {
+		position: absolute;
+		right: 0;
+		left: 0;
+		text-align: center;
+		bottom: -15px;
+	}
+}
+
+@media (min-width: @screen-sm-min) {
+
+}
+@media (min-width: @screen-md-min) {
+	.datea-glyph-holder {
+		margin-right: 10px;
+		.datea-glyph, .fa {
+			line-height: 35px;
+			height: 35px;
+			width: 35px;
+			font-size: 17px;
+		}
+		p {
+			font-size: 12px;
+			line-height: 12px;
+		}
+		.delete {
+			font-size: 16px;
+			line-height: 16px;
+		}
+		.datea-glyph-text {
+			position: absolute;
+			right: 0;
+			left: 0;
+			text-align: center;
+			bottom: -18px;
+		}
+	}
+}
+@media (min-width: @screen-lg-min) {
+	.datea-glyph-holder {
+		margin-right: 7%;
+		.datea-glyph, .fa {
+			line-height: 38px;
+			height: 38px;
+			width: 38px;
+			font-size: 17px; 
+		}
+		p {
+			font-size: 12px;
+			line-height: 12px;
+		}
+		.delete {
+			font-size: 16px;
+			line-height: 16px;
+		}
+		.datea-glyph-text {
+			bottom: -18px;
+		}
 	}
 }
 

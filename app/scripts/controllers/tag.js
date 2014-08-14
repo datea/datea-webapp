@@ -153,7 +153,7 @@ angular.module('dateaWebApp')
 				}
 			} );
 			$scope.tag.dateosWithImages = dateos;
-			$scope.tag.dateosWithImagesHolderHeight = { height : ( Math.ceil( $scope.tag.dateosWithImages.length / 6 ) * 200 ) + 'px' };
+			//$scope.tag.dateosWithImagesHolderHeight = { height : ( Math.ceil( $scope.tag.dateosWithImages.length / 6 ) * 200 ) + 'px' };
 		}, function ( reason ) {
 			console.log( reason );
 		} )

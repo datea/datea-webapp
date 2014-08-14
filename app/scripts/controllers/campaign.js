@@ -17,6 +17,7 @@ angular.module('dateaWebApp')
   , 'leafletMarkersHelpers'
   , '$http'
   , '$document'
+  , 'geoJSONStyle'
 , function (
     $scope
   , Api
@@ -33,6 +34,7 @@ angular.module('dateaWebApp')
   , leafletMarkersHelpers
   , $http
   , $document
+  , geoJSONStyle
 ) {
 
 	var sessionMarkersIdx = 0
@@ -587,12 +589,12 @@ angular.module('dateaWebApp')
 					if (ext === 'kml') {
 						$http.get(config.api.imgUrl+lf.file)
 						.success( function (data) {
-							L.geoJson(gjson, config.geoJSONStyle).addTo(map);
+							L.geoJson(gjson, geoJSONStyle).addTo(map);
 						} );
 					}else if (ext === 'json') {
 						$http.get(config.api.imgUrl+lf.file)
 						.success( function (data) {
-							L.geoJson(data, config.geoJSONStyle).addTo(map);
+							L.geoJson(data, geoJSONStyle).addTo(map);
 						} );
 					}
 				} );

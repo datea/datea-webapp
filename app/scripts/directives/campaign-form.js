@@ -9,7 +9,8 @@ angular.module("dateaWebApp")
 , '$rootScope'
 , '$document'
 , '$http'
-, function(Api, geo, config, leafletData, User, $location, $rootScope, $document, $http) {
+, 'geoJSONStyle'
+, function(Api, geo, config, leafletData, User, $location, $rootScope, $document, $http, geoJSONStyle) {
 	return {
 	      restrict: "E"
 	    	, scope: {
@@ -147,14 +148,14 @@ angular.module("dateaWebApp")
 											.success( function (data) {
 												var gjson, layer;
 												gjson = toGeoJSON.kml(data, { styles: true });
-												layer = L.geoJson(gjson, config.geoJSONStyle).addTo($scope.flow.leaflet.map);
+												layer = L.geoJson(gjson, geoJSONStyle).addTo($scope.flow.leaflet.map);
 												$scope.flow.leaflet.fileLayers.push({layer: layer, name: fname});
 											} );
 										}else if (ext === 'json') {
 											$http.get(config.api.imgUrl+lf.file)
 											.success( function (data) {
 												var layer;
-												layer = L.geoJson(data, config.geoJSONStyle).addTo($scope.flow.leaflet.map);
+												layer = L.geoJson(data, geoJSONStyle).addTo($scope.flow.leaflet.map);
 												$scope.flow.leaflet.fileLayers.push({layer: layer, name: fname});
 											} );
 										}
@@ -284,7 +285,7 @@ angular.module("dateaWebApp")
 								gjson = JSON.parse(b64_to_utf8(givens.file.split(';base64,')[1]));
 								//console.log("MAPBOX GEOJSON", gjson);
 							}
-							layer = L.geoJson(gjson, config.geoJSONStyle).addTo($scope.flow.leaflet.map);	
+							layer = L.geoJson(gjson, geoJSONStyle).addTo($scope.flow.leaflet.map);	
 							$scope.flow.leaflet.fileLayers.push({layer: layer, name: givens.data.name});
 							//console.log("GEOJSON", gjson);
 						}

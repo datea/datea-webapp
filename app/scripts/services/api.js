@@ -18,6 +18,7 @@ angular.module('dateaWebApp')
 	  , ls          = localStorageService
 	  , dateo       = {}
 	  , dateoStatus = {}
+	  , redateo     = {}
 	  , comment     = {}
 	  , account     = {}
 	  , user        = {}
@@ -67,19 +68,15 @@ angular.module('dateaWebApp')
 	dateoStatus.rsrc   = $resource( config.api.url + 'dateo_status/'  , {},
 	{ 'query': { method  : 'GET' }
 	, 'post' : { method  : 'POST'
-	           , headers : headers || ls.get('token')
-	           }
+	           , headers : headers || ls.get('token') }
 	, 'patch': { method  : 'PATCH'
 	           , params  : { id: '@id' }
-	           , headers : headers || ls.get('token')
-	           }
+	           , headers : headers || ls.get('token') }
 	, 'put'  : { method  : 'PUT'
 	           , params  : { id: '@id' }
-	           , headers : headers || ls.get('token')
-	           }
+	           , headers : headers || ls.get('token') }
 	, 'delete' : { method : 'DELETE'
-	             , headers : headers || ls.get('token')
-	             }
+	             , headers : headers || ls.get('token') }
 	} );
 	comment.rsrc = $resource( config.api.url + 'comment/', {},
 	{ 'query': { method : 'GET' }
@@ -131,8 +128,7 @@ angular.module('dateaWebApp')
 	campaign.rsrc = $resource( config.api.url + 'campaign/', {},
 	{ 'query': { method : 'GET' }
 	, 'post' : { method  : 'POST'
-	           , headers : headers || ls.get('token')
-	           }
+	           , headers : headers || ls.get('token') }
 	} );
 	activityLog.rsrc = $resource( config.api.url + 'activity_log/', {},
 	{ 'query': { method : 'GET' } }
@@ -143,16 +139,16 @@ angular.module('dateaWebApp')
 	follow.rsrc = $resource( config.api.url + 'follow/', {},
 	{ 'query'  : { method : 'GET' }
 	, 'post'   : { method : 'POST'
-	             , headers : headers || ls.get('token')
-	             }
+	             , headers : headers || ls.get('token') }
 	, 'delete' : { method : 'DELETE'
-	             , headers : headers || ls.get('token')
-	             }
+	             , headers : headers || ls.get('token') }
 	} );
 	vote.rsrc = $resource( config.api.url + 'vote/', {},
 	{ 'query' : { method : 'GET' }
 	, 'post'  : { method : 'POST'
 	            , headers : headers || ls.get('token') }
+	, 'delete' : { method : 'DELETE'
+	             , headers : headers || ls.get('token') }
 	} );
 	flag.rsrc = $resource( config.api.url + 'flag/', {},
 	{ 'post' : { method : 'POST'
@@ -161,6 +157,13 @@ angular.module('dateaWebApp')
 	stats.rsrc = $resource( config.api.url + 'dateo/stats/', {},
 	{ 'query' : { method : 'GET' } }
 	)
+	redateo.rsrc   = $resource( config.api.url + 'redateo/'  , {},
+	{ 'query': { method  : 'GET' }
+	, 'post' : { method  : 'POST'
+	           , headers : headers || ls.get('token') }
+	, 'delete' : { method : 'DELETE'
+	             , headers : headers || ls.get('token') }
+	} );
 
 console.log( 'api', headers );
 	// User
@@ -360,6 +363,35 @@ console.log( 'api', headers );
 		return dfd.promise;
 	}
 
+	// redateo
+	redateo.post = function(givens) {
+		var dfd = $q.defer();
+		redateo.rsrc.post(givens, function(response) {
+			dfd.resolve(response);
+		}, function (error) {
+			dfd.reject(error);
+		} );
+		return dfd.promise;
+	}
+	redateo.getList = function(givens) {
+		var dfd = $q.defer();
+		redateo.rsrc.query(givens, function(response) {
+			dfd.resolve(response);
+		}, function (error) {
+			dfd.reject(error);
+		} );
+		return dfd.promise;
+	}
+	redateo.deleteList = function (givens) {
+		var dfd = $q.defer();
+		redateo.rsrc.delete(givens, function(response) {
+			dfd.resolve(response);
+		}, function (error) {
+			dfd.reject(error);
+		} );
+		return dfd.promise;
+	}
+
 	// Comment
 	comment.postCommentByDateoId = function ( givens ) {
 		var dfd = $q.defer()
@@ -523,6 +555,19 @@ console.log( 'api', headers );
 		return dfd.promise;
 	}
 
+	vote.deleteVote = function ( givens ) {
+		var dfd   = $q.defer()
+		  , token = ls.get('token')
+		  ;
+		vote.rsrc.delete( {}, givens
+		, function ( response ) {
+			dfd.resolve( response );
+		}, function ( error ) {
+			dfd.reject( error );
+		} );
+		return dfd.promise;
+	}
+
 	// Flag
 
 	flag.doFlag = function ( givens ) {
@@ -549,6 +594,7 @@ console.log( 'api', headers );
 
 	return { dateo       : dateo
 				 , dateoStatus : dateoStatus
+				 , redateo     : redateo
 	       , comment     : comment
 	       , account     : account
 	       , user        : user

@@ -1,5 +1,5 @@
 angular.module("dateaWebApp")
-.directive("daVote", 
+.directive("daRedateo", 
 [
   'Api'
 , 'User'
@@ -12,41 +12,40 @@ angular.module("dateaWebApp")
 	
 	return {
 		  restrict    : "E"
-		, templateUrl : "/views/vote-button.html"
+		, templateUrl : "/views/redateo-button.html"
 		, replace		  : true
 		, scope: {
-			   btnClass  		: '@'
-		   , voteObj 			: '@'
-		   , voteId  			: '='
-		   , voteCallback : '=?'
-		   , voteCount    : '='
+			   btnClass  		   : '@'
+		   , dateoId  		   : '='
+		   , redateoCallback : '=?'
+		   , redateoCount    : '='
 		}
 		, controller : function ($scope, $element, $attrs) {
 
-			var checkHasVoted
+			var checkHasRedateado
 				, mouseHasLeft
 			;
 
-			$scope.vote              = {};
+			$scope.redateo           = {};
 			$scope.flow              = {};
 			$scope.flow.isActive     = false;
 			$scope.flow.loading      = false;
 			$scope.flow.disabled     = true;
 			$scope.flow.hoverEnabled = false;
 
-			$scope.$watch('voteId', function () {
-				checkHasVoted();
+			$scope.$watch('dateoId', function () {
+				checkHasRedateado();
 			});
 
-			checkHasVoted = function () {
-				if (User.isSignedIn() && $scope.voteId) {
-					Api.vote
-					.getVotes( { user : User.data.id, vote_key : $scope.voteObj+'.'+$scope.voteId } )
+			checkHasRedateado = function () {
+				if (User.isSignedIn() && $scope.dateoId) {
+					Api.redateo
+					.getList( { user : User.data.id, dateo : $scope.dateoId } )
 					.then( function ( response ) {
 						$scope.flow.disabled = false;
 						$scope.flow.isActive = response.meta.total_count ? true : false;
 						$scope.flow.hoverEnabled = true;
-						if (response.objects.length) $scope.flow.vote = response.objects[0];
+						if (response.objects.length) $scope.flow.redateo = response.objects[0];
 					}, function ( reason ) {
 						console.log( reason );
 						$scope.flow.disabled  = false;
@@ -58,29 +57,7 @@ angular.module("dateaWebApp")
 				}
 			}
 
-			$scope.flow.doVote = function () {
-				if (!User.isSignedIn()) {
-					$location.path('/registrate');
-					return;
-				}
-				if ( !$scope.flow.loading && !$scope.flow.disabled && !$scope.flow.isActive) {
-					$scope.flow.loading = true;
-					Api.vote
-					.doVote( { vote_key : $scope.voteObj+'.'+$scope.voteId } )
-					.then( function ( response ) {
-						console.log( 'doVote', response );
-						$scope.voteCount++;
-						if (typeof($scope.voteCallback) != 'undefined') $scope.voteCallback(response);
-						$scope.flow.loading  = false;
-						$scope.flow.isActive = true;
-					}, function ( reason ) {
-						console.log( reason );
-						$scope.flow.loading = false;
-					} );
-				} 
-			}
-
-			$scope.flow.doVote = function () {
+			$scope.flow.doRedateo = function () {
 				if (!User.isSignedIn()) {
 					$location.path('/registrate');
 					return;
@@ -91,15 +68,15 @@ angular.module("dateaWebApp")
 					mouseHasLeft = false;
 					// POST
 					if (!$scope.flow.isActive) {
-						Api.vote
-						.doVote( { vote_key : $scope.voteObj+'.'+$scope.voteId } )
+						Api.redateo
+						.post( { user : User.data.id, dateo : $scope.dateoId } )
 						.then( function ( response ) {
-							console.log( 'vote', response );
-							$scope.voteCount++;
-							if (typeof($scope.voteCallback) != 'undefined') $scope.voteCallback(response, 'post');
+							console.log( 'doRedateo', response );
+							$scope.redateoCount++;
+							if (typeof($scope.redateoCallback) != 'undefined') $scope.redateoCallback(response, 'post');
 							$scope.flow.loading  = false;
 							$scope.flow.isActive = true;
-							$scope.flow.vote = response;
+							$scope.flow.redateo = response;
 							if (!mouseHasLeft) $scope.flow.hoverEnabled = false;
 						}, function ( reason ) {
 							console.log( reason );
@@ -108,15 +85,15 @@ angular.module("dateaWebApp")
 						} );
 					// DELETE
 					}else {
-						Api.vote
-						.deleteVote( { vote_key : $scope.voteObj+'.'+$scope.voteId, id: $scope.flow.vote.id } )
+						Api.redateo
+						.deleteList( { user : User.data.id, dateo : $scope.dateoId, id: $scope.flow.redateo.id } )
 						.then( function ( response ) {
-							console.log( 'delete Vote', response );
-							$scope.voteCount--;
-							if (typeof($scope.voteCallback) != 'undefined') $scope.voteCallback(response, 'delete');
+							console.log( 'deleteRedateo', response );
+							$scope.redateoCount--;
+							if (typeof($scope.redateoCallback) != 'undefined') $scope.redateoCallback(response, 'delete');
 							$scope.flow.loading  = false;
 							$scope.flow.isActive = false;
-							$scope.flow.vote = null;
+							$scope.flow.redateo = null;
 							if (!mouseHasLeft) $scope.flow.hoverEnabled = false;
 						}, function ( reason ) {
 							console.log( reason );

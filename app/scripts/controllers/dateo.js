@@ -32,6 +32,7 @@ angular.module('dateaWebApp')
 	  , updateComments
 	  , hasNext
 	  , hasUserVoted
+	  , buildRelatedCampaigns
 	  ;
 
 	$scope.dateo             = {};
@@ -44,17 +45,6 @@ angular.module('dateaWebApp')
 
 	$scope.dateo.isUserSignedIn = User.isSignedIn();
 	$scope.dateFormat = config.defaultDateFormat;
-
-	hasUserVoted = function () {
-		Api.vote
-		.getVotes( { user : User.data.id, vote_key : 'dateo.'+$scope.dateo.id } )
-		.then( function ( response ) {
-			console.log( 'hasUserVoted', response );
-			$scope.dateo.hasVoted = response.meta.total_count ? true : false;
-		}, function ( reason ) {
-			console.log( reason );
-		} )
-	}
 
 	hasNext = function () {
 		return dateo.id < dateo.next_by_user;
@@ -77,7 +67,8 @@ angular.module('dateaWebApp')
 			angular.extend( $scope.dateo, dateo );
 			angular.extend( $scope.dateo.leaflet, leaflet );
 			$scope.dateo.shareableUrl = config.app.url + $scope.dateo.user.username + '/dateos/' + $scope.dateo.id;
-			hasUserVoted();
+			buildRelatedCampaigns();
+
 			leafletData.getMap('leafletDateo').then( function ( map ) {
 				$timeout( function () {
 					map.invalidateSize();
@@ -87,6 +78,19 @@ angular.module('dateaWebApp')
 		} else {
 			$scope.flow.notFound = true;
 		}
+	}
+
+	buildRelatedCampaigns = function () {
+		var campaigns = [];
+		angular.forEach($scope.dateo.tags, function (tag) {
+			if (tag.campaigns && tag.campaigns.length) {
+				angular.forEach(tag.campaigns, function (camp) {
+					camp.tag = tag.tag;
+					campaigns.push(camp);
+				});
+			}
+		});
+		$scope.dateo.campaigns = campaigns;
 	}
 
 	updateComments = function ( response ) {
@@ -135,26 +139,6 @@ angular.module('dateaWebApp')
 			} )
 			.then( updateComments );
 		} )
-	}
-
-	$scope.dateo.doVote = function () {
-		if ( $scope.dateo.isUserSignedIn ) {
-			Api.vote
-			.doVote( { content_type: 'dateo', object_id: $scope.dateo.id } )
-			.then( function ( response ) {
-				console.log( 'doVote', response );
-				Api.dateo
-				.getDateoByUsernameAndDateoId(
-				{ user : $routeParams.username
-				, id   : +$routeParams.dateoId
-				} )
-				.then( buildDateo );
-			}, function ( reason ) {
-				console.log( reason );
-			} );
-		} else {
-			$location.path('/registrate');
-		}
 	}
 
 	$scope.dateo.share = function () {

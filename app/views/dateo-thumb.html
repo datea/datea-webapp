@@ -1,6 +1,6 @@
-<div class="dateo-with-image">
+<div class="dateo-thumb">
 	<div class="inner">
-	  <div class="thumb-holder" da-bg-from-api="{{dateo.images[0].image}}" da-img-size="cover"></div>
+	  <div class="img-holder" da-bg-from-api="{{dateo.images[0].image}}" da-img-size="cover"></div>
 		<div class="info-bg"></div>
 		<div class="info-holder">
 			<div class="parts-holder">
@@ -13,9 +13,10 @@
 				</div>
 			</div>
 			<p class="extract" ng-bind-html="dateo.extract | linky:'_blank'"></p>
-			<div class="cta-holder">
-				<span class="glyphicon glyphicon-thumbs-up"></span> {{dateo.vote_count}}
-				<span class="glyphicon glyphicon-comment"></span> {{dateo.comments.length}}
+			<div class="stat-holder">
+				<span class="stat" ng-show="dateo.vote_count"><i class="glyphicon glyphicon-thumbs-up"></i> {{dateo.vote_count}}</span>
+				<span class="stat" ng-show="dateo.comments.length"><i class="glyphicon glyphicon-comment"></i> {{dateo.comments.length}}</span>
+				<span class="stat" ng-show="dateo.redateo_count"><i class="glyphicon glyphicon-retweet"></i> {{dateo.redateo_count}}</span>
 				<a href="#/{{dateo.user.username}}/dateos/{{dateo.id}}" class="btn datea-btn btn-xs pull-right">ver más</a>
 			</div>
 		</div>

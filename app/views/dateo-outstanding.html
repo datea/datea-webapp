@@ -14,10 +14,13 @@
 	<a class="btn datea-btn pull-right outstanding-dateo-more-btn" href="#/{{dateo.user.username}}/dateos/{{dateo.id}}">ver detalle</a>
 	<div class="stats">
 		<div class="icon-holder stat">
-			<span class="glyphicon glyphicon-thumbs-up"></span> {{dateo.vote_count}}
+			<span class="glyphicon glyphicon-thumbs-up" ng-show="dateo.vote_count > 0"></span> {{dateo.vote_count}}
 		</div>
-		<div class="icon-holder stat">
+		<div class="icon-holder stat" ng-show="dateo.comment_count > 0">
 			<span class="glyphicon glyphicon-comment"></span> {{dateo.comment_count}}
+		</div>
+		<div class="icon-holder stat" ng-show="dateo.redateo_count > 0">
+			<span class="glyphicon glyphicon-retweet"></span> {{dateo.redateo_count}}
 		</div>
 	</div>
 </div>

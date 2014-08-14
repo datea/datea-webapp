@@ -511,6 +511,8 @@ angular.module( 'dateaWebApp' )
 		$scope.flow.isSignedIn      = false;
 		$scope.user                 = User.data;
 
+		console.log("USER DATA", User.data);
+
 		if (User.data.tags_followed.length) {
 			$scope.query.followFilter       = 'follow';
 	  	$scope.query.followFilterLabel  = 'lo que sigo';

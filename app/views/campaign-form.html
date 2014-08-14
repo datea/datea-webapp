@@ -151,12 +151,12 @@
 						<div class="layerfiles-holder">
 							<!-- <h6>{{newCampaign.nextFileData.name}}</h6> -->
 							<ul class="files-holder input-list">
-								<li class="file-holder" ng-repeat="file in flow.leaflet.fileLayers">
+								<li class="file-holder" ng-repeat="layer in flow.leaflet.fileLayers">
 									<div class="title part part-2 line-content">
-										{{file.name}}
+										{{layer.name}}
 									</div>
 									<div class="delete part part-4" ng-click="flow.removeFile($index)">
-										<i class="fa fa-ban"></i>
+										<i class="fa fa-times"></i>
 									</div>
 								</li>
 							</ul>

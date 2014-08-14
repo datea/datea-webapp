@@ -17,7 +17,7 @@
 								</div>
 								<div class="mbtn share-btn">
 								
-									<div class="datea-glyph-holder" ng-click="campaign.share()">
+									<div class="datea-glyph-holder hover-enabled" ng-click="campaign.share()">
 										<i class="fa fa-share-alt"></i>
 									</div>
 									<!--
@@ -183,7 +183,7 @@
 					</div>
 				</tab>
 				<tab heading="&nbsp;" class="glyphicon glyphicon-camera datea-glyphtab-fix" ng-click="flow.activeTab = 'images'" ng-hide="flow.showFilter">
-					<div class="dateos-with-images-holder dateo-img-viz"> <!-- ng-style="campaign.dateosWithImagesHolderHeight"> -->
+					<div class="dateo-thumbs-holder dateo-img-viz"> <!-- ng-style="campaign.dateosWithImagesHolderHeight"> -->
 						<da-dateo-thumb ng-repeat="dateo in campaign.dateosWithImages"></da-dateo-thumb>
 					</div>
 				</tab>

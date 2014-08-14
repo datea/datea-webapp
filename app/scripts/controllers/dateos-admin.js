@@ -230,7 +230,7 @@ angular.module( 'dateaWebApp' )
 				, dateo      : $scope.flow.dateo.id
 				, status     : $scope.flow.dateoStatus 
 			}
-			Api.dateoStatus.postList(newAdmin)
+			Api.dateoStatus.post(newAdmin)
 			.then(function (response) {
 				console.log("STATUS", response);
 				updateDateo($scope.flow.dateo);
