@@ -36,6 +36,7 @@ angular.module('dateaWebApp')
 
 	$scope.auth.checkUsername = function () {
 		if ( $scope.auth.bio ) {
+			$scope.auth.bio = $scope.auth.bio.replace(/ /g,'');
 			Api.account.register
 			.usernameExists( { username: $scope.auth.bio } )
 			.then( function ( response ) {
