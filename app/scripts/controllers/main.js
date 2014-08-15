@@ -493,7 +493,14 @@ angular.module( 'dateaWebApp' )
 			console.log( 'geolocatedCenter', data );
 			buildMap( { center : data } );
 		}, function () {
-			buildMap();
+			Api.ipLocation.getLocationByIP()
+			.then( function ( response ) {
+				var ipLocation = {};
+				ipLocation.coords           = {};
+				ipLocation.coords.latitude  = response.ip_location.latitude;
+				ipLocation.coords.longitude = response.ip_location.longitude;
+				buildMap( { center : ipLocation } );
+			} );
 		} );
 	}
 

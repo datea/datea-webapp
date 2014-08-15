@@ -29,6 +29,7 @@ angular.module('dateaWebApp')
 	  , vote        = {}
 	  , flag        = {}
 	  , stats       = {}
+	  , ipLocation  = {}
 	  // fn declarations
 	  , reconfigUserRsrc
 	  ;
@@ -142,7 +143,10 @@ angular.module('dateaWebApp')
 	} );
 	stats.rsrc = $resource( config.api.url + 'dateo/stats/', {},
 	{ 'query' : { method : 'GET' } }
-	)
+	);
+	ipLocation.rsrc = $resource( config.api.url + 'ip_location', {},
+	{ 'query' : { method : 'GET'} }
+	);
 
 console.log( 'api', headers );
 	// User
@@ -482,6 +486,18 @@ console.log( 'user.getUserByUserIdOrUsername token', token );
 		return dfd.promise;
 	}
 
+	// Ip Location
+
+	ipLocation.getLocationByIP = function ( givens ) {
+		var dfd = $q.defer();
+		ipLocation.rsrc.query( givens, function ( response ) {
+			dfd.resolve( response );
+		}, function ( error ) {
+			dfd.reject( error );
+		} );
+		return dfd.promise;
+	}
+
 	return { dateo       : dateo
 	       , comment     : comment
 	       , account     : account
@@ -494,6 +510,7 @@ console.log( 'user.getUserByUserIdOrUsername token', token );
 	       , vote        : vote
 	       , flag        : flag
 	       , stats       : stats
+	       , ipLocation  : ipLocation
 	       };
 
 } ] );
