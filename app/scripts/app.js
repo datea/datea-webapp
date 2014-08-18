@@ -15,6 +15,7 @@ angular.module( 'dateaWebApp'
   , 'angular-bootstrap-select'
   , 'duScroll'
   , 'angularCharts'
+  , 'daPiecluster'
 ])
 .config(
 [ '$routeProvider'

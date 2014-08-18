@@ -31,6 +31,7 @@ angular.module('dateaWebApp')
 	  , vote        = {}
 	  , flag        = {}
 	  , stats       = {}
+	  , ipLocation  = {}
 	  // fn declarations
 	  , reconfigUserRsrc
 	  ;
@@ -164,6 +165,9 @@ angular.module('dateaWebApp')
 	, 'delete' : { method : 'DELETE'
 	             , headers : headers || ls.get('token') }
 	} );
+	ipLocation.rsrc = $resource( config.api.url + 'ip_location', {},
+	{ 'query' : { method : 'GET'} }
+	);
 
 console.log( 'api', headers );
 	// User
@@ -592,6 +596,18 @@ console.log( 'api', headers );
 		return dfd.promise;
 	}
 
+	// Ip Location
+
+	ipLocation.getLocationByIP = function ( givens ) {
+		var dfd = $q.defer();
+		ipLocation.rsrc.query( givens, function ( response ) {
+			dfd.resolve( response );
+		}, function ( error ) {
+			dfd.reject( error );
+		} );
+		return dfd.promise;
+	}
+
 	return { dateo       : dateo
 				 , dateoStatus : dateoStatus
 				 , redateo     : redateo
@@ -606,6 +622,7 @@ console.log( 'api', headers );
 	       , vote        : vote
 	       , flag        : flag
 	       , stats       : stats
+	       , ipLocation  : ipLocation
 	       };
 
 } ] );

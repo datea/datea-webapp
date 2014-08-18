@@ -18,6 +18,7 @@ angular.module('dateaWebApp')
   , '$http'
   , '$document'
   , 'geoJSONStyle'
+  , 'Piecluster'
 , function (
     $scope
   , Api
@@ -35,6 +36,7 @@ angular.module('dateaWebApp')
   , $http
   , $document
   , geoJSONStyle
+  , Piecluster
 ) {
 
 	var sessionMarkersIdx = 0
@@ -66,6 +68,7 @@ angular.module('dateaWebApp')
 	  , initQueryOptions
 	  , buildQueryParams
 	  , queryParamsToText
+	  , openSpiderfy
 	;
 
 	$scope.campaign          = {};
@@ -498,11 +501,13 @@ angular.module('dateaWebApp')
 		if ( $scope.campaign.leaflet.markers[markerName] ) {
 			center.lat  = $scope.campaign.leaflet.markers[markerName].lat;
 			center.lng  = $scope.campaign.leaflet.markers[markerName].lng;
-			center.zoom = $scope.campaign.leaflet.center.zoom < 16 ? 16 : $scope.campaign.leaflet.center.zoom;
+			// center.zoom = $scope.campaign.leaflet.center.zoom < 16 ? 16 : $scope.campaign.leaflet.center.zoom;
+			center.zoom = 18;
 			angular.extend( $scope.campaign.leaflet.center, center );
-			// $timeout( function () {
+			$timeout( function () {
+				openSpiderfy( idx );
 				$scope.campaign.leaflet.markers[markerName].focus = true;
-			// }, 1000 );
+			}, 1000 );
 		}
 		console.log( 'focusDateo', idx, $scope.campaign.leaflet.markers[markerName].focus );
 	}
@@ -637,7 +642,7 @@ angular.module('dateaWebApp')
 	buildClusterIcon = function (cluster) {
 		var children = cluster.getAllChildMarkers()
 		  , n        = children.length
-		  , d        = clusterSizeRange(children.length)
+		  , d        = Piecluster.clusterSizeRange(children.length)
 		  , di       = d + 1
 		  , r        = d / 2
 			,	dataObj  = {}
@@ -654,8 +659,9 @@ angular.module('dateaWebApp')
 						//tag = angular.isDefined($scope.subTags[tag]) ? tag : "Otros";
 						if (!!dataObj[tag]) {
 							dataObj[tag].value ++;
+							dataObj[ tag ].ids.push( marker.options._id );
 						}else{
-							dataObj[tag] = { label: '#'+tag, value : 1, tag: tag};
+							dataObj[tag] = { label: '#'+tag, value : 1, tag: tag, ids: [ marker.options._id ]};
 						}
 					}
 				});
@@ -665,71 +671,106 @@ angular.module('dateaWebApp')
 				data.push(dataObj[j]);
 			}
 
-			html = makeSVGPie({
-				  n: n
-				, r: r
-				, d: d
-				, data: data
+			html = Piecluster.makeSVGPie({
+				  n             : n
+				, r             : r
+				, d             : d
+				, data          : data
+				, tags          : $scope.subTags
+				, secondaryTags : $scope.subTags
 			});
 
 			clusterIcon = new L.DivIcon({
 				  html: html
-				, className: 'marker-cluster'
+				, className: Piecluster.pieclusterConfig.clusterIconClassName
 				, iconSize: new L.Point(di,di)
 			});
 
 			return clusterIcon;
 	}
 
-	clusterSizeRange = d3.scale.linear()
-		.domain([0, 100])
-		.range([50, 80])
-		.clamp(true); 
+	// clusterSizeRange = d3.scale.linear()
+	// 	.domain([0, 100])
+	// 	.range([50, 80])
+	// 	.clamp(true); 
 
-	makeSVGPie = function (opt) {
-		var svg, vis, arc, pie, arcs;
-		svg = document.createElementNS(d3.ns.prefix.svg, 'svg');
-		vis = d3.select(svg).data([opt.data])
-			.attr("width", opt.d)
-			.attr("height", opt.d)
-			.append("svg:g")
-			.attr("transform", "translate(" + opt.r + "," + opt.r + ")");
-		arc = d3.svg.arc().outerRadius(opt.r);
-		pie = d3.layout.pie().value(function(d){return d.value;});
-		arcs = vis.selectAll("g.slice").data(pie).enter().append("svg:g").attr("class", "slice");
-		arcs.append("svg:path").attr("fill", function(a, i){
-				if ($scope.campaign.secondary_tags.length == 0) return config.visualization.default_color;
-				if (a.data.tag == "Otros") return config.visualization.default_other_color;
-				return $scope.subTags[a.data.tag].color;
-			})
-			.attr("d", arc)
-			.attr("opacity", 0.75);
+	// makeSVGPie = function (opt) {
+	// 	var svg, vis, arc, pie, arcs;
+	// 	svg = document.createElementNS(d3.ns.prefix.svg, 'svg');
+	// 	vis = d3.select(svg).data([opt.data])
+	// 		.attr("width", opt.d)
+	// 		.attr("height", opt.d)
+	// 		.append("svg:g")
+	// 		.attr("transform", "translate(" + opt.r + "," + opt.r + ")");
+	// 	arc = d3.svg.arc().outerRadius(opt.r);
+	// 	pie = d3.layout.pie().value(function(d){return d.value;});
+	// 	arcs = vis.selectAll("g.slice").data(pie).enter().append("svg:g").attr("class", "slice");
+	// 	arcs.append("svg:path").attr("fill", function(a, i){
+	// 			if ($scope.campaign.secondary_tags.length == 0) return config.visualization.default_color;
+	// 			if (a.data.tag == "Otros") return config.visualization.default_other_color;
+	// 			return $scope.subTags[a.data.tag].color;
+	// 		})
+	// 		.attr("d", arc)
+	// 		.attr("opacity", 0.75);
 
-		vis.append("circle")
-			.attr("fill", "#ffffff")
-			.attr("r", opt.r / 2.2)
-			.attr("cx", 0)
-			.attr("cy", 0);
+	// 	vis.append("circle")
+	// 		.attr("fill", "#ffffff")
+	// 		.attr("r", opt.r / 2.2)
+	// 		.attr("cx", 0)
+	// 		.attr("cy", 0);
 
-		vis.append("text")
-			.attr("x", 0)
-			.attr("y", 0)
-			.attr("class", "cpie-label")
-			.attr("text-anchor", "middle")
-			.attr("dy", '.3em')
-			.text(opt.n);
+	// 	vis.append("text")
+	// 		.attr("x", 0)
+	// 		.attr("y", 0)
+	// 		.attr("class", "cpie-label")
+	// 		.attr("text-anchor", "middle")
+	// 		.attr("dy", '.3em')
+	// 		.text(opt.n);
 
-		return serializeXmlNode(svg);
-	}
+	// 	return serializeXmlNode(svg);
+	// }
 
-	serializeXmlNode = function (xmlNode) {
-		if (typeof window.XMLSerializer != "undefined") {
-    	return (new window.XMLSerializer()).serializeToString(xmlNode);
-		} else if (typeof xmlNode.xml != "undefined") {
-    	return xmlNode.xml;
+	// serializeXmlNode = function (xmlNode) {
+	// 	if (typeof window.XMLSerializer != "undefined") {
+ //    	return (new window.XMLSerializer()).serializeToString(xmlNode);
+	// 	} else if (typeof xmlNode.xml != "undefined") {
+ //    	return xmlNode.xml;
+	// 	}
+ //    return "";
+ //  }
+
+	openSpiderfy = function ( idx ) {
+		var markerId
+		  , sliceMarkerIds = []
+		  , slicePosition
+		  ;
+		// console.log( 'openSpiderfy', $scope.homeSI.leaflet.markers );
+		markerId  = $( $scope.campaign.leaflet.markers['marker'+idx].icon.html ).find('circle').data('datea-svg-circle-id');
+		// If there is no marker then it must be 'inside' the cluster
+		if ( !$('[data-datea-svg-circle-id="'+markerId+'"]').length ) {
+			// If multiples SVGs
+			if ( $('[data-datea-svg-slice-id]').length > 1 ) {
+				// Fill array with slice Ids
+				$.each( $('[data-datea-svg-slice-id]'), function () {
+					sliceMarkerIds.push( $(this).data('datea-svg-slice-id') );
+				} );
+				// Search for slice position to open
+				$.each( sliceMarkerIds, function ( i,v ) {
+					var idsBySlice = (v+'').split(',');
+					!slicePosition && !!~idsBySlice.indexOf( markerId+'' ) && ( slicePosition = i );
+				} );
+				// Select slice and open marker-cluster parent
+				$( $('[data-datea-svg-slice-id]').get( slicePosition ) ).parents('div.marker-cluster').click();
+				console.log('slicePosition', slicePosition);
+				slicePosition = null;
+			} else {
+				// Open marker-cluster parent
+				$('[data-datea-svg-slice-id]').parents('div.marker-cluster').click();
+				$('.datea-svg-cluster').parents('div.marker-cluster').click();
+			}
 		}
-    return "";
-  }
+	};
+
 
 	$scope.campaign.leaflet.clusterOptions = { 
 		  iconCreateFunction : buildClusterIcon

@@ -100,7 +100,7 @@ onGeolocationError = function ( reason ) {
 	var leaflet = {}
 	  , draggy
 	  ;
-
+console.log( 'onGeolocationError' );
 	leaflet = { center : { lat  : -12.05
 	                     , lng  : -77.06
 	                     , zoom : 14
@@ -551,6 +551,10 @@ $scope.datear.link.nextImg = function () {
 
 // Map defaults
 defaultMap = angular.copy( config.defaultMap );
+defaultMap.markers = { draggy : { lat : -12.05
+	                              , lng : -77.06
+	                              , draggable : true
+	                              } };
 angular.extend( $scope.datear.leaflet, defaultMap );
 if ( datearModalGivens.defaultTag ) {
 	$scope.datear.selectedTags.push( datearModalGivens.defaultTag );
