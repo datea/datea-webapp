@@ -84,9 +84,10 @@ angular.module('dateaWebApp')
 		  ;
 		$scope.targetUser.dateoLoading = true;
 		index = givens && givens.index * config.profile.dateosOffset;
-		defaultQuery = { limit  : config.profile.dateosOffset
-		               , offset : index || 0
-		               , user   : $routeParams.username
+		defaultQuery = { limit         : config.profile.dateosOffset
+		               , offset        : index || 0
+		               , user_id       : $scope.targetUser.id
+		               , with_redateos : true
 		               }
 
 		Api.dateo

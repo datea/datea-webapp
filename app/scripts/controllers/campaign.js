@@ -315,7 +315,10 @@ angular.module('dateaWebApp')
 		if ($scope.query.since) params['created__gt'] = $scope.query.since.toISOString();
 		if ($scope.query.until) params['created__lt'] = $scope.query.until.toISOString();
 		if ($scope.query.search && $scope.query.search.trim() != '') params.q = $scope.query.search;
-		if ($scope.query.owner) params.user_id = $scope.campaign.user.id;
+		if ($scope.query.owner) {
+			params.user_id = $scope.campaign.user.id;
+			params.with_redateos = true;
+		}
 		//console.log(User.data);
 		queryParamsToText();
 		return params;

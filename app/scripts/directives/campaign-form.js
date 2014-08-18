@@ -101,8 +101,13 @@ angular.module("dateaWebApp")
 									, polygon
 									, polygonBounds
 								;
+
 								angular.extend($scope.campaign, response.objects[0]);
-								console.log($scope.campaign);
+								if (User.data.id != $scope.campaign.user.id) {
+									$location.path('/');
+									return;
+								}
+
 								$scope.flow.selectedCategory = $scope.campaign.category.id;
 								$scope.flow.leaflet.center = {
 									  lat  : $scope.campaign.center.coordinates[1]

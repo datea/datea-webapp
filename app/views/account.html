@@ -1,9 +1,33 @@
-<div class="container z2">
+<div class="container z2 account-holder">
 	<div class="row">
-		<div class="col-xs-12 col-sm-9 col-md-8">
+		<div class="col-xs-12 col-sm-10 col-md-8 col-sm-offset-1 col-md-offset-2">
 			<alert ng-repeat="alert in alerts" type="alert.type" close="closeAlert($index)">{{alert.msg}}</alert>
-			<div class="account-holder">
-				<h2>Editar usuario</h2>
+
+			<div class="usr-msg hey" ng-show="userIsNew && userStatus === 1">
+				<h3>Bienvenido a Datea!</h3>
+				<p>{{accountMsgs.userWelcomeReadyMsg}}</p>
+			</div>
+
+			<div class="usr-msg hey" ng-show="userIsNew && userStatus === 0">
+				<div class="msg">
+					<h3>Bienvenido a Datea!</h3>
+					<p>{{accountMsgs.userWelcomeConfirmMsg}}</p> 
+				</div>
+			</div>
+
+			<div class="usr-msg advice" ng-show="userStatus === 0 && !userIsNew">
+				<div class="msg inline">
+				<h3>Amigo@ dater@</h3>
+					<p>Antes de poder datear, por favor verifica tu dirección de correo. ¡Gracias!</p>
+				</div>
+			</div>
+
+			<div class="user-banned" ng-show="userStatus === 2">
+				{{accountMsgs.userBannedMsg}}
+			</div>
+
+			<div class="account-form-holder">
+				<h2 ng-hide="userIsNew || userStatus === 0">Cuenta de usuario</h2>
 				<alert ng-repeat="alert in alerts" type="alert.type" close="closeAlert($index)">{{alert.msg}}</alert>
 				<form role="form" name="form" ng-submit="account.save()">
 					<tabset>
@@ -19,12 +43,13 @@
 									<input type="email" class="form-control" id="email" required ng-model="account.email">
 								</div>
 								<div class="actions">
-									<input type="submit" class="btn btn-success btn-lg" value="actualizar">
+									<input type="submit" class="btn btn-success btn-lg" value="{{submitLabel}}">
+									<button type="submit" class="btn btn-default btn-lg" disabled>{{submitLabel}}</button>
 									<span ng-bind="auth.message"></span>
 								</div>
 							</div>
 						</tab>
-						<tab heading="Personalizar Perfil">
+						<tab heading="Personalizar Perfil" ng-hide="userStatus !== 1">
 							<div class="tab-body" ng-class="{'datea-loading': loading}">
 								<div class="form-group">
 									<label for="fullname">Nombre completo</label>
@@ -65,8 +90,8 @@
 								</div>
 
 								<div class="actions">
-									<input type="submit" class="btn btn-success btn-lg" value="actualizar">
-									<button type="submit" class="btn btn-info btn-lg" disabled>actualizar</button>
+									<input type="submit" class="btn btn-success btn-lg" value="{{submitLabel}}">
+									<button type="submit" class="btn btn-default btn-lg" disabled>{{submitLabel}}</button>
 									<span ng-bind="auth.message"></span>
 								</div>
 

@@ -46,13 +46,11 @@ angular.module('dateaWebApp')
 			angular.extend(currentData, updatedData);
 			ls.set( 'user', currentData );
 			User.updateUserDataFromStorage();
-console.log( 'updateUserDataFromApi', response );
 			if ( User.data.status === 0 ) {
-console.log( 'updateUserDataFromApi', 'status === 0' );
 				$location.path( '/configuracion' );
-				$scope.addAlert( { type : 'danger'
-				                 , msg  : 'Por favor indique su correo para terminar el registro'
-				                 } );
+				//$scope.addAlert( { type : 'danger'
+				//                 , msg  : 'Por favor indique su correo para terminar el registro'
+				//                 } );
 			} else {
 				$location.path( '/' );
 			}

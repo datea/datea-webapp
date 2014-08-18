@@ -120,16 +120,6 @@ angular.module( 'dateaWebApp' )
 	//                , markers  : {}
 	//                }
 
-	$scope.$watch('query.orderBy', function() {
-		//alert($scope.query.orderBy);
-		$scope.homeSI.onFilterChange();
-	});
-
-	$scope.$watch('query.followFilter', function() {
-		//alert($scope.query.orderBy);
-		$scope.homeSI.onFilterChange();
-	});
-
 	$scope.homeSI.leaflet = angular.copy( config.defaultMap );
 
 	buildFollowingTags = function () {
@@ -278,6 +268,7 @@ angular.module( 'dateaWebApp' )
 	}
 
 	buildMap = function ( givens ) {
+		console.log("BUILD MAP: givens", givens);
 		var dateosGivens = givens && givens.dateosGivens || {}
 		  , center       = {}
 		  , bounds
@@ -384,6 +375,7 @@ angular.module( 'dateaWebApp' )
 	}
 
 	buildMarkers = function ( givens ) {
+		console.log("BUILD MARKERS: givens", givens);
 		var map          = {}
 		  , markers      = {}
 		  , givens       = givens || {}
@@ -485,6 +477,7 @@ angular.module( 'dateaWebApp' )
 	}
 
 	geolocateAndBuildMap = function ( givens ) {
+		// console.log("GEOLOCATE AND BUILD MAP: givens", givens);
 		// buildMap( givens );
 		// no spam
 		geo.getLocation( { timeout:3000 } )
@@ -507,11 +500,11 @@ angular.module( 'dateaWebApp' )
 		  , bounds
 		  ;
 
+		if (User.data.status !== 1) return;
+
 		State.isLanding             = false;
 		$scope.flow.isSignedIn      = false;
 		$scope.user                 = User.data;
-
-		console.log("USER DATA", User.data);
 
 		if (User.data.tags_followed.length) {
 			$scope.query.followFilter       = 'follow';
@@ -531,8 +524,8 @@ angular.module( 'dateaWebApp' )
 		
 		map               = angular.copy( config.defaultMap );
 		config.defaultMap = map;
-		map.center.zoom = config.homeSI.mapZoomOverride;
-		map.bounds      = leafletBoundsHelpers.createBoundsFromArray( [ [ -12.0735, -77.0336 ], [ -12.0829, -77.0467 ] ] );
+		map.center.zoom 	= config.homeSI.mapZoomOverride;
+		map.bounds        = leafletBoundsHelpers.createBoundsFromArray( [ [ -12.0735, -77.0336 ], [ -12.0829, -77.0467 ] ] );
 		// map.center      = {};
 		angular.extend( $scope.homeSI.leaflet, map );
 
@@ -544,7 +537,16 @@ angular.module( 'dateaWebApp' )
 		buildWeeklyDateo();
 		buildTrendingTags();
 		buildFollowingTags();
-		console.log("HOME SI", $scope.homeSI);
+
+		$scope.$watch('query.orderBy', function() {
+			//alert($scope.query.orderBy);
+			$scope.homeSI.onFilterChange();
+		});
+
+		$scope.$watch('query.followFilter', function() {
+			//alert($scope.query.orderBy);
+			$scope.homeSI.onFilterChange();
+		});
 	}
 
 	onSignUp = function () {
@@ -616,6 +618,7 @@ angular.module( 'dateaWebApp' )
 	}
 
 	$scope.homeSI.geolocate = function () {
+		console.log("GEOLOCATE");
 		$scope.homeSI.loading.leaflet = true;
 		resetMarkers();
 		$scope.query.orderBy = '-created';

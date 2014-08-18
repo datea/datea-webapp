@@ -29,7 +29,8 @@ angular.module('dateaWebApp')
 		return !!ls.get( 'token' );
 	}
 
-	user.data = {};
+	user.data  = {};
+	user.isNew = false;
 
 	user.updateUserDataFromStorage = function () {
 		console.log( 'user.updateUserDataFromStorage()', user.isSignedIn(), !Object.keys( user.data ).length );
@@ -110,15 +111,16 @@ angular.module('dateaWebApp')
 		getUserData( { username: currentData.username } )
 		.then( function ( response ) {
 			updatedData = response;
-console.log( '!! updateUserDataFromApi !!', response );
+			console.log( '!! updateUserDataFromApi !!', response );
 			angular.extend( currentData, updatedData );
 			ls.set( 'user', currentData );
 			user.updateUserDataFromStorage();
 			if ( user.data.status === 0 ) {
 				$location.path( '/configuracion' );
-				$scope.addAlert( { type : 'danger'
-				                 , msg  : 'Por favor indique su correo para terminar el registro'
-				                 } );
+				//$scope.addAlert( { type : 'danger'
+				//                 , msg  : 'Por favor indique su correo para terminar el registro'
+				//                 } );
+				return;
 			}
 
 			callback && callback();
@@ -154,12 +156,15 @@ console.log( '!! updateUserDataFromApi !!', response );
 			headerGivens.username = response.user.username;
 			headerGivens.token    = response.token;
 
+			console.log("SIGN IN THIRD PARTY", response);
+
 			header = buildAuthorizationHeader( headerGivens );
 			ls.set( 'token', header );
 			user.isSignedIn();
-console.log( 'user.signInBy3rdParty', 'response.user', response.user );
+			//console.log( 'user.signInBy3rdParty', 'response.user', response.user );
 			data = response.user;
 			user.data = data;
+			user.isNew = response.is_new;
 			ls.set( 'user', data );
 			$rootScope.$broadcast( 'user:signedIn' );
 			dfd.resolve( user.data );
@@ -179,6 +184,9 @@ console.log( 'user.signInBy3rdParty', 'response.user', response.user );
 			var headerGivens = {};
 			headerGivens.username = username;
 			headerGivens.token    = response.token;
+
+			console.log("SIGN IN RESPONSE", response);
+			user.isNew = response.is_new;
 
 			header = buildAuthorizationHeader( headerGivens );
 			ls.set( 'token', header );

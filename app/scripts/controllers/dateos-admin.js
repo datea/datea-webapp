@@ -64,6 +64,10 @@ angular.module( 'dateaWebApp' )
 		.getCampaigns( {id: $scope.campaignId} )
 		.then( function (response) {
 			$scope.campaign = response.objects[0];
+			if (User.data.id != $scope.campaign.user.id) {
+					$location.path('/');
+					return;
+			}
 			$scope.query.tags = $scope.campaign.main_tag.tag;
 			buildTagFilterOptions();
 			$scope.flow.getDateos();

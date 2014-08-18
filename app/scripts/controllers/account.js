@@ -26,10 +26,14 @@ angular.module('dateaWebApp')
 
 	User.isSignedIn() || $location.path( '/' );
 
-	$scope.flow    = {};
-	$scope.account = User.data;
-	$scope.alerts  = [];
-	$scope.loading = false;
+	$scope.flow        = {};
+	$scope.account     = User.data;
+	$scope.alerts      = [];
+	$scope.loading     = false;
+	$scope.userIsNew   = User.isNew;
+	$scope.userStatus  = User.data.status;
+	$scope.accountMsgs = config.accountMsgs;
+	$scope.submitLabel = User.data.status === 1 ? 'Guardar' : 'Enviar';
 
 	console.log("USER DATA", User);
 

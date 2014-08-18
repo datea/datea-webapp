@@ -4500,6 +4500,15 @@ ul.input-list {
 
 .account-holder {
 	margin-bottom: 50px;
+	margin-top: 15px;
+	.usr-msg {
+		margin: 0 15px;
+		margin-bottom: 20px;
+	}
+	h2 {
+		margin-top: 0px;
+		font-size: 18px;
+	}
 }
 
 
@@ -4574,6 +4583,70 @@ ul.input-list {
 
 .leaflet-control-attribution {
 	font-size: 8px !important;
+}
+
+.general-alerts {
+	margin-top: 55px;
+}
+
+.usr-msg {
+	min-height: 80px;
+	.msg {
+		color: white;
+		h3 { 
+			font-size: 18px; 
+			color: white; 
+			margin-top: 0;
+			margin-bottom: 5px;
+		}
+		background-color: @color-9;
+		line-height: 20px;
+		font-size: 14px;
+		padding: 10px;
+		position:relative;
+		p:last-child {
+			margin-bottom: 0;
+		}
+
+		&.inline {
+			display: inline-block;
+		}
+
+		&:after {
+			content: ' ';
+			position: absolute;
+			background: url('@{imgUrl}globals/esquina-msg.png') no-repeat left top;
+			width: 15px;
+			height: 17px;
+			left: -15px;
+			top: 10px;
+		}
+		&:before {
+			background: url('@{imgUrl}globals/dateros.png') no-repeat left top;
+			position:absolute;
+			content: ' ';
+		}
+	}
+
+	&.advice {
+		padding-left: 60px;
+		.msg:before {
+			background-position: -8px 0;
+			left: -60px;
+			height: 80px;
+			width: 50px;
+		}
+	}
+
+	&.hey{
+		padding-left: 70px;
+		.msg:before {
+			left: -70px;
+			width: 55px;
+			height: 100px;
+			background-position: -126px 0;
+		}
+	} 
 }
 
 //
