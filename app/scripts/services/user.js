@@ -33,7 +33,7 @@ angular.module('dateaWebApp')
 	user.isNew = false;
 
 	user.updateUserDataFromStorage = function () {
-		console.log( 'user.updateUserDataFromStorage()', user.isSignedIn(), !Object.keys( user.data ).length );
+		//console.log( 'user.updateUserDataFromStorage()', user.isSignedIn(), !Object.keys( user.data ).length );
 		if ( user.isSignedIn() ) {
 			angular.extend( user.data, ls.get('user') );
 			// user.data = ls.get('user');
@@ -156,14 +156,12 @@ angular.module('dateaWebApp')
 			headerGivens.username = response.user.username;
 			headerGivens.token    = response.token;
 
-			console.log("SIGN IN THIRD PARTY", response);
-
 			header = buildAuthorizationHeader( headerGivens );
 			ls.set( 'token', header );
 			user.isSignedIn();
-			//console.log( 'user.signInBy3rdParty', 'response.user', response.user );
 			data = response.user;
 			user.data = data;
+			user.data.authProvider = givens.party;
 			user.isNew = response.is_new;
 			ls.set( 'user', data );
 			$rootScope.$broadcast( 'user:signedIn' );
@@ -194,6 +192,7 @@ angular.module('dateaWebApp')
 
 			data = response.user;
 			user.data = data;
+			user.data.authProvider = 'datea';
 			ls.set( 'user', data );
 			$rootScope.$broadcast( 'user:signedIn' );
 			dfd.resolve( user.data );

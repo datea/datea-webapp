@@ -88,9 +88,19 @@ angular
 	                                  , http400        : 'El nombre de usuario o correo ya está siendo usado.'} }
 	, accountMsgs : {
 			  userBannedMsg         : 'Tu usuario ha sido blockeado. Si piensas que esto es injusto, por favor comunicate con nosotros a traves de nuestro <a href="http://ayuda.datea.pe/contacto">formulario de contacto</a>.'
-			, userWelcomeReadyMsg   : 'Tu cuenta ha sido activada y ya estás listo(a) para datear. Sin embargo, puedes hacer ajustes a la configuración de tu usuario acá abajo.'
+			, userWelcomeReadyMsg   : 'Tu cuenta ha sido activada y ya estás listo(a) para datear. Si quieres, antes puedes hacer ajustes a la configuración de tu usuario acá abajo.'
 			, userWelcomeConfirmMsg : 'Ya casi eres datero(a)! Falta que nos confirmes tu dirección de correo (Twitter no nos provee ese dato). Una vez confirmada tu cuenta estarás listo(a) para datear.'
+			, duplicateEmailMsg     : 'La dirección de correo ya existe. Por favor utiliza otra, o si no recuerdas tu usuario, puedes salir y recuperar tu clave. Si ingresaste con otro servico (Facebook), por favor vuelve a ingresar con ese servicio.'
+			, duplicateUsernameMsg  : 'El nombre de usuario ya existe. Por favor, elige otro.'
+			, checkEmailMsg         : '¡Gracias! Ahora revisa tu correo y sigue las instrucciones para activar tu cuenta. Si deseas, puedes cerrar esta ventana.'
+			, userConfirmEmailMsg   : 'Antes de poder datear, necesitamos verificar tu dirección de correo. Ingrésala aquí abajo. ¡Gracias!'
+			, userConfirmMissingMsg : 'Falta que nos confirmes tu correo para activar tu cuenta. Por favor, chequea tu correo y sigue las instrucciones que te enviamos. Si deseas recibir otro correo de activación, vuelve a cliquear en "Enviar". ¡Gracias!'
+			, userConfirmSuccessMsg : 'Tu cuenta ha sido plenamente activada y estas listo(a) para datear. Si deseas, puedes antes hacer ajustes a tu cuenta acá abajo.'
+			, registerActivationCompleteMsg : 'Tu cuenta ha sido activada. Ahora puedes ingresar con tu usuario y contraseña.'
+			, PasswdResetEmailMsg   : 'Por favor revisa tu correo y sigue las instrucciones para recuperar tu contraseña.'
+			, PasswdResetNotFoundMsg: 'No existen dateros con esa dirección ;)'  
 	}
+	, unknownErrorMsg : 'Hubo un error. Por favor revisa tus datos e intenta de nuevo. Si no funciona, <a href="http://ayuda.datea.pe/contacto">contáctanos</a>.'
 	, regex : { email: /^([a-zA-Z0-9_\.\-])+\@(([a-zA-Z0-9\-])+\.)+([a-zA-Z0-9]{2,4})+$/
 	          , text : /^([a-záéíóúñÑÁÉÍÓÚA-Z \-])+$/}
 

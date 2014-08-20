@@ -58,6 +58,7 @@ angular.module( 'dateaWebApp' )
 	  , lastBounds
 	  , dontCheckCenterOutOfBounds
 	  , queryCache	      = {}
+	  , userStatusOnInit
 	  // fn declarations
 	  , createBoundsFromCoords
 	  , geolocateAndBuildMap
@@ -511,8 +512,6 @@ angular.module( 'dateaWebApp' )
 		  , bounds
 		  ;
 
-		if (User.data.status !== 1) return;
-
 		State.isLanding             = false;
 		$scope.flow.isSignedIn      = false;
 		$scope.user                 = User.data;
@@ -541,6 +540,7 @@ angular.module( 'dateaWebApp' )
 		angular.extend( $scope.homeSI.leaflet, map );
 
 		geolocateAndBuildMap();
+		console.log("after geolocate And Build map")
 		// buildMap();
 		buildCampaigns();
 		buildCampaignsFollowed();
@@ -558,6 +558,7 @@ angular.module( 'dateaWebApp' )
 			//alert($scope.query.orderBy);
 			$scope.homeSI.onFilterChange();
 		});
+		console.log("After All");
 	}
 
 	onSignUp = function () {
@@ -1049,7 +1050,7 @@ angular.module( 'dateaWebApp' )
 	});
 
 	$rootScope.$on( 'user:signedIn', function () {
-		onSignIn();
+		if (User.data.status === 1) onSignIn();
 	} );
 
 	$rootScope.$on( 'user:signedOut', function () {
@@ -1062,9 +1063,14 @@ angular.module( 'dateaWebApp' )
 
 	$rootScope.$on( 'user:updated', function () {
 		$scope.user = User.data;
+		//if (userStatusOnInit === 0 && User.data.status === 1) {
+		//	onSignIn();
+		//}
 	} );
 
-	if( User.isSignedIn() ) {
+	userStatusOnInit = User.data.status;
+
+	if( User.isSignedIn() && User.data.status === 1) {
 		onSignIn();
 	}
 

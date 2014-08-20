@@ -1,108 +1,130 @@
 <div class="container z2 account-holder">
 	<div class="row">
 		<div class="col-xs-12 col-sm-10 col-md-8 col-sm-offset-1 col-md-offset-2">
-			<alert ng-repeat="alert in alerts" type="alert.type" close="closeAlert($index)">{{alert.msg}}</alert>
 
-			<div class="usr-msg hey" ng-show="userIsNew && userStatus === 1">
-				<h3>Bienvenido a Datea!</h3>
-				<p>{{accountMsgs.userWelcomeReadyMsg}}</p>
-			</div>
-
-			<div class="usr-msg hey" ng-show="userIsNew && userStatus === 0">
-				<div class="msg">
-					<h3>Bienvenido a Datea!</h3>
-					<p>{{accountMsgs.userWelcomeConfirmMsg}}</p> 
+			<div class="loading-status-check datea-loading" ng-show="flow.statusBeingChecked"></div>
+			<div class="show-all" ng-show="!flow.statusBeingChecked">
+				<div class="usr-msg hey" ng-show="flow.userIsNew && flow.userStatus === 1">
+					<div class="msg">
+						<h3>Bienvenido a Datea!</h3>
+						<p class="pull-right">
+							<a class="btn btn-success" href="#/">Seguir <span class="glyphicon glyphicon-chevron-right"></span></a>
+						</p>
+						<p>{{accountMsgs.userWelcomeReadyMsg}}</p>
+					</div>
 				</div>
-			</div>
 
-			<div class="usr-msg advice" ng-show="userStatus === 0 && !userIsNew">
-				<div class="msg inline">
-				<h3>Amigo@ dater@</h3>
-					<p>Antes de poder datear, por favor verifica tu dirección de correo. ¡Gracias!</p>
+				<div class="usr-msg hey" ng-show="flow.userIsNew && flow.userStatus === 0">
+					<div class="msg">
+						<h3>Bienvenido a Datea!</h3>
+						<p>{{accountMsgs.userWelcomeConfirmMsg}}</p> 
+					</div>
 				</div>
-			</div>
 
-			<div class="user-banned" ng-show="userStatus === 2">
-				{{accountMsgs.userBannedMsg}}
-			</div>
+				<div class="usr-msg advice" ng-show="flow.userStatus === 0 && !flow.userIsNew">
+					<div class="msg inline">
+						<h3>Amigo@ dater@</h3>
+						<p ng-show="!flow.hasEmail">{{accountMsgs.userConfirmEmailMsg}}</p>
+						<p ng-show="flow.hasEmail">{{accountMsgs.userConfirmMissingMsg}}</p>
+					</div>
+				</div>
 
-			<div class="account-form-holder">
-				<h2 ng-hide="userIsNew || userStatus === 0">Cuenta de usuario</h2>
-				<alert ng-repeat="alert in alerts" type="alert.type" close="closeAlert($index)">{{alert.msg}}</alert>
-				<form role="form" name="form" ng-submit="account.save()">
-					<tabset>
-						<tab heading="Cuenta de Usuario">
-							<div class="tab-body" ng-class="{'datea-loading': loading}">
-								<div class="form-group">
-									<label for="username">Nombre de usuario</label>
-									<input type="text" class="form-control" id="username" required pattern="^[A-Za-z0-9-]{1,32}$" ng-model="account.username">
-									<p class="help-block">Sólo números, letras y guiones (sin espacios, tildes, etc)</p>
-								</div>
-								<div class="form-group">
-									<label for="email">Correo electrónico</label>
-									<input type="email" class="form-control" id="email" required ng-model="account.email">
-								</div>
-								<div class="actions">
-									<input type="submit" class="btn btn-success btn-lg" value="{{submitLabel}}">
-									<button type="submit" class="btn btn-default btn-lg" disabled>{{submitLabel}}</button>
-									<span ng-bind="auth.message"></span>
-								</div>
-							</div>
-						</tab>
-						<tab heading="Personalizar Perfil" ng-hide="userStatus !== 1">
-							<div class="tab-body" ng-class="{'datea-loading': loading}">
-								<div class="form-group">
-									<label for="fullname">Nombre completo</label>
-									<input type="text" class="form-control" id="fullname" ng-model="account.full_name">
-								</div>
-								<div class="form-group">
-									<div class="user-img" style="height:40px;width:40px;" ng-show="account.image" ng-hide="flow.img" bg-from-api="{{account.image}}"></div>
-									<label for="image">Sube tu imagen</label>
-									<input type="file" fileread="flow.img" filedata="flow.imgData" accept="image/*">
-									<img class="uploaded-img" ng-show="flow.img" ng-src="{{flow.img}}" alt="{{flow.imgData.name}}" width="200px">
-								</div>
-								<div class="form-group">
-									<div class="user-img" style="height:40px;width:40px;" ng-show="account.bg_image" ng-hide="flow.bgImg" bg-from-api="{{account.bg_image}}"></div>
-									<label for="image">Sube tu imagen de fondo de perfil</label>
-									<input type="file" fileread="flow.bgImg" filedata="flow.bgImgData" accept="image/*">
-									<img class="uploaded-img" ng-show="flow.bgImg" ng-src="{{flow.bgImg}}" alt="{{flow.bgImgData.name}}" width="200px">
-								</div>
-								<div class="form-group">
-									<label for="message">Mensaje personal/ Slogan</label>
-									<input type="text" class="form-control" id="message" ng-model="account.message">
-								</div>
-								<div class="form-group">
-									<label for="url">URL personal o de tu organización</label>
-									<input type="text" class="form-control" id="url" pattern="https?://.+" ng-model="account.url">
-								</div>
-								<p>Los siguiente campos son para los iconos de "sígueme en..."</p>
-								<div class="form-group">
-									<label for="facebookUrl">URL en facebook</label>
-									<input type="text" class="form-control" id="facebookUrl" pattern="https?://.+" ng-model="account.url_facebook">
-								</div>
-								<div class="form-group">
-									<label for="twitterUrl">URL en twitter</label>
-									<input type="text" class="form-control" id="twitterUrl" pattern="https?://.+" ng-model="account.url_twitter">
-								</div>
-								<div class="form-group">
-									<label for="youtubeUrl">Canal de youtube</label>
-									<input type="text" class="form-control" id="youtubeUrl" pattern="https?://.+" ng-model="account.url_youtube">
-								</div>
+				<div class="usr-msg advice" ng-show="flow.userStatus === 1 && flow.statusChanged && flow.authProvider == 'twitter'">
+					<div class="msg">
+						<h3>¡Felicitaciones!</h3>
+						<p class="pull-right">
+							<a class="btn btn-success" href="#/">Seguir <span class="glyphicon glyphicon-chevron-right"></span></a>
+						</p>
+						<p>{{accountMsgs.userConfirmSuccessMsg}}</p>
+					</div>
+				</div>
 
-								<div class="actions">
-									<input type="submit" class="btn btn-success btn-lg" value="{{submitLabel}}">
-									<button type="submit" class="btn btn-default btn-lg" disabled>{{submitLabel}}</button>
-									<span ng-bind="auth.message"></span>
-								</div>
+				<div class="user-banned" ng-show="flow.userStatus === 2">
+					<div class="alert alert-danger">{{accountMsgs.userBannedMsg}}</div>
+				</div>
 
-							</div>
-						</tab>
-					</tabset>
-				</form>
-				<!--
-				<hr>
-				<pre>Validation: {{form.$error|json}}</pre>
-				-->
+				<div class="account-form-holder">
+					<h2 ng-hide="flow.userIsNew || flow.userStatus === 0 || flow.statusChanged">Configuración de cuenta</h2>
+					<alert ng-repeat="alert in alerts" type="alert.type" close="closeAlert($index)">{{alert.msg}}</alert>
+					<form role="form" name="form" ng-submit="account.save()" class="form">
+						<tabset>
+							<tab heading="Cuenta de Usuario">
+								<div class="tab-body" ng-class="{'datea-loading': loading}">
+									<div class="row">
+								 		<div class="col-xs-12 col-md-9 col-lg-7">
+											<div class="form-group">
+												<label for="username">Nombre de usuario</label>
+												<input type="text" class="form-control" id="username" required pattern="^[A-Za-z0-9-_]{1,32}$" ng-model="account.username">
+												<p class="help-block">Sólo números, letras y guiones (sin espacios, tildes, etc)</p>
+											</div>
+											<div class="form-group">
+												<label for="email">Correo electrónico</label>
+												<input type="email" class="form-control" id="email" required ng-model="account.email">
+											</div>
+											<div class="actions">
+												<input type="submit" class="btn btn-success btn-lg" value="{{flow.submitLabel}}">
+												<button type="submit" class="btn btn-default btn-lg" disabled>{{flow.submitLabel}}</button>
+												<span ng-bind="auth.message"></span>
+											</div>
+										</div>
+									</div>
+								</div>
+							</tab>
+							<tab heading="Personalizar Perfil" ng-hide="flow.userStatus !== 1">
+								<div class="tab-body" ng-class="{'datea-loading': loading}">
+									<div class="form-group">
+										<label for="fullname">Nombre completo</label>
+										<input type="text" class="form-control" id="fullname" ng-model="account.full_name">
+									</div>
+									<div class="form-group">
+										<div class="user-img" style="height:40px;width:40px;" ng-show="account.image" ng-hide="flow.img" bg-from-api="{{account.image}}"></div>
+										<label for="image">Sube tu imagen</label>
+										<input type="file" fileread="flow.img" filedata="flow.imgData" accept="image/*">
+										<img class="uploaded-img" ng-show="flow.img" ng-src="{{flow.img}}" alt="{{flow.imgData.name}}" width="200px">
+									</div>
+									<div class="form-group">
+										<div class="user-img" style="height:40px;width:40px;" ng-show="account.bg_image" ng-hide="flow.bgImg" bg-from-api="{{account.bg_image}}"></div>
+										<label for="image">Sube tu imagen de fondo de perfil</label>
+										<input type="file" fileread="flow.bgImg" filedata="flow.bgImgData" accept="image/*">
+										<img class="uploaded-img" ng-show="flow.bgImg" ng-src="{{flow.bgImg}}" alt="{{flow.bgImgData.name}}" width="200px">
+									</div>
+									<div class="form-group">
+										<label for="message">Mensaje personal/ Slogan</label>
+										<input type="text" class="form-control" id="message" ng-model="account.message">
+									</div>
+									<div class="form-group">
+										<label for="url">URL personal o de tu organización</label>
+										<input type="text" class="form-control" id="url" pattern="https?://.+" ng-model="account.url">
+									</div>
+									<p>Los siguiente campos son para los iconos de "sígueme en..."</p>
+									<div class="form-group">
+										<label for="facebookUrl">URL en facebook</label>
+										<input type="text" class="form-control" id="facebookUrl" pattern="https?://.+" ng-model="account.url_facebook">
+									</div>
+									<div class="form-group">
+										<label for="twitterUrl">URL en twitter</label>
+										<input type="text" class="form-control" id="twitterUrl" pattern="https?://.+" ng-model="account.url_twitter">
+									</div>
+									<div class="form-group">
+										<label for="youtubeUrl">Canal de youtube</label>
+										<input type="text" class="form-control" id="youtubeUrl" pattern="https?://.+" ng-model="account.url_youtube">
+									</div>
+
+									<div class="actions">
+										<input type="submit" class="btn btn-success btn-lg" value="{{flow.submitLabel}}">
+										<button type="submit" class="btn btn-default btn-lg" disabled>{{flow.submitLabel}}</button>
+										<span ng-bind="auth.message"></span>
+									</div>
+
+								</div>
+							</tab>
+						</tabset>
+					</form>
+					<!--
+					<hr>
+					<pre>Validation: {{form.$error|json}}</pre>
+					-->
+				</div>
 			</div>
 		</div>
 	</div>

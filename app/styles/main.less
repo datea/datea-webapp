@@ -364,35 +364,54 @@ body {
 // Sign In
 //
 
+.login-form {
+	padding-bottom: 35px;
+
+	.login-form-inner {
+		background: white;
+		border-radius: 5px;
+		padding: 30px 20px 30px 20px;
+
+
+		h1 {
+				color: @color-5;
+				font-size: 28px;
+				margin-top: 0;
+				margin-bottom: 0;
+				font-weight: bold;
+		}
+
+		.subheading {
+			font-weight: normal;
+			font-size: 18px;
+			margin-bottom: 25px;
+			margin-top: 10px;
+		}
+
+		.well {
+			h4 {
+				font-size: 16px;
+				margin-top: 0;
+			}
+		}
+	}
+}
+
 .signin-holder {
 	@sectionImgUrl : 'signin/';
-
-	background: @color-10 url('@{imgUrl}/signin/bg.png') no-repeat center 20px;
-	height: 790px;
+	position:relative;
+	z-index: 2;
+	background: @color-10 url('@{imgUrl}/signin/bg.png') no-repeat center 0px;
 	// position: absolute;
 	width: 100%;
 
 	.signin {
-		background: white;
-		border-radius: 5px;
-		padding: 20px 30px 20px 30px;
-		position: relative;
-		top: 187px;
-
-		h1 {
-			color: @color-5;
-			font-weight: bold;
+		margin-top: 167px;
+		.usr-msg {
+			margin-bottom: 25px;
 		}
-
-		.subheading {
-			font-weight: bold;
-		}
-
-		.part-1 {
-			width: 65%;
-		}
-		.part-2 {
-			width: 34%;
+		.register-btns {
+			margin-bottom: 15px;
 		}
 	}
 }
@@ -414,34 +433,8 @@ body {
 	width: 100%;
 
 	.signup {
-		position: relative;
-		padding-top: 187px;
-		background: @color-10 url('@{imgUrl}/signin/bg.png') no-repeat center 20px;
-
-		.form-wrap {
-			background-color: white;
-			border-radius: 5px;
-			.sidebar {
-				.inner { padding: 40px 40px 40px 0px;}			
-			}
-			.main-content .inner { padding: 20px 0 30px 30px;}
-
-			h1 {
-				color: @color-5;
-				font-weight: bold;
-			}
-			.subheading {
-				font-weight: bold;
-				margin-bottom: 35px;
-			}
-
-			.part-1 {
-				width: 65%;
-			}
-			.part-2 {
-				width: 34%;
-			}
-		}
+		padding-top: 167px;
+		background: @color-10 url('@{imgUrl}/signin/bg.png') no-repeat center 0px;
 	}
 }
 
@@ -451,26 +444,29 @@ body {
 
 .signup-form-holder {
 	@sectionImgUrl: 'signup-form/';
-
-	background: @color-10 url('@{imgUrl}/signin/bg.png') no-repeat center 20px;
-	height: 790px;
+	z-index: 2;
+	background: @color-10 url('@{imgUrl}/signin/bg.png') no-repeat center 0px;
 	width: 100%;
+	margin-bottom: 35px;
+	position: relative;
 
-	.signup-form {
+	.wbox {
 		background: white;
 		border-radius: 5px;
-		padding: 40px;
+		padding: 30px 20px;
+		margin-top: 167px;
 		position: relative;
-		top: 187px;
-
-		h1 {
+		h3 {
+			margin-top: 0px;
 			color: @color-5;
 			font-weight: bold;
 		}
-
-		.form-control-feedback {
-			display: none;
+		.btn {
+			margin-top: 15px;
 		}
+	}
+
+	.signup-form {
 	}
 }
 
@@ -4500,14 +4496,27 @@ ul.input-list {
 
 .account-holder {
 	margin-bottom: 50px;
-	margin-top: 15px;
+	margin-top: 25px;
+
+	.loading-status-check {
+		min-height: 300px;
+	}
+
 	.usr-msg {
-		margin: 0 15px;
+		margin: 0 0 0 15px;
 		margin-bottom: 20px;
+
 	}
 	h2 {
 		margin-top: 0px;
-		font-size: 18px;
+		font-size: 23px;
+		margin-left: 5px;
+	}
+	.actions {
+		padding-top: 5px;
+	}
+	.tab-body {
+		position:relative;
 	}
 }
 
@@ -4591,6 +4600,18 @@ ul.input-list {
 
 .usr-msg {
 	min-height: 80px;
+	&.green {
+			.msg {
+				background-color: @color-12;
+			}
+		} 
+	&.yellow {
+		.msg {
+			background-color: @color-1;
+			color: @color-21;
+			h3 { color: @color-21}
+		}
+	}
 	.msg {
 		color: white;
 		h3 { 
@@ -4606,6 +4627,10 @@ ul.input-list {
 		position:relative;
 		p:last-child {
 			margin-bottom: 0;
+		}
+
+		p.pull-right {
+			margin-left: 15px;
 		}
 
 		&.inline {

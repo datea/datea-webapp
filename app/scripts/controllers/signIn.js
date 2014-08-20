@@ -8,6 +8,7 @@ angular.module( 'dateaWebApp' )
   , 'User'
   , '$location'
   , 'State'
+  , 'config'
 , function (
     $scope
   , Api
@@ -15,21 +16,42 @@ angular.module( 'dateaWebApp' )
   , User
   , $location
   , State
+  , config
 ) {
-	var ls = localStorageService;
+	var ls = localStorageService
+		, msg
+	;
 
 	State.isLanding = false;
 	$scope.auth     = {};
 	$scope.flow     = {};
-	$scope.reset    = {};
+	$scope.alerts   = [];
+ 	$scope.reset    = {};
 	$scope.nav      = {};
+	$scope.flow.activationMsg = config.accountMsgs.registerActivationCompleteMsg;
 
 	$scope.nav.visible = true;
+	$scope.flow.hideSocial = false;
 
 	$scope.auth.passwordRequired = true;
 	$scope.auth.showResetPassword = false;
 
 	User.isSignedIn() && $location.path( '/' );
+
+	if ($location.search().msg) {
+		msg = $location.search().msg;
+		if (msg === 'activationComplete') {
+			$scope.flow.hideSocial = true;
+		}
+	}
+
+	$scope.closeAlert = function(index) {
+		$scope.alerts.splice(index, 1);
+	};
+
+	$scope.addAlert = function ( givens ) {
+		$scope.alerts.push( givens );
+	}
 
 	$scope.auth.signIn = function () {
 		var isValid
@@ -41,10 +63,14 @@ angular.module( 'dateaWebApp' )
 		       , password : $scope.auth.password }
 
 		if ( isValid ) {
+			$scope.flow.loading = true;
 			User.signIn( data )
 			.then( function ( response ) {
 				User.updateUserDataFromStorage();
 				$location.path('/');
+				$scope.flow.loading = false;
+			}, function (reason) {
+				$scope.flow.loading = false;
 			} );
 		}
 	}
@@ -54,12 +80,15 @@ angular.module( 'dateaWebApp' )
 			var partyGivens = {};
 			partyGivens.access_token = result.access_token;
 			partyGivens.party = 'facebook';
+			$scope.flow.loading = true;
 			User.signInBy3rdParty( partyGivens )
 			.then( function ( response ) {
 				console.log( response );
 				$location.path( '/' );
+				$scope.flow.loading = false;
 			}, function ( reason ) {
 				console.log( reason );
+				$scope.flow.loading = false;
 			} );
 		});
 	}
@@ -70,6 +99,7 @@ angular.module( 'dateaWebApp' )
 			partyGivens.party = 'twitter';
 			partyGivens.oauth_token = result.oauth_token;
 			partyGivens.oauth_token_secret = result.oauth_token_secret;
+			$scope.flow.loading = true;
 			User.signInBy3rdParty( partyGivens )
 			.then( function ( response ) {
 				console.log( 'auth.withTwitter', 'updateUserDataFromStorage' );
@@ -78,9 +108,10 @@ angular.module( 'dateaWebApp' )
 				} else {
 					$location.path( '/' );
 				}
-
+				$scope.flow.loading = false;
 			}, function ( reason ) {
 				console.log( 'auth.withTwitter error', reason );
+				$scope.flow.loading = false;
 			} );
 		});
 	}
@@ -88,7 +119,16 @@ angular.module( 'dateaWebApp' )
 	$scope.auth.resetPassword = function () {
 		var resetGivens = {};
 		resetGivens.email = $scope.reset.email;
-		User.resetPassword( resetGivens );
+		$scope.flow.loading = true;
+		User.resetPassword( resetGivens )
+		.then(function(response){
+			console.log("RESET RESPONSE", response);
+			$scope.addAlert({type: 'success', msg: config.accountMsgs.PasswdResetEmailMsg})
+			$scope.flow.loading = false;
+		}, function (reason) {
+			$scope.flow.loading = false;
+			$scope.addAlert({type: 'warning', msg: config.accountMsgs.PasswdResetNotFoundMsg});
+		});
 	}
 
 	$scope.flow.toggleResetPassword = function () {

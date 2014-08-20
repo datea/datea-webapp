@@ -31,6 +31,8 @@ angular.module('dateaWebApp')
 	$scope.flow.validInput.email        = null;
 	$scope.flow.validInput.password     = null;
 	$scope.flow.validInput.samePassword = null;
+	$scope.flow.loading                 = false;
+	$scope.flow.registerSuccess         = false;
 
 	User.isSignedIn() && $location.path( '/' );
 
@@ -88,19 +90,23 @@ angular.module('dateaWebApp')
 
 		if ( isValid && $scope.flow.validInput.username ) {
 			$scope.auth.message = 'cargando..';
+			$scope.flow.loading = true;
 			Api.account.register.createUser( data )
 			.then( function ( response ) {
 				console.log( response )
 				if ( response.status === 201 ) {
 					ls.set( 'user', response.user );
 					$scope.auth.message = 'usuario creado.';
-					$location.path( '/signin' );
+					$scope.flow.registerSuccess = true;
+					$scope.flow.loading = false;
+					//$location.path( '/signin' );
 				}
 			}
 			, function ( reason ) {
 				if ( reason.status === 400 ) {
 					$scope.auth.message = config.signupForm.validationMsgs.http400;
 				}
+				$scope.flow.loading = false;
 				console.log( 'reason', reason );
 			} )
 		} else {

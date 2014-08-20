@@ -23,6 +23,7 @@ angular.module('dateaWebApp')
 	// fn declarations
 	var onSignIn
 	  , updateUserDataFromApi
+	  , userStatusOnInit = 1
 	  ;
 
 	$scope.nav  = {};
@@ -35,6 +36,7 @@ angular.module('dateaWebApp')
 	$scope.alerts = []
 
 	updateUserDataFromApi = function () {
+		console.log("UPDATE USER FROM API");
 		var ls = localStorageService
 		  , updatedData
 		  , currentData = ls.get('user')
@@ -48,31 +50,38 @@ angular.module('dateaWebApp')
 			User.updateUserDataFromStorage();
 			if ( User.data.status === 0 ) {
 				$location.path( '/configuracion' );
+				$rootScope.$broadcast("user:statusCheck", {status: 0, changed: false});
 				//$scope.addAlert( { type : 'danger'
 				//                 , msg  : 'Por favor indique su correo para terminar el registro'
 				//                 } );
+			} else if (User.data.status === 1 && userStatusOnInit === 0) {
+				userStatusOnInit = null;
+				$location.path( '/configuracion' );
+				$rootScope.$broadcast("user:statusCheck", {status: 1, changed: true});
 			} else {
-				$location.path( '/' );
+				$location.path( '/');
 			}
-
 		}, function ( reason ) {
 			console.log( reason );
 		} );
 	}
 
 	onSignIn = function ( givens ) {
+		var path = $location.path();
 		User.updateUserDataFromStorage();
 		$scope.nav.visible = User.isSignedIn();
-		if ( $location.path() === '/signin'
-		  || $location.path() === '/signup'
-		  || $location.path() === '/crear-cuenta'
-		  || $location.path() === '/registrate'
-		  || $location.path() !== '/'
+		if ( path === '/signin'
+		  || path === '/signup'
+		  || path === '/crear-cuenta'
+		  || path === '/registrate'
+		  || path !== '/'
 		) {
 			$scope.nav.visible = true;
 		}
 		$scope.user = User.data;
-		if ( User.data.status === 0 ) {
+	
+		if ( !givens && User.data.status === 0) {
+			userStatusOnInit = User.data.status;
 			updateUserDataFromApi();
 		}
 	}
@@ -100,7 +109,7 @@ angular.module('dateaWebApp')
 
 	$scope.$on( '$locationChangeStart', function ( scope, next, current ){
 		User.updateUserDataFromStorage();
-		onSignIn();
+		onSignIn({checkUserStatus: false});
 	});
 
 	$rootScope.$on( 'error:someError', function () {
@@ -128,7 +137,7 @@ angular.module('dateaWebApp')
 		             } )
 	}
 
-	if ( User.isSignedIn() ) {
+	if ( User.isSignedIn()) {
 		onSignIn();
 	}
 

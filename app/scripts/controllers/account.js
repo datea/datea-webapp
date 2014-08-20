@@ -22,18 +22,34 @@ angular.module('dateaWebApp')
 	var ls = localStorageService
 	  // fn declarations
 	  , updateUserDataFromApi
+	  , buildUserMsgs
 	  ;
 
-	User.isSignedIn() || $location.path( '/' );
+	//User.isSignedIn() || $location.path( '/' );
 
-	$scope.flow        = {};
-	$scope.account     = User.data;
-	$scope.alerts      = [];
-	$scope.loading     = false;
-	$scope.userIsNew   = User.isNew;
-	$scope.userStatus  = User.data.status;
-	$scope.accountMsgs = config.accountMsgs;
-	$scope.submitLabel = User.data.status === 1 ? 'Guardar' : 'Enviar';
+	$scope.flow          = {};
+	$scope.account       = User.data;
+	$scope.alerts        = [];
+	$scope.flow.loading  = false; 
+	$scope.accountMsgs   = config.accountMsgs;
+	$scope.flow.statusBeingChecked  = !User.data.status;
+
+	buildUserMsgs = function (status, statusChanged) {
+		$scope.flow.userIsNew     = User.isNew;
+		$scope.flow.userStatus    = status;
+		$scope.flow.authProvider  = User.data.authProvider || null;
+		$scope.flow.statusChanged = statusChanged;
+		$scope.flow.submitLabel   = status === 1 ? 'Guardar' : 'Enviar';
+		$scope.flow.hasEmail      = !!User.data.email;
+	}
+
+	if (User.data.status === 1) buildUserMsgs(1, false);
+
+	$scope.$on('user:statusCheck', function (ev, args) {
+		console.log("USER STATUS CHECK", args);
+		buildUserMsgs(args.status, args.changed);
+		$scope.flow.statusBeingChecked = false;
+	});
 
 	console.log("USER DATA", User);
 
@@ -74,11 +90,13 @@ angular.module('dateaWebApp')
 		if ( data.username && data.email ) {
 			User.updateUser( data )
 			.then( function ( response ) {
+				console.log("CONFIG SAVE RESPONSE", response);
 				if ( data.email ) {
-					if ( !User.data.status ) {
+					if ( User.data.status === 0) {
 						$modal.open( { templateUrl : 'views/verifyEmailModal.html'
 						             , backdrop    : 'static'
 						             } );
+						$scope.addAlert({type: 'success', msg: config.accountMsgs.checkEmailMsg});
 					}
 				// update user object with response and no use updateUserDataFromApi
 				// User.updateUserDataFromApi();
@@ -91,7 +109,21 @@ angular.module('dateaWebApp')
 					$scope.loading = false;
 				}
 			}, function ( reason ) {
-				console.log( reason );
+				var error;
+				console.log("CONFIG SAVE ERROR", reason);
+				if (reason.status === 400) {
+					if (reason.data && reason.data.error && reason.data.error.length) {
+						error = reason.data.error[0];
+						if (error === 'Duplicate email') {
+							$scope.addAlert({type: 'warning', 'msg': config.accountMsgs.duplicateEmailMsg});
+						}
+						if (error === 'Duplicate username') {
+							$scope.addAlert({type: 'danger', 'msg': config.accountMsgs.duplicateUsernameMsg});
+						}
+					}else{
+						$scope.addAlert({type:'danger', 'msg': config.unknownErrorMsg});
+					}
+				}
 				$scope.loading = false;
 			} )
 		}

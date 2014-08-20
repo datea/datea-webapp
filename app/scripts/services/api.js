@@ -169,7 +169,7 @@ angular.module('dateaWebApp')
 	{ 'query' : { method : 'GET'} }
 	);
 
-console.log( 'api', headers );
+  //console.log( 'api', headers );
 	// User
 	user.getUserByUserIdOrUsername = function ( givens ) {
 		var token = ls.get('token')
