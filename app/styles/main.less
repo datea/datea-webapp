@@ -404,14 +404,37 @@ body {
 	background: @color-10 url('@{imgUrl}/signin/bg.png') no-repeat center 0px;
 	// position: absolute;
 	width: 100%;
+	.signin-holder-inner {
+		position: relative;
 
-	.signin {
-		margin-top: 167px;
-		.usr-msg {
-			margin-bottom: 25px;
+		.signin {
+			margin-top: 167px;
+			.usr-msg {
+				margin-bottom: 25px;
+			}
+			.register-btns {
+				margin-bottom: 15px;
+			}
 		}
-		.register-btns {
-			margin-bottom: 15px;
+	}
+}
+
+.change-password-holder {
+	position: relative;
+	z-index: 2;
+	.form-holder {
+		background: white;
+		border-radius: 5px;
+		padding: 30px 20px;
+		margin-top: 30px;
+		position: relative;
+		h3 {
+			margin-top: 0px;
+			color: @color-5;
+			font-weight: bold;
+		}
+		.btn {
+			margin-top: 15px;
 		}
 	}
 }
