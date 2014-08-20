@@ -44,6 +44,7 @@ angular.module('dateaWebApp')
 	account.register        = {};
 	account.signIn          = {};
 	account.password        = {};
+	account.passwordChange  = {};
 	account.usernameExists  = {};
 
 	tag.autocomplete = {};
