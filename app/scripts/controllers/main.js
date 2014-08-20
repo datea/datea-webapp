@@ -54,11 +54,11 @@ angular.module( 'dateaWebApp' )
 	  , campaigns         = []
 	  , sessionMarkers    = {}
 	  , sessionMarkersIdx = 0
+	  , sessionCenter
 	  , lastMarkerWithFocus
 	  , lastBounds
 	  , dontCheckCenterOutOfBounds
 	  , queryCache	      = {}
-	  , userStatusOnInit
 	  // fn declarations
 	  , createBoundsFromCoords
 	  , geolocateAndBuildMap
@@ -116,13 +116,21 @@ angular.module( 'dateaWebApp' )
 	$scope.query.followFilter       = 'all';
 	$scope.query.followFilterLabel  = 'todos';
 
-	$scope.dateFormat = config.defaultDateFormat;
-
 	// $scope.homeSI.leaflet = { bounds   : [ [ -12.0735, -77.0336 ], [ -12.0829, -77.0467 ] ]
 	//                , center   : { lat: -12.05, lng: -77.06, zoom: 13 }
 	//                , defaults : { scrollWheelZoom: false }
 	//                , markers  : {}
 	//                }
+
+	$scope.$watch('query.orderBy', function() {
+		//alert($scope.query.orderBy);
+		$scope.homeSI.onFilterChange();
+	});
+
+	$scope.$watch('query.followFilter', function() {
+		//alert($scope.query.orderBy);
+		$scope.homeSI.onFilterChange();
+	});
 
 	$scope.homeSI.leaflet = angular.copy( config.defaultMap );
 
@@ -272,66 +280,67 @@ angular.module( 'dateaWebApp' )
 	}
 
 	buildMap = function ( givens ) {
-		console.log("BUILD MAP: givens", givens);
 		var dateosGivens = givens && givens.dateosGivens || {}
 		  , center       = {}
 		  , bounds
 		  , map
+		  , zoomTimer
 		  ;
-
-		// console.log( 'bounds buildMap', createBoundsFromCoords(
-		// { lat: givens.center.coords.latitude
-		// , lng: givens.center.coords.longitude }
-		// )  )
 
 		bounds = leafletBoundsHelpers.createBoundsFromArray( createBoundsFromCoords(
 		{ lat: givens && givens.center && givens.center.coords.latitude || User.data.ip_location.latitude || config.defaultMap.center.lat
 		, lng: givens && givens.center && givens.center.coords.longitude || User.data.ip_location.longitude || config.defaultMap.center.lng }
-		) )
+		) );
 
-		center.lat = givens && givens.center && givens.center.coords.latitude;
-		center.lng = givens && givens.center && givens.center.coords.longitude;
+		center.lat = givens && givens.center && givens.center.coords.latitude || User.data.ip_location.latitude;
+		center.lng = givens && givens.center && givens.center.coords.longitude || User.data.ip_location.longitude;
 
-		map        = angular.copy( config.defaultMap );
-		// map        = { bounds   : [ [ -12.0735, -77.0336 ], [ -12.0829, -77.0467 ] ]
-		//              , center   : { lat: -12.05, lng: -77.06, zoom: 15 }
-		//              , defaults : { scrollWheelZoom: false }
-		//              , markers  : {}
-		//              }
-		// map.bounds = bounds;
+		// map        = angular.copy( config.defaultMap );
 
-		if ( center.lat && center.lng ) {
-			map.center.lat = center.lat;
-			map.center.lng = center.lng
-		}
+		// if ( center.lat && center.lng ) {
+		// 	map.center.lat = center.lat;
+		// 	map.center.lng = center.lng
+		// }
 
 		if ( !Object.keys( dateosGivens ).length ) {
-			// dateosGivens.latitude  = center.lat || config.defaultMap.center.lat;
-			// dateosGivens.longitude = center.lng || config.defaultMap.center.lng;
-			// dateosGivens.distance  = 2000;
-			dateosGivens.bottom_left_latitude  = bounds.southWest.lat;
-			dateosGivens.bottom_left_longitude = bounds.southWest.lng;
-			dateosGivens.top_right_latitude    = bounds.northEast.lat;
-			dateosGivens.top_right_longitude   = bounds.northEast.lng;
+			// dateosGivens.bottom_left_latitude  = bounds.southWest.lat;
+			// dateosGivens.bottom_left_longitude = bounds.southWest.lng;
+			// dateosGivens.top_right_latitude    = bounds.northEast.lat;
+			// dateosGivens.top_right_longitude   = bounds.northEast.lng;
 			dontCheckCenterOutOfBounds = false;
 			// Only make a request if new the center is outside the map boundaries
-			leafletData.getMap('leafletHomeSI')
-			.then( function ( lfmap ) {
-				lastBounds = lfmap.getBounds();
-
-				// PREGUNTAR A JUAN POR EL watch al zoom
-				$scope.$watch( 'homeSI.leaflet.center.lat+homeSI.leaflet.center.lng+homeSI.leaflet.center.zoom', function () {
-					isCenterOutOfBounds();
+			zoomTimer = 0;
+			if( $scope.homeSI.leaflet.center.zoom > 14 ) {
+				zoomTimer = 1500;
+				$scope.homeSI.leaflet.center.zoom = 14;
+				// lfmap.setZoom( 14, { animate: false } );
+			}
+			$timeout( function () {
+				leafletData.getMap('leafletHomeSI')
+				.then( function ( lfmap ) {
+						lastBounds = lfmap.getBounds();
+						dateosGivens.bottom_left_latitude  = lastBounds._southWest.lat;
+						dateosGivens.bottom_left_longitude = lastBounds._southWest.lng;
+						dateosGivens.top_right_latitude    = lastBounds._northEast.lat;
+						dateosGivens.top_right_longitude   = lastBounds._northEast.lng;
+						// PREGUNTAR A JUAN POR EL watch al zoom
+						$scope.$watch( 'homeSI.leaflet.center.lat+homeSI.leaflet.center.lng+homeSI.leaflet.center.zoom', function () {
+							isCenterOutOfBounds();
+						} );
+						buildMarkers( dateosGivens );
+						angular.extend( $scope.homeSI.leaflet, map );
 				} );
-			} );
+			}, zoomTimer );
 		} else {
 			dontCheckCenterOutOfBounds = true;
 			dateosGivens.updateCenter  = true;
+			buildMarkers( dateosGivens );
+			angular.extend( $scope.homeSI.leaflet, map );
 		}
-		angular.extend( $scope.homeSI.leaflet, map );
-		buildMarkers( dateosGivens );
-	}
 
+		// angular.extend( $scope.homeSI.leaflet, map );
+		// buildMarkers( dateosGivens );
+	}
 
 	isCenterOutOfBounds = function () {
 		if ( !dontCheckCenterOutOfBounds ) {
@@ -380,7 +389,6 @@ angular.module( 'dateaWebApp' )
 	}
 
 	buildMarkers = function ( givens ) {
-		console.log("BUILD MARKERS: givens", givens);
 		var map          = {}
 		  , markers      = {}
 		  , givens       = givens || {}
@@ -414,7 +422,8 @@ angular.module( 'dateaWebApp' )
 
 		Api.dateo.getDateos( givens )
 		.then( function ( response ) {
-			if ( response.objects ) {
+			if ( response.objects.length ) {
+				$scope.flow.notResults = null;
 				angular.forEach( response.objects, function ( value, key ){
 					var labelTags = []
 						, tags     = value.tags && value.tags.map(function(t) {return t.tag}) || []
@@ -464,17 +473,20 @@ angular.module( 'dateaWebApp' )
 				map.markers = sessionMarkers;
 				$scope.homeSI.markers = Object.keys( sessionMarkers );
 				// console.log( 'updateCenter', givens, givens.updateCenter );
-				if ( updateCenter && Object.keys(map.markers).length > 0) {
-					map.center      = {};
-					map.center.lat  = map.markers[ 'marker'+0 ].lat;
-					map.center.lng  = map.markers[ 'marker'+0 ].lng;
-					map.center.zoom = config.homeSI.mapZoomOverride;
-					map.markers[ 'marker'+0 ].focus = true;
-				}
+				// if ( updateCenter && Object.keys(map.markers).length > 0) {
+				// 	map.center      = {};
+				// 	map.center.lat  = map.markers[ 'marker'+0 ].lat;
+				// 	map.center.lng  = map.markers[ 'marker'+0 ].lng;
+				// 	map.center.zoom = config.homeSI.mapZoomOverride;
+				// 	map.markers[ 'marker'+0 ].focus = true;
+				// }
+
 				angular.extend( $scope.homeSI.leaflet, map );
 				$scope.homeSI.loading.leaflet = false;
 				$scope.homeSI.loading.leafletMore = false;
 				// open popup on requested marker
+			} else {
+				$scope.flow.notResults = 'No hubieron resultados';
 			}
 		}, function ( reason ) {
 			console.log( reason );
@@ -482,12 +494,12 @@ angular.module( 'dateaWebApp' )
 	}
 
 	geolocateAndBuildMap = function ( givens ) {
-		// console.log("GEOLOCATE AND BUILD MAP: givens", givens);
 		// buildMap( givens );
 		// no spam
 		geo.getLocation( { timeout:3000 } )
 		.then( function ( data ) {
 			console.log( 'geolocatedCenter', data );
+			sessionCenter = data;
 			buildMap( { center : data } );
 		}, function () {
 			Api.ipLocation.getLocationByIP()
@@ -496,6 +508,7 @@ angular.module( 'dateaWebApp' )
 				ipLocation.coords           = {};
 				ipLocation.coords.latitude  = response.ip_location.latitude;
 				ipLocation.coords.longitude = response.ip_location.longitude;
+				sessionCenter = ipLocation;
 				buildMap( { center : ipLocation } );
 			} );
 		} );
@@ -534,13 +547,12 @@ angular.module( 'dateaWebApp' )
 		
 		map               = angular.copy( config.defaultMap );
 		config.defaultMap = map;
-		map.center.zoom 	= config.homeSI.mapZoomOverride;
-		map.bounds        = leafletBoundsHelpers.createBoundsFromArray( [ [ -12.0735, -77.0336 ], [ -12.0829, -77.0467 ] ] );
+		map.center.zoom = config.homeSI.mapZoomOverride;
+		map.bounds      = leafletBoundsHelpers.createBoundsFromArray( [ [ -12.0735, -77.0336 ], [ -12.0829, -77.0467 ] ] );
 		// map.center      = {};
 		angular.extend( $scope.homeSI.leaflet, map );
 
 		geolocateAndBuildMap();
-		console.log("after geolocate And Build map")
 		// buildMap();
 		buildCampaigns();
 		buildCampaignsFollowed();
@@ -548,17 +560,7 @@ angular.module( 'dateaWebApp' )
 		buildWeeklyDateo();
 		buildTrendingTags();
 		buildFollowingTags();
-
-		$scope.$watch('query.orderBy', function() {
-			//alert($scope.query.orderBy);
-			$scope.homeSI.onFilterChange();
-		});
-
-		$scope.$watch('query.followFilter', function() {
-			//alert($scope.query.orderBy);
-			$scope.homeSI.onFilterChange();
-		});
-		console.log("After All");
+		console.log("HOME SI", $scope.homeSI);
 	}
 
 	onSignUp = function () {
@@ -630,7 +632,6 @@ angular.module( 'dateaWebApp' )
 	}
 
 	$scope.homeSI.geolocate = function () {
-		console.log("GEOLOCATE");
 		$scope.homeSI.loading.leaflet = true;
 		resetMarkers();
 		$scope.query.orderBy = '-created';
@@ -800,9 +801,28 @@ angular.module( 'dateaWebApp' )
 	}
 
 	$scope.homeSI.onFilterChange = function () {
+		var dateosGivens = {}
+		  , bounds
+		  ;
+
+		// bounds = leafletBoundsHelpers.createBoundsFromArray( createBoundsFromCoords(
+		// { lat: $scope.homeSI.leaflet.center.lat
+		// , lng: $scope.homeSI.leaflet.center.lng }
+		// ) );
+
+		bounds = leafletBoundsHelpers.createBoundsFromArray( createBoundsFromCoords(
+		{ lat: sessionCenter && sessionCenter.coords && sessionCenter.coords.latitude
+		, lng: sessionCenter && sessionCenter.coords && sessionCenter.coords.longitude }
+		) );
+
+		dateosGivens.bottom_left_latitude  = bounds.southWest.lat;
+		dateosGivens.bottom_left_longitude = bounds.southWest.lng;
+		dateosGivens.top_right_latitude    = bounds.northEast.lat;
+		dateosGivens.top_right_longitude   = bounds.northEast.lng;
 		$scope.homeSI.loading.leaflet = true;
 		resetMarkers();
-		buildMarkers();
+		// buildMarkers( dateosGivens );
+		buildMap( dateosGivens );
 	}
 
 	$scope.flow.goToDetail = function ( tag ) {
@@ -1050,7 +1070,7 @@ angular.module( 'dateaWebApp' )
 	});
 
 	$rootScope.$on( 'user:signedIn', function () {
-		if (User.data.status === 1) onSignIn();
+		onSignIn();
 	} );
 
 	$rootScope.$on( 'user:signedOut', function () {
@@ -1063,14 +1083,9 @@ angular.module( 'dateaWebApp' )
 
 	$rootScope.$on( 'user:updated', function () {
 		$scope.user = User.data;
-		//if (userStatusOnInit === 0 && User.data.status === 1) {
-		//	onSignIn();
-		//}
 	} );
 
-	userStatusOnInit = User.data.status;
-
-	if( User.isSignedIn() && User.data.status === 1) {
+	if( User.isSignedIn() ) {
 		onSignIn();
 	}
 

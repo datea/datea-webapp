@@ -7,7 +7,7 @@ angular
 	            , url  : 'http://localhost:9000/#/'
 	            }
 	, api     : { url    : 'http://173.255.200.68/api/v2/'
-	            , imgUrl : 'http://173.255.200.68' 
+	            , imgUrl : 'http://173.255.200.68/' 
 	          	} 
 	, marker  : ['<div class="marker-holder">'
 	              ,'<img class="img-circle" src="{{user.markerImage}}" alt="user image">'
@@ -35,6 +35,7 @@ angular
 	            }
 	, defaultMap : { bounds   : [ [ -12.0735, -77.0336 ], [ -12.0829, -77.0467 ] ]
 	               , center   : { lat: -12.05, lng: -77.06, zoom: 13 }
+	               // , center   : { zoom: 13 }
 	               , defaults : { scrollWheelZoom: false }
 	               , markers  : {}
 	               , tiles    : { url     : 'http://{s}.mqcdn.com/tiles/1.0.0/osm/{z}/{x}/{y}.png'
@@ -43,8 +44,7 @@ angular
 																					}
 	               							}
 	               }
-	, defaultDateFormat : "d 'de' MMMM yyyy - H:mm"
-	, shortDateFormat : "d/MM/yyyy - H:mm" 
+	, defaultDateFormat : "d 'de' MMMM yyyy - H:mm" 
 	, defaultBoundsRatio : +0.0075
 	, defaultImgProfile : 'static/images/globals/user-default.png'
 	, defaultImgBackground : 'static/images/globals/bg-gris.png'
@@ -83,31 +83,76 @@ angular
 	                }
 	, campaign : { mapZoomFocus : 15 }
 	, dashboard : { defaultZoom : 14
-	              , validationMsgs : { mainTagExists : 'La etiqueta ya está siendo usada en otra iniciativa. Al menos que quieras compartirla, usa otra.' } }
+	              , validationMsgs : { mainTagExists : 'La etiqueta ya está siendo usada, por favor usar otra.' } }
 	, signupForm : { validationMsgs : { usernameExists : 'El nombre de usuario ya ha sido usado.'
 	                                  , http400        : 'El nombre de usuario o correo ya está siendo usado.'} }
-	, accountMsgs : {
-			  userBannedMsg         : 'Tu usuario ha sido blockeado. Si piensas que esto es injusto, por favor comunicate con nosotros a traves de nuestro <a href="http://ayuda.datea.pe/contacto">formulario de contacto</a>.'
-			, userWelcomeReadyMsg   : 'Tu cuenta ha sido activada y ya estás listo(a) para datear. Si quieres, antes puedes hacer ajustes a la configuración de tu usuario acá abajo.'
-			, userWelcomeConfirmMsg : 'Ya casi eres datero(a)! Falta que nos confirmes tu dirección de correo (Twitter no nos provee ese dato). Una vez confirmada tu cuenta estarás listo(a) para datear.'
-			, duplicateEmailMsg     : 'La dirección de correo ya existe. Por favor utiliza otra, o si no recuerdas tu usuario, puedes salir y recuperar tu clave. Si ingresaste con otro servico (Facebook), por favor vuelve a ingresar con ese servicio.'
-			, duplicateUsernameMsg  : 'El nombre de usuario ya existe. Por favor, elige otro.'
-			, checkEmailMsg         : '¡Gracias! Ahora revisa tu correo y sigue las instrucciones para activar tu cuenta. Si deseas, puedes cerrar esta ventana.'
-			, userConfirmEmailMsg   : 'Antes de poder datear, necesitamos verificar tu dirección de correo. Ingrésala aquí abajo. ¡Gracias!'
-			, userConfirmMissingMsg : 'Falta que nos confirmes tu correo para activar tu cuenta. Por favor, chequea tu correo y sigue las instrucciones que te enviamos. Si deseas recibir otro correo de activación, vuelve a cliquear en "Enviar". ¡Gracias!'
-			, userConfirmSuccessMsg : 'Tu cuenta ha sido plenamente activada y estas listo(a) para datear. Si deseas, puedes antes hacer ajustes a tu cuenta acá abajo.'
-			, registerActivationCompleteMsg : 'Tu cuenta ha sido activada. Ahora puedes ingresar con tu usuario y contraseña.'
-			, PasswdResetEmailMsg   : 'Por favor revisa tu correo y sigue las instrucciones para recuperar tu contraseña.'
-			, PasswdResetNotFoundMsg: 'No existen dateros con esa dirección ;)'  
-	}
-	, unknownErrorMsg : 'Hubo un error. Por favor revisa tus datos e intenta de nuevo. Si no funciona, <a href="http://ayuda.datea.pe/contacto">contáctanos</a>.'
 	, regex : { email: /^([a-zA-Z0-9_\.\-])+\@(([a-zA-Z0-9\-])+\.)+([a-zA-Z0-9]{2,4})+$/
 	          , text : /^([a-záéíóúñÑÁÉÍÓÚA-Z \-])+$/}
 
-	, layout_100: [] 
+	, layout_100: ['tag'] 
 	, visualization: { default_other_color: '#CCCCCC'
 									 , default_color: '#28BC45'
-		}        
+		}
+	, geoJSONStyle: {
+									style: function (feature) {
+										// TRANSLATE MAPBOX SIMPLE STYLE
+										var prop = feature.properties;
+										if (prop.stroke && prop.stroke.charAt(0) === '#') {
+											prop.color = prop.stroke;
+											prop.stroke = true;
+										}
+										if (prop['stroke-opacity']) prop.opacity = prop['stroke-opacity'];
+										if (prop['stroke-width']) prop.weight = prop['stroke-width'];
+										if (prop.fill) prop.fillColor = prop.fill;
+										if (prop['fill-opacity']) prop.fillOpacity = prop['fill-opacity'];
+										return prop;
+									}
+									, pointToLayer: function(feature, latlon) {
+										var marker, label;
+										if (feature.properties['marker-size'] && feature.properties['marker-color']) {
+	                    var sizes = {
+	                        small  : [20, 50]
+	                      , medium : [30, 70]
+	                      , large  : [35, 90]
+	                    };
+	                    var fp     = feature.properties || {};
+	                    var size   = fp['marker-size'] || 'medium';
+	                    var symbol = (fp['marker-symbol']) ? '-' + fp['marker-symbol'] : '';
+	                    var color  = fp['marker-color'] || '7e7e7e';
+	                    color      = color.replace('#', '');
+	 
+	                    var url = 'http://a.tiles.mapbox.com/v3/marker/' +
+	                          'pin-' +
+	                          // Internet Explorer does not support the `size[0]` syntax.
+	                          size.charAt(0) + symbol + '+' + color +
+	                          ((window.devicePixelRatio === 2) ? '@2x' : '') +
+	                          '.png';
+	 
+	                    marker = new L.Marker(latlon, {
+	                        icon: new L.icon({
+	                              iconUrl: url
+	                            , iconSize: sizes[size]
+	                            , iconAnchor: [sizes[size][0] / 2, sizes[size][1] / 2]
+	                            , popupAnchor: [sizes[size][0] / 2, 0]
+	                        })
+	                    });
+	                	}else{
+	                		marker = L.Marker(latlon);
+	                	}
+	                	if (feature.properties.title || feature.properties.name) {
+	                		label = feature.properties.title || feature.properties.name;
+	                		marker.bindLabel(label);
+	                	}
+	                	return marker;
+                }
+                , onEachFeature: function (feature, layer) {
+                	var content;
+                	if (feature.properties.description || feature.properties.popupContent) {
+                		content = feature.properties.description || feature.properties.popupContent;
+                		layer.bindPopup(content);
+                	}
+                }
+    }        
 	}
 );
 
