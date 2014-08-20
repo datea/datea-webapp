@@ -100,6 +100,9 @@ angular.module('dateaWebApp')
 	account.password.rsrc = $resource( config.api.url + 'account/reset-password/', {},
 	{ 'save': { method : 'POST' } }
 	);
+	account.passwordChange.rsrc = $resource( config.api.url + 'account/reset-password-confirm/', {},
+	{ 'save': { method : 'POST' } }
+	);
 	account.usernameExists.rsrc = $resource( config.api.url + 'account/username-exists', {},
 	{ 'query': { method : 'GET'} }
 	)
@@ -272,6 +275,17 @@ angular.module('dateaWebApp')
 	account.resetPassword = function ( givens ) {
 		var dfd = $q.defer();
 		account.password.rsrc.save( givens, function ( response ) {
+			dfd.resolve( response );
+		}, function ( error ) {
+			dfd.reject( error )
+		} );
+		return dfd.promise;
+	}
+
+	// Change Password
+	account.changePassword = function (givens) {
+		var dfd = $q.defer();
+		account.passwordChange.rsrc.save( givens, function ( response ) {
 			dfd.resolve( response );
 		}, function ( error ) {
 			dfd.reject( error )

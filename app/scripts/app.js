@@ -61,6 +61,10 @@ angular.module( 'dateaWebApp'
 	  , { templateUrl: 'views/signIn.html'
 	    , controller : 'SigninCtrl'
 	    } )
+	.when( '/change-password/:uid/:token'
+		, { templateUrl: 'views/change-password.html'
+		  , controller : 'ChangePasswordCtrl'
+		} )
 	.when( '/updateUser'
 	  , { templateUrl: 'views/updateUser.html'
 	    , controller: 'UpdateuserCtrl'
