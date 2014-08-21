@@ -4240,6 +4240,9 @@ ul.input-list {
 		top: 0px;
 		//margin-right: 3px;
 		display: block;
+		&.disabled-icon {
+			display: none;
+		}
 	}
 
 	&.hover-enabled {
@@ -4251,9 +4254,16 @@ ul.input-list {
 		}
 
 		&.disabled:hover {
-			cursor: not-allowed;
+			//cursor: not-allowed;
 			background-color: white;
-			.datea-glyph{		
+			.disabled-icon {
+				position: absolute;
+				top: 0;
+				left: 0;
+				display: block;
+				z-index: 3;
+			}
+			.datea-glyph, .fa{		
 				background-color: @color-3;
 			}
 		}

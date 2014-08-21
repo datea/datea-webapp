@@ -16,9 +16,8 @@ angular.module("dateaWebApp")
 		, replace		  : true
 		, scope: {
 			   btnClass  		   : '@'
-		   , dateoId  		   : '='
+		   , dateo  		     : '='
 		   , redateoCallback : '=?'
-		   , redateoCount    : '='
 		}
 		, controller : function ($scope, $element, $attrs) {
 
@@ -33,16 +32,23 @@ angular.module("dateaWebApp")
 			$scope.flow.disabled     = true;
 			$scope.flow.hoverEnabled = false;
 
-			$scope.$watch('dateoId', function () {
-				checkHasRedateado();
+			$scope.$watch('dateo', function () {
+				console.log("CHECK HAS REDATEADO");
+				if (User.data.id === $scope.dateo.user.id) {
+					$scope.flow.hoverEnabled = true;
+					$scope.flow.disabled = true;
+				}else{
+					checkHasRedateado();
+				}
 			});
 
 			checkHasRedateado = function () {
-				if (User.isSignedIn() && $scope.dateoId) {
+				if (User.isSignedIn() && $scope.dateo && $scope.dateo.id) {
 					Api.redateo
-					.getList( { user : User.data.id, dateo : $scope.dateoId } )
+					.getList( { user : User.data.id, dateo : $scope.dateo.id } )
 					.then( function ( response ) {
-						$scope.flow.disabled = false;
+						$scope.flow.disabled =  true;
+						console.log("REDATEO DISABLED", $scope.flow.disabled);
 						$scope.flow.isActive = response.meta.total_count ? true : false;
 						$scope.flow.hoverEnabled = true;
 						if (response.objects.length) $scope.flow.redateo = response.objects[0];
@@ -69,10 +75,10 @@ angular.module("dateaWebApp")
 					// POST
 					if (!$scope.flow.isActive) {
 						Api.redateo
-						.post( { user : User.data.id, dateo : $scope.dateoId } )
+						.post( { user : User.data.id, dateo : $scope.dateo.id } )
 						.then( function ( response ) {
 							console.log( 'doRedateo', response );
-							$scope.redateoCount++;
+							$scope.dateo.redateo_count++;
 							if (typeof($scope.redateoCallback) != 'undefined') $scope.redateoCallback(response, 'post');
 							$scope.flow.loading  = false;
 							$scope.flow.isActive = true;
@@ -89,7 +95,7 @@ angular.module("dateaWebApp")
 						.deleteList( { user : User.data.id, dateo : $scope.dateoId, id: $scope.flow.redateo.id } )
 						.then( function ( response ) {
 							console.log( 'deleteRedateo', response );
-							$scope.redateoCount--;
+							$scope.dateo.redateo_count--;
 							if (typeof($scope.redateoCallback) != 'undefined') $scope.redateoCallback(response, 'delete');
 							$scope.flow.loading  = false;
 							$scope.flow.isActive = false;
