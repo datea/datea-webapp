@@ -55,9 +55,18 @@ angular.module('dateaWebApp')
 	}
 
 	$scope.auth.checkEmail = function () {
+		var isValid;
 		console.log('checkEmail', 'blur', $scope.auth.email );
-		$scope.flow.validInput.email = config.regex.email.test( $scope.auth.email );
-		$scope.auth.message = null;
+		isValid = config.regex.email.test( $scope.auth.email );
+		//$scope.auth.message = null;
+		if (isValid) {
+			Api.account.register.emailExists({email: $scope.auth.email})
+			.then (function (response) {
+				$scope.flow.validInput.email = !response.result;
+				$scope.auth.messages.emailExists = !$scope.flow.validInput.email ? config.signupForm.validationMsgs.emailExists : null;
+				$scope.form.$setValidity( 'emailExists', $scope.flow.validInput.email );
+			})
+		}
 	}
 
 	$scope.auth.checkPassword = function () {

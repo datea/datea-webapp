@@ -85,6 +85,7 @@ angular
 	, dashboard : { defaultZoom : 14
 	              , validationMsgs : { mainTagExists : 'La etiqueta ya está siendo usada en otra iniciativa. Al menos que quieras compartirla, usa otra.' } }
 	, signupForm : { validationMsgs : { usernameExists : 'El nombre de usuario ya ha sido usado.'
+																		, emailExists    : 'La dirección ya está siendo utilizada. ¡Recupera tu contraseña!'
 	                                  , http400        : 'El nombre de usuario o correo ya está siendo usado.'} }
 	, accountMsgs : {
 			  userBannedMsg         : 'Tu usuario ha sido blockeado. Si piensas que esto es injusto, por favor comunicate con nosotros a traves de nuestro <a href="http://ayuda.datea.pe/contacto">formulario de contacto</a>.'

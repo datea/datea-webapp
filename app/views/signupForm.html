@@ -19,6 +19,7 @@
 									<label class="control-label" for="email">Correo electrónico</label>
 									<input type="email" class="form-control" id="email" required ng-model="auth.email" ng-change="auth.checkEmail()">
 									<span class="glyphicon form-control-feedback" ng-class="{null: '',true: 'glyphicon-ok',false: 'glyphicon-remove'}[flow.validInput.email]"></span>
+									<p class="help-block" ng-show="auth.messages.emailExists">{{ auth.messages.emailExists }}</p>
 								</div>
 								<div class="form-group" ng-class="{null: '',true: 'has-success has-feedback',false: 'has-error has-feedback'}[flow.validInput.password]">
 									<label class="control-label" for="password">Contraseña</label>
@@ -38,7 +39,6 @@
 								</div> -->
 								<input type="submit" class="btn datea-datear-btn datea-btn-nopad btn-lg" value="regístrate">
 								<button type="submit" class="btn datea-datear-btn datea-btn-nopad btn-lg" disabled>regístrate</button>
-								<span ng-bind="auth.message"></span>
 							</form>
 						</div>
 					</div>

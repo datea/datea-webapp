@@ -3,7 +3,7 @@
 		<div class="col-xs-12 col-sm-10 col-md-8 col-sm-offset-1 col-md-offset-2">
 
 			<div class="loading-status-check datea-loading" ng-show="flow.statusBeingChecked"></div>
-			<div class="show-all" ng-show="!flow.statusBeingChecked">
+			<div class="wrapper" ng-show="!flow.statusBeingChecked">
 				<div class="usr-msg hey" ng-show="flow.userIsNew && flow.userStatus === 1">
 					<div class="msg">
 						<h3>Bienvenido a Datea!</h3>
@@ -44,11 +44,11 @@
 				</div>
 
 				<div class="account-form-holder">
-					<h2 ng-hide="flow.userIsNew || flow.userStatus === 0 || flow.statusChanged">Configuración de cuenta</h2>
+					<h2 ng-hide="flow.userIsNew || flow.userStatus === 0 || flow.statusChanged">Configuración</h2>
 					<alert ng-repeat="alert in alerts" type="alert.type" close="closeAlert($index)">{{alert.msg}}</alert>
 					<form role="form" name="form" ng-submit="account.save()" class="form">
 						<tabset>
-							<tab heading="Cuenta de Usuario">
+							<tab heading="Cuenta de Usuario" active="flow.activeTab.user" select="flow.openTab('user')">
 								<div class="tab-body" ng-class="{'datea-loading': loading}">
 									<div class="row">
 								 		<div class="col-xs-12 col-md-9 col-lg-7">
@@ -64,29 +64,36 @@
 											<div class="actions">
 												<input type="submit" class="btn btn-success btn-lg" value="{{flow.submitLabel}}">
 												<button type="submit" class="btn btn-default btn-lg" disabled>{{flow.submitLabel}}</button>
-												<span ng-bind="auth.message"></span>
 											</div>
 										</div>
 									</div>
 								</div>
 							</tab>
-							<tab heading="Personalizar Perfil" ng-hide="flow.userStatus !== 1">
+							<tab heading="Personalizar Perfil" ng-hide="flow.userStatus !== 1" active="flow.activeTab.profile" select="flow.openTab('profile')">
 								<div class="tab-body" ng-class="{'datea-loading': loading}">
 									<div class="form-group">
 										<label for="fullname">Nombre completo</label>
 										<input type="text" class="form-control" id="fullname" ng-model="account.full_name">
 									</div>
-									<div class="form-group">
-										<div class="user-img" style="height:40px;width:40px;" ng-show="account.image" ng-hide="flow.img" bg-from-api="{{account.image}}"></div>
+									<div class="form-group img-field">
 										<label for="image">Sube tu imagen</label>
+										<div class="user-img-wrap" ng-show="account.image_large" ng-hide="flow.img">
+											<img class="user-img" ng-src="{{account.image_large | imgFromApi}}">
+										</div>
+										<div class="uploaded-img-wrap" ng-show="flow.img" >
+											<img class="user-img" alt="{{flow.imgData.name}}" ng-src="{{flow.img}}">
+										</div>
 										<input type="file" fileread="flow.img" filedata="flow.imgData" accept="image/*">
-										<img class="uploaded-img" ng-show="flow.img" ng-src="{{flow.img}}" alt="{{flow.imgData.name}}" width="200px">
 									</div>
-									<div class="form-group">
-										<div class="user-img" style="height:40px;width:40px;" ng-show="account.bg_image" ng-hide="flow.bgImg" bg-from-api="{{account.bg_image}}"></div>
+									<div class="form-group img-field">
 										<label for="image">Sube tu imagen de fondo de perfil</label>
+										<div class="user-bgimg-wrap" ng-hide="flow.bgImg || !account.bg_image">
+											<img class="bgimg" ng-src="{{account.bg_image | imgFromApi}}">
+										</div>
+										<div class="uploaded-bgimg-wrap" ng-show="flow.bgImg">
+											<img class="bgimg" alt="{{flow.bgImgData.name}}" ng-src="{{flow.bgImg}}">
+										</div>
 										<input type="file" fileread="flow.bgImg" filedata="flow.bgImgData" accept="image/*">
-										<img class="uploaded-img" ng-show="flow.bgImg" ng-src="{{flow.bgImg}}" alt="{{flow.bgImgData.name}}" width="200px">
 									</div>
 									<div class="form-group">
 										<label for="message">Mensaje personal/ Slogan</label>
@@ -113,9 +120,52 @@
 									<div class="actions">
 										<input type="submit" class="btn btn-success btn-lg" value="{{flow.submitLabel}}">
 										<button type="submit" class="btn btn-default btn-lg" disabled>{{flow.submitLabel}}</button>
-										<span ng-bind="auth.message"></span>
 									</div>
 
+								</div>
+							</tab>
+							<tab heading="Notificaciones" ng-hide="flow.userStatus !== 1" active="flow.activeTab.notifications" select="flow.openTab('notifications')">
+								<div class="tab-body" ng-class="{'datea-loading': loading}">
+									<p><strong>Recibir notificaciones en mi correo cuando hay:</strong></p>
+									<div class="form-group">
+										<div class="checkbox">
+											<label>
+												<input type="checkbox" ng-model="account.notify_settings.interaction" /> Nuevas interacciones que involucran mi contenido.
+											</label>
+										</div>
+									</div>
+									<div class="form-group">
+										<div class="checkbox">
+											<label>
+												<input type="checkbox" ng-model="account.notify_settings.conversations" /> Nuevos comentarios en conversaciones que participo.
+											</label>
+										</div>
+									</div>
+									<div class="form-group">
+										<div class="checkbox">
+											<label>
+												<input type="checkbox" ng-model="account.notify_settings.tags_dateos" /> Nuevos dateos en etiquetas que sigo.
+											</label>
+										</div>
+									</div>
+									<div class="form-group">
+										<div class="checkbox">
+											<label>
+												<input type="checkbox" ng-model="account.notify_settings.tags_reports" /> Nuevos mensajes de iniciativas en etiquetas que sigo.
+											</label>
+										</div>
+									</div>
+									<div class="form-group">
+										<div class="checkbox">
+											<label>
+												<input type="checkbox" ng-model="account.notify_settings.site_news" /> Noticias dateras del equipo de Datea.
+											</label>
+										</div>
+									</div>
+									<div class="actions">
+										<input type="submit" class="btn btn-success btn-lg" value="{{flow.submitLabel}}">
+										<button type="submit" class="btn btn-default btn-lg" disabled>{{flow.submitLabel}}</button>
+									</div>
 								</div>
 							</tab>
 						</tabset>

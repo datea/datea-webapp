@@ -23,6 +23,7 @@ angular.module('dateaWebApp')
 	  // fn declarations
 	  , updateUserDataFromApi
 	  , buildUserMsgs
+	  , activateTab
 	  ;
 
 	//User.isSignedIn() || $location.path( '/' );
@@ -33,6 +34,20 @@ angular.module('dateaWebApp')
 	$scope.flow.loading  = false; 
 	$scope.accountMsgs   = config.accountMsgs;
 	$scope.flow.statusBeingChecked  = !User.data.status;
+	$scope.flow.activeTab = $location.search().tab || 'user';
+
+	$scope.flow.openTab = function (tab) {
+		$location.search({tab: tab});
+	}
+	$scope.$on('$routeUpdate', function () {
+		activateTab($location.search().tab);
+	});
+	activateTab = function (tab) {
+		tab = tab ? tab : 'user';
+		$scope.flow.activeTab = {'user': false, 'profile': false, 'notifications': false};
+		$scope.flow.activeTab[tab] = true;
+	}
+	activateTab($location.search().tab);
 
 	buildUserMsgs = function (status, statusChanged) {
 		$scope.flow.userIsNew     = User.isNew;
@@ -67,17 +82,18 @@ angular.module('dateaWebApp')
 		var data = {}
 		  , v
 		  ;
-		data.username     = $scope.account.username;
-		data.email        = $scope.account.email;
-		data.full_name    = $scope.account.full_name;
-		data.image        = $scope.flow.imgData && { image: { data_uri : $scope.flow.img, name : $scope.flow.imgData && $scope.flow.imgData.name } };
-		data.bg_image     = $scope.flow.bgImgData && { image: { data_uri : $scope.flow.bgImg, name : $scope.flow.bgImgData && $scope.flow.bgImgData.name } };
-		data.message      = $scope.account.message;
-		data.url          = $scope.account.url;
-		data.url_facebook = $scope.account.url_facebook;
-		data.url_twitter  = $scope.account.url_twitter;
-		data.url_youtube  = $scope.account.url_youtube;
-		data.id           = User.data.id;
+		data.username        = $scope.account.username;
+		data.email           = $scope.account.email;
+		data.full_name       = $scope.account.full_name;
+		data.image           = $scope.flow.imgData && { image: { data_uri : $scope.flow.img, name : $scope.flow.imgData && $scope.flow.imgData.name } };
+		data.bg_image        = $scope.flow.bgImgData && { image: { data_uri : $scope.flow.bgImg, name : $scope.flow.bgImgData && $scope.flow.bgImgData.name } };
+		data.message         = $scope.account.message;
+		data.url             = $scope.account.url;
+		data.url_facebook    = $scope.account.url_facebook;
+		data.url_twitter     = $scope.account.url_twitter;
+		data.url_youtube     = $scope.account.url_youtube;
+		data.notify_settings = $scope.account.notify_settings;
+		data.id              = User.data.id;
 
 		for ( v in data ) {
 			if ( data.hasOwnProperty( v ) && !data[v] ) {
@@ -96,7 +112,7 @@ angular.module('dateaWebApp')
 						$modal.open( { templateUrl : 'views/verifyEmailModal.html'
 						             , backdrop    : 'static'
 						             } );
-						$scope.addAlert({type: 'success', msg: config.accountMsgs.checkEmailMsg});
+						//$scope.addAlert({type: 'success', msg: config.accountMsgs.checkEmailMsg});
 					}
 				// update user object with response and no use updateUserDataFromApi
 				// User.updateUserDataFromApi();
@@ -113,7 +129,7 @@ angular.module('dateaWebApp')
 				console.log("CONFIG SAVE ERROR", reason);
 				if (reason.status === 400) {
 					if (reason.data && reason.data.error && reason.data.error.length) {
-						error = reason.data.error[0];
+						error = reason.data.error;
 						if (error === 'Duplicate email') {
 							$scope.addAlert({type: 'warning', 'msg': config.accountMsgs.duplicateEmailMsg});
 						}

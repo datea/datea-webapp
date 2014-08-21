@@ -46,6 +46,7 @@ angular.module('dateaWebApp')
 	account.password        = {};
 	account.passwordChange  = {};
 	account.usernameExists  = {};
+	account.emailExists     = {};
 
 	tag.autocomplete = {};
 	tag.trending     = {};
@@ -105,6 +106,9 @@ angular.module('dateaWebApp')
 	{ 'save': { method : 'POST' } }
 	);
 	account.usernameExists.rsrc = $resource( config.api.url + 'account/username-exists', {},
+	{ 'query': { method : 'GET'} }
+	)
+	account.emailExists.rsrc = $resource( config.api.url + 'account/email-exists', {},
 	{ 'query': { method : 'GET'} }
 	)
 	user.rsrc = $resource( config.api.url + 'user/:id', {},
@@ -254,6 +258,16 @@ angular.module('dateaWebApp')
 	account.register.usernameExists = function ( givens ) {
 		var dfd = $q.defer();
 		account.usernameExists.rsrc.query( givens, function ( response ) {
+			dfd.resolve( response );
+		}, function ( error ) {
+			dfd.reject( error );
+		} );
+		return dfd.promise;
+	}
+
+	account.register.emailExists = function ( givens ) {
+		var dfd = $q.defer();
+		account.emailExists.rsrc.query( givens, function ( response ) {
 			dfd.resolve( response );
 		}, function ( error ) {
 			dfd.reject( error );

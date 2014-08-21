@@ -72,6 +72,7 @@ angular.module( 'dateaWebApp'
 	.when( '/configuracion'
 	  , { templateUrl: 'views/account.html'
 	    , controller: 'AccountCtrl'
+	    , reloadOnSearch: false
 	    } )
 	.when( '/panel'
 	  , { templateUrl: 'views/campaign-dashboard.html'
