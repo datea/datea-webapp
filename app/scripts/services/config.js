@@ -34,7 +34,7 @@ angular
 	            , tagsMax       : 7
 	            }
 	, defaultMap : { bounds   : [ [ -12.0735, -77.0336 ], [ -12.0829, -77.0467 ] ]
-	               , center   : { lat: -12.05, lng: -77.06, zoom: 13 }
+	               , center   : { lat: -12.05, lng: -77.06, zoom: 14 }
 	               , defaults : { scrollWheelZoom: false }
 	               , markers  : {}
 	               , tiles    : { url     : 'http://{s}.mqcdn.com/tiles/1.0.0/osm/{z}/{x}/{y}.png'
