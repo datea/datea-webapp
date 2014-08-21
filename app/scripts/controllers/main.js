@@ -276,7 +276,7 @@ angular.module( 'dateaWebApp' )
 		var dateosGivens = givens && givens.dateosGivens || {}
 		  , center       = {}
 		  , bounds
-		  , map
+		  , map = {}
 		  , zoomTimer
 		  ;
 
@@ -285,8 +285,12 @@ angular.module( 'dateaWebApp' )
  		, lng: givens && givens.center && givens.center.coords.longitude || User.data.ip_location.longitude || config.defaultMap.center.lng }
  		) );
 
-		center.lat = givens && givens.center && givens.center.coords.latitude || User.data.ip_location.latitude;
-		center.lng = givens && givens.center && givens.center.coords.longitude || User.data.ip_location.longitude;
+		if ( !$scope.query.search ) {
+			map.bounds = bounds;
+		}
+
+		// center.lat = givens && givens.center && givens.center.coords.latitude || User.data.ip_location.latitude;
+		// center.lng = givens && givens.center && givens.center.coords.longitude || User.data.ip_location.longitude;
 
 		// map        = angular.copy( config.defaultMap );
 
@@ -295,7 +299,7 @@ angular.module( 'dateaWebApp' )
 		// 	map.center.lng = center.lng
 		// }
 
-		if ( !Object.keys( dateosGivens ).length ) {
+		// if ( !Object.keys( dateosGivens ).length ) {
 			// dateosGivens.latitude  = center.lat || config.defaultMap.center.lat;
 			// dateosGivens.longitude = center.lng || config.defaultMap.center.lng;
 			// dateosGivens.distance  = 2000;
@@ -306,9 +310,9 @@ angular.module( 'dateaWebApp' )
 			dontCheckCenterOutOfBounds = false;
 			// Only make a request if new the center is outside the map boundaries
 			zoomTimer = 0;
-			if( $scope.homeSI.leaflet.center.zoom > 14 ) {
+			if( $scope.homeSI.leaflet.center.zoom > 15 ) {
 				zoomTimer = 1500;
-				$scope.homeSI.leaflet.center.zoom = 14;
+				$scope.homeSI.leaflet.center.zoom = 15;
 				// lfmap.setZoom( 14, { animate: false } );
 			}
 			$timeout( function () {
@@ -327,13 +331,12 @@ angular.module( 'dateaWebApp' )
 						angular.extend( $scope.homeSI.leaflet, map );
 					} );
 			}, zoomTimer);
-	
-		} else {
-			dontCheckCenterOutOfBounds = true;
-			dateosGivens.updateCenter  = true;
-			buildMarkers( dateosGivens );
-			angular.extend( $scope.homeSI.leaflet, map );
-		}
+		// } else {
+		// 	dontCheckCenterOutOfBounds = true;
+		// 	dateosGivens.updateCenter  = true;
+		// 	buildMarkers( dateosGivens );
+		// 	angular.extend( $scope.homeSI.leaflet, map );
+		// }
 		// angular.extend( $scope.homeSI.leaflet, map );
 		// buildMarkers( dateosGivens );
 	}
@@ -399,12 +402,12 @@ angular.module( 'dateaWebApp' )
 
 		if ( $scope.query.orderBy !== '-created' ) {
 			givens.order_by            = $scope.query.orderBy;
-			dontCheckCenterOutOfBounds = true;
+			dontCheckCenterOutOfBounds = false;
 			givens.updateCenter        = true;
 		}
 		if ( $scope.query.search && $scope.query.search != '') {
 			givens.q                   = $scope.query.search;
-			dontCheckCenterOutOfBounds = true;
+			dontCheckCenterOutOfBounds = false;
 			givens.updateCenter        = true;
 		}
 
