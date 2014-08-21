@@ -132,8 +132,10 @@ angular.module('dateaWebApp')
 	);
 	campaign.rsrc = $resource( config.api.url + 'campaign/', {},
 	{ 'query': { method : 'GET' }
-	, 'post' : { method  : 'POST'
+	, 'post' : { method : 'POST'
 	           , headers : headers || ls.get('token') }
+	, 'patch': { method : 'PATCH'
+						 , headers : headers || ls.get('token') }
 	} );
 	activityLog.rsrc = $resource( config.api.url + 'activity_log/', {},
 	{ 'query': { method : 'GET' } }
@@ -486,6 +488,16 @@ angular.module('dateaWebApp')
 	campaign.postCampaign = function ( givens ) {
 		var dfd = $q.defer();
 		campaign.rsrc.post( givens, function ( response ) {
+			dfd.resolve( response );
+		}, function ( error ) {
+			dfd.reject( error );
+		} );
+		return dfd.promise;
+	}
+
+	campaign.patchCampaign = function ( givens ) {
+		var dfd = $q.defer();
+		campaign.rsrc.patch( givens, function ( response ) {
 			dfd.resolve( response );
 		}, function ( error ) {
 			dfd.reject( error );

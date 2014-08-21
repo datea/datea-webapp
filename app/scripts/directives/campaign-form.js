@@ -22,6 +22,7 @@ angular.module("dateaWebApp")
 
 	    		var mode
 	    		  , campaignGivens
+	    		  , mainTagInApi
 					// boundary map options fix
 					  , drawnItems  = new L.FeatureGroup()
 					  , options     = { edit: { featureGroup: drawnItems }
@@ -107,6 +108,8 @@ angular.module("dateaWebApp")
 									$location.path('/');
 									return;
 								}
+
+								mainTagInApi = $scope.campaign.main_tag.tag;
 
 								$scope.flow.selectedCategory = $scope.campaign.category.id;
 								$scope.flow.leaflet.center = {
@@ -356,17 +359,35 @@ angular.module("dateaWebApp")
 						$scope.campaign.center = { coordinates : [ center.lng, center.lat ]
 	                        					 , type        : 'Point'
 	                        					 }
+
+	          // clean main tag of other model data if changed
+	          if (mainTagInApi && mainTagInApi !== $scope.campaign.main_tag.tag) {
+	          	$
+	          }
+
 	          if (validateCampaign()) {
 	          	$scope.flow.loading = true;
-							Api.campaign
-							.postCampaign( $scope.campaign )
-							.then( function ( response ) {
-								console.log( 'postCampaign', response);
-								$location.path( '/'+User.data.username+'/'+response.main_tag.tag );
-							}, function ( reason ) {
-								console.log( 'postCampaign reason: ', reason );
-								$scope.flow.loading = false;
-							} );
+	          	if ($scope.campaign.id) {
+	          		Api.campaign
+								.patchCampaign( {objects: [$scope.campaign]} )
+								.then( function ( response ) {
+									console.log( 'patchCampaign', response);
+									$location.path( '/'+User.data.username+'/'+response.objects[0].main_tag.tag );
+								}, function ( reason ) {
+									console.log( 'patchCampaign reason: ', reason );
+									$scope.flow.loading = false;
+								} );
+	          	}else {
+								Api.campaign
+								.postCampaign( $scope.campaign )
+								.then( function ( response ) {
+									console.log( 'postCampaign', response);
+									$location.path( '/'+User.data.username+'/'+response.main_tag.tag );
+								}, function ( reason ) {
+									console.log( 'postCampaign reason: ', reason );
+									$scope.flow.loading = false;
+								} );
+							}
 						}
 					}
 

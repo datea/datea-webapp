@@ -231,13 +231,13 @@ angular.module('dateaWebApp')
 				                               + $scope.campaign.main_tag.tag;
 				$scope.flow.notFound = false;
 				buildSubTags();
+				initQueryOptions();
 				$scope.flow.getDateos();
 				//buildDateos();
 				//buildDateosWithImages();
 				buildFollowersList();
 				buildRelatedCampaigns();
 				buildLayerFiles();
-				initQueryOptions();
 				if (User.isSignedIn() && User.data.id == $scope.campaign.user.id) {
 					$scope.flow.userIsOwner = true;
 				}
@@ -303,6 +303,9 @@ angular.module('dateaWebApp')
 			angular.forEach($scope.campaign.secondary_tags, function (tag) {
 				$scope.query.tagFilterOptions.push({value: tag.tag, label: '#'+tag.tag});
 			} );
+		}
+		if ($scope.campaign.default_filter === 'owner') {
+			$scope.query.owner = true;
 		}
 	}
 

@@ -383,9 +383,9 @@ body {
 
 		.subheading {
 			font-weight: normal;
-			font-size: 18px;
+			font-size: 16px;
 			margin-bottom: 25px;
-			margin-top: 10px;
+			margin-top: 5px;
 		}
 
 		.well {
@@ -2234,6 +2234,20 @@ body {
 		}
 	}
 
+	&.unpublished {
+		&:after {
+			content: 'sin publicar';
+			color: darken(red, 20%);
+			text-align: center;
+			padding: 10px;
+			position: absolute;
+			top: 0;
+			left: 0;
+			right: 0;
+			background-color: white;
+		}
+	}
+
 	h4 {
 		font-size: 18px;
 		line-height: 23px;
@@ -2410,6 +2424,12 @@ body {
 			height: 272px;
 			//background-color: @color-16;
 			background-color: @color-9;
+		}
+
+		.unpublished-msg {
+			background-color: white;
+			padding: 3px 10px;
+			display: inline-block;
 		}
 
 	}
@@ -2685,7 +2705,7 @@ body {
 }
 
 .campaign-form-nav {
-	z-index: 9999;
+	z-index: 1000;
 	background-color: #d5dbd8;
 	font-size: 16px;
 	&.navbar {
@@ -3036,6 +3056,8 @@ ul.input-list {
 					}
 				}
 				.dropdown-menu {
+					//position: relative;
+					top: 110%;
 					z-index: 10003;
 				}
 			}
@@ -3704,6 +3726,30 @@ ul.input-list {
 	}
 
 	&.dateo-teaser{
+		position: relative;
+
+		.teaser-inner {
+			z-index: 2;
+			position:relative;
+		}
+
+		&.unpublished:after {
+			content: '';
+			position: absolute;
+			top: -10px;
+			left: -10px;
+			bottom: 0px;
+			right: -10px;
+			z-index: 0;
+			background-color: #f0f0f0;
+		}
+
+		.unpublished-msg {
+			font-size: 13px;
+			line-height: 30px;
+			margin-right: 10px;
+		}
+
 		.username { 
 			margin-top: 6px;
 			font-size: @font-size-base;
@@ -3986,6 +4032,7 @@ ul.input-list {
 	.content-holder {
 		position: relative;
 
+
 		.esquina {
 			background: url("@{imgUrl}dateo/esquina_dateo.png") no-repeat left top;
 			height: 17px;
@@ -3997,8 +4044,14 @@ ul.input-list {
 
 
 		.inner {
-
+			position:relative;
 			padding-right: 35px;
+		}
+
+		.unpublished-msg {
+			position: absolute;
+			right: 35px;
+			top: -20px;
 		}
 
 		h3 {

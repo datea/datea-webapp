@@ -20,6 +20,7 @@
 				<div class="row">
 				<div class="col-xs-12 col-md-75">
 					<div class="inner dateo dateo-detail">
+						<div class="unpublished-msg" ng-show="!dateo.published">dateo sin publicar</div>
 						<div class="tag-row">
 							<a class="tag" href="#/tag/{{tag.tag}}" ng-repeat="tag in dateo.tags">#{{tag.tag}}</a>
 						</div>

@@ -90,6 +90,10 @@ angular.module('dateaWebApp')
 		               , with_redateos : true
 		               }
 
+		if (User.isSignedIn()  && User.data.id == $scope.targetUser.id) {
+			defaultQuery.published = 'all';
+		}
+
 		Api.dateo
 		.getDateos( defaultQuery )
 		.then( function ( response ) {
@@ -112,6 +116,10 @@ angular.module('dateaWebApp')
 		               , offset : index || 0
 		               , user : $routeParams.username
 		               }
+
+		if (User.isSignedIn() && User.data.id == $scope.targetUser.id) {
+			defaultQuery.published = 'all';
+		}
 
 		Api.campaign
 		.getCampaigns( defaultQuery )

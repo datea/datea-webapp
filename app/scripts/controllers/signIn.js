@@ -28,6 +28,7 @@ angular.module( 'dateaWebApp' )
 	$scope.alerts   = [];
  	$scope.reset    = {};
 	$scope.nav      = {};
+	
 	$scope.flow.activationMsg = config.accountMsgs.registerActivationCompleteMsg;
 
 	$scope.nav.visible = true;
