@@ -48,7 +48,8 @@
 			</div>
 
 			<div class="dateo-actions">
-				<da-vote vote-obj="dateo" vote-id="dateo.id" vote-count="dateo.vote_count"></da-vote>
+				
+				<da-vote vote-obj="dateo" vote-obj-type="dateo"></da-vote>
 
 				<div class="datea-glyph-holder hover-enabled" ng-click="flow.focusCommentForm()">	
 					<span class="glyphicon glyphicon-comment datea-glyph"></span> <span class="datea-glyph-text" ng-show="dateo.comment_count > 0"><p>{{dateo.comments.length}}</p><p><ng-pluralize count="dateo.comments.length" when="{'one':

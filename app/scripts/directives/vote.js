@@ -16,10 +16,9 @@ angular.module("dateaWebApp")
 		, replace		  : true
 		, scope: {
 			   btnClass  		: '@'
-		   , voteObj 			: '@'
-		   , voteId  			: '='
+		   , voteObj 			: '='
+		   , voteObjType  : '@'
 		   , voteCallback : '=?'
-		   , voteCount    : '='
 		}
 		, controller : function ($scope, $element, $attrs) {
 
@@ -34,14 +33,21 @@ angular.module("dateaWebApp")
 			$scope.flow.disabled     = true;
 			$scope.flow.hoverEnabled = false;
 
-			$scope.$watch('voteId', function () {
-				checkHasVoted();
+			$scope.$watch('voteObj.id', function () {
+				if ($scope.voteObj && $scope.voteObj.id) {
+					if (User.data.id === $scope.voteObj.user.id) {
+						$scope.hoverEnabled = true;
+						$scope.disabled = true;
+					}else{
+						checkHasVoted();
+					}
+				}
 			});
 
 			checkHasVoted = function () {
-				if (User.isSignedIn() && $scope.voteId) {
+				if (User.isSignedIn()) {
 					Api.vote
-					.getVotes( { user : User.data.id, vote_key : $scope.voteObj+'.'+$scope.voteId } )
+					.getVotes( { user : User.data.id, vote_key : $scope.voteObjType+'.'+$scope.voteObj.id } )
 					.then( function ( response ) {
 						$scope.flow.disabled = false;
 						$scope.flow.isActive = response.meta.total_count ? true : false;
@@ -63,28 +69,6 @@ angular.module("dateaWebApp")
 					$location.path('/registrate');
 					return;
 				}
-				if ( !$scope.flow.loading && !$scope.flow.disabled && !$scope.flow.isActive) {
-					$scope.flow.loading = true;
-					Api.vote
-					.doVote( { vote_key : $scope.voteObj+'.'+$scope.voteId } )
-					.then( function ( response ) {
-						console.log( 'doVote', response );
-						$scope.voteCount++;
-						if (typeof($scope.voteCallback) != 'undefined') $scope.voteCallback(response);
-						$scope.flow.loading  = false;
-						$scope.flow.isActive = true;
-					}, function ( reason ) {
-						console.log( reason );
-						$scope.flow.loading = false;
-					} );
-				} 
-			}
-
-			$scope.flow.doVote = function () {
-				if (!User.isSignedIn()) {
-					$location.path('/registrate');
-					return;
-				}
 				if ( !$scope.flow.loading && !$scope.flow.disabled) {
 					$scope.flow.loading = true;
 					$scope.flow.hoverEnabled = false;
@@ -92,11 +76,11 @@ angular.module("dateaWebApp")
 					// POST
 					if (!$scope.flow.isActive) {
 						Api.vote
-						.doVote( { vote_key : $scope.voteObj+'.'+$scope.voteId } )
+						.doVote( { vote_key : $scope.voteObjType+'.'+$scope.voteObj.id } )
 						.then( function ( response ) {
 							console.log( 'vote', response );
-							$scope.voteCount++;
-							if (typeof($scope.voteCallback) != 'undefined') $scope.voteCallback(response, 'post');
+							if (typeof($scope.voteObj.vote_count) !== 'undefined') $scope.voteObj.vote_count++;
+							if (typeof($scope.voteCallback) !== 'undefined') $scope.voteCallback(response, 'post');
 							$scope.flow.loading  = false;
 							$scope.flow.isActive = true;
 							$scope.flow.vote = response;
@@ -109,11 +93,11 @@ angular.module("dateaWebApp")
 					// DELETE
 					}else {
 						Api.vote
-						.deleteVote( { vote_key : $scope.voteObj+'.'+$scope.voteId, id: $scope.flow.vote.id } )
+						.deleteVote( { vote_key : $scope.voteObjType+'.'+$scope.voteObj.id, id: $scope.flow.vote.id } )
 						.then( function ( response ) {
 							console.log( 'delete Vote', response );
-							$scope.voteCount--;
-							if (typeof($scope.voteCallback) != 'undefined') $scope.voteCallback(response, 'delete');
+							if (typeof($scope.voteObj.vote_count) !== 'undefined') $scope.voteObj.vote_count--;
+							if (typeof($scope.voteCallback) !== 'undefined') $scope.voteCallback(response, 'delete');
 							$scope.flow.loading  = false;
 							$scope.flow.isActive = false;
 							$scope.flow.vote = null;

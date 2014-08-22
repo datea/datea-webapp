@@ -141,6 +141,7 @@ angular.module('dateaWebApp')
 			angular.extend($scope.targetUser, response);
 			$scope.targetUser.isSameAsUser = $scope.targetUser.username === User.data.username;
 			$scope.flow.notFound = false;
+			$scope.flow.showRedateoAuthor = $scope.targetUser.username; 
 			buildUserDateos();
 			buildUserCampaigns();
 			buildActivityLog();

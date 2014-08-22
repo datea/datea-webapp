@@ -4,7 +4,9 @@
 	<div class="container z2">
 			<div class="user-holder">
 				<div class="part part-1 img-holder">
-					<img ng-show="dateo.user" class="img-circle" ng-src="{{dateo.user.image_small | imgFromApi}}" alt="{{dateo.user.username}}">
+					<a href="#/{{dateo.user.username}}">
+						<img ng-show="dateo.user" class="img-circle" ng-src="{{dateo.user.image_small | imgFromApi}}" alt="{{dateo.user.username}}">
+					</a>
 				</div><div class="part part-2 data-holder">
 					<a href="#/{{dateo.user.username}}">
 						<h4>{{dateo.user.username}}</h4>
@@ -20,7 +22,7 @@
 				<div class="row">
 				<div class="col-xs-12 col-md-75">
 					<div class="inner dateo dateo-detail">
-						<div class="unpublished-msg" ng-show="!dateo.published">dateo sin publicar</div>
+						<div class="unpublished-msg ng-hide" ng-show="!dateo.published">dateo sin publicar</div>
 						<div class="tag-row">
 							<a class="tag" href="#/tag/{{tag.tag}}" ng-repeat="tag in dateo.tags">#{{tag.tag}}</a>
 						</div>
@@ -52,7 +54,8 @@
 						<div class="social-holder">
 							<div class="controls-left pull-left">
 								<div class="dateo-actions">
-									<da-vote vote-obj="dateo" vote-id="dateo.id" vote-count="dateo.vote_count"></da-vote>
+									
+									<da-vote vote-obj="dateo" vote-obj-type="dateo"></da-vote>
 
 									<div class="datea-glyph-holder hover-enabled" ng-click="flow.focusCommentForm()">	
 										<span class="glyphicon glyphicon-comment datea-glyph"></span> <span class="datea-glyph-text" ng-show="dateo.comment_count > 0"><p>{{dateo.comments.length}}</p><p><ng-pluralize count="dateo.comments.length" when="{'one':

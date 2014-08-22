@@ -32,23 +32,23 @@ angular.module("dateaWebApp")
 			$scope.flow.disabled     = true;
 			$scope.flow.hoverEnabled = false;
 
-			$scope.$watch('dateo', function () {
-				console.log("CHECK HAS REDATEADO");
-				if (User.data.id === $scope.dateo.user.id) {
-					$scope.flow.hoverEnabled = true;
-					$scope.flow.disabled = true;
-				}else{
-					checkHasRedateado();
+			$scope.$watch('dateo.id', function () {
+				if ($scope.dateo && $scope.dateo.id) {
+					if (User.data.id === $scope.dateo.user.id) {
+						$scope.flow.hoverEnabled = true;
+						$scope.flow.disabled = true;
+					}else{
+						checkHasRedateado();
+					}
 				}
 			});
 
 			checkHasRedateado = function () {
-				if (User.isSignedIn() && $scope.dateo && $scope.dateo.id) {
+				if (User.isSignedIn()) {
 					Api.redateo
 					.getList( { user : User.data.id, dateo : $scope.dateo.id } )
 					.then( function ( response ) {
-						$scope.flow.disabled =  true;
-						console.log("REDATEO DISABLED", $scope.flow.disabled);
+						$scope.flow.disabled =  false;
 						$scope.flow.isActive = response.meta.total_count ? true : false;
 						$scope.flow.hoverEnabled = true;
 						if (response.objects.length) $scope.flow.redateo = response.objects[0];
@@ -92,7 +92,7 @@ angular.module("dateaWebApp")
 					// DELETE
 					}else {
 						Api.redateo
-						.deleteList( { user : User.data.id, dateo : $scope.dateoId, id: $scope.flow.redateo.id } )
+						.deleteList( { user : User.data.id, dateo : $scope.dateo.id, id: $scope.flow.redateo.id } )
 						.then( function ( response ) {
 							console.log( 'deleteRedateo', response );
 							$scope.dateo.redateo_count--;

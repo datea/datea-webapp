@@ -41,7 +41,8 @@
 								No ha dateado todavia <i class="fa fa-meh-o"></i> 
 								</p>
 								<da-dateo-teaser ng-repeat="dateo in targetUser.dateos" map-present="false" detail-inline="false"></da-dateo-teaser>
-								<pagination ng-if="paginationDateos.totalItems > paginationDateos.itemsPerPage" boundary-links="true" items-per-page="paginationDateos.itemsPerPage" total-items="paginationDateos.totalItems" page="paginationDateos.currentPage" class="pagination pagination-lg" previous-text="&lsaquo;" next-text="&rsaquo;" first-text="&laquo;" last-text="&raquo;"></pagination>
+
+								<pagination ng-if="paginationDateos.totalItems > paginationDateos.itemsPerPage" boundary-links="true" items-per-page="paginationDateos.itemsPerPage" total-items="paginationDateos.totalItems" ng-model="paginationDateos.currentPage" class="pagination pagination-lg" previous-text="&lsaquo;" next-text="&rsaquo;" first-text="&laquo;" last-text="&raquo;" max-size="5"></pagination>
 							</div>
 						</tab>
 
@@ -52,7 +53,7 @@
 										<da-campaign-teaser></da-campaign-teaser>
 									</div>
 								</div>
-								<pagination ng-if="paginationCampaigns.totalItems > paginationCampaigns.itemsPerPage" boundary-links="true" items-per-page="paginationCampaigns.itemsPerPage" total-items="paginationCampaigns.totalItems" page="paginationCampaigns.currentPage" class="pagination pagination-lg" previous-text="&lsaquo;" next-text="&rsaquo;" first-text="&laquo;" last-text="&raquo;"></pagination>
+								<pagination ng-if="paginationCampaigns.totalItems > paginationCampaigns.itemsPerPage" boundary-links="true" items-per-page="paginationCampaigns.itemsPerPage" total-items="paginationCampaigns.totalItems" ng-model="paginationCampaigns.currentPage" class="pagination pagination-lg" previous-text="&lsaquo;" next-text="&rsaquo;" first-text="&laquo;" last-text="&raquo;" max-size="5"></pagination>
 							</div>
 						</tab>
 					</tabset>

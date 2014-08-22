@@ -2,6 +2,7 @@
 	<span class="check glyphicon glyphicon-ok"></span>
 	<span class="delete">&times;</span>
 	<i class="fa fa-circle-o-notch fa-spin" ng-show="flow.loading"></i>
-	<span class="glyphicon glyphicon-thumbs-up datea-glyph" ng-hide="flow.loading"></span> <span class="datea-glyph-text" ng-show="voteCount > 0"><p>{{voteCount}}</p> <p><ng-pluralize count="voteCount" when="{'one':
+	<i class="disabled-icon fa fa-ban"></i>
+	<span class="glyphicon glyphicon-thumbs-up datea-glyph" ng-hide="flow.loading"></span> <span class="datea-glyph-text" ng-show="voteObj.vote_count"><p>{{voteObj.vote_count}}</p> <p><ng-pluralize count="voteObj.vote_count" when="{'one':
 		'apoyo','other':'apoyos'}"></p></span>
 </div>

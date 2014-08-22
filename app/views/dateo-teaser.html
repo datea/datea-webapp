@@ -44,6 +44,7 @@
 			<span class="stat" ng-show="dateo.comment_count > 0"><span class="glyphicon glyphicon-comment"></span> {{dateo.comment_count}}</span>
 			<span class="stat" ng-show="dateo.redateo_count > 0"><span class="glyphicon glyphicon-retweet"></span> {{dateo.redateo_count}}</span>
 		</div>
+		<div class="redateo-msg" ng-show="flow.showRedateoAuthor && dateo.user.username != flow.showRedateoAuthor">re-dateado por <a href="#/{{flow.showRedateoAuthor}}">{{flow.showRedateoAuthor}}</a></div>
 	</div>
 	<hr>
 </div>

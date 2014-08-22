@@ -56,6 +56,7 @@ angular.module('dateaWebApp')
 	  , buildFollowersList
 	  , buildRelatedCampaigns
 	  , buildLayerFiles
+	  , checkDateoDisplayOptions
 	  , getTagsString
 	  , sessionMarkersIdx = 0
 	  , serializeXmlNode
@@ -309,6 +310,14 @@ angular.module('dateaWebApp')
 		}
 	}
 
+	checkDateoDisplayOptions = function () {
+		if ($scope.query.owner) {
+			$scope.flow.showRedateoAuthor = $scope.campaign.user.username;
+		}else{
+			$scope.flow.showRedateoAuthor = null;
+		}
+	}
+
 	buildQueryParams = function () {
 		var tags = [$scope.campaign.main_tag.tag]
 			, params = {}
@@ -380,6 +389,8 @@ angular.module('dateaWebApp')
 				$scope.campaign.dateosWithImages = [];
 				break;
 		}
+
+		checkDateoDisplayOptions();
 		
 		Api.dateo
 		.getDateos( givens )
