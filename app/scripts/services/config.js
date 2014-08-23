@@ -29,7 +29,7 @@ angular
 	                 , 'mostVoted'     : '-vote_count,-created'
 	                 , 'mostCommented' : '-comment_count,-created'
 	                 }
-	, dateo   : { sizeImgMax    : 350000
+	, dateo   : { sizeImgMax    : 3500000
 	            , sizeImgMaxMsg : 'Su archivo es muy grande'
 	            , tagsMax       : 7
 	            }
@@ -53,14 +53,16 @@ angular
 	           , paginationLimit : 6
 	           , mapZoomOverride : 13
 	           , zoomAfterDatear : 16
-	           , activityVerbs : [ 'dateo', 'commented', 'voted' ]
+	           , activityVerbs : [ 'dateo', 'commented', 'voted' , 'redateo']
 	           , activityContentMsg : { onUser : { 'dateo'     : 'dateó en #{{action_object.tags[0].tag}}'
 	                                             , 'commented' : 'comentó tu dateo en #{{action_object.tags[0].tag}}'
 	                                             , 'voted'     : 'apoyó tu dateo en #{{action_object.tags[0].tag}}'
+	                                             , 'redateo'   : 'redateó tu dateo en #{{action_object.tags[0].tag}}'
 	                                             }
 	                                  , byUser : { 'dateo'     : 'dateaste en #{{action_object.tags[0].tag}}'
 	                                             , 'commented' : 'comentaste el dateo de {{target_user.username}} en #{{target_object.tags[0].tag}}'
 	                                             , 'voted'     : 'apoyaste el dateo de {{target_user.username}}'
+	                                             , 'redateo'   : 'redateaste a {{target_user.username}} en #{{target_object.tags[0].tag}}'
 	                                             }
 	                                  }
 	            , dateosLimitByRequest : 100

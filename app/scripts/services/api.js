@@ -65,8 +65,11 @@ angular.module('dateaWebApp')
 	dateo.rsrc   = $resource( config.api.url + 'dateo/'  , {},
 	{ 'query': { method: 'GET' }
 	, 'post' : { method  : 'POST'
-	           , headers : headers || ls.get('token')
-	           }
+	           , headers : headers || ls.get('token') }
+	, 'patch' : { method  : 'PATCH'
+	           , headers : headers || ls.get('token') }
+	, 'put' : { method  : 'PUT'
+	           , headers : headers || ls.get('token') }
 	} );
 	dateoStatus.rsrc   = $resource( config.api.url + 'dateo_status/'  , {},
 	{ 'query': { method  : 'GET' }
@@ -344,6 +347,26 @@ angular.module('dateaWebApp')
 	dateo.postDateo = function ( givens ) {
 		var dfd = $q.defer();
 		dateo.rsrc.post( givens, function ( response ) {
+			dfd.resolve( response );
+		}, function ( error ) {
+			dfd.reject( error );
+		} );
+		return dfd.promise;
+	}
+
+	dateo.patchList = function ( givens ) {
+		var dfd = $q.defer();
+		dateo.rsrc.patch( givens, function ( response ) {
+			dfd.resolve( response );
+		}, function ( error ) {
+			dfd.reject( error );
+		} );
+		return dfd.promise;
+	}
+
+	dateo.putList = function ( givens ) {
+		var dfd = $q.defer();
+		dateo.rsrc.put( givens, function ( response ) {
 			dfd.resolve( response );
 		}, function ( error ) {
 			dfd.reject( error );

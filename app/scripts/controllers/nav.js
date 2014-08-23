@@ -103,8 +103,8 @@ angular.module('dateaWebApp')
 		$scope.nav.visible = User.isSignedIn();
 	} );
 
-	$rootScope.$on( 'user:hasDateado', function ( event, error ) {
-		updateUserDataFromApi();
+	$rootScope.$on( 'user:hasDateado', function ( event, args ) {
+		//updateUserDataFromApi();
 	} );
 
 	$scope.$on( '$locationChangeStart', function ( scope, next, current ){

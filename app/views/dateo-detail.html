@@ -19,10 +19,11 @@
 			</div>
 			<div class="content-holder" ng-show="!dateo.message">
 				<div class="esquina"></div>
+				<button class="btn btn-link dateo-edit-btn" ng-show="flow.showEditBtn" ng-click="flow.editDateo()"><i class="fa fa-pencil-square-o"></i></button>
 				<div class="row">
 				<div class="col-xs-12 col-md-75">
 					<div class="inner dateo dateo-detail">
-						<div class="unpublished-msg ng-hide" ng-show="!dateo.published">dateo sin publicar</div>
+						<div class="unpublished-msg ng-hide" ng-show="!dateo.published && dateo.id">dateo sin publicar</div>
 						<div class="tag-row">
 							<a class="tag" href="#/tag/{{tag.tag}}" ng-repeat="tag in dateo.tags">#{{tag.tag}}</a>
 						</div>
@@ -36,7 +37,7 @@
 						<div class="link" ng-show="dateo.link">
 							<i class="fa fa-chain licon"></i>
 							<a href="{{dateo.link.url}}" class="limage" ng-show="dateo.link.img_url">
-								<img src="{{dateo.link.img_url}}" alt="" />
+								<img ng-src="{{dateo.link.img_url}}" alt="" />
 							</a>
 							<div class="lcontent">
 								<h4 class="ltitle"><a href="{{dateo.link.url}}">{{dateo.link.title}}</a></h4>
@@ -70,7 +71,7 @@
 								</div>
 							</div>
 							<div class="controls-right">
-								<span class="glyphicon glyphicon-print pull-right datea-glyph datea-glyph-2 green-hover" ng-click="dateo.print()"></span>
+								<span class="glyphicon glyphicon-print pull-right datea-glyph datea-glyph-2 green-hover" ng-click="flow.print()"></span>
 								<!--<div class="form-group pull-right share">
 									<div class="input-group input-group-sm">
 										<input type="text" class="form-control" value="{{dateo.shareableUrl}}">
@@ -80,7 +81,7 @@
 									</div>
 								</div>-->
 								<div class="denounce-holder no-print">
-									<a class="denounce" href="" ng-click="dateo.denounce( 'dateo', $event )">denunciar</a>
+									<a class="denounce" href="" ng-click="flow.denounce( 'dateo', $event )">denunciar</a>
 								</div>
 							</div>
 						</div>
@@ -99,38 +100,38 @@
 									<p class="comment-content newline2br">{{comment.comment | linky}}</p>
 
 									<div class="denounce-holder">
-										<a class="denounce" href="" ng-click="dateo.denounce( 'comment', $event )">denunciar</a>
+										<a class="denounce" href="" ng-click="flow.denounce( 'comment', $event )">denunciar</a>
 									</div>
 								</div>
 							</div>
 
-							<div class="comment-form-holder no-print" ng-show="dateo.isUserSignedIn">
+							<div class="comment-form-holder no-print" ng-show="flow.isUserSignedIn">
 								<form role="form" name="form">
 									<div class="form-group">
-										<textarea id="message" class="form-control" msd-elastic="" rows="1" ng-model="dateo.form.comment" placeholder="Tu comentario"></textarea>
+										<textarea id="message" class="form-control" msd-elastic="" rows="1" ng-model="flow.form.comment" placeholder="Tu comentario"></textarea>
 									</div>
-									<button type="submit" class="btn datea-btn" ng-click="dateo.postComment()">Comentar</button>
+									<button type="submit" class="btn datea-btn" ng-click="flow.postComment()">Comentar</button>
 								</form>
 							</div>
 						</div>
 					</div>
 				</div>
-				<div class="col-xs-12 col-md-45 sidebar" ng-show="!dateo.message">
+				<div class="col-xs-12 col-md-45 sidebar" ng-show="!flow.message">
 					<div class="side-block" ng-show="dateo.position">
 						<h3>Ubicación</h3>
-						<leaflet id="leafletDateo" defaults="dateo.leaflet.defaults" markers="dateo.leaflet.markers" center="dateo.leaflet.center" height="260px" width="100%" tiles="dateo.leaflet.tiles"></leaflet>
+						<leaflet id="leafletDateo" defaults="flow.leaflet.defaults" markers="flow.leaflet.markers" center="flow.leaflet.center" height="260px" width="100%" tiles="flow.leaflet.tiles"></leaflet>
 						<p ng-if="dateo.address">{{dateo.address}}</p>
 						<p ng-if="dateo.admin_level1">{{dateo.admin_level1}} > {{dateo.admin_level2}} > {{dateo.admin_level3}}</p>
 					</div>
-					<div class="side-block related-campaigns" ng-show="dateo.campaigns.length > 0">
+					<div class="side-block related-campaigns" ng-show="flow.campaigns.length > 0">
 						<h3>Iniciativas relacionadas</h3>
 						<div class="tag-row">
-							<a class="tag" href="#/{{camp.username}}/{{camp.tag}}" ng-repeat="camp in dateo.campaigns">{{camp.name}}</a>
+							<a class="tag" href="#/{{camp.username}}/{{camp.tag}}" ng-repeat="camp in flow.campaigns">{{camp.name}}</a>
 						</div>
 					</div>
 				</div>
 			</div>
-			<span ng-show="dateo.message">{{dateo.message}}</span>
+			<span ng-show="flow.message">{{flow.message}}</span>
 		</div>
 	</div>
 </div>

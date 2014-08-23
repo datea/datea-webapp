@@ -3815,6 +3815,16 @@ ul.input-list {
 	}
 	&.dateo-detail {
 
+		.admin {
+			padding-top: 10px;
+			.dateo-edit-btn.btn-link {
+				position: absolute;
+				right: 25px;
+				top: -30px;
+				color: lighten(@color-18, 5%);
+			}
+		}
+
 		.image {
 			img {
 				max-width: 50%;
@@ -3854,7 +3864,7 @@ ul.input-list {
 				}
 			}
 			.controls-left {
-				padding: 15px 0;
+				padding: 12px 0;
 				width: 86%;
 				position: relative;
 
@@ -3890,6 +3900,13 @@ ul.input-list {
 		.comments-holder {
 			padding: 30px 15px 40px 5px;
 			h3 {font-size: 14px; margin-bottom: 20px;}
+		}
+		.dateo-edit-btn.btn-link {
+			color: @color-18;
+			font-size: 22px;
+			&:hover {
+				color: #777;
+			}
 		}
 	}
 }
@@ -4049,7 +4066,9 @@ ul.input-list {
 
 	.content-holder {
 		position: relative;
-
+		background: white;
+		border: @color-3 solid 1px;
+		padding: 35px 35px;
 
 		.esquina {
 			background: url("@{imgUrl}dateo/esquina_dateo.png") no-repeat left top;
@@ -4060,6 +4079,17 @@ ul.input-list {
 			left: 37px;
 		}
 
+		.dateo-edit-btn.btn-link {
+			position: absolute;
+			right: 10px;
+			top: 5px;
+			color: @color-18;
+			font-size: 24px;
+			outline: none;
+			&:hover {
+				color: #444;
+			}
+		}
 
 		.inner {
 			position:relative;
@@ -4075,10 +4105,6 @@ ul.input-list {
 		h3 {
 			font-size: 16px;
 		}
-
-		background: white;
-		border: @color-3 solid 1px;
-		padding: 35px 50px;
 
 		.dateo-content {
 			color: #444;
@@ -4127,10 +4153,9 @@ ul.input-list {
 			}
 		}
 		.denounce-holder {
-			text-align: right;
 			position: absolute;
-			width: 100%;
 			bottom: 3px;
+			right: 0;
 			a {
 				color: @color-20;
 				font-size: 11px;
@@ -4140,6 +4165,7 @@ ul.input-list {
 	}
 
 	.sidebar {
+		padding-top: 7px;
 		h3 {
 			text-transform: uppercase;
 			font-weight: bold;
@@ -4157,6 +4183,16 @@ ul.input-list {
 				border-bottom: 0;
 				margin-bottom: 0;
 				padding-bottom: 0;
+			}
+		}
+	}
+}
+
+@media (min-width: @screen-lg-min) {
+	.dateo-detail-holder {
+		.container {
+			.user-holder, .content-holder {
+				margin: 0 6%;
 			}
 		}
 	}
@@ -4181,6 +4217,7 @@ ul.input-list {
 
 		&:last-child {
 			border-bottom: none !important;
+			margin-bottom: 0;
 		}
 
 		&:hover {

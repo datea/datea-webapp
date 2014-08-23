@@ -571,13 +571,7 @@ angular.module('dateaWebApp')
 			                datearModalGivens : function () {
 			                  return { defaultTag    : $scope.campaign.main_tag.tag
 			                         , suggestedTags : $scope.campaign.secondary_tags
-			                         , datearSuccessCallback: function (dateo) {
-			                         		$scope.campaign.dateos.unshift(dateo);
-			                         		if (dateo.is_geolocated) addMarker(dateo);
-			                         		if (dateo.has_images) $scope.campaign.dateosWithImages.unshift(dateo);
-			                         		updateCampaign();
-			                         		// TODO: fit bounds if marker outside of map view
-			                         }
+			                         , campaignId    : $scope.campaign.id
 			                         };
 			                 }
 			               }
@@ -599,6 +593,16 @@ angular.module('dateaWebApp')
 			$location.path('/registrate');
 		}
 	}
+
+	$scope.$on('user:hasDateado', function (event, args){
+		if (args.created) {
+			$scope.campaign.dateos.unshift(args.dateo);
+			if (args.dateo.is_geolocated) addMarker(args.dateo);
+			if (args.dateo.has_images) $scope.campaign.dateosWithImages.unshift(args.dateo);
+			updateCampaign();
+			$scope.dateamap.focusDateo(0);
+		}
+	});
 
 	buildLayerFiles = function () {
 		if ($scope.campaign.layer_files && $scope.campaign.layer_files.length > 0) {

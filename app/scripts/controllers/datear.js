@@ -13,6 +13,7 @@ angular.module('dateaWebApp')
 , '$timeout'
 , 'leafletData'
 , 'User'
+, '$location'
 // , 'leafletEvents'
 , function (
   $scope
@@ -26,6 +27,7 @@ angular.module('dateaWebApp')
 , $timeout
 , leafletData
 , User
+, $location
 // , leafletEvents
 ) {
 	var headers
@@ -36,6 +38,7 @@ angular.module('dateaWebApp')
 	  , drillDownTags   = {}
 	  , doDrillDownTags = false
 	  // fn declarations
+	  , initMedia
 	  , onGeolocation
 	  , onGeolocationError
 	  , geocode
@@ -44,7 +47,7 @@ angular.module('dateaWebApp')
 	;
 
 // Object to be sent
-$scope.dateo                = {};
+$scope.dateo                = datearModalGivens.dateo || {};
 $scope.datear               = {};
 $scope.datear.leaflet       = {};
 $scope.datear.autocomplete  = {};
@@ -63,6 +66,7 @@ $scope.datear.step				  = 1;
 var $modal_body = angular.element(document.getElementById('modal-body'));
 if ($modal_body.scrollTop() != 0 ) $modal_body.scrollTop(0);
 
+console.log("DATEO INIT", $scope.dateo);
 
 $scope.$on( 'leafletDirectiveMarker.dragend', function ( event ) {
 	if ( $scope.datear.leaflet.center.zoom <= 16 ) {
@@ -177,7 +181,7 @@ $scope.addAlert = function ( givens ) {
 
 $rootScope.$on( 'datea:fileLoaded', function ( ev, givens ) {
 	if ( givens.data.size > config.dateo.sizeImgMax ) {
-		$scope.dateo.img = null;
+		$scope.datear.img = null;
 		alertIndexes.imgSize !== void 0 && $scope.closeAlert( alertIndexes.imgSize );
 		alertIndexes.imgSize = $scope.addAlert( { type: 'danger', msg: config.dateo.sizeImgMaxMsg } );
 	} else {
@@ -208,7 +212,7 @@ $rootScope.$on('duScrollspy:becameActive', function($event, $element){
 // DATE INPUT
 $scope.flow.dp = {
 	// Date picker
-	  dateoDate   : new Date()
+	  dateoDate   : $scope.dateo.date ? Date.parse($scope.dateo.date) : null
 	, dateOptions : {
 			  'year-format': "'yy'"
 			, 'starting-day': 1
@@ -216,7 +220,7 @@ $scope.flow.dp = {
 	, format      : 'yyyy/MM/dd'
 	, opened      : false
 	// Time picker
-	, dateoTime   : new Date()
+	, dateoTime   : $scope.dateo.date ? Date.parse($scope.dateo.date) : new Date()
 	, hstep       : 1
 	, mstep       : 1
 }
@@ -227,21 +231,29 @@ $scope.flow.dp.openDatepicker = function($event) {
 	$scope.flow.dp.opened = true;
 }
 $scope.flow.dp.changed = function () {
-	var datetime = {};
-	if ( $scope.flow.dp.dateoDate && $scope.flow.dp.dateoTime ) {
-		datetime.year     = $scope.flow.dp.dateoDate.getUTCFullYear();
-		datetime.month    = $scope.flow.dp.dateoDate.getUTCMonth();
+	var datetime = {}
+		, localDate;
+	if ($scope.flow.dp.dateoDate) {
+		datetime.year     = $scope.flow.dp.dateoDate.getFullYear();
+		datetime.month    = $scope.flow.dp.dateoDate.getMonth();
 		datetime.day      = $scope.flow.dp.dateoDate.getDate();
-		datetime.hour     = $scope.flow.dp.dateoTime.getHours();
-		datetime.minutes  = $scope.flow.dp.dateoTime.getUTCMinutes();
-		$scope.dateo.date = new Date( datetime.year
+		if ($scope.flow.dp.dateoTime) {
+			datetime.hour     = $scope.flow.dp.dateoTime.getHours();
+			datetime.minutes  = $scope.flow.dp.dateoTime.getMinutes();
+		}else{
+			datetime.hour    = 0;
+			datetime.minutes = 0;
+		}
+		localDate = new Date( datetime.year
 		, datetime.month
 		, datetime.day
 		, datetime.hour
 		, datetime.minutes
-		, '00' ).toISOString();
+		, '00' );
+		$scope.dateo.date = new Date( localDate.getTime() - (localDate.getTimezoneOffset() * 60000));
+	}else {
+		$scope.dateo.date = null;
 	}
-	console.log("DATEO DATE", $scope.dateo.date);
 }
 
 // Date watch
@@ -274,42 +286,65 @@ $scope.datear.doDatear = function () {
 
 	// Images
 	if ( $scope.datear.imgData ) {
-		$scope.dateo.images = [ { image : { name     : $scope.datear.imgData.name
-		                                  , data_uri : $scope.datear.img
-		                                  }
-		                        , order : 0
-		                        }
-		                      ];
+		if ($scope.datear.imgData.id) {
+			$scope.dateo.images = [$scope.datear.imgData];
+		} else {
+			$scope.dateo.images = [ { image : { name     : $scope.datear.imgData.name
+			                                  , data_uri : $scope.datear.img
+			                                  }
+			                        , order : 0
+			                        }
+			                      ];
+		}
 	}
 
 	// Files
 	if ( $scope.datear.fileData) {
-		$scope.dateo.files = [ { file   : { name     : $scope.datear.fileData.name
-		                                  , data_uri : $scope.datear.file
-		                                  }
-		                        , title : $scope.datear.fileTitle || $scope.datear.fileData.name
-		                        , order : 0
-		                        }
-		                      ];
+		if ($scope.datear.fileData.id) {
+			$scope.datear.fileData.title = $scope.datear.fileTitle;
+			$scope.dateo.files = [$scope.datear.fileData];
+		}else{
+			$scope.dateo.files = [ { file   : { name     : $scope.datear.fileData.name
+			                                  , data_uri : $scope.datear.file
+			                                  }
+			                        , title : $scope.datear.fileTitle || $scope.datear.fileData.name
+			                        , order : 0
+			                        }
+			                      ];
+		}
 	}
 
 	// Link 
-	if ($scope.dateo.link == null) {
-		$scope.dateo.link = undefined;
-	}
+	//if ($scope.dateo.link === null) {
+	//	$scope.dateo.link = undefined;
+	//}
 
 	if ( $scope.dateo.content && $scope.dateo.tags.length ) {
-		Api.dateo.postDateo( $scope.dateo )
-		.then( function ( response ) {
-			$scope.datear.errorMessage = null;
-			$scope.datear.onFinished  = true;
-			angular.extend($scope.dateo, dateo);
-			//$rootScope.$broadcast( 'user:hasDateado' );
-			if (typeof(datearModalGivens.datearSuccessCallback) != 'undefined') datearModalGivens.datearSuccessCallback(response);
-			$scope.datear.loading = false;
-		} , function ( reason ) {
-			console.log( reason );
-		} )
+		if (!$scope.dateo.id) {
+			Api.dateo.postDateo( $scope.dateo )
+			.then( function ( response ) {
+				$scope.datear.errorMessage = null;
+				$scope.datear.onFinished  = true;
+				angular.extend($scope.dateo, response);
+				$rootScope.$broadcast( 'user:hasDateado' , {dateo: response, created: true});
+				$scope.datear.loading = false;
+			} , function ( reason ) {
+				console.log( reason );
+			} );
+		}else {
+			Api.dateo.patchList( {objects: [$scope.dateo]} )
+			.then( function ( response ) {
+
+				$scope.datear.errorMessage = null;
+				//$scope.datear.onFinished  = true;
+				angular.extend($scope.dateo, response.objects[0]);
+				$rootScope.$broadcast( 'user:hasDateado' , {dateo: response.objects[0], created: false});
+				$scope.datear.loading = false;
+				$modalInstance.dismiss('cancel');
+			} , function ( reason ) {
+				console.log( reason );
+			} );
+		}
 	} else {
 		if ( !$scope.dateo.content ) {
 			$scope.datear.errorMessage = 'Escriba una descripción de su dateo';
@@ -323,7 +358,7 @@ $scope.datear.doDatear = function () {
 
 $scope.datear.cancel = function () {
 	$modalInstance.dismiss('cancel');
-};
+}
 
 $scope.datear.autocompleteTag = function ( val ) {
 	return Api.tag.getAutocompleteByKeyword( { q: val.replace('#', '') } )
@@ -339,7 +374,7 @@ $scope.datear.autocompleteTag = function ( val ) {
 $scope.datear.addTag = function ( tag ) {
 	var dtag, moreTags;
 
-	$scope.dateo.nextTag = null;
+	$scope.datear.nextTag = null;
 	if ( !~$scope.datear.selectedTags.indexOf( tag )
 	&& $scope.datear.selectedTags.length < config.dateo.tagsMax ) {
 		tag = tag.replace('#','');
@@ -472,6 +507,24 @@ $scope.flow.closeSelectAddress = function () {
 	$scope.flow.addressNotFound = false;
 }
 
+initMedia = function () {
+	if ($scope.dateo.id) {
+		if ($scope.dateo.link && $scope.dateo.link.url) {
+			$scope.datear.selectedMedia.unshift({type: 'link', order: 0});
+		}
+		if ($scope.dateo.images && $scope.dateo.images.length) {
+			$scope.datear.img = config.api.imgUrl+$scope.dateo.images[0].image;
+			$scope.datear.imgData = $scope.dateo.images[0];
+			//$scope.datear.selectedMedia.unshift({type: 'image', order: 0});			
+		}
+		if ($scope.dateo.files && $scope.dateo.files.length) {
+			$scope.datear.file = $scope.dateo.files[0].image;
+			$scope.datear.fileData = $scope.dateo.files[0];
+			$scope.datear.fileTitle = $scope.dateo.files[0].title;
+			//$scope.datear.selectedMedia.unshift({type: 'file', order: 0});
+		}
+	}
+}
 
 $scope.datear.removeMedia = function (idx) {
 
@@ -481,10 +534,16 @@ $scope.datear.removeMedia = function (idx) {
 		case 'image':
 			$scope.datear.img = null;
 			$scope.datear.imgData = null;
+			if ($scope.dateo.images && $scope.dateo.images.length) {
+				$scope.dateo.images = [];
+			}
 			break;
 		case 'file':
 			$scope.datear.file = null;
 			$scope.datear.fileData = null;
+			if ($scope.dateo.files && $scope.dateo.files.length) {
+				$scope.dateo.files = [];
+			}
 			break;
 		case 'link':
 			$scope.dateo.link = null;
@@ -549,6 +608,11 @@ $scope.datear.link.nextImg = function () {
 	$scope.dateo.link.img_url = $scope.datear.link.images[$scope.datear.link.imgIndex];
 }
 
+$scope.datear.goToDateo = function() {
+	$location.path('/'+$scope.dateo.user.username+'/dateos/'+$scope.dateo.id);
+	$modalInstance.dismiss('cancel');
+}
+
 // Map defaults
 defaultMap = angular.copy( config.defaultMap );
 defaultMap.markers = { draggy : { lat : -12.05
@@ -556,12 +620,17 @@ defaultMap.markers = { draggy : { lat : -12.05
 	                              , draggable : true
 	                              } };
 angular.extend( $scope.datear.leaflet, defaultMap );
+
 if ( datearModalGivens.defaultTag ) {
 	$scope.datear.selectedTags.push( datearModalGivens.defaultTag );
 }
+if ($scope.dateo.tags && $scope.dateo.tags.length) {
+	$scope.datear.selectedTags = $scope.dateo.tags.map(function(t){return t.tag;});
+}
+
 if ( datearModalGivens.suggestedTags ) {
 	$scope.datear.suggestedTags = datearModalGivens.suggestedTags;
-}else{
+}else if (!$scope.dateo.tags){
 	$scope.datear.suggestedTags = User.data.tags_followed;
 	doDrillDownTags = true;
 	for (var i in User.data.tags_followed) {
@@ -569,7 +638,21 @@ if ( datearModalGivens.suggestedTags ) {
 		drillDownTags[t.tag] = t; 
 	}
 }
-geo.getLocation( {timeout:10000} ).then( onGeolocation, onGeolocationError );
+if (datearModalGivens.campaignId) {
+	$scope.dateo.campaign = datearModalGivens.campaignId;
+}
+if ($scope.dateo.position) {
+	var initGeodata = { coords: { 
+			latitude  : $scope.dateo.position.coordinates[1]
+		, longitude : $scope.dateo.position.coordinates[0]
+	}};
+	onGeolocation(initGeodata);
+}else{
+	geo.getLocation( {timeout:10000} ).then( onGeolocation, onGeolocationError );
+}
+
+// check if dateo has media (edit mode)
+initMedia();
 
 
 } ] );

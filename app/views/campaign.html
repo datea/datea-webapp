@@ -41,7 +41,7 @@
 							</div>
 						</div>
 					</div>
-					<div class="unpublished-msg" ng-show="!campaign.published">Iniciativa sin publicar</div>
+					<div class="unpublished-msg" ng-show="campaign.id && !campaign.published">Iniciativa sin publicar</div>
 				</div>
 			</div>
 			<div class="col-sm-5 hidden-xs campaign-img" da-bg-from-api="{{campaign.image.image}}" da-img-size="contain"></div>

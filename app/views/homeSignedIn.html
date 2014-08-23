@@ -214,7 +214,7 @@
 								<div class="dateos-list-view" ng-class="{'datea-loading': homeSI.loading.dateosListView}" ng-show="homeSI.activeDateoView == 'list'">
 									<da-dateo-teaser ng-repeat="dateo in homeSI.dateosListView.dateos" map-present="false" detail-inline="false"></da-dateo-teaser>
 									<div class="no-results" ng-show="homeSI.dateosListView.dateos.length === 0">No se encontraron resultados. Vuelvelo a intentar y chequea las opciones de busqueda arriba.</div>
-									<pagination ng-show="homeSI.dateosListView.totalCount > homeSI.dateosListView.limit" boundary-links="true" items-per-page="homeSI.dateosListView.limit" total-items="homeSI.dateosListView.totalCount" page="query.page" class="pagination pagination-lg" previous-text="&lsaquo;" next-text="&rsaquo;" first-text="&laquo;" last-text="&raquo;" max-size="5"></pagination>
+									<pagination ng-show="homeSI.dateosListView.totalCount > homeSI.dateosListView.limit" boundary-links="true" items-per-page="homeSI.dateosListView.limit" total-items="homeSI.dateosListView.totalCount" ng-model="query.page" class="pagination pagination-lg" previous-text="&lsaquo;" next-text="&rsaquo;" first-text="&laquo;" last-text="&raquo;" max-size="5"></pagination>
 								</div>
 							</div>
 						</div>

@@ -253,13 +253,6 @@ angular.module('dateaWebApp')
 			                datearModalGivens : function () {
 			                   return { 
 			                   		defaultTag : $scope.tag.tag
-			                   	, datearSuccessCallback: function (dateo) {
-	                         		$scope.tag.dateos.unshift(dateo);
-	                         		if (dateo.is_geolocated) addMarker(dateo);
-	                         		if (dateo.has_images) $scope.tag.dateosWithImages.unshift(dateo);
-	                         		updateTag();
-	                         		// TODO: fit bounds if marker outside of map view
-	                         }
 			                   };
 			                 }
 			               }
@@ -268,6 +261,16 @@ angular.module('dateaWebApp')
 			$location.path('/registrate');
 		}
 	}
+
+	$scope.$on('user:hasDateado', function (event, args){
+		if (args.created) {
+			$scope.tag.dateos.unshift(args.dateo);
+   		if (args.dateo.is_geolocated) addMarker(args.dateo);
+   		if (args.dateo.has_images) $scope.tag.dateosWithImages.unshift(args.dateo);
+   		updateTag();
+   		$scope.flow.focusDateo(0); 
+		}
+	});
 
 	$scope.flow.focusDateo = function ( idx ) {
 		var markerName

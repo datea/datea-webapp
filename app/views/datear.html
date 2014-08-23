@@ -46,7 +46,7 @@
 								<label for="datepicker">Indica la fecha y hora (opcional)</label>
 								<div class="datetime-inputs">
 									<div class="date-input-wrap">
-										<input type="text" class="form-control input-sm date-input" id="datepicker" datepicker-popup="{{flow.dp.format}}" ng-model="flow.dp.dateoDate" is-open="flow.dp.opened" datepicker-options="flow.dp.dateOptions" date-disabled="flow.dp.disabled(date, mode)" ng-required="true" close-text="Cerrar" ng-click="flow.dp.openDatepicker($event)">
+										<input type="text" class="form-control input-sm date-input" id="datepicker" datepicker-popup="{{flow.dp.format}}" ng-model="flow.dp.dateoDate" is-open="flow.dp.opened" datepicker-options="flow.dp.dateOptions" date-disabled="flow.dp.disabled(date, mode)" close-text="Cerrar" ng-click="flow.dp.openDatepicker($event)">
 									</div>
 									<div class="timepicker-holder">
 										<timepicker ng-model="flow.dp.dateoTime" ng-change="flow.dp.changed()" hour-step="flow.dp.hstep" minute-step="flow.dp.mstep" show-meridian="flow.dp.ismeridian"></timepicker>
@@ -92,7 +92,7 @@
 										<p class="i-title">Archivo</p>
 										<div class="form-group file-title-field">
 											<label for="dateo-file-title">Título</label>
-											<input id="dateo-link-description" type="text" class="form-control input-sm" ng-model="datear.fileTitle" placeholder="Ingresa el título del archivo"/>
+											<input id="dateo-file-title" type="text" class="form-control input-sm" ng-model="datear.fileTitle" placeholder="Ingresa el título del archivo"/>
 										</div>
 										<div class="uploaded-filename">{{datear.fileData.name}}</div>
 									</div>
@@ -182,10 +182,10 @@
 					<h5>buscar / agregar etiquetas</h5>
 					<div class="form-group">
 						<div class="input-group col-sm-6 tag-input-form autocomplete-group">
-							<input type="text" ng-model="dateo.nextTag" ng-model="asyncSelected" typeahead="tags for tags in datear.autocompleteTag($viewValue) | filter:$viewValue" typeahead-loading="loadingLocations" class="form-control">
+							<input type="text" ng-model="datear.nextTag" ng-model="asyncSelected" typeahead="tags for tags in datear.autocompleteTag($viewValue) | filter:$viewValue" typeahead-loading="loadingLocations" class="form-control">
 							<i ng-show="loadingLocations" class="autocomplete-loading fa fa-circle-o-notch fa-spin"></i>
 							<span class="input-group-btn">
-								<button class="btn btn-default" type="button" ng-click="datear.addTag( dateo.nextTag )">+</button>
+								<button class="btn btn-default" type="button" ng-click="datear.addTag( datear.nextTag )">+</button>
 							</span>
 						</div>
 					</div>
@@ -209,7 +209,7 @@
 			<h4>Tu dateo se ha creado existosamente.</h4>
 
 			<p class="finished-actions">
-				<a class="btn btn-lg btn-success" href="/#/{{dateo.user.username}}/dateos/{{dateo.id}}" ng-click="datear.cancel()">Ver dateo</a>
+				<button class="btn btn-lg btn-success" ng-click="datear.goToDateo()">Ver dateo</a>
 				<button class="btn btn-lg btn-default" ng-click="datear.cancel()">Cerrar</button>
 			</p>
 

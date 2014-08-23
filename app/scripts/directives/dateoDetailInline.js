@@ -31,16 +31,16 @@ angular.module("dateaWebApp")
 				$scope.flow  								= {};
 				$scope.flow.mapPresent      = ($attrs.mapPresent) ? $scope.$eval($attrs.mapPresent) : true;
 				$scope.flow.isUserSignedIn  = User.isSignedIn();
-				
-				$attrs.$observe('dateo', function (dateo) {
-    			if (angular.isDefined(dateo) && dateo.id) {
-    				angular.extend($scope.dateo, dateo);
-    			} 
+				$scope.flow.showEditBtn     = false;
+
+    		$scope.$watch('dateo.id', function () {
+    			if ($scope.dateo.id) {
+    				$scope.flow.showEditBtn = User.data.id === $scope.dateo.user.id;
+    			}
     		});
 
     		$attrs.$observe('markerIndex', function (index) {
     			$scope.markerIndex = index;
-    			console.log('MINDEX', $scope.markerIndex);
     		} );
 
 				$scope.focusDateo = function (index) {
@@ -52,10 +52,7 @@ angular.module("dateaWebApp")
 				}
 
 				updateComments = function ( response ) {
-					if ( !$scope.dateo.comments ) {
-						$scope.dateo.comments = {};
-					}
-					angular.extend( $scope.dateo.comments, response.objects[0].comments );
+					angular.extend($scope.dateo, response.objects[0]);
 				}
 
 				$scope.flow.imgDetail = function ( img ) {
@@ -128,7 +125,25 @@ angular.module("dateaWebApp")
 
 					$modal.open( givens );
 				}
-				
+
+				$scope.flow.editDateo = function () {
+					modalInstance = $modal.open( { templateUrl : 'views/datear.html'
+						             , controller  : 'DatearCtrl'
+						             , windowClass : 'datear-modal'
+						             , backdrop    : 'static'
+						             , resolve     : {
+						                datearModalGivens : function () {
+						                  return { dateo : $scope.dateo 
+						                         , datearSuccessCallback: function (dateo) {
+																				console.log("EDIT SUCCESS CALLBACK", dateo)
+						                         }
+						                         };
+						                 }
+						               }
+						             } );
+				}
+
+							
 		}
 	}
 } ] );

@@ -1,5 +1,9 @@
 <div class="dateo dateo-detail">
-	<div class="unpublished-msg pull-right" ng-show="!dateo.published">dateo sin publicar</div>
+	<div class="admin pull-right">
+		<button class="btn btn-link dateo-edit-btn" ng-show="flow.showEditBtn" ng-click="flow.editDateo()"><i class="fa fa-pencil-square-o"></i></button>
+		<div class="unpublished-msg" ng-show="dateo.id && !dateo.published">dateo sin publicar</div>
+	</div>
+
 	<div class="parts-holder">
 		<div class="user-img part part-1 img-circle" da-bg-from-api="{{dateo.user.image_small}}" da-img-size="cover" da-img-type="user"></div>
 		<div class="part part-2 user-info">

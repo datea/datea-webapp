@@ -27,23 +27,26 @@ angular.module('dateaWebApp')
 	var dateos
 	  , dateosId = []
 	  , dateo
+	  , modalInstance
 	  // fn declarations
 	  , buildDateo
 	  , updateComments
 	  , hasNext
 	  , hasUserVoted
 	  , buildRelatedCampaigns
+	  , setLeaflet
 	  ;
 
 	$scope.dateo             = {};
-	$scope.dateo.form        = {};
-	$scope.dateo.leaflet     = {};
-	$scope.dateo.messageNext = '';
 	$scope.flow              = {};
 	$scope.flow.notFound     = false;
-	$scope.flow.imgUrl       = config.api.imgUrl; 
+	$scope.flow.imgUrl       = config.api.imgUrl;
+	$scope.flow.showEditBtn  = false;
+	$scope.flow.form        = {};
+	$scope.flow.leaflet     = {};
+	$scope.flow.messageNext = ''; 
 
-	$scope.dateo.isUserSignedIn = User.isSignedIn();
+	$scope.flow.isUserSignedIn = User.isSignedIn();
 	$scope.dateFormat = config.defaultDateFormat;
 
 	hasNext = function () {
@@ -55,28 +58,39 @@ angular.module('dateaWebApp')
 		if( response.objects[0] ) {
 			dateo   = response.objects[0];
 			$scope.flow.notFound = false;
-			leaflet.center = { lat  : dateo.position.coordinates[1]
-			                 , lng  : dateo.position.coordinates[0]
-			                 , zoom : 16
-			                 }
-			leaflet.markers = { staticy : { lat       : dateo.position.coordinates[1]
-			                              , lng       : dateo.position.coordinates[0]
+			
+			$scope.flow.messageNext = hasNext() ? 'siguiente' : 'primer';
+			angular.extend( $scope.dateo, dateo );
+			setLeaflet();
+			$scope.flow.shareableUrl = config.app.url + $scope.dateo.user.username + '/dateos/' + $scope.dateo.id;
+			buildRelatedCampaigns();
+
+			
+			if (User.isSignedIn() && User.data.id === dateo.user.id) $scope.flow.showEditBtn = true;
+			console.log( 'buildDateo', dateo );
+		} else {
+			$scope.flow.notFound = true;
+		}
+	}
+
+	setLeaflet = function () {
+		var leaflet = {};
+		if ($scope.dateo.position) {
+			leaflet.center = { lat  : $scope.dateo.position.coordinates[1]
+				                 , lng  : $scope.dateo.position.coordinates[0]
+				                 , zoom : 16
+				                 }
+			leaflet.markers = { staticy : { lat       : $scope.dateo.position.coordinates[1]
+			                              , lng       : $scope.dateo.position.coordinates[0]
 			                              , draggable : false
 			                              } }
-			$scope.dateo.messageNext = hasNext() ? 'siguiente' : 'primer';
-			angular.extend( $scope.dateo, dateo );
-			angular.extend( $scope.dateo.leaflet, leaflet );
-			$scope.dateo.shareableUrl = config.app.url + $scope.dateo.user.username + '/dateos/' + $scope.dateo.id;
-			buildRelatedCampaigns();
 
 			leafletData.getMap('leafletDateo').then( function ( map ) {
 				$timeout( function () {
 					map.invalidateSize();
 				}, 200 );
 			});
-			console.log( 'buildDateo', dateo );
-		} else {
-			$scope.flow.notFound = true;
+			angular.extend( $scope.flow.leaflet, leaflet );
 		}
 	}
 
@@ -90,21 +104,18 @@ angular.module('dateaWebApp')
 				});
 			}
 		});
-		$scope.dateo.campaigns = campaigns;
+		$scope.flow.campaigns = campaigns;
 	}
 
 	updateComments = function ( response ) {
-		if ( !$scope.dateo.comments ) {
-			$scope.dateo.comments = {};
-		}
-		angular.extend( $scope.dateo.comments, response.objects[0].comments );
+		angular.extend($scope.dateo, response.objects[0]);
 	}
 
-	$scope.dateo.nextDateo = function () {
+	$scope.flow.nextDateo = function () {
 		$location.path( '/' + $routeParams.username + '/dateos/' + dateo.next_by_user );
 	}
 
-	$scope.dateo.imgDetail = function ( img ) {
+	$scope.flow.imgDetail = function ( img ) {
 		var givens;
 
 		givens = { templateUrl : 'views/dateo-detail-img.html'
@@ -119,13 +130,13 @@ angular.module('dateaWebApp')
 		$modal.open( givens );
 	}
 
-	$scope.dateo.print = function () {
+	$scope.flow.print = function () {
 		$window.print();
 	}
 
-	$scope.dateo.postComment = function () {
+	$scope.flow.postComment = function () {
 		var comment = {};
-		comment.comment      = $scope.dateo.form.comment;
+		comment.comment      = $scope.flow.form.comment;
 		comment.object_id    = $scope.dateo.id;
 		comment.content_type = 'dateo';
 		Api.comment
@@ -141,17 +152,17 @@ angular.module('dateaWebApp')
 		} )
 	}
 
-	$scope.dateo.share = function () {
+	$scope.flow.share = function () {
 		$modal.open( { templateUrl: 'views/share.html'
 		             , controller : 'ShareCtrl'
 		             , resolve    : {
 		                 shareModalGivens : function () {
-		                 	return { url : $scope.dateo.shareableUrl }
+		                 	return { url : $scope.flow.shareableUrl }
 		                 }
 		             } } );
 	}
 
-	$scope.dateo.denounce = function ( type, ev ) {
+	$scope.flow.denounce = function ( type, ev ) {
 		Api.flag
 		.doFlag( { content_type : type
 		         , object_id    : +$routeParams.dateoId } )
@@ -162,6 +173,27 @@ angular.module('dateaWebApp')
 			console.log( reason );
 		} );
 	}
+
+	$scope.flow.editDateo = function () {
+		modalInstance = $modal.open( { templateUrl : 'views/datear.html'
+			             , controller  : 'DatearCtrl'
+			             , windowClass : 'datear-modal'
+			             , backdrop    : 'static'
+			             , resolve     : {
+			                datearModalGivens : function () {
+			                  return { dateo : $scope.dateo 
+			                         , datearSuccessCallback: function (dateo) {
+																	console.log("EDIT SUCCESS CALLBACK", dateo)
+			                         }
+			                         };
+			                 }
+			               }
+			             } );
+	}
+
+	$scope.$on('user:hasDateado', function (event, args) {
+		setLeaflet();
+	});
 
 	if ( $routeParams.username && $routeParams.dateoId ) {
 			Api.dateo
@@ -177,7 +209,7 @@ angular.module('dateaWebApp')
 					console.log( 'usuario no encontrado' );
 				}
 			} );
-			angular.extend( $scope.dateo.leaflet, config.defaultMap );
+			angular.extend( $scope.flow.leaflet, config.defaultMap );
 	}
 
 } ] );

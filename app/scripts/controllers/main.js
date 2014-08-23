@@ -549,6 +549,7 @@ angular.module( 'dateaWebApp' )
 		map.center.zoom 	= config.homeSI.mapZoomOverride;
 		map.bounds        = leafletBoundsHelpers.createBoundsFromArray( [ [ -12.0735, -77.0336 ], [ -12.0829, -77.0467 ] ] );
 		// map.center      = {};
+		if (!$scope.homeSI.leaflet) $scope.homeSI.leaflet = {};
 		angular.extend( $scope.homeSI.leaflet, map );
 
 		geolocateAndBuildMap();
@@ -664,50 +665,54 @@ angular.module( 'dateaWebApp' )
 		             , backdrop    : 'static'
 		             , resolve     : {
 		                datearModalGivens : function () {
-		                   return {
-		                   	datearSuccessCallback: function (dateo) {
-		                   		var test, newCenter;
-		                   		// Only make a request if new the center is outside the map boundaries
-													leafletData.getMap('leafletHomeSI')
-													.then( function ( map ) {
-														var bounds;
-														// dateo is inside current filters (only consider user tags)
-														$scope.query.orderBy = '-created';
-		                   			if ($scope.query.followFilter === 'follow') {
-		                   				test = false;
-		                   				for (var i in dateo.tags) {
-		                   					if (!!$scope.homeSI.userTags[dateo.tags[i].tag]) {
-		                   						test = true;
-		                   						break;
-		                   					}
-		                   				}
-		                   				if (!test) $scope.query.followFilter = 'all';
-		                   			}
-
-		                   			$scope.homeSI.leaflet.focusOnId = dateo.id;
-
-		                   			newCenter = L.latLng(dateo.position.coordinates[1], dateo.position.coordinates[0]);
-		                   			dontCheckCenterOutOfBounds = true;
-		                   			map.setView(newCenter, config.homeSI.zoomAfterDatear, {reset: true});
-		                   			bounds = map.getBounds();
-		               					buildMarkers(
-														{ bottom_left_latitude  : bounds._southWest.lat
-														, bottom_left_longitude : bounds._southWest.lng
-														, top_right_latitude    : bounds._northEast.lat
-														, top_right_longitude   : bounds._northEast.lng}
-														);
-		               					dontCheckCenterOutOfBounds = false;
-
-                   					if ($scope.homeSI.activeDateoView == 'list') {
-                   						buildDateosListView();
-                   					}
-													} );
-												}
+		                   return {};
 		                  }
 		                }
-		              }
 		            } );
 	}
+
+	$scope.$on('user:hasDateado', function(event, args) {
+		var test, newCenter, dateo;
+
+		if (args.created) {
+			dateo = args.dateo;
+	 		// Only make a request if new the center is outside the map boundaries
+			leafletData.getMap('leafletHomeSI')
+			.then( function ( map ) {
+				var bounds;
+				// dateo is inside current filters (only consider user tags)
+				$scope.query.orderBy = '-created';
+	 			if ($scope.query.followFilter === 'follow') {
+	 				test = false;
+	 				for (var i in dateo.tags) {
+	 					if (!!$scope.homeSI.userTags[dateo.tags[i].tag]) {
+	 						test = true;
+	 						break;
+	 					}
+	 				}
+	 				if (!test) $scope.query.followFilter = 'all';
+	 			}
+
+	 			$scope.homeSI.leaflet.focusOnId = dateo.id;
+
+	 			newCenter = L.latLng(dateo.position.coordinates[1], dateo.position.coordinates[0]);
+	 			dontCheckCenterOutOfBounds = true;
+	 			map.setView(newCenter, config.homeSI.zoomAfterDatear, {reset: true});
+	 			bounds = map.getBounds();
+					buildMarkers(
+				{ bottom_left_latitude  : bounds._southWest.lat
+				, bottom_left_longitude : bounds._southWest.lng
+				, top_right_latitude    : bounds._northEast.lat
+				, top_right_longitude   : bounds._northEast.lng}
+				);
+					dontCheckCenterOutOfBounds = false;
+
+					if ($scope.homeSI.activeDateoView == 'list') {
+						buildDateosListView();
+					}
+			} );
+		}
+	});
 
 	$scope.flow.share = function () {
 		$modal.open( { templateUrl : 'views/share.html'
