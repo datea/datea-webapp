@@ -572,6 +572,8 @@ angular.module('dateaWebApp')
 			                  return { defaultTag    : $scope.campaign.main_tag.tag
 			                         , suggestedTags : $scope.campaign.secondary_tags
 			                         , campaignId    : $scope.campaign.id
+			             						 , boundary      : $scope.campaign.boundary || null
+			             						 , layerFiles    : $scope.campaign.layer_files
 			                         };
 			                 }
 			               }

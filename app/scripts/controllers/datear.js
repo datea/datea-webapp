@@ -14,6 +14,7 @@ angular.module('dateaWebApp')
 , 'leafletData'
 , 'User'
 , '$location'
+, 'geoJSONStyle'
 // , 'leafletEvents'
 , function (
   $scope
@@ -28,16 +29,20 @@ angular.module('dateaWebApp')
 , leafletData
 , User
 , $location
+, geoJSONStyle
 // , leafletEvents
 ) {
 	var headers
 	  , dateo           = {}
 	  , alertIndexes    = {}
+	  , boundary
 	  , defaultMap
 	  , addressCache    = {}
 	  , drillDownTags   = {}
 	  , doDrillDownTags = false
 	  // fn declarations
+	  , buildBoundary
+	  , buildLayerFiles
 	  , initMedia
 	  , followNewDateo
 	  , onGeolocation
@@ -75,50 +80,157 @@ $scope.$on( 'leafletDirectiveMarker.dragend', function ( event ) {
 		$scope.datear.leaflet.center.lng  = $scope.datear.leaflet.markers.draggy.lng;
 		$scope.datear.leaflet.center.zoom = $scope.datear.leaflet.center.zoom + 1;
 	}
+	if (boundary) {
+		var ll = L.latLng([$scope.datear.leaflet.markers.draggy.lat, $scope.datear.leaflet.markers.draggy.lng]);
+		if (leafletPip.pointInLayer(ll, boundary).length === 0) {
+			leafletData.getMap("leafletDatear")
+			.then( function ( map ) {
+				L.popup({
+					offset: L.point(0, -30)
+				})
+				.setLatLng([$scope.datear.leaflet.markers.draggy.lat, $scope.datear.leaflet.markers.draggy.lng])
+				.setContent('Fuera de la zona de esta iniciativa')
+				.openOn(map);
+			} );
+		}
+	}
 } );
 
 onGeolocation = function ( data ) {
-	var leaflet;
+	var leaflet, pipResult, boundaryBounds;
+
 	leaflet = { center : { lat  : data.coords.latitude
-	                     , lng  : data.coords.longitude
-	                     , zoom : 14
-	                     }
-	          , markers : { draggy : { lat : data.coords.latitude
-	                                 , lng : data.coords.longitude
-	                                 , draggable : true
-	                                 }
-	                      }
-	          , events : 'dragend'
-	          }
+		                     , lng  : data.coords.longitude
+		                     , zoom : 14
+		                     }
+		          , markers : { draggy : { lat : data.coords.latitude
+		                                 , lng : data.coords.longitude
+		                                 , draggable : true
+		                                 , icon      : config.visualization.defaultMarkerIcon
+		                                 }
+		                      }
+		          , events : 'dragend'
+		        };
 
-	// leafletData.getMap("leafletDatear")
-	// .then( function ( map ) {
-	// 	// map.fitBounds( markersBounds );
-	// 	angular.extend( map, leaflet );
-	// } )
-
-	angular.extend( $scope.datear.leaflet, leaflet );
-
+	if (!boundary) {
+		angular.extend( $scope.datear.leaflet, leaflet );
+	}else{
+		
+		pipResult = leafletPip.pointInLayer([data.coords.latitude, data.coords.longitude], boundary);
+		if (pipResult.length === 0) {
+			// check if polygon is in map bounds, otherwise adjust viewport
+			boundaryBounds = boundary.getBounds();
+			leafletData.getMap("leafletDatear")
+			.then( function ( map ) {
+				var mcenter;
+				map.fitBounds(boundaryBounds);
+				if (map.getZoom() < 14) map.zoomIn(1);
+				mcenter = map.getCenter();
+				if (!$scope.dateo.position) {
+					leaflet = {
+						  markers : {	draggy : { lat : mcenter.lat
+		                               , lng : mcenter.lng
+		                               , draggable : true
+		                               , icon      : config.visualization.defaultMarkerIcon
+		                               }
+						  }
+						, events : 'dragend'	
+					}
+					angular.extend( $scope.datear.leaflet, leaflet );
+				}
+			} );
+		}else{
+			// TODO CHECK BOUNDS BECAUSE OF ZOOM
+			angular.extend( $scope.datear.leaflet, leaflet );
+		}
+	}
 }
 
 onGeolocationError = function ( reason ) {
 	var leaflet = {}
 	  , draggy
+	  , pipResult
+	  , boundaryBounds;
 	  ;
-console.log( 'onGeolocationError' );
-	leaflet = { center : { lat  : -12.05
-	                     , lng  : -77.06
-	                     , zoom : 14
-	                     }
-	          , markers : { draggy : { lat : -12.05
-	                                 , lng : -77.06
-	                                 , draggable : true
-	                                 }
-	                      }
-	          , events : 'dragend'
-	          }
+	console.log( 'onGeolocationError' );
+	
+	// TRY IP LOCATION
+	Api.ipLocation.getLocationByIP()
+	.then(function (response) {
+		leaflet = { center : { lat  : response.ip_location.latitude
+                     		 , lng  : response.ip_location.longitude
+                     		 , zoom : 14
+                     		 }
+          		, markers : { draggy : { lat  : response.ip_location.latitude
+                     		 						 , lng  : response.ip_location.longitude
+                                 		 , draggable : true
+                                 		 , icon      : config.visualization.defaultMarkerIcon
+                                 		 }
+                      		}
+          		, events : 'dragend'
+          		}
+		if (!boundary) {
+	  	angular.extend( $scope.datear.leaflet, leaflet );
+		}else{
+			pipResult = leafletPip.pointInLayer([response.ip_location.latitude, response.ip_location.longitude], boundary);
+			boundaryBounds = boundary.getBounds();
+			if (pipResult.length === 0) {
+				leafletData.getMap("leafletDatear")
+				.then( function ( map ) {
+					var mcenter;
+					map.fitBounds(boundaryBounds);
+					if (map.getZoom() < 14) map.zoomIn(1);
+					mcenter = map.getCenter();
+					leaflet = {
+							  markers : {	draggy : { lat : mcenter.lat
+			                               , lng : mcenter.lng
+			                               , draggable : true
+			                               , icon      : config.visualization.defaultMarkerIcon
+			                               }
+							  }
+							, events : 'dragend'	
+						}
+						angular.extend( $scope.datear.leaflet, leaflet );
+				} );
+			}else {
+				// TODO CHECK BOUNDS BECAUSE OF ZOOM
+				angular.extend( $scope.datear.leaflet, leaflet );
+			}
+		}
 
-	angular.extend( $scope.datear.leaflet, leaflet );
+	}, function (reason) {
+		if (!boundary) {
+			leaflet = { center : { lat  : -12.05
+		                     , lng  : -77.06
+		                     , zoom : 14
+		                     }
+		          , markers : { draggy : { lat : -12.05
+		                                 , lng : -77.06
+		                                 , draggable : true
+		                                 , icon      : config.visualization.defaultMarkerIcon
+		                                 }
+		                      }
+		          , events : 'dragend'
+		          }
+		  angular.extend( $scope.datear.leaflet, leaflet );
+		}else{
+			boundaryBounds = boundary.getBounds();
+			leafletData.getMap("leafletDatear")
+			.then( function ( map ) {
+				map.fitBounds(boundaryBounds);
+				mcenter = map.getCenter();
+				leaflet = {
+						  markers : {	draggy : { lat : mcenter.lat
+		                               , lng : mcenter.lng
+		                               , draggable : true
+		                               , icon      : config.visualization.defaultMarkerIcon
+		                               }
+						  }
+						, events : 'dragend'	
+					}
+			});
+		}
+	});
 }
 
 $scope.$on( 'leafletDirectiveMap.click', function ( event, args ) {
@@ -130,6 +242,7 @@ $scope.$on( 'leafletDirectiveMap.click', function ( event, args ) {
 	newDraggy = { lat : leafEvent.latlng.lat
 	            , lng : leafEvent.latlng.lng
 	            , draggable : true
+	            , icon      : config.visualization.defaultMarkerIcon
 	            }
 
 	/*
@@ -151,6 +264,16 @@ $scope.$on( 'leafletDirectiveMap.click', function ( event, args ) {
 			} else {
 				angular.extend( $scope.datear.leaflet.markers.draggy, newDraggy );
 			} 
+			if (boundary) {
+				if (leafletPip.pointInLayer(leafEvent.latlng, boundary).length === 0) {
+					L.popup({
+						offset: L.point(0, -30)
+					})
+    			.setLatLng(leafEvent.latlng)
+    			.setContent('Fuera de la zona de esta iniciativa')
+    			.openOn(map);
+				}
+			}
 	} );
 
 	
@@ -625,11 +748,58 @@ $scope.datear.goToDateo = function() {
 	$modalInstance.dismiss('cancel');
 }
 
+buildBoundary = function () {
+	var latLngs = []
+		, polygonBounds
+	;
+	
+	if (datearModalGivens.boundary && datearModalGivens.boundary.coordinates) {
+
+		boundary = L.geoJson(datearModalGivens.boundary, {
+			style : {
+					color   : '#E65F00'
+				, fill    : false
+				, weight  : 4
+			}
+		});
+
+		leafletData.getMap("leafletDatear")
+		.then( function ( map ) {
+			map.addLayer(boundary);
+		} );
+	}
+}
+
+buildLayerFiles = function () {
+	if (datearModalGivens.layerFiles && datearModalGivens.layerFiles.length > 0) {
+		leafletData.getMap("leafletDatear")
+		.then( function ( map ) {
+			angular.forEach(datearModalGivens.layerFiles, function (lf) {
+				var fname, ext;
+				fname = lf.file.split('/').slice(-1)[0];
+				ext   = fname.split('.').slice(-1)[0].toLowerCase();
+				if (ext === 'kml') {
+					$http.get(config.api.imgUrl+lf.file)
+					.success( function (data) {
+						L.geoJson(gjson, geoJSONStyle).addTo(map);
+					} );
+				}else if (ext === 'json') {
+					$http.get(config.api.imgUrl+lf.file)
+					.success( function (data) {
+						L.geoJson(data, geoJSONStyle).addTo(map);
+					} );
+				}
+			} );
+		} );
+	}
+}
+
 // Map defaults
 defaultMap = angular.copy( config.defaultMap );
 defaultMap.markers = { draggy : { lat : -12.05
 	                              , lng : -77.06
 	                              , draggable : true
+	                              , icon : config.visualization.defaultMarkerIcon
 	                              } };
 angular.extend( $scope.datear.leaflet, defaultMap );
 
@@ -665,6 +835,7 @@ if ($scope.dateo.position) {
 
 // check if dateo has media (edit mode)
 initMedia();
-
+buildBoundary();
+buildLayerFiles();
 
 } ] );

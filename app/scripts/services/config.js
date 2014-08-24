@@ -110,7 +110,18 @@ angular
 	, layout_100: [] 
 	, visualization: { default_other_color: '#CCCCCC'
 									 , default_color: '#28BC45'
-		}        
+									 , defaultMarkerIcon : { type     		: 'div'
+																				 , iconSize 		: [29, 40]
+																				 , iconAnchor	: [14.5, 40]
+																				 , popupAnchor	: [0, -33]
+																				 , labelAnchor	: [8, -25]
+																				 , className   : 'datea-pin-icon'
+																				 , html     		: '<svg width="29" height="40"><g style="clip-path: url(#pinpath);">'
+																							 				+ 	'<rect height="40" width="29" fill="#28BC45" />'
+																							 				+ 	'<circle cx="14.5" cy="14" r="5" fill="white" />'
+																					 		 				+ '</g></svg>'
+																			   }  
+									 }      
 	}
 );
 

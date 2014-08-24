@@ -160,19 +160,6 @@ angular.module('dateaWebApp')
 		} )
 	}
 
-	var markerIcon = {
-		  type     		: 'div'
-		, iconSize 		: [29, 40]
-		, iconAnchor	: [14.5, 40]
-		, popupAnchor	: [0, -33]
-		, labelAnchor	: [8, -25]
-		, className   : 'datea-pin-icon'
-		, html     		: '<svg width="29" height="40"><g style="clip-path: url(#pinpath);">'
-					 				+ 	'<rect height="40" width="29" fill="'+config.visualization.default_color+'" />'
-					 				+ 	'<circle cx="14.5" cy="14" r="5" fill="white" />'
-			 		 				+ '</g></svg>'
-	}
-
 	buildMarkers = function ( givens ) {
 		var dateos  = givens && givens.dateos
 		  , markers = {}
@@ -213,7 +200,7 @@ angular.module('dateaWebApp')
 			, draggable   : false
 			, focus       : false
 			, _id         : dateo.id
-			, icon 			  :  markerIcon
+			, icon 			  : config.visualization.defaultMarkerIcon
 			, riseOnHover : true
 			};
 	}

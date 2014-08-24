@@ -86,6 +86,7 @@ angular.module('dateaWebApp')
 			leaflet.markers = { staticy : { lat       : $scope.dateo.position.coordinates[1]
 			                              , lng       : $scope.dateo.position.coordinates[0]
 			                              , draggable : false
+			                              , icon      : config.visualization.defaultMarkerIcon
 			                              } }
 
 			leafletData.getMap('leafletDateo').then( function ( map ) {
