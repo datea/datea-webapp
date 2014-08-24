@@ -465,6 +465,20 @@ angular.module('dateaWebApp')
 		return dfd.promise;
 	}
 
+	comment.getList = function (givens) {
+		var dfd = $q.defer()
+		  , token = ls.get('token')
+		  ;
+		comment.rsrc.query( givens
+		, function ( response ) {
+			dfd.resolve( response );
+		}
+		, function ( error ) {
+			dfd.reject( error );
+		} );
+		return dfd.promise;
+	}
+
 	// Tags
 	tag.getTags = function ( givens ) {
 		var dfd = $q.defer();

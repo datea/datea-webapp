@@ -92,11 +92,11 @@
 		<h3 ng-show="dateo.comments.length > 0">Comentarios</h3>
 
 		<div class="comments">
-			<div class="comment-holder" ng-repeat="comment in dateo.comments">
+			<div class="comment-holder" ng-repeat="comment in dateo.comments" da-on-last-repeat="slideDownNewComment()" ng-class="{slidedown: comment.new}">
 				<div class="user">
 					<img class="img-circle" ng-src="{{comment.user.image_small | imgFromApi}}" alt="{{comment.user.username}}">
 					<a href="#/{{comment.user.username}}"><span>{{comment.user.username}}</span></a>
-					<span class="date">el {{comment.created | date:'fullDate'}}</span>
+					<span class="date">el {{comment.created | date:dateFormat}}</span>
 				</div>
 				
 				<p class="comment-content newline2br" ng-bind-html="comment.comment | linky:'_blank'"></p>
@@ -109,9 +109,11 @@
 		<div class="comment-form-holder" ng-show="flow.isUserSignedIn">
 			<form role="form" name="form">
 				<div class="form-group">
-					<textarea id="comment-input" class="form-control" msd-elastic="" rows="1" ng-model="comment.comment" placeholder="Tu comentario"></textarea>
+					<textarea id="comment-input" ng-disabled="comment.loading" class="form-control" msd-elastic="" rows="1" ng-model="comment.comment" placeholder="Tu comentario"></textarea>
 				</div>
-				<button type="submit" class="btn datea-gray-btn" ng-click="flow.postComment()">Comentar</button>
+				<button type="submit" class="btn datea-gray-btn" ng-click="flow.postComment()">Comentar</button> &nbsp;<i ng-show="comment.loading" class="fa fa-circle-o-notch fa-spin"></i>
+
+				<da-follow follow-obj="dateo" follow-id="{{dateo.id}}" follow-label="seguir hilo" btn-class="follow-dateo btn-link pull-right"></da-follow>
 			</form>
 		</div>
 	</div>

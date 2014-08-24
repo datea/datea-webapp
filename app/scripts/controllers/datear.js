@@ -39,6 +39,7 @@ angular.module('dateaWebApp')
 	  , doDrillDownTags = false
 	  // fn declarations
 	  , initMedia
+	  , followNewDateo
 	  , onGeolocation
 	  , onGeolocationError
 	  , geocode
@@ -60,13 +61,13 @@ $scope.datear.selectedTags  = [];
 $scope.datear.loading			  = false;
 $scope.datear.onFinished    = false;
 $scope.datear.isScrolling   = false;
+$scope.datear.modalTitle    = $scope.dateo.id ? 'Editar dateo' : '¡Datea!';
+$scope.datear.mode          = $scope.dateo.id ? 'edit' : 'new';
 $scope.alerts               = [];
 $scope.datear.step				  = 1;
 
 var $modal_body = angular.element(document.getElementById('modal-body'));
 if ($modal_body.scrollTop() != 0 ) $modal_body.scrollTop(0);
-
-console.log("DATEO INIT", $scope.dateo);
 
 $scope.$on( 'leafletDirectiveMarker.dragend', function ( event ) {
 	if ( $scope.datear.leaflet.center.zoom <= 16 ) {
@@ -328,6 +329,7 @@ $scope.datear.doDatear = function () {
 				angular.extend($scope.dateo, response);
 				$rootScope.$broadcast( 'user:hasDateado' , {dateo: response, created: true});
 				$scope.datear.loading = false;
+				followNewDateo();
 			} , function ( reason ) {
 				console.log( reason );
 			} );
@@ -355,6 +357,16 @@ $scope.datear.doDatear = function () {
 		}
 	}
 };
+
+followNewDateo = function () {
+	Api.follow
+	.doFollow( { follow_key: 'dateo.'+$scope.dateo.id} )
+	.then( function ( response ) {
+		console.log("FOLLOWED NEW DATEO", response);
+	}, function ( reason ) {
+		console.log( reason );
+	} );
+}
 
 $scope.datear.cancel = function () {
 	$modalInstance.dismiss('cancel');

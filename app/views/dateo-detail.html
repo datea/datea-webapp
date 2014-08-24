@@ -19,11 +19,13 @@
 			</div>
 			<div class="content-holder" ng-show="!dateo.message">
 				<div class="esquina"></div>
-				<button class="btn btn-link dateo-edit-btn" ng-show="flow.showEditBtn" ng-click="flow.editDateo()"><i class="fa fa-pencil-square-o"></i></button>
 				<div class="row">
 				<div class="col-xs-12 col-md-75">
 					<div class="inner dateo dateo-detail">
-						<div class="unpublished-msg ng-hide" ng-show="!dateo.published && dateo.id">dateo sin publicar</div>
+						<div class="admin">
+							<div class="unpublished-msg pull-left" ng-show="dateo.id && !dateo.published">dateo sin publicar</div>
+							<button class="btn btn-link dateo-edit-btn" ng-show="flow.showEditBtn" ng-click="flow.editDateo()"><i class="fa fa-pencil-square-o"></i></button>
+						</div>
 						<div class="tag-row">
 							<a class="tag" href="#/tag/{{tag.tag}}" ng-repeat="tag in dateo.tags">#{{tag.tag}}</a>
 						</div>
@@ -90,11 +92,11 @@
 							<h3 ng-show="dateo.comments.length > 0">Comentarios</h3>
 
 							<div class="comments">
-								<div class="comment-holder" ng-repeat="comment in dateo.comments">
+								<div class="comment-holder" ng-repeat="comment in dateo.comments" ng-class="{'slidedown': comment.new}" da-on-last-repeat="slideDownComments()">
 									<div class="user">
 										<img class="img-circle" ng-src="{{comment.user.image_small | imgFromApi}}" alt="{{comment.user.username}}">
 										<a href="#/{{comment.user.username}}"><span>{{comment.user.username}}</span></a>
-										<span class="date">el {{comment.created | date:'fullDate'}}</span>
+										<span class="date">el {{comment.created | date:dateFormat}}</span>
 									</div>
 									
 									<p class="comment-content newline2br">{{comment.comment | linky}}</p>
@@ -108,9 +110,12 @@
 							<div class="comment-form-holder no-print" ng-show="flow.isUserSignedIn">
 								<form role="form" name="form">
 									<div class="form-group">
-										<textarea id="message" class="form-control" msd-elastic="" rows="1" ng-model="flow.form.comment" placeholder="Tu comentario"></textarea>
+										<textarea id="comment-input" ng-disabled="flow.form.loading" class="form-control" msd-elastic="" rows="1" ng-model="flow.form.comment" placeholder="Tu comentario"></textarea>
 									</div>
-									<button type="submit" class="btn datea-btn" ng-click="flow.postComment()">Comentar</button>
+									<button type="submit" class="btn datea-btn" ng-click="flow.postComment()">Comentar</button> &nbsp;<i ng-show="flow.form.loading" class="fa fa-circle-o-notch fa-spin"></i>
+
+									<da-follow follow-obj="dateo" follow-id="{{dateo.id}}" follow-label="seguir hilo" btn-class="follow-dateo btn-link pull-right"></da-follow>
+
 								</form>
 							</div>
 						</div>

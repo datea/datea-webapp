@@ -1,7 +1,7 @@
-<div class="datear-modal-content">
+<div class="datear-modal-content {{datear.mode}}">
 	<div class="modal-header">
 		<button type="button" class="close" data-dismiss="modal" aria-hidden="true" ng-click="datear.cancel()">&times;</button>
-		<h3 ng-hide="datear.onFinished">¡Datea!</h3>
+		<h3 ng-hide="datear.onFinished">{{datear.modalTitle}}</h3>
 		<h3 ng-show="datear.onFinished">¡Gracias!</h3>
 		<ol class="breadcrumb datear-breadcrumb" ng-hide="datear.onFinished">
 			

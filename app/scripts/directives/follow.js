@@ -8,51 +8,59 @@ angular.module("dateaWebApp")
     		btnClass 				: '@'
     		,followObj    	: '='
     		,followId				: '@'
+    		,followLabel    : '@'
     	}
 
-    	,link: function (scope, element, attrs) {
+    	,controller: function ($scope, $element, $attrs) {
 
-    		var follow_key;
-    		var follow_obj = attrs.followObj;
-    		scope.btn_class   = angular.isDefined(attrs.btnClass) ? attrs.btnClass : '';
-    		console.log("BTN CLASS", scope.btn_class);
-    		scope.is_following = false;
-    		scope.loading     = true;
-    		scope.following_changed = false;
+    		var followKey
+    			, followObj
+    			, initFollow
+    			, follow
+    			, unfollow
+    		;
+    		followObj = $attrs.followObj;
 
-    		attrs.$observe('followId', function (fid) {
+    		$scope.btnClass    = angular.isDefined($attrs.btnClass) ? $attrs.btnClass : '';
+    		$scope.flow = {}
+    		$scope.flow.isFollowing       = false;
+    		$scope.flow.loading           = true;
+    		$scope.flow.followingChanged  = false;
+    		$scope.flow.followLabel       = $attrs.followLabel ? $attrs.followLabel : 'seguir';
+
+    		$attrs.$observe('followId', function (fid) {
     			if (angular.isDefined(fid)) {
-    				follow_key = follow_obj + '.' +fid;
-    				init_follow();
+    				followKey = followObj + '.' +fid;
+    				initFollow();
     			} 
     		});
 
-    		var init_follow = function () {
+    		var initFollow = function () {
 					Api.follow
-					.getFollows({user: User.data.id, follow_key: follow_key})
+					.getFollows({user: User.data.id, follow_key: followKey})
 					.then( function (response) {
-						scope.is_following = response.objects.length != 0;
-						scope.loading = false;
+						$scope.flow.isFollowing = response.objects.length != 0;
+						$scope.flow.loading = false;
 					}, function (reason) {
 						console.log(reason);
 					});
 				}
 
     		/* FOLLOW ACTION */
-    		var follow = function () {
+    		follow = function () {
 
-					if ( User.isSignedIn() && scope.loading == false) {
-						scope.loading = true;
+					if ( User.isSignedIn() && $scope.flow.loading == false) {
+						$scope.flow.loading = true;
 						Api.follow
-						.doFollow( { follow_key: follow_key} )
+						.doFollow( { follow_key: followKey} )
 						.then( function ( response ) {
 							console.log(response);
 							User.updateUserDataFromApi();
-							scope.loading = false;
-							scope.is_following = true;
-							scope.following_changed = true;
+							$scope.flow.loading = false;
+							$scope.flow.isFollowing = true;
+							$scope.flow.followingChanged = true;
 						}, function ( reason ) {
-							$scope.loading = true;
+							$scope.flow.loading = false;
 							console.log( reason );
 						} );
 					} else {
@@ -60,29 +68,36 @@ angular.module("dateaWebApp")
 					}
 				}
 
-				var unfollow = function () {
-					if ( !scope.loading ) {
-						scope.loading = scope.removing = true;
+				unfollow = function () {
+					if ( !$scope.flow.loading ) {
+						$scope.flow.loading = $scope.flow.removing = true;
 						Api.follow
-						.doUnfollow( { user: User.data.id, follow_key: follow_key} )
+						.doUnfollow( { user: User.data.id, follow_key: followKey} )
 						.then( function ( response ) {
 							User.updateUserDataFromApi();
-							scope.loading = scope.is_following = scope.removing = false;
-							scope.following_changed = true;
+							$scope.flow.loading = $scope.flow.isFollowing = $scope.flow.removing = false;
+							$scope.flow.followingChanged = true;
 						}, function ( reason ) {
-							scope.loading = true;
+							$scope.flow.loading = true;
 							console.log( reason );
 						} );
 					}
 				}
 
-				scope.do_follow_action = function () {
-					if (scope.is_following) {
+				$scope.doFollowAction = function () {
+					if ($scope.flow.isFollowing) {
 						unfollow();
 					} else {
 						follow();
 					}
 				}
+
+				$scope.$on('user:doFollow', function (event, args) {
+					console.log("IS FOLLOWIGN", $scope.flow.isFollowing);
+					if (args.followKey === followKey && !$scope.flow.isFollowing) {
+						follow();
+					}
+				})
 
     	}	
 		}

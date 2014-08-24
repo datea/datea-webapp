@@ -34,7 +34,7 @@ angular.module("dateaWebApp")
 				$scope.flow.showEditBtn     = false;
 
     		$scope.$watch('dateo.id', function () {
-    			if ($scope.dateo.id) {
+    			if ($scope.dateo && $scope.dateo.id) {
     				$scope.flow.showEditBtn = User.data.id === $scope.dateo.user.id;
     			}
     		});
@@ -52,7 +52,20 @@ angular.module("dateaWebApp")
 				}
 
 				updateComments = function ( response ) {
-					angular.extend($scope.dateo, response.objects[0]);
+					var oldIds = $scope.dateo.comments.map(function (c) {return c.id;});
+					Api.comment.getList({content_type__model: 'dateo', object_id: $scope.dateo.id})
+					.then(function (response) {
+						console.log(response);
+						$scope.dateo.comment_count = response.meta.total_count;
+						$scope.dateo.comments = response.objects.map( function (c) {
+							c.new = oldIds.indexOf(c.id) === -1;
+							return c;
+						})
+						$scope.comment.loading = false;
+						$scope.comment.comment = null;
+					}, function (reason) {
+						console.log(reason);
+					});
 				}
 
 				$scope.flow.imgDetail = function ( img ) {
@@ -72,17 +85,31 @@ angular.module("dateaWebApp")
 
 				$scope.flow.postComment = function () {
 					var comment = {};
-					comment.comment      = $scope.comment.comment;
-					comment.object_id    = $scope.dateo.id;
-					comment.content_type = 'dateo';
-					Api.comment
-					.postCommentByDateoId( comment )
-					.then( function ( response ) {
-						console.log( response )
-						Api.dateo
-						.getDateos({id : $scope.dateo.id})
-						.then( updateComments );
-					} )
+					if ($scope.comment.comment.trim() && !$scope.comment.loading) {
+						$scope.comment.loading = true;
+						comment.comment      = $scope.comment.comment;
+						comment.object_id    = $scope.dateo.id;
+						comment.content_type = 'dateo';
+						Api.comment
+						.postCommentByDateoId( comment )
+						.then( function ( response ) {
+							//console.log( response );
+							$rootScope.$broadcast('user:doFollow', {followKey: 'dateo.'+$scope.dateo.id});
+							updateComments();
+							/*Api.dateo
+							.getDateoByUsernameAndDateoId(
+							{ user : $routeParams.username
+							, id   : +$routeParams.dateoId
+							} )
+							.then( updateComments );*/
+						} );
+					}
+				}
+
+				$scope.slideDownNewComment = function () {
+					$('.slidedown').slideDown('normal', function () {
+						$(this).removeClass('slidedown');
+					})
 				}
 
 				$scope.flow.share = function () {

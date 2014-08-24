@@ -270,10 +270,40 @@ body {
 		background-color: darken(@color-5, 10%);
 		&.remove {
 			background-color: @btn-danger-bg;
+			&.changed {
+				background-color: darken(@color-5, 10%);
+			}
 		}
 	}
 	&:focus {
 		color: white;
+	}
+
+	&.btn-link {
+		background-color: transparent;
+		color: @color-18;
+		text-decoration: none;
+		font-weight: normal;
+		font-size: 13px;
+		padding-right: 3px;
+		padding-left: 3px;
+		&.is-active {
+			color: @color-5;
+		}
+		&:hover {
+			color: @text-color;
+			&.remove {
+				color: @btn-danger-bg;
+				background-color: transparent;
+				&.changed {
+					color: @text-color;
+					&.is-active {
+						color: @color-5;
+					}
+					background-color: transparent;
+				}
+			}
+		}
 	}
 }
 
@@ -985,6 +1015,12 @@ body {
 				}
 				background: @color-12!important;
 			}
+		}
+	}
+
+	&.edit {
+		.datear-breadcrumb {
+			left: 170px;
 		}
 	}
 
@@ -3654,13 +3690,14 @@ ul.input-list {
 	}
 
 	.pin {
-		position: absolute;
-		right: 0;
-		top: 0;
+		//position: absolute;
+		//right: 0;
+		//top: 0;
 		font-size: 28px;
 		line-height: 30px;
 		height: 30px;
 		width: 30px;
+		display: inline-block;
 		color: @color-18;
 		&:hover {
 			color: @color-10;
@@ -3731,6 +3768,13 @@ ul.input-list {
 		.teaser-inner {
 			z-index: 2;
 			position:relative;
+		}
+
+		.pin {
+			margin-right: 10px;
+			position: relative;
+			font-size: 25px;
+			top: 0px;
 		}
 
 		&.unpublished:after {
@@ -4079,27 +4123,29 @@ ul.input-list {
 			left: 37px;
 		}
 
-		.dateo-edit-btn.btn-link {
-			position: absolute;
-			right: 10px;
-			top: 5px;
-			color: @color-18;
-			font-size: 24px;
-			outline: none;
-			&:hover {
-				color: #444;
+		.admin {
+			position:absolute;
+			right: 35px;
+			top: -30px;
+			.unpublished-msg {
+			}
+			.dateo-edit-btn.btn-link {
+				color: @color-18;
+				font-size: 24px;
+				outline: none;
+				position: relative;
+				top: -11px;
+				right: 0;
+				padding: 5px 0;
+				&:hover {
+					color: #444;
+				}
 			}
 		}
 
 		.inner {
 			position:relative;
 			padding-right: 35px;
-		}
-
-		.unpublished-msg {
-			position: absolute;
-			right: 35px;
-			top: -20px;
 		}
 
 		h3 {
@@ -4209,11 +4255,16 @@ ul.input-list {
 	}
 
 	div.comment-holder {
+
 		margin: 0 0 30px 0;
 		position: relative;
 		padding-bottom: 10px;
 		margin-bottom: 15px;
 		border-bottom: 1px dashed @color-19;
+
+		&.slidedown {
+			display: none;
+		}
 
 		&:last-child {
 			border-bottom: none !important;
@@ -4236,7 +4287,7 @@ ul.input-list {
 				margin: 0 5px 0 0;
 			}
 			.date {
-				color: @color-6;
+				color: @color-10;
 				font-size: 12px;
 			}
 		}
@@ -4255,7 +4306,7 @@ ul.input-list {
 		}
 
 		.comment-content {
-			margin-top: 2px;
+			margin-top: 0px;
 			margin-left: 38px;
 		}
 	}
