@@ -20,9 +20,11 @@ angular.module( 'dateaWebApp'
 .config(
 [ '$routeProvider'
 , '$httpProvider'
+, 'localStorageServiceProvider'
 , function (
   $routeProvider
 , $httpProvider
+, localStorageServiceProvider
 ) {
 
 	$httpProvider.defaults.useXDomain = true;
@@ -113,4 +115,6 @@ angular.module( 'dateaWebApp'
 	    } )
 	.otherwise( { redirectTo: '/' } );
 
-} ] )
+	localStorageServiceProvider.prefix = 'datea';
+
+} ] );

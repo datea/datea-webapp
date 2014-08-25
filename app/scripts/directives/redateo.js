@@ -4,10 +4,12 @@ angular.module("dateaWebApp")
   'Api'
 , 'User'
 , '$location'
+, 'localStorageService'
 , function (
 	  Api
 	, User
 	, $location
+	, localStorageService
 ) {
 	
 	return {
@@ -23,6 +25,8 @@ angular.module("dateaWebApp")
 
 			var checkHasRedateado
 				, mouseHasLeft
+				, ls = localStorageService
+				, nextURL
 			;
 
 			$scope.redateo           = {};
@@ -65,6 +69,8 @@ angular.module("dateaWebApp")
 
 			$scope.flow.doRedateo = function () {
 				if (!User.isSignedIn()) {
+					nextURL = $location.path();
+					ls.set( 'nextURL', { path: nextURL, count: 0 } );
 					$location.path('/registrate');
 					return;
 				}

@@ -522,52 +522,65 @@ angular.module( 'dateaWebApp' )
 	onSignIn = function () {
 		var map
 		  , bounds
+		  , nextURL
 		  ;
 
-		State.isLanding             = false;
-		$scope.flow.isSignedIn      = false;
-		$scope.user                 = User.data;
+		nextURL = ls.get( 'nextURL' );
+		if ( nextURL && nextURL.count === 0 ) {
+			$timeout( function () {
+				console.log( 'using nextURL', nextURL );
+				nextURL.count = nextURL.count + 1;
+				ls.set( 'nextURL', nextURL );
+				$location.path( nextURL.path );
+			} );
+			return;
+		} else {
+			State.isLanding             = false;
+			$scope.flow.isSignedIn      = false;
+			$scope.user                 = User.data;
 
-		if (User.data.tags_followed.length) {
-			$scope.query.followFilter       = 'follow';
-	  	$scope.query.followFilterLabel  = 'lo que sigo';
+			if (User.data.tags_followed.length) {
+				$scope.query.followFilter       = 'follow';
+		  	$scope.query.followFilterLabel  = 'lo que sigo';
+			}
+	  	if (User.data.tags_followed.length <= 10) {
+				$scope.homeSI.colorRange   =  d3.scale.category10().range();
+			}else {
+				$scope.homeSI.colorRange   =  d3.scale.category20().range();
+			}
+			$scope.homeSI.userTags = {};
+			$scope.homeSI.followingTags = User.data.tags_followed.map(function (t, i) { 
+				t.color = $scope.homeSI.colorRange[i];
+				$scope.homeSI.userTags[t.tag] = t;
+				return t;
+			});
+			
+			map               = angular.copy( config.defaultMap );
+			config.defaultMap = map;
+			map.center.zoom 	= config.homeSI.mapZoomOverride;
+			map.bounds        = leafletBoundsHelpers.createBoundsFromArray( [ [ -12.0735, -77.0336 ], [ -12.0829, -77.0467 ] ] );
+			// map.center      = {};
+			angular.extend( $scope.homeSI.leaflet, map );
+
+			geolocateAndBuildMap();
+			// buildMap();
+			buildCampaigns();
+			buildCampaignsFollowed();
+			buildActivityLog();
+			buildWeeklyDateo();
+			buildTrendingTags();
+			buildFollowingTags();
+
+			$scope.$watch('query.orderBy', function() {
+				$scope.homeSI.onFilterChange();
+			});
+
+			$scope.$watch('query.followFilter', function() {
+				$scope.homeSI.onFilterChange();
+			});
+			console.log("HOME SI", $scope.homeSI);
 		}
-  	if (User.data.tags_followed.length <= 10) {
-			$scope.homeSI.colorRange   =  d3.scale.category10().range();
-		}else {
-			$scope.homeSI.colorRange   =  d3.scale.category20().range();
-		}
-		$scope.homeSI.userTags = {};
-		$scope.homeSI.followingTags = User.data.tags_followed.map(function (t, i) { 
-			t.color = $scope.homeSI.colorRange[i];
-			$scope.homeSI.userTags[t.tag] = t;
-			return t;
-		});
-		
-		map               = angular.copy( config.defaultMap );
-		config.defaultMap = map;
-		map.center.zoom 	= config.homeSI.mapZoomOverride;
-		map.bounds        = leafletBoundsHelpers.createBoundsFromArray( [ [ -12.0735, -77.0336 ], [ -12.0829, -77.0467 ] ] );
-		// map.center      = {};
-		angular.extend( $scope.homeSI.leaflet, map );
 
-		geolocateAndBuildMap();
-		// buildMap();
-		buildCampaigns();
-		buildCampaignsFollowed();
-		buildActivityLog();
-		buildWeeklyDateo();
-		buildTrendingTags();
-		buildFollowingTags();
-
-		$scope.$watch('query.orderBy', function() {
-			$scope.homeSI.onFilterChange();
-		});
-
-		$scope.$watch('query.followFilter', function() {
-			$scope.homeSI.onFilterChange();
-		});
-		console.log("HOME SI", $scope.homeSI);
 	}
 
 	onSignUp = function () {

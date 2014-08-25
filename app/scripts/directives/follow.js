@@ -1,5 +1,5 @@
 angular.module("dateaWebApp")
-	.directive("daFollow", ['Api', 'User', '$location', function(Api, User, $location) {
+	.directive("daFollow", ['Api', 'User', '$location', 'localStorageService', function(Api, User, $location, localStorageService) {
 		return {
     	 restrict    : "E"
     	,templateUrl : "/views/follow-button.html"
@@ -14,6 +14,8 @@ angular.module("dateaWebApp")
 
     		var follow_key;
     		var follow_obj = attrs.followObj;
+    		var ls = localStorageService;
+    		var nextURL;
     		scope.btn_class   = angular.isDefined(attrs.btnClass) ? attrs.btnClass : '';
     		console.log("BTN CLASS", scope.btn_class);
     		scope.is_following = false;
@@ -56,6 +58,8 @@ angular.module("dateaWebApp")
 							console.log( reason );
 						} );
 					} else {
+						nextURL = $location.path();
+						ls.set( 'nextURL', { path: nextURL, count: 0 } );
 						$location.path('/registrate');
 					}
 				}
