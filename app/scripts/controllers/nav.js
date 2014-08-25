@@ -10,6 +10,7 @@ angular.module('dateaWebApp')
   , 'localStorageService'
   , 'State'
   , '$timeout'
+  , '$window'
 , function (
     $scope
   , User
@@ -19,6 +20,7 @@ angular.module('dateaWebApp')
   , localStorageService
   , State
   , $timeout
+  , $window
 ) {
 	// fn declarations
 	var onSignIn
@@ -111,6 +113,10 @@ angular.module('dateaWebApp')
 		User.updateUserDataFromStorage();
 		onSignIn({checkUserStatus: false});
 	});
+
+	$scope.$on( '$locationChangeSuccess', function () {
+		$window.scrollTo( 0, 0 );
+	} );
 
 	$rootScope.$on( 'error:someError', function () {
 		console.log( 'hubo un error http' );
