@@ -9,14 +9,7 @@
 						<p class="shortdesc">{{campaign.short_description}}</p>
 						<div class="main-btns">
 							<div class="inner">
-								<div class="mbtn datear-btn">
-									<button class="btn datea-datear-btn btn-lg" ng-click="flow.datear()">Datea <i class="glyphicon glyphicon-map-marker"></i></button><span class="time-left" ng-show="campaign.end_date">{{campaign._timeLeft | date:time }}</span>
-								</div>
-								<div class="mbtn follow-camp-btn">
-									<da-follow follow-obj="tag" follow-id="{{campaign.id}}" btn-class="follow-campaign"></da-follow>
-								</div>
 								<div class="mbtn share-btn">
-								
 									<div class="datea-glyph-holder hover-enabled" ng-click="campaign.share()">
 										<i class="fa fa-share-alt"></i>
 									</div>
@@ -31,6 +24,13 @@
 											<button class="btn btn-default" type="button" ng-click="campaign.share()"><i class="fa fa-share-alt"></i></button>
 										</span>
 									</div>-->
+								</div>
+								<div class="mbtn follow-camp-btn">
+									<da-follow follow-obj="tag" follow-id="{{campaign.id}}" btn-class="follow-campaign"></da-follow>
+								</div>
+								<div class="mbtn datear-btn">
+									<button class="btn datea-datear-btn btn-lg" ng-click="flow.datear()">Datea <i class="glyphicon glyphicon-map-marker"></i></button>
+									<div class="time-left {{flow.endDate.type}}" ng-show="flow.endDate">{{flow.endDate.msg}}</div>
 								</div>
 							</div>
 						</div>

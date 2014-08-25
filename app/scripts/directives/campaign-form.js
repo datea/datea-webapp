@@ -85,7 +85,13 @@ angular.module("dateaWebApp")
 					}
 					// Date watch
 					$scope.$watch( 'flow.dp.endDate', function () {
-						$scope.campaign.end_date = ($scope.flow.dp.endDate) ? $scope.flow.dp.endDate.toISOString() : null;
+						var notz;
+						if ($scope.flow.dp.endDate) {
+							notz = new Date( $scope.flow.dp.endDate.getTime() - ($scope.flow.dp.endDate.getTimezoneOffset() * 60000))
+							$scope.campaign.end_date = notz.toISOString();
+						}else {
+							$scope.campaign.end_date = null;
+						}
 						console.log($scope.campaign.end_date);
 					} );
 
@@ -116,6 +122,9 @@ angular.module("dateaWebApp")
 									  lat  : $scope.campaign.center.coordinates[1]
 									, lng  : $scope.campaign.center.coordinates[0]
 									, zoom : $scope.campaign.zoom 
+								}
+								if ($scope.campaign.end_date) {
+									$scope.flow.dp.endDate = Date.parse($scope.campaign.end_date);
 								}
 								// boundary
 								if ($scope.campaign.boundary && $scope.campaign.boundary.coordinates) {
@@ -338,7 +347,6 @@ angular.module("dateaWebApp")
 					$scope.flow.save = function () {
 						var center;
 
-						$scope.campaign.end_date            = $scope.flow.dt && $scope.flow.dt;
 						$scope.campaign.category            = getCategory($scope.flow.selectedCategory);
 						//$scope.campaign.main_tag            = { tag: $scope.campaign.main_tag.replace('#', '') };
 						$scope.campaign.layer_files               = $scope.campaign.layer_files.length && $scope.campaign.layer_files;
@@ -371,7 +379,6 @@ angular.module("dateaWebApp")
 	          		Api.campaign
 								.patchCampaign( {objects: [$scope.campaign]} )
 								.then( function ( response ) {
-									console.log( 'patchCampaign', response);
 									$location.path( '/'+User.data.username+'/'+response.objects[0].main_tag.tag );
 								}, function ( reason ) {
 									console.log( 'patchCampaign reason: ', reason );
@@ -381,7 +388,6 @@ angular.module("dateaWebApp")
 								Api.campaign
 								.postCampaign( $scope.campaign )
 								.then( function ( response ) {
-									console.log( 'postCampaign', response);
 									$location.path( '/'+User.data.username+'/'+response.main_tag.tag );
 								}, function ( reason ) {
 									console.log( 'postCampaign reason: ', reason );

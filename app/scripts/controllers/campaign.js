@@ -57,6 +57,7 @@ angular.module('dateaWebApp')
 	  , buildRelatedCampaigns
 	  , buildLayerFiles
 	  , checkDateoDisplayOptions
+	  , checkTimeLeft
 	  , getTagsString
 	  , sessionMarkersIdx = 0
 	  , serializeXmlNode
@@ -239,6 +240,7 @@ angular.module('dateaWebApp')
 				buildFollowersList();
 				buildRelatedCampaigns();
 				buildLayerFiles();
+				checkTimeLeft();
 				if (User.isSignedIn() && User.data.id == $scope.campaign.user.id) {
 					$scope.flow.userIsOwner = true;
 				}
@@ -253,6 +255,22 @@ angular.module('dateaWebApp')
 				} );
 			}
 		} );
+	}
+
+	checkTimeLeft = function () {
+		var endDate, ts, now;
+		if ($scope.campaign.end_date) {
+			endDate = Date.parse($scope.campaign.end_date);
+			now = new Date();
+			ts = new TimeSpan( endDate - now );
+			if (ts.days < 0) {
+				$scope.flow.endDate = {type: 'warning', msg: 'Iniciativa ha expirado'};
+			}else if (ts.days === 0) {
+				$scope.flow.endDate = {type: 'normal', msg: '¡último dia para datear!'};
+			}else {
+				$scope.flow.endDate = {type: 'normal', msg: 'faltan '+ ts.days + ' días'};
+			}
+		}
 	}
 
 	updateCampaign = function () {
@@ -395,7 +413,6 @@ angular.module('dateaWebApp')
 		Api.dateo
 		.getDateos( givens )
 		.then( function ( response ) {
-			console.log(response);
 			if (response.objects.length) {
 				switch (activeTab) {
 					case 'map':
@@ -649,12 +666,6 @@ angular.module('dateaWebApp')
 		angular.extend( $scope.campaign.leaflet, defaultMap );
 	}
 
-	$scope.$on('$destroy', function () {
-		markersBounds   = [];
-		$scope.campaign = {};
-		leafletMarkersHelpers.resetCurrentGroups();
-	});
-
 	/**************************************************
 		CUSTOM MARKERCLUSTER ICONS: PIES
 	***************************************************/
@@ -821,8 +832,15 @@ angular.module('dateaWebApp')
 
 	$document.on('scroll', function() {
 		var st = $document.scrollTop();
-		if (typeof(cardHeight) == 'undefined') cardHeight = angular.element('.viz-holder').position().top;
-		$scope.$apply(function() { $scope.flow.titleFix = st > cardHeight - 60; });
+		if (typeof(cardHeight) == 'undefined' && angular.element('.viz-holder').size()) cardHeight = angular.element('.viz-holder').position().top;
+		if (cardHeight) $scope.$apply(function() { $scope.flow.titleFix = st > cardHeight - 60; });
+	});
+
+
+	$scope.$on('$destroy', function () {
+		markersBounds   = [];
+		$scope.campaign = {};
+		leafletMarkersHelpers.resetCurrentGroups();
 	});
 
 

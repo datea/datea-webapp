@@ -2417,7 +2417,26 @@ body {
 						}
 						.datear-btn {
 							position: relative;
-							top: -6px;
+							top: -7px;
+							.datea-datear-btn {
+								display: inline-block;
+								//vertical-align: top;
+							}
+							.time-left {
+								display: inline-block;
+								vertical-align: middle;
+								width: 80px;
+								padding: 5px;
+
+								&.warning {
+									margin-left: 5px;
+									color: red;
+									line-height: 16px;
+									background-color: white;
+									border-radius: 5px;
+									text-align: center;
+								}
+							}
 						}
 						.share-btn {
 							.btn {
