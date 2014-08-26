@@ -121,7 +121,7 @@ angular.module( 'dateaWebApp' )
 			$scope.campaign.dateos = response.objects.map(function (d) {return processDateoStatus(d)});
 			$scope.query.totalCount = response.meta.total_count;
 			if ($location.search().item) {
-				openDateoById(item);
+				openDateoById($location.search().item);
 			}
 			$scope.flow.loading = false;
 		}, function (reason) {
@@ -183,7 +183,7 @@ angular.module( 'dateaWebApp' )
 
 	openDateoById = function (id) {
 		for (var i in $scope.campaign.dateos) {
-			if ($scope.campaign.dateos[i].id === id) {
+			if ($scope.campaign.dateos[i].id == id) {
 				openDateo(i);
 				break;
 			}

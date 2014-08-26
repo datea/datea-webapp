@@ -158,17 +158,17 @@
 						<div class="row">
 							<div class="hidden-xs col-sm-45 dateos-holder">
 								<div class="dateo-detail-content-holder" ng-show="flow.dateoDetail.show">
-									<da-dateo-detail-inline dateo="flow.dateoDetail.dateo" marker-index="flow.dateoDetail.markerIndex"></da-dateo-detail-inline>
+									<da-dateo-detail-inline dateo="flow.dateoDetail.dateo" marker-index="flow.dateoDetail.markerIndex" campaign-id="campaign.id"></da-dateo-detail-inline>
 								</div>
 								<div class="dateo-description-holder" ng-hide="flow.dateoDetail.show">
-										<da-dateo-teaser ng-repeat="dateo in campaign.dateos"></da-dateo-teaser>
+										<da-dateo-teaser ng-repeat="dateo in campaign.dateos" campaign-id="campaign.id"></da-dateo-teaser>
 										<div class="no-results" ng-show="campaign.dateos.length == 0 && flow.query.done">
 										Aún no hay dateos en esta iniciativa. ¡Datea!
 										</div>
 								</div>
 							</div>
 							<div class="col-xs-12 col-sm-75 leaflet-map-holder" ng-class="{'has-legend': flow.hasLegend}">
-								<leaflet id="leafletCampaign" defaults="campaign.leaflet.defaults" markers="campaign.leaflet.markers" center="campaign.leaflet.center" cluster-options="campaign.leaflet.clusterOptions" width="100%" tiles="campaign.leaflet.tiles"></leaflet>
+								<leaflet id="leafletCampaign" events="campaign.leaflet.events" defaults="campaign.leaflet.defaults" markers="campaign.leaflet.markers" center="campaign.leaflet.center" cluster-options="campaign.leaflet.clusterOptions" width="100%" tiles="campaign.leaflet.tiles"></leaflet>
 								<div class="legend-holder" ng-show="campaign.secondary_tags.length > 0">
 									<div class="expand" ng-click="flow.expandLegend()" ng-show="flow.showLegendExpandLink">ver todas</div>
 									<div class="contract" ng-click="flow.contractLegend()" ng-show="flow.showLegendContractLink">cerrar</div>

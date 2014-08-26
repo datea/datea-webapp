@@ -1338,6 +1338,14 @@ body {
 			.actions { 
 				padding-top: 20px;
 				.btn { min-width: 120px}
+
+				.published-field {
+					margin: 0 20px;
+					label {
+						line-height: 40px;
+						input.form-control { width: auto;}
+					}
+				}
 			}
 
 			.form-group label {
@@ -3697,15 +3705,26 @@ ul.input-list {
 		}
 	}
 
-	.user-img { height: 40px; width: 40px}
-
-	.user-info {
-			margin-left: 5px;
+	.user-head {
+		.clearfix;
+		.user-img { height: 40px; width: 40px; float: left;}
+		.user-info {
+			margin-left: 10px;
+			float: left;
 			h4.username { 
 				margin-bottom: 2px;
 				a {color: black}
+				margin-top: 6px;
+				font-size: @font-size-base;
+				font-weight: bold;
+				color: black;
 			}
 			.date { font-size: 12px; color: @color-9; }
+		}
+		.admin-info {
+			padding-top: 3px;
+			float:left;
+		}
 	}
 
 	.pin {
@@ -3781,8 +3800,25 @@ ul.input-list {
 		.btn.btn-link {padding-left: 0} 
 	}
 
+	.admin-status {
+		float: right;
+		margin-left: 20px;
+	}
+
 	&.dateo-teaser{
 		position: relative;
+
+		border-bottom: 1px solid @color-3;
+		margin-top: 20px;
+		padding-bottom: 20px;
+
+		&:first-child {
+			margin-top: 0;
+		}
+		&:last-child {
+			border-bottom: 0;
+		}
+
 
 		.teaser-inner {
 			z-index: 2;
@@ -3811,14 +3847,6 @@ ul.input-list {
 			font-size: 13px;
 			line-height: 30px;
 			margin-right: 10px;
-		}
-
-		.username { 
-			margin-top: 6px;
-			font-size: @font-size-base;
-			font-weight: bold;
-			color: black;
-			a {color: black}
 		}
 
 		.image {
@@ -4766,6 +4794,7 @@ ul.input-list {
 .leaflet-popup-content .marker-holder {
 	color: @color-6;
 
+	.clearfix;
 	img {
 		display: inline-block;
 		vertical-align: top;
@@ -4785,9 +4814,24 @@ ul.input-list {
 		}
 		.date {color: lighten(@color-6, 15%);}
 	}
+
+	.tags {
+		margin-top: 7px;
+		.clearfix;
+		a.tag {
+			float: left;
+			margin-right: 7px;
+			font-size: 13px;
+			color: @color-12;
+			&:hover {
+				color: darken(@color-12, 15%);
+			}
+		}
+	}
+
 	p {
 		min-width: 280px;
-		margin: 8px 0;
+		margin: 4px 0 8px;
 		font-size: 13px;
 	}
 	.datea-glyph {
@@ -4799,9 +4843,9 @@ ul.input-list {
 		line-height: 22px;
 		position: relative;
 		top: 3px;
-		margin-right: 80px;
 		.stat {
 			color: @color-10;
+			margin-right: 18px;
 			.glyphicon {
 				color: @color-18;
 				font-size: 16px;
@@ -4812,7 +4856,7 @@ ul.input-list {
 		}
 	}
 	.glyphicon-comment {
-		margin: 0 4px 0 14px;
+		margin: 0 4px 0 0px;
 	}
 	a.datea-gray-btn {
 		position: relative;

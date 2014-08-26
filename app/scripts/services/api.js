@@ -375,7 +375,7 @@ angular.module('dateaWebApp')
 	}
 
 	// DateoStatus
-	dateoStatus.postList = function(givens) {
+	dateoStatus.post = function(givens) {
 		var dfd = $q.defer();
 		dateoStatus.rsrc.post(givens, function(response) {
 			dfd.resolve(response);

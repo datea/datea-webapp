@@ -24,6 +24,7 @@ angular.module( 'dateaWebApp' )
   , 'leafletMarkersHelpers'
   , '$log'
   , 'Piecluster'
+  , '$compile'
 , function (
     $scope
   , User
@@ -47,6 +48,7 @@ angular.module( 'dateaWebApp' )
   , leafletMarkersHelpers
   , $log
   , Piecluster
+  , $compile
 ) {
 	var data
 	  , ls = localStorageService
@@ -87,10 +89,11 @@ angular.module( 'dateaWebApp' )
 	  , buildMarkerIcon
 	  , buildClusterIcon
 	  , buildPieClusterIcon
-	  , selectClusterFunction
+	  , createMarkerPopup
 	  , clusterSizeRange
 	 	, makeSVGClusterIcon
 	  , makeSVGPie
+	 	, selectClusterFunction
 	  , serializeXmlNode
 	;
 
@@ -118,6 +121,7 @@ angular.module( 'dateaWebApp' )
 	$scope.query.followFilterLabel  = 'todos';
 
 	$scope.dateFormat = config.defaultDateFormat;
+	$scope.homeSI.leaflet.events = {enable: ['leafletDirectiveMarker.click']};
 
 	// $scope.homeSI.leaflet = { bounds   : [ [ -12.0735, -77.0336 ], [ -12.0829, -77.0467 ] ]
 	//                , center   : { lat: -12.05, lng: -77.06, zoom: 13 }
@@ -431,20 +435,16 @@ angular.module( 'dateaWebApp' )
 					;
 					
 					if ( value.position && !isMarkerDup( { marker : value } ) ) {
-						// default image for markers
-						value.user.markerImage = value.user.image_small
- 						? config.api.imgUrl+value.user.image_small
-						: '/' + config.defaultImgProfile;
-						value._prettyDate = $filter('date')( value.date, config.defaultDateFormat );
 						markers['marker'+sessionMarkersIdx] = {
 						  lat         : value.position.coordinates[1]
 						, lng         : value.position.coordinates[0]
 						// , group     : value.tag
-						, message     : $interpolate( config.marker )( value )
+						//, message     : $interpolate( config.marker )( value )
 						, draggable   : false
 						, focus       : false
 						, _id         : value.id
 						, _tags       : tags
+						, _dateo      : value
 						, icon 			  : buildMarkerIcon(value)
 						, riseOnHover : true
 						, group       : '1'
@@ -490,6 +490,28 @@ angular.module( 'dateaWebApp' )
 		}, function ( reason ) {
 			console.log( reason );
 		} );
+	}
+
+	createMarkerPopup = function (dateo) {
+		$http.get('views/dateo-map-popup.html')
+ 		.success(function(html) {
+ 			var pscope, compiled, pelem;
+ 			pscope = $scope.$new(true);
+ 			pscope.dateo = dateo;
+ 			pscope.dateFormat = config.defaultDateFormat;
+ 			pscope.tags = dateo.tags.slice(0, 2);
+ 			compiled = $compile(angular.element(html));
+ 			pelem = compiled(pscope);
+ 			leafletData.getMap("leafletHomeSI")
+			.then( function ( map ) {
+				L.popup({
+					offset: L.point(0, -32)
+				})
+				.setLatLng([dateo.position.coordinates[1], dateo.position.coordinates[0]])
+				.setContent(pelem[0])
+				.openOn(map);
+			});
+ 		});
 	}
 
 	geolocateAndBuildMap = function ( givens ) {
@@ -807,6 +829,7 @@ angular.module( 'dateaWebApp' )
 		$timeout( function () {
 			openSpiderfy();
 			$scope.homeSI.leaflet.markers[markerName] && ( $scope.homeSI.leaflet.markers[markerName].focus = true );
+			createMarkerPopup($scope.homeSI.leaflet.markers[markerName].options._dateo);
 		}, 100 );
 		$scope.$broadcast( 'leafletDirectiveMarker.click', { markerName : markerName } );
 		isCenterOutOfBounds();
@@ -1073,6 +1096,7 @@ angular.module( 'dateaWebApp' )
 	$scope.$on( 'leafletDirectiveMarker.click', function ( ev, args ) {
 		console.log( 'focus event', args.markerName );
 		lastMarkerWithFocus = args.markerName;
+		createMarkerPopup(args.leafletEvent.target.options._dateo);
 	} );
 
 	$scope.$on('$destroy', function () {

@@ -20,10 +20,13 @@ angular.module("dateaWebApp")
 				dateo 			: '='
 			, markerIndex	: '=?'
 			, mapPresent  : '@'
+			, campaignId  : '='
 		}
 		, controller  : function ($scope, $element, $attrs) {
 				
-				var updateComments;
+				var updateComments
+					, checkStatus
+					;
 
 				$scope.dateFormat           = config.defaultDateFormat;
 				$scope.dateo 								= {};
@@ -36,6 +39,7 @@ angular.module("dateaWebApp")
     		$scope.$watch('dateo.id', function () {
     			if ($scope.dateo && $scope.dateo.id) {
     				$scope.flow.showEditBtn = User.data.id === $scope.dateo.user.id;
+    				checkStatus();
     			}
     		});
 
@@ -66,6 +70,19 @@ angular.module("dateaWebApp")
 					}, function (reason) {
 						console.log(reason);
 					});
+				}
+
+				checkStatus = function () {
+					var status;
+					if ($scope.campaignId && $scope.dateo.admin && $scope.dateo.admin[$scope.campaignId]) {
+						status = $scope.dateo.admin[$scope.campaignId].status;
+						if (status != 'new') {
+							$scope.flow.status = {
+								  msg    : status == 'reviewed' ? 'atendido' : 'solucionado'
+								, type   : status
+							} 
+						} 
+					}
 				}
 
 				$scope.flow.imgDetail = function ( img ) {

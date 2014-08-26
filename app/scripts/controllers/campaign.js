@@ -7,6 +7,7 @@ angular.module('dateaWebApp')
   , '$routeParams'
   , 'config'
   , '$interpolate'
+  , '$compile'
   , 'leafletData'
   , '$timeout'
   , '$filter'
@@ -19,12 +20,14 @@ angular.module('dateaWebApp')
   , '$document'
   , 'geoJSONStyle'
   , 'Piecluster'
+  , '$rootScope'
 , function (
     $scope
   , Api
   , $routeParams
   , config
   , $interpolate
+  , $compile
   , leafletData
   , $timeout
   , $filter
@@ -37,6 +40,7 @@ angular.module('dateaWebApp')
   , $document
   , geoJSONStyle
   , Piecluster
+  , $rootScope
 ) {
 
 	var sessionMarkersIdx = 0
@@ -58,6 +62,7 @@ angular.module('dateaWebApp')
 	  , buildLayerFiles
 	  , checkDateoDisplayOptions
 	  , checkTimeLeft
+	  , createMarkerPopup
 	  , getTagsString
 	  , sessionMarkersIdx = 0
 	  , serializeXmlNode
@@ -71,6 +76,7 @@ angular.module('dateaWebApp')
 	  , buildQueryParams
 	  , queryParamsToText
 	  , openSpiderfy
+	  , renderPopupContent
 	;
 
 	$scope.campaign          = {};
@@ -94,7 +100,9 @@ angular.module('dateaWebApp')
 		  dateo : null
 		, show  : false 
 	};
-	$scope.query             = {}
+	$scope.query             = {};
+	$scope.campaign.leaflet.events = {enable: ['leafletDirectiveMarker.click']};
+
 
 	buildRelatedCampaigns = function () {
 		var tags = getTagsString( $scope.campaign );
@@ -137,10 +145,7 @@ angular.module('dateaWebApp')
 	}
 
 	buildMarker = function(dateo) {
-			dateo._prettyDate = $filter('date')( dateo.date, 'fullDate' );
-			dateo.user.markerImage = dateo.user.image_small
- 						? config.api.imgUrl+dateo.user.image_small
-						: '/' + config.defaultImgProfile;
+		
 			var tags = [];
 			var labelTags = []; 
 			angular.forEach(dateo.tags, function (tag) { 
@@ -153,7 +158,7 @@ angular.module('dateaWebApp')
 			, lng         : dateo.position.coordinates[0]
 			, group       : $scope.campaign.main_tag.tag
 			, label       : { message: labelTags.join(',') }
-			, message     : $interpolate( config.marker )(dateo)
+			//, message     : $interpolate( config.marker )(dateo)
 			, draggable   : false
 			, focus       : false
 			, _id         : dateo.id
@@ -198,8 +203,35 @@ angular.module('dateaWebApp')
 	addMarker = function (dateo) {
 		var marker;
 		marker = buildMarker(dateo);
-		$scope.campaign.leaflet.markers['marker'+sessionMarkersIdx] = marker;
+		$scope.campaign.leaflet.markers["marker"+sessionMarkersIdx] = marker;
 		sessionMarkersIdx ++; 
+	}
+
+	createMarkerPopup = function (idx) {
+		$http.get('views/dateo-map-popup.html')
+ 		.success(function(html) {
+ 			var compiled, pscope, pelem, didx;
+ 			didx = parseInt(idx.replace('marker',''));
+ 			pscope = $scope.$new(true);
+ 			pscope.dateo = $scope.campaign.dateos[didx];
+ 			pscope.dateFormat = config.defaultDateFormat;
+ 			pscope.index = didx;
+ 			pscope.openDetail = function () {
+ 				$scope.flow.openDateoDetail(didx);
+ 			}
+ 			pscope.tags = pscope.dateo.tags.slice(0, 2);
+ 			compiled = $compile(angular.element(html));
+ 			pelem = compiled(pscope);
+ 			leafletData.getMap("leafletCampaign")
+			.then( function ( map ) {
+				L.popup({
+					offset: L.point(0, -32)
+				})
+				.setLatLng([pscope.dateo.position.coordinates[1], pscope.dateo.position.coordinates[0]])
+				.setContent(pelem[0])
+				.openOn(map);
+			});
+ 		});
 	}
 
 	buildFollowersList = function () {
@@ -413,6 +445,7 @@ angular.module('dateaWebApp')
 		Api.dateo
 		.getDateos( givens )
 		.then( function ( response ) {
+			console.log("CAMPAIGN DATEOS", response.objects);
 			if (response.objects.length) {
 				switch (activeTab) {
 					case 'map':
@@ -528,7 +561,7 @@ angular.module('dateaWebApp')
 		var markerName
 		  , center = {}
 		  ;
-		markerName  = 'marker'+idx;
+		markerName  = "marker"+idx;
 		if ( $scope.campaign.leaflet.markers[markerName] ) {
 			center.lat  = $scope.campaign.leaflet.markers[markerName].lat;
 			center.lng  = $scope.campaign.leaflet.markers[markerName].lng;
@@ -538,9 +571,9 @@ angular.module('dateaWebApp')
 			$timeout( function () {
 				openSpiderfy( idx );
 				$scope.campaign.leaflet.markers[markerName].focus = true;
+				createMarkerPopup(markerName);
 			}, 1000 );
 		}
-		console.log( 'focusDateo', idx, $scope.campaign.leaflet.markers[markerName].focus );
 	}
 	$scope.flow.openDateoDetail = function (index) {
 		$scope.flow.dateoDetail.dateo       = $scope.campaign.dateos[index];
@@ -562,13 +595,9 @@ angular.module('dateaWebApp')
 	$scope.$on('close-dateo-detail', function () {
 		$scope.flow.closeDateoDetail();
 	} );
-	$scope.$on('leafletDirectiveMap.popupopen', function(event, args){
-    $('.popup-detail-btn').click(function (ev) {
-    	ev.preventDefault();
-    	var index = parseInt($(this).data('index'));
-    	$scope.flow.openDateoDetail(index);
-    });
-  });
+  $scope.$on('leafletDirectiveMarker.click', function(event, args) {
+		createMarkerPopup(args.markerName);
+	});
 
 	$scope.campaign.onSelectFilterChange = function () {
 		buildDateos();
@@ -776,7 +805,7 @@ angular.module('dateaWebApp')
 		  , slicePosition
 		  ;
 		// console.log( 'openSpiderfy', $scope.homeSI.leaflet.markers );
-		markerId  = $( $scope.campaign.leaflet.markers['marker'+idx].icon.html ).find('circle').data('datea-svg-circle-id');
+		markerId  = $( $scope.campaign.leaflet.markers["marker"+idx].icon.html ).find('circle').data('datea-svg-circle-id');
 		// If there is no marker then it must be 'inside' the cluster
 		if ( !$('[data-datea-svg-circle-id="'+markerId+'"]').length ) {
 			// If multiples SVGs

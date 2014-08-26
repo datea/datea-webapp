@@ -114,7 +114,8 @@ angular.module('dateaWebApp')
 		onSignIn({checkUserStatus: false});
 	});
 
-	$scope.$on( '$locationChangeSuccess', function () {
+	//$scope.$on( '$locationChangeSuccess', function (event, args) {
+	$scope.$on( '$routeChangeSuccess', function (event, args) {
 		$window.scrollTo( 0, 0 );
 	} );
 

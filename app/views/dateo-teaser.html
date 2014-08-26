@@ -1,10 +1,14 @@
 <div class="dateo dateo-teaser" ng-class="{unpublished: !dateo.published}">
 	<div class="teaser-inner">
-		<div class="parts-holder">
-			<div class="user-img part part-1 img-circle" da-bg-from-api="{{dateo.user.image_small}}" da-img-size="cover" da-img-type="user"></div>
-			<div class="part part-2 user-info">
+
+		<div class="user-head">
+			<div class="user-img img-circle" da-bg-from-api="{{dateo.user.image_small}}" da-img-size="cover" da-img-type="user"></div>
+			<div class="user-info">
 				<h4 class="username"><a href="/#/{{dateo.user.username}}">{{dateo.user.username}}</a></h4>
 				<div class="date">{{dateo.created | date:dateFormat}}</div>
+			</div>
+			<div class="admin-info">
+				<div class="label admin-status" ng-show="flow.status" ng-class="{'label-success': flow.status.type === 'solved', 'label-info': flow.status.type === 'reviewed'}">{{flow.status.msg}}</div>
 			</div>
 		</div>
 
@@ -22,7 +26,7 @@
 			<div class="lcontent">
 				<h4 class="ltitle"><a href="{{dateo.link.url}}">{{dateo.link.title}}</a></h4>
 				<!--<p class="ldesc">{{dateo.link.description}}</p>-->
-			</div> 
+			</div>
 		</div>
 
 		<div class="files" ng-show="dateo.files.length">
@@ -45,5 +49,4 @@
 		</div>
 		<div class="redateo-msg" ng-show="flow.showRedateoAuthor && dateo.user.username != flow.showRedateoAuthor">re-dateado por <a href="#/{{flow.showRedateoAuthor}}">{{flow.showRedateoAuthor}}</a></div>
 	</div>
-	<hr>
 </div>
