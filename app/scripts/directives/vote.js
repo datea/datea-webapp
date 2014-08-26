@@ -4,10 +4,12 @@ angular.module("dateaWebApp")
   'Api'
 , 'User'
 , '$location'
+, 'localStorageService'
 , function (
 	  Api
 	, User
 	, $location
+	, localStorageService
 ) {
 	
 	return {
@@ -24,6 +26,8 @@ angular.module("dateaWebApp")
 
 			var checkHasVoted
 				, mouseHasLeft
+				, ls = localStorageService
+				, nextURL
 			;
 
 			$scope.vote              = {};
@@ -66,6 +70,8 @@ angular.module("dateaWebApp")
 
 			$scope.flow.doVote = function () {
 				if (!User.isSignedIn()) {
+					nextURL = $location.path();
+					ls.set( 'nextURL', { path: nextURL, count: 0 } );
 					$location.path('/registrate');
 					return;
 				}

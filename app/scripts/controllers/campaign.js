@@ -21,6 +21,7 @@ angular.module('dateaWebApp')
   , 'geoJSONStyle'
   , 'Piecluster'
   , '$rootScope'
+  , 'localStorageService'
 , function (
     $scope
   , Api
@@ -41,14 +42,17 @@ angular.module('dateaWebApp')
   , geoJSONStyle
   , Piecluster
   , $rootScope
+  , localStorageService
 ) {
 
 	var sessionMarkersIdx = 0
+	  , ls                = localStorageService
 	  , markersBounds     = []
 	  , defaultMap
 	  , modalInstance
 	  , queryCache        = {}
 	  , cardHeight
+	  , nextURL
 	  // fn declarations
 	  , buildCampaign
 	  , updateCampaign
@@ -638,6 +642,9 @@ angular.module('dateaWebApp')
 			} );
 
 		} else {
+			// nextURL = $location.path().replace('/','');
+			nextURL = $location.path();
+			ls.set( 'nextURL', { path: nextURL, count: 0 } );
 			$location.path('/registrate');
 		}
 	}
