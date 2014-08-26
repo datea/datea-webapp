@@ -897,11 +897,13 @@ angular.module( 'dateaWebApp' )
 		}
 		catWidth = (29 / colors.length)
 		
-		html = '<svg width="29" height="40"><g style="clip-path: url(#pinpath);">';
+		html = '<svg width="29" height="43"><g style="clip-path: url(#pinpath);">';
 		angular.forEach(colors, function (color, i) {
-			html = html + '<rect height="40" width="'+catWidth+'" fill="'+color+'" x="'+(i*catWidth)+'" />';
+			html = html + '<rect height="43" width="'+parseInt(Math.ceil(catWidth))+'" fill="'+color+'" x="'+(i*catWidth)+'" />';
 		});
-		html = html + '<circle class="datea-svg-marker-circle" data-datea-svg-circle-id="'+dateo.id+'" cx="14.5" cy="14" r="5" fill="white" />'
+		html = html 
+				 + '<circle class="datea-svg-marker-circle" data-datea-svg-circle-id="'+dateo.id+'" cx="14.5" cy="14" r="4" fill="white" />'
+				 + '<path d="M0.726,16.239c0-8.38,6.177-15.174,13.795-15.174s13.795,6.793,13.795,15.174c0,10.116-13.795,25.29-13.795,25.29  S0.726,26.355,0.726,16.239" stroke="#999999" fill="none" stroke-width="1" />'															 		 				
 				 + '</g></svg>';
 
 		return {

@@ -111,14 +111,15 @@ angular
 	, visualization: { default_other_color: '#CCCCCC'
 									 , default_color: '#28BC45'
 									 , defaultMarkerIcon : { type     		: 'div'
-																				 , iconSize 		: [29, 40]
-																				 , iconAnchor	: [14.5, 40]
+																				 , iconSize 		: [29, 43]
+																				 , iconAnchor	: [14.5, 43]
 																				 , popupAnchor	: [0, -33]
 																				 , labelAnchor	: [8, -25]
 																				 , className   : 'datea-pin-icon'
-																				 , html     		: '<svg width="29" height="40"><g style="clip-path: url(#pinpath);">'
-																							 				+ 	'<rect height="40" width="29" fill="#28BC45" />'
-																							 				+ 	'<circle cx="14.5" cy="14" r="5" fill="white" />'
+																				 , html     		: '<svg width="29" height="43"><g style="clip-path: url(#pinpath);">'
+																							 				+ 	'<rect height="43" width="29" fill="#28BC45" />'
+																							 				+ 	'<circle cx="14.5" cy="14" r="4" fill="white" />'
+																							 				+   '<path d="M0.726,16.239c0-8.38,6.177-15.174,13.795-15.174s13.795,6.793,13.795,15.174c0,10.116-13.795,25.29-13.795,25.29  S0.726,26.355,0.726,16.239" stroke="#999999" fill="none" stroke-width="1" />'
 																					 		 				+ '</g></svg>'
 																			   }  
 									 }      
