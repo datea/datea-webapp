@@ -36,7 +36,7 @@
 					<tabset>
 						
 						<tab heading="dateos">
-							<div class="dateos-holder tab-body" ng-class="{'datea-loading': targetUser.dateoLoading}">
+							<div class="dateos-holder tab-body" da-loading="targetUser.dateoLoading">
 								<p class="msg no-results" ng-show="targetUser.dateos.length === 0 && targetUser.dateoLoading === false">
 								No ha dateado todavia <i class="fa fa-meh-o"></i> 
 								</p>
@@ -47,7 +47,7 @@
 						</tab>
 
 						<tab heading="iniciativas" ng-show="targetUser.campaigns.length">
-							<div class="campaigns-holder tab-body" ng-class="{'datea-loading': targetUser.campaignLoading}">
+							<div class="campaigns-holder tab-body" da-loading="targetUser.campaignLoading">
 								<div class="campaign-list row">
 									<div class="col-lg-4 col-md-3 col-sm-6 col-xs-12" ng-repeat="campaign in targetUser.campaigns">
 										<da-campaign-teaser></da-campaign-teaser>

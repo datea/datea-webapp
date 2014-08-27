@@ -202,13 +202,34 @@ textarea { resize: vertical; }
 }
 
 .datea-loading:after {
+	//background: rgba(255,255,255,.5) url('@{imgUrl}/globals/loading.gif') no-repeat center center;
 	content: " ";
-	background: rgba(255,255,255,.5) url('@{imgUrl}/globals/loading.gif') no-repeat center center;
+	background-color: rgba(255,255,255,.7);
 	position: absolute;
 	top: 0;
 	bottom: 0;
 	right: 0;
 	left: 0;
+}
+.datea-loading-icon {
+	display: none;
+}
+.datea-loading {
+	.datea-loading-icon {
+		z-index: 10;
+		display: block;
+		font-size: 30px;
+		line-height: 15px;
+		.fa {
+			line-height: 15px;
+		}
+		position: absolute;
+		color: @color-18;
+		top: 40%;
+		left: 0;
+		right: 0;
+		text-align: center;
+	}
 }
 
 .title-fix {
@@ -377,6 +398,19 @@ body {
 	.datea-rights {
 		padding-top: 10px;
 		text-align: right;
+		font-size: 13px;
+		.limiter {
+			.footer-logo {
+				height: 24px;
+				margin-right: 10px;
+			}
+		}
+		a {
+			color: white;
+			&:hover {
+				color: @color-12;
+			}
+		}
 	}
 }
 
@@ -526,6 +560,7 @@ body {
 //
 // Home visitor / landing
 //
+
 .landing-holder {
 	@sectionImgUrl : 'landing/';
 
@@ -535,20 +570,28 @@ body {
 	width: 100%;
 
 	.section-holder-1 {
-		background: @color-1;
+		background: @color-1 url('@{imgUrl}landing/border-landing-yellow.png') repeat-x bottom left;
 	}
 
 	.section-1 {
 		min-height: 220px;
 		max-height: 320px;
-		height: 32vh;
+		//height: 32vh;
 		vertical-align: middle;
 		text-align: center;
+
+		.col {
+			padding: 0;
+		}
 
 		.social-holder {
 			font-size: 12px;
 			font-weight: bold;
 			padding: 20px 0 0;
+
+			position: absolute;
+			right: 0;
+			top: 10px;
 
 			a {
 				color: @gray-dark;
@@ -564,13 +607,45 @@ body {
 			// 	color: #01AFCF;
 			// }
 		}
+		.main-menu-landing {
+			text-align: center;
+			padding-top: 15px;
+			.mml-link { 
+				text-transform: uppercase;
+				color: black;
+				font-size: 15px;
+				margin-right: 15px;
+				//font-weight: bold;
+				&:last-child {
+					margin-right: 0;
+				}
+				&:hover {
+					color: black;
+					text-decoration: underline;
+				}
+			}
+		}
+
 		.main-heading {
 
-			font-size: 73px;
+			font-size: 80px;
+			color: black;
+			position: relative;
+			//left: -50px;
+			//line-height: 20px;
+			&.mobile {
+				left: -10px;
+				img {
+					margin-right: 10px;
+					position: relative;
+					top: -5px;
+				}
+			}
 		}
 		.slogan {
-			font-size: 29px;
+			font-size: 18px;
 			text-transform: uppercase;
+			color: black;
 		}
 	}
 
@@ -582,133 +657,147 @@ body {
 		min-height: 250px;
 		max-height: 320px;
 		height: 36vh;
-		padding: 42px 0 0 0;
+		padding: 0;
 		text-align: center;
+		color: black;
 
-		.btn-login-landing { width: 120px; }
+		.btn-login-landing { width: 135px; text-transform: uppercase; font-weight: bold;}
 
-		.part {
-			font-size: 21px;
+		.col {
+			font-size: 15px;
 			text-align: center;
-			width: 300px;
+			padding-top: 42px;
 
 			img {
 				margin: -15px 0 0;
 			}
 		}
 		.number {
-			font-size: 36px;
+			font-size: 30px;
 			margin: 0 5px;
 		}
 		.question {
-			font-size: 21px;
-			margin: 40px 0 12px 0;
+			font-size: 17px;
+			margin: 30px 0 12px 0;
 		}
 	}
 
 	.section-holder-3 {
 		background: @color-2 url('@{imgUrl}/landing/section-3-bg.png') repeat;
 		color: white;
+		border-bottom: 15px solid white;
 	}
 
 	.section-3 {
-		min-height: 230px;
+		min-height: 210px;
 		max-height: 300px;
-		height: 29vh;
+		padding-bottom: 10px;
+		//height: 29vh;
 
 		h3 {
-			font-size: 36px;
+			font-size: 30px;
 			font-weight: bold;
-			left: 60px;
 			position: relative;
 			text-transform: uppercase;
 		}
 
-		.part {
-			padding: 0 80px;
+		.col {
+			//padding: 0 80px;
 			position: relative;
-			width: 33%;
 			text-align: center;
-			font-size: 20px;
+			font-size: 16px;
 
-			@iconFile: 'section-3-icons.png';
+			.arrow {
+				background: url('@{imgUrl}landing/flecha-datear-home.png') no-repeat center center;
+				width: 41px;
+				height: 23px;
+				position: absolute;
+				top: 20px;
+				left: -25px;
+				background-size: 50%;
+			}
+
+			@iconFile: 'scene-icons.png';
 			@iconUrl : '@{imgUrl}@{sectionImgUrl}@{iconFile}';
 
 			.icon {
 				margin: 0 auto 5px;
 			}
 
-			.icon-1 {
-				background: url(@iconUrl) no-repeat -20px -28px;
-				height: 46px;
-				width: 44px;
+			.icon-datear {
+				background: url(@iconUrl) no-repeat 0px -4px;
+				height: 80px;
+				width: 72px;
+				//border: 1px solid white;
 			}
-			.icon-2 {
-				background: url(@iconUrl) no-repeat -118px -10px;
-				height: 83px;
-				width: 83px;
+			.icon-activar {
+				background: url(@iconUrl) no-repeat -70px 0px;
+				height: 80px;
+				width: 96px;
+				//border: 1px solid white;
 			}
-			.icon-3 {
-				background: url(@iconUrl) no-repeat -232px -20px;
-				height: 55px;
-				width: 57px;
+			.icon-cambiar {
+				background: url(@iconUrl) no-repeat -160px 5px;
+				height: 80px;
+				width: 108px;
+				//border: 1px solid white;
 			}
-		}
-		.part-1 {
-			top: 9px;
-		}
-		.part-2 {
-			top: -30px;
 		}
 	}
 
 	.section-holder-4 {
-		background: @color-10;
+		background: white url('@{imgUrl}/landing/section-4-map.png') no-repeat center center;
+		background-size: cover;
 		color: white;
 	}
 
 	.section-4 {
-		height: 720px;
+		//height: 720px;
 
 		h3 {
 			font-size: 36px;
 			font-weight: bold;
-			left: 60px;
 			position: relative;
 			text-transform: uppercase;
 			top: 20px;
 		}
 
 		.howitworks-holder {
-			.part {
+			.col {
 				position: relative;
-				width: 33%;
 				font-size: 16px;
 			}
-			.step-number {
-				background: @color-1;
-				border-radius: 25px;
-				color: @color-10;
-				font-weight: bold;
-				font-size: 18px;
-				left: -35px;
-				line-height: 22px;
-				padding: 4px 9px 0;
-				position: absolute;
-				width: 26px;
-			}
-			.step-emphasis {
-				display: block;
-				text-transform: uppercase;
-				font-weight: 600;
+			.step {
+				.step-number {
+					background: @color-1;
+					border-radius: 25px;
+					color: @color-10;
+					font-weight: bold;
+					font-size: 18px;
+					//left: -35px;
+					line-height: 22px;
+					padding: 4px 9px 0;
+					//position: absolute;
+					width: 26px;
+					float: left;
+				}
+				.step-emphasis {
+					margin-left: 35px;
+					padding-top: 3px;
+					text-transform: uppercase;
+					font-weight: 600;
+				}
+
+				.step-content {
+					margin-left: 35px;
+				}
 			}
 			@iconFile: 'section-4-icons.png';
 			@iconUrl : '@{imgUrl}@{sectionImgUrl}@{iconFile}';
 
-			.part-1 {
+			.step-holder-1 {
 
-				padding: 0 0 0 90px;
-				top: 40px;
+				padding-top: 40px;
 
 				.icon-1 {
 					background: url(@iconUrl) no-repeat -8px 0;
@@ -718,60 +807,70 @@ body {
 				}
 
 				.step-1 {
-					left: 130px;
+					margin-left: 95px;
 					position: relative;
-					top: 140px;
-					width: 180px;
+					margin-top: 140px;
+					//width: 180px;
 				}
 
 			}
-			.part-2 {
+			.step-holder-2 {
 
-				left: 40px;
-				width: 28%;
+				//left: 40px;
+				//width: 28%;
+				text-align: center;
+				padding-top: 10px;
 
 				.icon-2 {
 					background: url(@iconUrl) no-repeat -183px -34px;
 					height: 170px;
-					left: 20px;
-					position: absolute;
-					top: 65px;
+					//left: 20px;
+					//position: absolute;
+					//top: 65px;
 					width: 200px;
+					display: inline-block;
+					margin-top: 20px;
 				}
 				.step-2 {
-					left: 30px;
-					position: relative;
+					//left: 30px;
+					//position: relative;
+					display: inline-block;
 					top: 10px;
+					text-align: left;
 				}
 			}
-			.part-3 {
+			.step-holder-3 {
 
-				left: 30px;
+				//left: 30px;
+				text-align: center;
+				padding-top: 10px;
 
 				.icon-3 {
 					background: url(@iconUrl) no-repeat -429px -62px;
 					height: 125px;
-					position: absolute;
+					//position: absolute;
 					width: 259px;
+					display: inline-block;
 				}
 				.step-3 {
-					left: 28px;
+					width: 259px;
 					position: relative;
-					top: 140px;
-				}
-				.datea-btn {
-					left: 28px;
-					position: relative;
-					top: 150px;
+					//top: 140px;
+					display: inline-block;
+					text-align: left;
+					.datea-btn {
+						margin-left: 30px;
+						margin-top: 10px;
+						position: relative;
+					}
 				}
 			}
 		}
 
 		.meta-info-holder {
-			margin: 0 auto 0;
+			margin: 20px auto 20px;
 			position: relative;
-			top: 220px;
-			width: 85%;
+			width: 100%;
 
 			.part {
 				border-radius: 5px;
@@ -781,38 +880,44 @@ body {
 			}
 
 			.most-dateo {
-				background: white url('@{imgUrl}/landing/section-4-map.png') no-repeat center 50px;
-				color: @color-10;
-				padding: 215px 15px 15px 15px;
-				position: relative;
+				.inner {
+					background-color: rgba(255, 255, 255, 0.9);
+					color: @color-10;
+					padding: 15px;
+					position: relative;
 
-				h4 {
-					font-weight: bold;
-					text-transform: uppercase;
-					position: absolute;
-					top: 10px;
-					left: 15px;
-				}
-
-				.trending-tags-holder {
-					.datea-tag-btn {
-						font-size: 20px;
+					h4 {
+						font-weight: bold;
+						text-transform: uppercase;
+						color: black;
+						//position: absolute;
+						//top: 10px;
+						//left: 15px;
 					}
-				}
-				.datea-btn {
-					display: none;
-					float: right;
-					padding-top: 5px;
+
+					.trending-tags-holder {
+						.datea-tag-btn {
+							font-size: 24px;
+							margin-right: 7px;
+						}
+					}
+					.datea-btn {
+						display: none;
+						float: right;
+						padding-top: 5px;
+					}
 				}
 			}
 			.outstanding-dateo-holder {
-				background: @color-1;
-				color: @color-10;
-				padding: 10px;
+				.inner {
+					background: @color-1;
+					color: @color-10;
+					padding: 10px;
 
-				h4 {
-					font-weight: bold;
-					text-transform: uppercase;
+					h4 {
+						font-weight: bold;
+						text-transform: uppercase;
+					}
 				}
 			}
 		}
@@ -827,14 +932,15 @@ body {
 		h3 {
 			font-size: 28px;
 			font-weight: bold;
-			left: 60px;
+			//left: 60px;
 			position: relative;
 			text-transform: uppercase;
 			top: 20px;
+			color: #5E6E65;
 		}
 
 		.campaigns-holder {
-			padding: 0 60px;
+			//padding: 0 60px;
 			position: relative;
 			top: 20px;
 		}
@@ -871,23 +977,26 @@ body {
 		}
 		.more-campaigns-btn {
 			float: right;
-			margin: 20px 60px 20px 0px;
+			margin: 20px 0px 20px 0px;
 		}
 	}
 	.section-holder-6 {
 		background: white;
 		color: black;
+		padding-bottom: 15px;
 	}
 	.section-6 {
-		height: 250px;
+		//height: 250px;
+		padding: 40px 15px;
 
 		h3 {
 			font-size: 28px;
 			font-weight: bold;
-			left: 60px;
+			//left: 60px;
 			position: relative;
 			text-transform: uppercase;
-			top: 20px;
+			margin-bottom: 20px;
+			//top: 20px;
 		}
 		.parts-holder {
 			margin: 0 auto 0;
@@ -895,14 +1004,14 @@ body {
 			top: 20px;
 			width: 750px;
 		}
-		.part-1 {
-			width: 250px;
+		.pitch-1 {
+			//width: 250px;
 
 			p {
-				font-size: 20px;
-				left: 60px;
+				font-size: 17px;
+				margin-left: 60px;
 				position: relative;
-				width: 175px;
+				//width: 175px;
 			}
 			.icon-1 {
 				background: url('@{imgUrl}/landing/section-5-icons.png') no-repeat -1px -27px;
@@ -911,14 +1020,14 @@ body {
 				width: 50px;
 			}
 		}
-		.part-2 {
-			width: 250px;
+		.pitch-2 {
+			//width: 250px;
 
 			p {
-				font-size: 20px;
-				left: 60px;
+				font-size: 17px;
+				margin-left: 60px;
 				position: relative;
-				width: 175px;
+				//width: 175px;
 			}
 			.icon-2 {
 				background: url('@{imgUrl}/landing/section-5-icons.png') no-repeat -71px -27px;
@@ -927,20 +1036,156 @@ body {
 				width: 50px;
 			}
 		}
-		.part-3 {
+		.store-btns {
+			text-align: center;
+			padding: 15px 0;
 
 			.appstore-icon {
 				background: url('@{imgUrl}/landing/section-5-icons.png') no-repeat -152px -48px;
 				height: 48px;
-				position: absolute;
 				width: 127px;
+				display: inline-block;
+				margin-right: 40px;
 			}
 			.playstore-icon {
 				background: url('@{imgUrl}/landing/section-5-icons.png') no-repeat -152px 0px;
 				height: 48px;
-				position: absolute;
 				top: 52px;
 				width: 127px;
+				display: inline-block;
+			}
+		}
+	}
+}
+
+@media(max-width: @screen-md-min) {
+	.section-holder .container { width: 100%; padding: 0 30px;}
+}
+
+@media (min-width: @screen-sm-min) {
+	.landing-holder {
+
+		.section-holder-1 .section-1 {
+			.col {
+				padding: 0 15px;
+			}
+			.main-heading {
+				font-size: 70px;
+				left: -10px;
+				line-height: 1.1;
+			}
+			.slogan {
+				font-size: 24px;
+				position: static;
+				top: 0;
+				left: 0;
+			}
+		}
+		.section-holder-2 .section-2 {
+			.number {font-size: 36px;}
+			.question {font-size: 19px;}
+			.col {font-size: 21px;}
+		}
+		.section-holder-3 {
+			border-bottom: 5px solid white;
+			.section-3 {
+				h3 {font-size: 34px;}
+				.col {
+					font-size: 18px;
+					.arrow {
+						background-size: 80%;
+					}
+				}
+			}
+		}
+		.section-holder-4 {
+			background: @color-10;
+			background-image: none;
+			.section-4 {
+				h3 {font-size: 34px;}
+				.meta-info-holder {
+					.most-dateo {
+						background: transparent;
+						.inner {
+							background: white url('@{imgUrl}/landing/section-4-map.png') no-repeat center 50px;
+							color: @color-10;
+							padding: 215px 15px 15px 15px;
+							h4 {
+								font-weight: bold;
+								text-transform: uppercase;
+								position: absolute;
+								top: 10px;
+								left: 15px;
+								color: inherit;
+							}
+
+							.trending-tags-holder {
+								.datea-tag-btn {
+									font-size: 20px;
+									margin-right: 7px;
+								}
+							}
+						}
+					}
+					.outstanding-dateo {
+
+					}
+				}
+			}
+		}
+		.section-holder-6 {
+			.section-6 {
+				.pitch-1, .pitch-2 { 
+					p {font-size: 20px;}
+				}
+				.store-btns {
+					padding: 0 !important;
+				}
+			}	
+		}
+	}
+}
+@media (min-width: @screen-md-min) {
+	.landing-holder {
+		.section-holder-1 .section-1 {
+			.main-heading {
+				font-size: 70px;
+				left: -30px;
+				line-height: 1.1;
+			}
+		}
+		.section-holder-3 .section-3 {
+			h3 {font-size: 34px; padding-left: 80px; }
+			.col {
+				font-size: 18px;
+				padding: 0 20px;
+				.arrow {
+					background-size: 100%;
+				}
+			}
+		}
+	}
+}
+@media (min-width: @screen-lg-min) {
+	.landing-holder {
+		.section-holder-3 .section-3 {
+			h3 {font-size: 34px; padding-left: 0px; margin-top: 35px; }
+			.col {
+				font-size: 18px;
+				padding: 0 20px;
+				margin-top: 50px;
+				.arrow {
+					background-size: 100%;
+				}
+			}
+		}
+		.section-holder-5 .section-5 {
+			.campaigns-holder {
+				padding: 0 60px;
+			}
+			.more-campaigns-btn {
+				float: right;
+				margin: 20px 60px 20px 0px;
 			}
 		}
 	}
@@ -1745,18 +1990,23 @@ body {
 			.leaflet-map {
 				height: ~"calc(100% - 44px)"; 
 			}
-			.loading-more {
+			.loading-more, .no-results {
 				position: absolute;
 				right: 0;
 				top: 0;
 				background-color: rgba(255, 255, 255, 0.7);
 				color: @color-18;
-				font-size: 20px;
-				width: 32px;
 				height: 32px;
 				line-height: 32px;
 				z-index: 1000;
+			}
+			.no-results {
+				padding: 0 10px;
+			}
+			.loading-more {
+				width: 32px;
 				text-align: center;
+				font-size: 20px;
 			}
 		}
 	}

@@ -485,7 +485,9 @@ angular.module( 'dateaWebApp' )
 				$scope.homeSI.loading.leafletMore = false;
 				// open popup on requested marker
 			}else {
-				$scope.flow.notResults = 'No hubieron resultados';
+				$scope.flow.notResults = '0 resultados';
+				$scope.homeSI.loading.leaflet = false;
+				$scope.homeSI.loading.leafletMore = false;
 			}
 		}, function ( reason ) {
 			console.log( reason );
@@ -899,7 +901,7 @@ angular.module( 'dateaWebApp' )
 		
 		html = '<svg width="29" height="43"><g style="clip-path: url(#pinpath);">';
 		angular.forEach(colors, function (color, i) {
-			html = html + '<rect height="43" width="'+parseInt(Math.ceil(catWidth))+'" fill="'+color+'" x="'+(i*catWidth)+'" />';
+			html = html + '<rect height="43" width="'+parseInt(Math.ceil(catWidth))+'" fill="'+color+'" x="'+Math.ceil(i*catWidth)+'" />';
 		});
 		html = html 
 				 + '<circle class="datea-svg-marker-circle" data-datea-svg-circle-id="'+dateo.id+'" cx="14.5" cy="14" r="4" fill="white" />'

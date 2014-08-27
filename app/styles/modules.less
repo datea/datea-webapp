@@ -63,6 +63,10 @@
 }
 .z2 { z-index: 2; position: relative}
 
+.posrel {
+	position: relative;
+}
+
 .newline2br {
 	white-space: pre-wrap;
 }
@@ -311,6 +315,7 @@
   }
 }
 
+.extra-col(1.5, 15, xs);
 .extra-col(2.5, 25, xs);
 .extra-col(3.5, 35, xs);
 .extra-col(4.5, 45, xs);
@@ -321,6 +326,7 @@
 
 
 @media (min-width: @screen-sm-min) {
+	.extra-col(1.5, 15, sm);
 	.extra-col(2.5, 25, sm);
 	.extra-col(3.5, 35, sm);
 	.extra-col(4.5, 45, sm);
@@ -330,7 +336,8 @@
 	.extra-col(9.5, 95, sm);
 }
 @media (min-width: @screen-md-min) {
-	.extra-col(2.5, 25, sm);
+	.extra-col(1.5, 15, md);
+	.extra-col(2.5, 25, md);
 	.extra-col(3.5, 35, md);
 	.extra-col(4.5, 45, md);
 	.extra-col(6.5, 65, md);
@@ -339,13 +346,14 @@
 	.extra-col(9.5, 95, sm);
 }
 @media (min-width: @screen-lg-min) {
-	.extra-col(2.5, 25, sm);
+	.extra-col(1.5, 15, lg);
+	.extra-col(2.5, 25, lg);
 	.extra-col(3.5, 35, lg);
 	.extra-col(4.5, 45, lg);
 	.extra-col(6.5, 65, lg);
 	.extra-col(7.5, 75, lg);
 	.extra-col(8.5, 85, lg);
-	.extra-col(9.5, 95, sm);
+	.extra-col(9.5, 95, lg);
 }
 
 

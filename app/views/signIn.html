@@ -3,7 +3,7 @@
 	<div class="container">
 		<div class="row">
 			<div class="col-xs-12 col-md-10 col-md-offset-1">
-				<div class="signin-holder-inner" ng-class="{'datea-loading': flow.loading}">
+				<div class="signin-holder-inner" da-loading="flow.loading">
 					<div class="row signin login-form-inner">
 						<div class="col-xs-12 col-md-8">
 							<alert ng-repeat="alert in alerts" type="alert.type" close="closeAlert($index)">{{alert.msg}}</alert>

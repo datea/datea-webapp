@@ -2,7 +2,9 @@
 	<div class="row">
 		<div class="col-xs-12 col-sm-10 col-md-8 col-sm-offset-1 col-md-offset-2">
 
-			<div class="loading-status-check datea-loading" ng-show="flow.statusBeingChecked"></div>
+			<div class="loading-status-check datea-loading" ng-show="flow.statusBeingChecked">
+				<div class="datea-loading-icon"><i class="fa fa-circle-o-notch fa-spin"></i></div>
+			</div>
 			<div class="wrapper" ng-show="!flow.statusBeingChecked">
 				<div class="usr-msg hey" ng-show="flow.userIsNew && flow.userStatus === 1">
 					<div class="msg">
@@ -49,7 +51,7 @@
 					<form role="form" name="form" ng-submit="account.save()" class="form">
 						<tabset>
 							<tab heading="Cuenta de Usuario" active="flow.activeTab.user" select="flow.openTab('user')">
-								<div class="tab-body" ng-class="{'datea-loading': loading}">
+								<div class="tab-body" da-loading="loading">
 									<div class="row">
 								 		<div class="col-xs-12 col-md-9 col-lg-7">
 											<div class="form-group">
@@ -70,7 +72,7 @@
 								</div>
 							</tab>
 							<tab heading="Personalizar Perfil" ng-hide="flow.userStatus !== 1" active="flow.activeTab.profile" select="flow.openTab('profile')">
-								<div class="tab-body" ng-class="{'datea-loading': loading}">
+								<div class="tab-body" da-loading="loading">
 									<div class="form-group">
 										<label for="fullname">Nombre completo</label>
 										<input type="text" class="form-control" id="fullname" ng-model="account.full_name">
@@ -125,7 +127,7 @@
 								</div>
 							</tab>
 							<tab heading="Notificaciones" ng-hide="flow.userStatus !== 1" active="flow.activeTab.notifications" select="flow.openTab('notifications')">
-								<div class="tab-body" ng-class="{'datea-loading': loading}">
+								<div class="tab-body" da-loading="loading">
 									<p><strong>Recibir notificaciones en mi correo cuando hay:</strong></p>
 									<div class="form-group">
 										<div class="checkbox">

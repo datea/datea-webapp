@@ -158,10 +158,6 @@
 										</ul>
 									</div>
 								</div>
-
-								<div class="form-group">
-									{{flow.notResults}}
-								</div>
 							</div>
 							<!--
 							<div class="controls-right pull-right">
@@ -172,8 +168,9 @@
 						<div class="tab-content">
 							<div class="tab-pane" ng-class="{active: homeSI.activeDateoView === 'map'}">
 								<div class="dateos-map-view">
-									<div class="map-holder" ng-class="{'datea-loading': homeSI.loading.leaflet}">
+									<div class="map-holder" da-loading="homeSI.loading.leaflet">
 										<div class="loading-more" ng-show="homeSI.loading.leafletMore && !homeSI.loading.leaflet"><i class="fa fa-circle-o-notch fa-spin"></i></div>
+										<div class="no-results" ng-show="flow.notResults && !homeSI.loading.leafletMore">{{flow.notResults}}</div>
 										<leaflet class="leaflet-map" id="leafletHomeSI" defaults="homeSI.leaflet.defaults" bounds="homeSI.leaflet.bounds" markers="homeSI.leaflet.markers" center="homeSI.leaflet.center" width="100%" cluster-options="homeSI.leaflet.clusterOptions" tiles="homeSI.leaflet.tiles"></leaflet>
 										<div class="view-frame-bottom view-frame">
 											<button class="bar-btn fix-center" type="button" ng-click="homeSI.focusNextMarker( { direction : 0 } )"><i class="glyphicon glyphicon-chevron-left"></i></button>
@@ -193,7 +190,7 @@
 									</div>
 								</div>
 
-								<div class="campaigns-holder" ng-class="{'datea-loading': homeSI.loading.campaigns }">
+								<div class="campaigns-holder" da-loading="homeSI.loading.campaigns">
 									<div class="campaign-title">
 										<div class="pull-right">
 											<a class="btn btn-link hidden-xs" href="#/crear-iniciativa">crear iniciativa</a>&nbsp;
@@ -211,7 +208,7 @@
 							</div>
 
 							<div class="tab-pane" ng-class="{active: homeSI.activeDateoView === 'list'}">
-								<div class="dateos-list-view" ng-class="{'datea-loading': homeSI.loading.dateosListView}" ng-show="homeSI.activeDateoView == 'list'">
+								<div class="dateos-list-view" da-loading="homeSI.loading.dateosListView" ng-show="homeSI.activeDateoView == 'list'">
 									<da-dateo-teaser ng-repeat="dateo in homeSI.dateosListView.dateos" map-present="false" detail-inline="false"></da-dateo-teaser>
 									<div class="no-results" ng-show="homeSI.dateosListView.dateos.length === 0">No se encontraron resultados. Vuelvelo a intentar y chequea las opciones de busqueda arriba.</div>
 									<pagination ng-show="homeSI.dateosListView.totalCount > homeSI.dateosListView.limit" boundary-links="true" items-per-page="homeSI.dateosListView.limit" total-items="homeSI.dateosListView.totalCount" ng-model="query.page" class="pagination pagination-lg" previous-text="&lsaquo;" next-text="&rsaquo;" first-text="&laquo;" last-text="&raquo;" max-size="5"></pagination>

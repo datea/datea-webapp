@@ -187,7 +187,7 @@ angular.module('dateaWebApp')
 		
 		html = '<svg width="29" height="43"><g style="clip-path: url(#pinpath);">';
 		angular.forEach(colors, function (color, i) {
-			html = html + '<rect height="43" width="'+parseInt(Math.ceil(catWidth))+'" fill="'+color+'" x="'+(i*catWidth)+'" />';
+			html = html + '<rect height="43" width="'+parseInt(Math.ceil(catWidth))+'" fill="'+color+'" x="'+parseInt(Math.ceil(i*catWidth))+'" />';
 		});
 		html = html 
 				 + '<circle cx="14.5" cy="14" r="4" fill="white" />'

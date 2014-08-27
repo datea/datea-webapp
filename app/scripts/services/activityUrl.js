@@ -5,7 +5,6 @@ angular.module('dateaWebApp')
 	var parse;
 	parse = function ( givens ) {
 		var url;
-		console.log(givens);
 		switch (givens.verb) {
 			case 'dateo':
 				if ( givens.action_object.user.username ) {
