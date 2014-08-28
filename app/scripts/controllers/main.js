@@ -96,7 +96,6 @@ angular.module( 'dateaWebApp' )
 	  , makeSVGPie
 	 	, selectClusterFunction
 	  , serializeXmlNode
-	  , createMarkerPopupPaged
 	;
 
 	$scope.flow           = {};
@@ -279,7 +278,6 @@ angular.module( 'dateaWebApp' )
 	}
 
 	buildMap = function ( givens ) {
-		console.log("BUILD MAP");
 		var dateosGivens = givens && givens.dateosGivens || {}
 		  , center       = {}
 		  , bounds
@@ -354,23 +352,17 @@ angular.module( 'dateaWebApp' )
 	var autopanStarted = false;
 
 	$scope.$on('leafletDirectiveMap.moveend', function (event, args) {
-		console.log("MOVE END");
 		if (!autopanStarted) {
 			isCenterOutOfBounds();
 		}else{
 			setTimeout(function () {
 				autopanStarted = false;
-			}, 1000);
+			}, 100);
 		}
 	});
 	$scope.$on('leafletDirectiveMap.autopanstart', function (event, args){
-		console.log("AUTOPAN START");
 		autopanStarted = true;
 	});
-	$scope.$on('lealfetDirectiveMap.popupopen', function (event, args) {
-		console.log('POPUPOPEN');
-	})
-
 
 	isCenterOutOfBounds = function () {
 		if ( !dontCheckCenterOutOfBounds && finishedGeolocating) {
@@ -495,7 +487,7 @@ angular.module( 'dateaWebApp' )
 						sessionMarkersIdx += 1;
 					}
 				});
-				console.log( 'sessionMarkers', sessionMarkers );
+				//console.log( 'sessionMarkers', sessionMarkers );
 				angular.extend( sessionMarkers, markers );
 				map.markers = sessionMarkers;
 				$scope.homeSI.markers = Object.keys( sessionMarkers );
@@ -510,10 +502,7 @@ angular.module( 'dateaWebApp' )
 				angular.extend( $scope.homeSI.leaflet, map );
 				$scope.homeSI.loading.leaflet = false;
 				$scope.homeSI.loading.leafletMore = false;
-				// open popup on requested marker
-
-				console.log("LEAFLET GROUPS", leafletMarkersHelpers.getCurrentGroups());
-				
+				// open popup on requested marker				
 
 			}else {
 				$scope.flow.notResults = '0 resultados';
@@ -552,43 +541,20 @@ angular.module( 'dateaWebApp' )
  		});
 	}
 
-	createMarkerPopupPaged = function (latLng, dateos, activeId) {
-		console.log(dateos);
-		/*$http.get('views/dateo-map-popup-paged.html')
- 		.success(function(html) {
- 			var pscope, compiled, pelem;
- 			pscope = $scope.$new(true);
- 			pscope.dateo = dateo
- 			pscope.dateFormat = config.defaultDateFormat;
- 			pscope.tags = dateo.tags.slice(0, 2);
- 			compiled = $compile(angular.element(html));
- 			pelem = compiled(pscope);
- 			leafletData.getMap("leafletHomeSI")
-			.then( function ( map ) {
-				L.popup({
-					offset: L.point(0, -32)
-				})
-				.setLatLng([dateo.position.coordinates[1], dateo.position.coordinates[0]])
-				.setContent(pelem[0])
-				.openOn(map);
-			});
- 		});*/
-	}
-
 	geolocateAndBuildMap = function ( givens ) {
 		// buildMap( givens );
 		// no spam
 		geo.getLocation( { timeout:3000 } )
 		.then( function ( data ) {
-			console.log( 'GEOLOCATE RESULT', data );
+			//console.log( 'GEOLOCATE RESULT', data );
 			sessionCenter = data;
 			buildMap( { center : data } );
 			finishedGeolocating = true;
 		}, function () {
-			console.log("GEOLOCATE ERROR");
+			//console.log("GEOLOCATE ERROR");
 			Api.ipLocation.getLocationByIP()
 			.then( function ( response ) {
-				console.log("GEOLOCATE WITH IP", response);
+				//console.log("GEOLOCATE WITH IP", response);
 				var ipLocation = {};
 				ipLocation.coords           = {};
 				ipLocation.coords.latitude  = response.ip_location.latitude;
@@ -822,7 +788,6 @@ angular.module( 'dateaWebApp' )
 		if ($scope.homeSI.activeDateoView === 'map') {
 			$scope.homeSI.loading.leaflet = true;
 			resetMarkers();
-			console.log("SEARCH DATEOS");
 			buildMap();
 		}else if ($scope.homeSI.activeDateoView === 'list') {
 			$scope.query.page = 0;
@@ -838,7 +803,6 @@ angular.module( 'dateaWebApp' )
 			dateosGivens.q = $scope.query.search;
 		}
 		dateosGivens.has_images = 1;
-		console.log("SEARCH DATEOS WITH IMAGES");
 		buildMap( { dateosGivens : dateosGivens } );
 	}
 
@@ -886,17 +850,23 @@ angular.module( 'dateaWebApp' )
 		  , markerName
 		  , marker
 		  , direction = givens && givens.direction
+		  , goTo = givens && givens.goTo
 		  , center = {}
 		  ;
 		// If there is no next valid Marker
-		if ( ( getMarkerWithFocusIdx() === 0 && direction === 0 )
-		|| ( getMarkerWithFocusIdx() === Object.keys($scope.homeSI.leaflet.markers).length && direction === 1) ) {
-			lastMarkerWithFocus = 'marker0';
-			$scope.homeSI.leaflet.markers[lastMarkerWithFocus].focus = true;
-			return;
+		if (!goTo) {
+			if ( ( getMarkerWithFocusIdx() === 0 && direction === 0 )
+			|| ( getMarkerWithFocusIdx() === Object.keys($scope.homeSI.leaflet.markers).length && direction === 1) ) {
+				lastMarkerWithFocus = 'marker0';
+				$scope.homeSI.leaflet.markers[lastMarkerWithFocus].focus = true;
+				return;
+			}
+			idx = direction ? getMarkerWithFocusIdx() + 1 : getMarkerWithFocusIdx() - 1;
+			markerName = 'marker'+idx;
+		}else{
+			idx = goTo == 'last' ? Object.keys($scope.homeSI.leaflet.markers).length -1 : 0;
+			markerName = 'marker'+idx;
 		}
-		idx = direction ? getMarkerWithFocusIdx() + 1 : getMarkerWithFocusIdx() - 1;
-		markerName = 'marker'+idx;
 		
 		leafletData.getMarkers("leafletHomeSI")
 		.then(function (markers) {

@@ -1869,6 +1869,8 @@ body {
 
 	.view-frame {
 		background: @color-17;
+		padding: 1px 0;
+		position: relative;
 
 		.form-group {
 			display: inline-block;
@@ -1882,31 +1884,51 @@ body {
 
 		.bar-btn {
 			outline: none;
-			width: 44px;
+			//width: 44px;
 			height: 44px;
-			line-height: 44px;
+			line-height: 40px;
+			font-size: 13px;
+			color: darken(@color-18, 10%); 
 			overflow: hidden;
 			border: 0;
 			box-shadow: none;
 			display: inline-block;
-			vertical-align: middle;
+			vertical-align: top;
 			background-color: transparent;
+
+			&.icon-only {
+				width: 44px;
+			}
+
 			.glyphicon, .fa {
 				font-size: 25px;
-				color: @color-18;
+				color: darken(@color-18, 10%);
 				line-height: 38px;
 			}
 			&.active {
-				background-color: @color-18;
+				background-color: darken(@color-18, 10%);
 				.glyphicon, .fa {
 					color: white;
 				}
 			}
 			&:hover {
 				//background-color: white;
+				color: darken(@color-10, 20%);
 				.glyphicon, .fa {
-					color: darken(@color-10, 10%);
+					color: darken(@color-10, 20%);
 				}
+			}
+			&.center-left {
+				margin-right: 12px;
+			}
+			&.center-right {
+				margin-left: 12px;
+			}
+			&.goto-first {
+				margin-right: 35px;
+			}
+			&.goto-last {
+				margin-left: 35px;
 			}
 		}
 
@@ -1932,28 +1954,58 @@ body {
 			display: inline-block;
 			padding-top: 5px;
 			.flabel {
-				color: @color-10;
+				color: darken(@color-10, 10%);
 				display: inline-block;
 				padding: 6px 0;
 				line-height: 22px;
 				vertical-align: top;
 				border: 1px solid transparent;
 			}
-			.btn.btn-link {
-				color: @color-10;
-				padding: 6px 3px;
-				line-height: 22px;
-			}
-			.caret {
-			    border-left: 6px solid transparent;
-			    border-right: 6px solid transparent;
-			    border-top: 6px solid @color-10;
-			    top: 30%;
+			.btn-group.bootstrap-select {
+				width: auto !important;
+				.btn.btn-link {
+					color: darken(@color-10, 10%);
+					padding: 6px 5px;
+					line-height: 22px;
+					.caret {
+						position: relative;
+					}
+					&:focus, &:hover {
+						background-color: lighten(@color-3, 10%);
+						text-decoration: none;
+						outline: none !important;
+						.carent {
+							text-decoration: none;
+						}
+					}
+				}
+				.caret {
+				    border-left: 6px solid transparent;
+				    border-right: 6px solid transparent;
+				    border-top: 6px solid @color-10;
+				    top: 30%;
+				}
 			}
 		}
 	}
 	.view-frame-top {
 		//border-radius: 6px 6px 0 0;
+
+		.nav.nav-pills {
+			margin-top: 5px;
+			margin-right: 15px;
+
+			li a {
+				padding: 6px 12px;
+				font-size: 16px;
+				.ff2;
+				text-transform: uppercase;
+			}
+
+			li.active a {
+				background-color: @color-18;
+			}
+		}
 
 		.order-by {
 			background-color: @color-3;
@@ -1981,10 +2033,22 @@ body {
 		.fix-center {
 			margin-left: 75px;
 		}
+		.btns-right {
+			position: absolute;
+			top: 1px;
+			right: 5px;
+		}
 	}
 
 	.dateos-map-view {
+		//border-width: 0 1px 2px 1px;
+		//border-style: solid;
+		//border-color: @color-3;
+
 		.map-holder {
+			border-width: 0 2px;
+			border-style: solid;
+			border-color: @color-3;
 			position: relative ;
 			height: 450px; height: 60vh; min-height: 450px;
 			.leaflet-map {
@@ -2008,6 +2072,10 @@ body {
 				text-align: center;
 				font-size: 20px;
 			}
+		}
+
+		.legend-holder {
+			padding: 10px 0;
 		}
 	}
 

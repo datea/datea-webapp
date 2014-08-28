@@ -109,13 +109,13 @@
 
 			<div class="col-xs-12 col-sm-85 col-md-8 main-col">
 				<div class="main-col-inner">
-					<ul class="nav-tabs nav" role="tablist">
-						<li ng-class="{active: homeSI.activeDateoView ==='map'}"><a ng-click="homeSI.openDateoView('map')">Mapa</a></li>
-						<li ng-class="{active: homeSI.activeDateoView ==='list'}"><a ng-click="homeSI.openDateoView('list')">Lista</a></li>
-					</ul>
 
 					<div class="homeSI-dateos-holder" ng-class="{'fullscreen': homeSI.mapFullscreen }" id="homeSI-map-holder">
 						<div class="view-frame-top view-frame">
+							<ul class="nav-pills nav pull-right ff2" role="tablist">
+							<li ng-class="{active: homeSI.activeDateoView ==='map'}"><a ng-click="homeSI.openDateoView('map')">Mapa</a></li>
+							<li ng-class="{active: homeSI.activeDateoView ==='list'}"><a ng-click="homeSI.openDateoView('list')">Lista</a></li>
+						</ul>
 							<div class="form-group search-box">
 								<form ng-submit="homeSI.searchDateos()">
 									<div class="input-group">
@@ -163,9 +163,15 @@
 										<div class="no-results" ng-show="flow.notResults && !homeSI.loading.leafletMore">{{flow.notResults}}</div>
 										<leaflet class="leaflet-map" id="leafletHomeSI" defaults="homeSI.leaflet.defaults" bounds="homeSI.leaflet.bounds" markers="homeSI.leaflet.markers" center="homeSI.leaflet.center" width="100%" cluster-options="homeSI.leaflet.clusterOptions" tiles="homeSI.leaflet.tiles"></leaflet>
 										<div class="view-frame-bottom view-frame">
-											<button class="bar-btn fix-center" type="button" ng-click="homeSI.focusNextMarker( { direction : 0 } )"><i class="glyphicon glyphicon-chevron-left"></i></button>
-											<button class="bar-btn" type="button" ng-click="homeSI.focusNextMarker( { direction : 1 } )"><i class="glyphicon glyphicon-chevron-right"></i></button>
-											<button class="bar-btn pull-right" type="button" ng-click="homeSI.fullscreen()"><i class="glyphicon glyphicon-fullscreen"></i></button>
+											<div class="play-btns">
+												<button class="bar-btn icon-only goto-first" type="button" ng-click="homeSI.focusNextMarker({ goTo: 'first'})"><i class="glyphicon glyphicon-step-backward"></i> 
+												<button class="bar-btn center-left" type="button" ng-click="homeSI.focusNextMarker( { direction : 0 } )"><i class="glyphicon glyphicon-chevron-left"></i>anterior</button>
+												<button class="bar-btn center-right" type="button" ng-click="homeSI.focusNextMarker( { direction : 1 } )">siguiente<i class="glyphicon glyphicon-chevron-right"></i></button>
+												<button class="bar-btn icon-only goto-last" type="button" ng-click="homeSI.focusNextMarker({ goTo: 'last'})"><i class="glyphicon glyphicon-step-forward"></i> 
+											</div>
+											<div class="btns-right">
+												<button class="bar-btn" type="button" ng-click="homeSI.fullscreen()"><i class="glyphicon glyphicon-fullscreen"></i></button>
+											</div>
 										</div>
 									</div>
 									<div class="legend-holder" ng-show="homeSI.followingTags.length > 0 && query.followFilter == 'follow'">
