@@ -6,10 +6,29 @@
 <head>
 	<meta charset="utf-8">
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
-	<title></title>
-	<meta name="description" content="">
 	<meta name="viewport" content="width=device-width">
 	<meta name="fragment" content="!" />
+
+	<!-- META TAGS -->
+	<title>{{share.title}}</title>
+	<meta name="description" content="{{share.description}}">
+
+	<!-- TWITTER CARD -->
+	<meta property="twitter:card" content="summary" />
+	<meta property="twitter:site" content="@somosdateros" />
+	<meta property="twitter:title" content="{{share.title}}" />
+	<meta property="twitter:description" content="{{share.description}}" />
+	<meta property="twitter:image" content="{{share.image_url}}" />
+
+	<!-- OG TAGS -->
+	<meta property="og:type" content="website" />
+	<meta property="og:title" content="{{share.title}}" />
+	<meta property="og:description" content="{{share.description}}" />
+	<meta property="og:url" content="{{share.url}}" />
+	<meta property="og:image" content="{{share.image_url}}" />
+	<meta property="og:locale" content="es_ES" />
+	<meta property="og:site_name" content="Datea" />
+
 	<!-- Place favicon.ico and apple-touch-icon.png in the root directory -->
 
 	<!-- build:css(.tmp) styles/main.css -->
