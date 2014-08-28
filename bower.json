@@ -33,7 +33,8 @@
     "togeojson": "git://github.com/lafactura/togeojson.git#master",
     "angularjs": "~1.2.20",
     "angular-scroll": "~0.6.1",
-    "da-piecluster": "*"
+    "da-piecluster": "*",
+    "da-angular-seo": "*"
   },
   "devDependencies": {
     "angular-mocks": "~1.2.0",

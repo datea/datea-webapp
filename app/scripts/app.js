@@ -16,14 +16,17 @@ angular.module( 'dateaWebApp'
   , 'duScroll'
   , 'angularCharts'
   , 'daPiecluster'
+  , 'seo'
 ])
 .config(
 [ '$routeProvider'
 , '$httpProvider'
+, '$locationProvider'
 , 'localStorageServiceProvider'
 , function (
   $routeProvider
 , $httpProvider
+, $locationProvider
 , localStorageServiceProvider
 ) {
 
@@ -33,6 +36,7 @@ angular.module( 'dateaWebApp'
 	  'Content-Type': 'application/json;charset=utf-8'
 	}
 	OAuth.initialize('rT1wbk04eERCkSCMnA7vvdm5UcY');
+	$locationProvider.hashPrefix('!');
 
 	$routeProvider
 	.when('/'
@@ -116,5 +120,35 @@ angular.module( 'dateaWebApp'
 	.otherwise( { redirectTo: '/' } );
 
 	localStorageServiceProvider.prefix = 'datea';
+
+	var $http,
+	interceptor = ['$q', '$injector', function ($q, $injector) {
+		var error;
+		function success(response) {
+			$http = $http || $injector.get('$http');
+			var $timeout = $injector.get('$timeout');
+			var $rootScope = $injector.get('$rootScope');
+			if($http.pendingRequests.length < 1) {
+				$timeout(function(){
+					if($http.pendingRequests.length < 1){
+						$rootScope.htmlReady();
+					}
+				}, 1000);
+			}
+			return response;
+		}
+
+		error = function error(response) {
+			$http = $http || $injector.get('$http');
+
+			return $q.reject(response);
+		}
+
+		return function (promise) {
+			return promise.then(success, error);
+		}
+	}];
+
+	$httpProvider.responseInterceptors.push(interceptor);
 
 } ] );
