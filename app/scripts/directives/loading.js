@@ -9,7 +9,6 @@ angular.module("dateaWebApp")
 		,link: function (scope, element, attrs) {
 
 			scope.$watch('daLoading', function (){
-				console.log("DA LOADING", scope.daLoading);
 				if (scope.daLoading) {
 					element.addClass('datea-loading');
 				}else {

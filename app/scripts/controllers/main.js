@@ -69,11 +69,12 @@ angular.module( 'dateaWebApp' )
 	  , isMarkerDup
 	  , isCenterOutOfBounds
 	  , isTagFollowable
+	  , finishedGeolocating = false
+	  , mapAutopanStarted
 	  , resetMarkers
 	  , onSignIn
 	  , onSignUp
 	  , onSignOut
-	  , openSpiderfy
 	  // , onGeolocation
 	  // , onGeolocationError
 	  , buildMap
@@ -95,6 +96,7 @@ angular.module( 'dateaWebApp' )
 	  , makeSVGPie
 	 	, selectClusterFunction
 	  , serializeXmlNode
+	  , createMarkerPopupPaged
 	;
 
 	$scope.flow           = {};
@@ -121,7 +123,7 @@ angular.module( 'dateaWebApp' )
 	$scope.query.followFilterLabel  = 'todos';
 
 	$scope.dateFormat = config.defaultDateFormat;
-	$scope.homeSI.leaflet.events = {enable: ['leafletDirectiveMarker.click']};
+	$scope.homeSI.leaflet.events = {enable: ['leafletDirectiveMarker.click', 'leafletDirectiveMarker.clusterclick']};
 
 	// $scope.homeSI.leaflet = { bounds   : [ [ -12.0735, -77.0336 ], [ -12.0829, -77.0467 ] ]
 	//                , center   : { lat: -12.05, lng: -77.06, zoom: 13 }
@@ -135,7 +137,7 @@ angular.module( 'dateaWebApp' )
 		Api.tag
 		.getTags( { followed: User.data.id } )
 		.then( function ( response ) {
-			console.log( 'followingTags', response );
+			//console.log( 'followingTags', response );
 			$scope.homeSI.userTags = {};
 			$scope.homeSI.followingTags = response.objects.map( function (t, i) {
 				t.color = $scope.homeSI.colorRange[i];
@@ -198,7 +200,7 @@ angular.module( 'dateaWebApp' )
 		, mode : 'all'
 		} )
 		.then( function ( response ) {
-			console.log( 'buildActivityLog response', response );
+			//console.log( 'buildActivityLog response', response );
 			activityLog = response.objects.filter( function ( value ) {
 				return !!~config.homeSI.activityVerbs.indexOf( value.verb );
 			} );
@@ -277,6 +279,7 @@ angular.module( 'dateaWebApp' )
 	}
 
 	buildMap = function ( givens ) {
+		console.log("BUILD MAP");
 		var dateosGivens = givens && givens.dateosGivens || {}
 		  , center       = {}
 		  , bounds
@@ -328,9 +331,11 @@ angular.module( 'dateaWebApp' )
 						dateosGivens.top_right_latitude    = lastBounds._northEast.lat;
 						dateosGivens.top_right_longitude   = lastBounds._northEast.lng;
 						// PREGUNTAR A JUAN POR EL watch al zoom
-						$scope.$watch( 'homeSI.leaflet.center.lat+homeSI.leaflet.center.lng+homeSI.leaflet.center.zoom', function () {
-							isCenterOutOfBounds();
-						} );
+						// Intentando cambiar esto para usar mejor el evento moveend
+						//$scope.$watch( 'homeSI.leaflet.center.lat+homeSI.leaflet.center.lng+homeSI.leaflet.center.zoom', function () {
+						//	console.log("WATCH END");
+							//isCenterOutOfBounds();
+						//} );
 						buildMarkers( dateosGivens );
 						angular.extend( $scope.homeSI.leaflet, map );
 					} );
@@ -345,10 +350,31 @@ angular.module( 'dateaWebApp' )
 		// buildMarkers( dateosGivens );
 	}
 
+	// WATCHING ON CHANGES TO MAP MOVE OR ZOOM (yes, dragend and zoom, too)
+	var autopanStarted = false;
+
+	$scope.$on('leafletDirectiveMap.moveend', function (event, args) {
+		console.log("MOVE END");
+		if (!autopanStarted) {
+			isCenterOutOfBounds();
+		}else{
+			setTimeout(function () {
+				autopanStarted = false;
+			}, 1000);
+		}
+	});
+	$scope.$on('leafletDirectiveMap.autopanstart', function (event, args){
+		console.log("AUTOPAN START");
+		autopanStarted = true;
+	});
+	$scope.$on('lealfetDirectiveMap.popupopen', function (event, args) {
+		console.log('POPUPOPEN');
+	})
+
 
 	isCenterOutOfBounds = function () {
-		if ( !dontCheckCenterOutOfBounds ) {
-			console.log("IS CENTER OUT OF BOUNDS");
+		if ( !dontCheckCenterOutOfBounds && finishedGeolocating) {
+			//console.log("IS CENTER OUT OF BOUNDS");
 			$scope.homeSI.loading.leafletMore = true;
 			leafletData.getMap('leafletHomeSI')
 			.then( function ( map ) {
@@ -435,11 +461,12 @@ angular.module( 'dateaWebApp' )
 					;
 					
 					if ( value.position && !isMarkerDup( { marker : value } ) ) {
+
 						markers['marker'+sessionMarkersIdx] = {
 						  lat         : value.position.coordinates[1]
 						, lng         : value.position.coordinates[0]
 						// , group     : value.tag
-						, message     : $interpolate( config.marker )( value )
+						//, message     : $interpolate( config.marker )( value )
 						, draggable   : false
 						, focus       : false
 						, _id         : value.id
@@ -447,7 +474,7 @@ angular.module( 'dateaWebApp' )
 						, _dateo      : value
 						, icon 			  : buildMarkerIcon(value)
 						, riseOnHover : true
-						, group       : '1'
+						, group       : 'dateaCluster'
 						}
 
 						if ($scope.homeSI.leaflet.focusOnId && $scope.homeSI.leaflet.focusOnId == value.id) {
@@ -484,6 +511,10 @@ angular.module( 'dateaWebApp' )
 				$scope.homeSI.loading.leaflet = false;
 				$scope.homeSI.loading.leafletMore = false;
 				// open popup on requested marker
+
+				console.log("LEAFLET GROUPS", leafletMarkersHelpers.getCurrentGroups());
+				
+
 			}else {
 				$scope.flow.notResults = '0 resultados';
 				$scope.homeSI.loading.leaflet = false;
@@ -494,8 +525,36 @@ angular.module( 'dateaWebApp' )
 		} );
 	}
 
-	createMarkerPopup = function (dateo) {
+	createMarkerPopup = function (dateo, latLng) {
 		$http.get('views/dateo-map-popup.html')
+ 		.success(function(html) {
+ 			var pscope, compiled, pelem;
+ 			pscope = $scope.$new(true);
+ 			pscope.dateo = dateo
+ 			pscope.dateFormat = config.defaultDateFormat;
+ 			pscope.tags = dateo.tags.slice(0, 2);
+ 			compiled = $compile(angular.element(html));
+ 			pelem = compiled(pscope);
+
+ 			if (!latLng) {
+ 				latLng = L.latLng([dateo.position.coordinates[1], dateo.position.coordinates[0]]);
+ 			}
+
+ 			leafletData.getMap("leafletHomeSI")
+			.then( function ( map ) {
+				L.popup({
+					offset: L.point(0, -32)
+				})
+				.setLatLng(latLng)
+				.setContent(pelem[0])
+				.openOn(map);
+			});
+ 		});
+	}
+
+	createMarkerPopupPaged = function (latLng, dateos, activeId) {
+		console.log(dateos);
+		/*$http.get('views/dateo-map-popup-paged.html')
  		.success(function(html) {
  			var pscope, compiled, pelem;
  			pscope = $scope.$new(true);
@@ -513,7 +572,7 @@ angular.module( 'dateaWebApp' )
 				.setContent(pelem[0])
 				.openOn(map);
 			});
- 		});
+ 		});*/
 	}
 
 	geolocateAndBuildMap = function ( givens ) {
@@ -521,18 +580,22 @@ angular.module( 'dateaWebApp' )
 		// no spam
 		geo.getLocation( { timeout:3000 } )
 		.then( function ( data ) {
-			console.log( 'geolocatedCenter', data );
+			console.log( 'GEOLOCATE RESULT', data );
 			sessionCenter = data;
 			buildMap( { center : data } );
+			finishedGeolocating = true;
 		}, function () {
+			console.log("GEOLOCATE ERROR");
 			Api.ipLocation.getLocationByIP()
 			.then( function ( response ) {
+				console.log("GEOLOCATE WITH IP", response);
 				var ipLocation = {};
 				ipLocation.coords           = {};
 				ipLocation.coords.latitude  = response.ip_location.latitude;
 				ipLocation.coords.longitude = response.ip_location.longitude;
 				sessionCenter = ipLocation;
 				buildMap( { center : ipLocation } );
+				finishedGeolocating = true;
 			} );
 		} );
 	}
@@ -548,6 +611,8 @@ angular.module( 'dateaWebApp' )
 		  , bounds
 		  , nextURL
 		  ;
+
+		finishedGeolocating = false;
 
 		nextURL = ls.get( 'nextURL' );
 		if ( nextURL && nextURL.count === 0 ) {
@@ -621,13 +686,6 @@ angular.module( 'dateaWebApp' )
 		.then( function (map) {
 			map.invalidateSize();
 		});
-	}
-
-	$scope.homeSI.openTab = function (tabname) {
-		console.log("OPEN TAB", tabname);
-		if (tabname === 'dateos' && $scope.homeSI.activeDateoView == 'map') {
-			$scope.homeSI.leaflet.checkInvalidSize();
-		}
 	}
 
 	$scope.homeSI.openDateoView = function (viewname) {
@@ -764,6 +822,7 @@ angular.module( 'dateaWebApp' )
 		if ($scope.homeSI.activeDateoView === 'map') {
 			$scope.homeSI.loading.leaflet = true;
 			resetMarkers();
+			console.log("SEARCH DATEOS");
 			buildMap();
 		}else if ($scope.homeSI.activeDateoView === 'list') {
 			$scope.query.page = 0;
@@ -779,6 +838,7 @@ angular.module( 'dateaWebApp' )
 			dateosGivens.q = $scope.query.search;
 		}
 		dateosGivens.has_images = 1;
+		console.log("SEARCH DATEOS WITH IMAGES");
 		buildMap( { dateosGivens : dateosGivens } );
 	}
 
@@ -824,6 +884,7 @@ angular.module( 'dateaWebApp' )
 	$scope.homeSI.focusNextMarker = function ( givens ) {
 		var idx
 		  , markerName
+		  , marker
 		  , direction = givens && givens.direction
 		  , center = {}
 		  ;
@@ -836,19 +897,17 @@ angular.module( 'dateaWebApp' )
 		}
 		idx = direction ? getMarkerWithFocusIdx() + 1 : getMarkerWithFocusIdx() - 1;
 		markerName = 'marker'+idx;
-		center.lat = $scope.homeSI.leaflet.markers[markerName].lat;
-		center.lng = $scope.homeSI.leaflet.markers[markerName].lng;
-		center.zoom = 18;
-		angular.extend( $scope.homeSI.leaflet.center, center );
-		$timeout( function () {
-			openSpiderfy();
-			$scope.homeSI.leaflet.markers[markerName] && ( $scope.homeSI.leaflet.markers[markerName].focus = true );
-			//if (lastMarkerWithFocus != markerName) {
-				//createMarkerPopup($scope.homeSI.leaflet.markers[markerName]._dateo);
-			//}
-		}, 100 );
-		$scope.$broadcast( 'leafletDirectiveMarker.click', { markerName : markerName } );
-		isCenterOutOfBounds();
+		
+		leafletData.getMarkers("leafletHomeSI")
+		.then(function (markers) {
+			var dateaCluster = leafletMarkersHelpers.getCurrentGroups().dateaCluster;
+			var marker = markers[markerName];
+			if (dateaCluster) {
+				dateaCluster.zoomToShowLayer(marker, function () {
+					$scope.$broadcast( 'leafletDirectiveMarker.click', { markerName : markerName } );
+				});
+			}
+		});
 	}
 
 	$scope.homeSI.onFilterChange = function () {
@@ -856,6 +915,7 @@ angular.module( 'dateaWebApp' )
 		  , bounds
 		  ;
 
+		if (!finishedGeolocating) return;
 		// bounds = leafletBoundsHelpers.createBoundsFromArray( createBoundsFromCoords(
 		// { lat: $scope.homeSI.leaflet.center.lat
 		// , lng: $scope.homeSI.leaflet.center.lng }
@@ -915,7 +975,7 @@ angular.module( 'dateaWebApp' )
 			, popupAnchor : [0, -33]
 			, labelAnchor : [8, -25]
 			, html        : html
-			, className   : 'datea-pin-icon'
+			, className   : 'datea-pin-icon datea-pin-icon'+dateo.id
 		}
 	}
 
@@ -1073,38 +1133,6 @@ angular.module( 'dateaWebApp' )
     return "";
   }
 
-	openSpiderfy = function () {
-		var markerId
-		  , sliceMarkerIds = []
-		  , slicePosition
-		  ;
-		console.log( 'openSpiderfy', $scope.homeSI.leaflet.markers );
-		markerId  = $( $scope.homeSI.leaflet.markers['marker'+lastMarkerWithFocus.replace('marker','')].icon.html ).find('circle').data('datea-svg-circle-id');
-		// If there is no marker then it must be 'inside' the cluster
-		if ( !$('[data-datea-svg-circle-id="'+markerId+'"]').length ) {
-			// If multiples SVGs
-			if ( $('[data-datea-svg-slice-id]').length > 1 ) {
-				// Fill array with slice Ids
-				$.each( $('[data-datea-svg-slice-id]'), function () {
-					sliceMarkerIds.push( $(this).data('datea-svg-slice-id') );
-				} );
-				// Search for slice position to open
-				$.each( sliceMarkerIds, function ( i,v ) {
-					var idsBySlice = (v+'').split(',');
-					!slicePosition && !!~idsBySlice.indexOf( markerId+'' ) && ( slicePosition = i );
-				} );
-				// Select slice and open marker-cluster parent
-				$( $('[data-datea-svg-slice-id]').get( slicePosition ) ).parents('div.marker-cluster').click();
-				console.log('slicePosition', slicePosition);
-				slicePosition = null;
-			} else {
-				// Open marker-cluster parent
-				$('[data-datea-svg-slice-id]').parents('div.marker-cluster').click();
-				$('.datea-svg-cluster').parents('div.marker-cluster').click();
-			}
-		}
-	};
-
   $scope.homeSI.leaflet.clusterOptions = { 
 	  iconCreateFunction : selectClusterFunction
 		//, disableClusteringAtZoom: 16
@@ -1115,8 +1143,12 @@ angular.module( 'dateaWebApp' )
 		var dateo;
 		console.log( 'focus event', args.markerName );
 		lastMarkerWithFocus = args.markerName;
-		//dateo = $scope.homeSI.leaflet.markers[args.markerName]._dateo
-		//createMarkerPopup(dateo);
+		dateo = $scope.homeSI.leaflet.markers[args.markerName]._dateo
+		leafletData.getMarkers("leafletHomeSI")
+		.then(function(markers) {
+			var marker = markers[args.markerName];
+			createMarkerPopup(dateo, marker.getLatLng());
+		});
 	} );
 
 	$scope.$on('$destroy', function () {

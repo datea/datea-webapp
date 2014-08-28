@@ -112,7 +112,7 @@ angular
 									 , default_color: '#28BC45'
 									 , defaultMarkerIcon : { type     		: 'div'
 																				 , iconSize 		: [29, 43]
-																				 , iconAnchor	: [14.5, 43]
+																				 , iconAnchor	  : [14.5, 43]
 																				 , popupAnchor	: [0, -33]
 																				 , labelAnchor	: [8, -25]
 																				 , className   : 'datea-pin-icon'

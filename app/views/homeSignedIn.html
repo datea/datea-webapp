@@ -131,31 +131,21 @@
 								<span class="flabel hidden-xs hidden-sm">en</span>
 								<div class="form-group">
 									<div class="btn-group">
-										<button type="button" dropdown class="btn btn-link btn-default dropdown-toggle">{{query.followFilterLabel}} <span class="caret"></span></button>
-										<ul class="dropdown-menu" role="menu" ng-init="query.followFilterOptions = [
-												  { val: 'follow', label: 'lo que sigo' }
-												, { val: 'all', label: 'todos' }
-											]">
-											<li ng-repeat="opt in query.followFilterOptions">
-												<a href="javascript:void(0)" ng-click="query.followFilter = opt.val; query.followFilterLabel = opt.label">{{opt.label}}</a>
-											</li>
-										</ul>
+										<select class="selectpicker" ng-model="query.followFilter" selectpicker data-style="btn-link">
+												<option value="follow">lo que sigo</option>
+												<option value="all">todos</option>
+										</select>
 									</div>
 								</div>
 								
 								<span class="flabel hidden-xs hidden-sm">ordenar por:</span>
 								<div class="form-group">
 									<div class="btn-group">
-										<button type="button" dropdown class="btn btn-link btn-default dropdown-toggle">{{query.orderByLabel}} <span class="caret"></span></button>
-										<ul class="dropdown-menu" role="menu" ng-init="query.orderByOptions = [
-												  { val: '-created', label: 'últimos' }
-												, { val: '-vote_count,-created', label: 'más apoyados' }
-												, { val: '-comment_count,-created', label: ' más comentados' }
-											]">
-											<li ng-repeat="opt in query.orderByOptions">
-												<a href="javascript:void(0)" ng-click="query.orderBy = opt.val; query.orderByLabel = opt.label">{{opt.label}}</a>
-											</li>
-										</ul>
+										<select class="selectpicker" data-style="btn-link" ng-model="query.orderBy" selectpicker>
+											<option value="-created">últimos</option>
+											<option value="-vote_count,-created">más apoyados</option>
+											<optioon value="-comment_count,-created">más comentados</optioon>
+										</select>
 									</div>
 								</div>
 							</div>

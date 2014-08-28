@@ -79,7 +79,6 @@ angular.module('dateaWebApp')
 	  , initQueryOptions
 	  , buildQueryParams
 	  , queryParamsToText
-	  , openSpiderfy
 	  , renderPopupContent
 	;
 
@@ -212,27 +211,32 @@ angular.module('dateaWebApp')
 		sessionMarkersIdx ++; 
 	}
 
-	createMarkerPopup = function (idx) {
+	createMarkerPopup = function (markerName, latLng) {
 		$http.get('views/dateo-map-popup.html')
  		.success(function(html) {
- 			var compiled, pscope, pelem, didx;
- 			didx = parseInt(idx.replace('marker',''));
+ 			var compiled, pscope, pelem, idx;
+ 			idx = parseInt(markerName.replace('marker',''));
  			pscope = $scope.$new(true);
- 			pscope.dateo = $scope.campaign.dateos[didx];
+ 			pscope.dateo = $scope.campaign.dateos[idx];
  			pscope.dateFormat = config.defaultDateFormat;
- 			pscope.index = didx;
+ 			pscope.index = idx;
  			pscope.openDetail = function () {
- 				$scope.flow.openDateoDetail(didx);
+ 				$scope.flow.openDateoDetail(idx);
  			}
  			pscope.tags = pscope.dateo.tags.slice(0, 2);
  			compiled = $compile(angular.element(html));
  			pelem = compiled(pscope);
+
+ 			if (!latLng) {
+ 				latLng = L.latLng(pscope.dateo.position.coordinates[1], pscope.dateo.position.coordinates[0]);
+ 			}
+
  			leafletData.getMap("leafletCampaign")
 			.then( function ( map ) {
 				L.popup({
 					offset: L.point(0, -32)
 				})
-				.setLatLng([pscope.dateo.position.coordinates[1], pscope.dateo.position.coordinates[0]])
+				.setLatLng(latLng)
 				.setContent(pelem[0])
 				.openOn(map);
 			});
@@ -450,7 +454,6 @@ angular.module('dateaWebApp')
 		Api.dateo
 		.getDateos( givens )
 		.then( function ( response ) {
-			console.log("CAMPAIGN DATEOS", response.objects);
 			if (response.objects.length) {
 				switch (activeTab) {
 					case 'map':
@@ -563,23 +566,22 @@ angular.module('dateaWebApp')
 	}
 
 	$scope.dateamap.focusDateo = function ( idx ) {
-		var markerName
-		  , center = {}
-		  ;
+		var markerName;
 		markerName  = "marker"+idx;
-		if ( $scope.campaign.leaflet.markers[markerName] ) {
-			center.lat  = $scope.campaign.leaflet.markers[markerName].lat;
-			center.lng  = $scope.campaign.leaflet.markers[markerName].lng;
-			// center.zoom = $scope.campaign.leaflet.center.zoom < 16 ? 16 : $scope.campaign.leaflet.center.zoom;
-			center.zoom = 18;
-			angular.extend( $scope.campaign.leaflet.center, center );
-			$timeout( function () {
-				openSpiderfy( idx );
-				$scope.campaign.leaflet.markers[markerName].focus = true;
-				createMarkerPopup(markerName);
-			}, 1000 );
-		}
+
+		leafletData.getMarkers('leafletCampaign')
+		.then(function (markers) {
+			var cluster = leafletMarkersHelpers.getCurrentGroups()[$scope.campaign.main_tag.tag];
+			var marker = markers[markerName];
+			if (cluster) {
+				cluster.zoomToShowLayer(marker, function () {
+					$scope.campaign.leaflet.markers[markerName].focus;
+					createMarkerPopup(markerName, marker.getLatLng());
+				});
+			} 
+		});
 	}
+
 	$scope.flow.openDateoDetail = function (index) {
 		$scope.flow.dateoDetail.dateo       = $scope.campaign.dateos[index];
 		$scope.flow.dateoDetail.markerIndex = index;
@@ -601,7 +603,8 @@ angular.module('dateaWebApp')
 		$scope.flow.closeDateoDetail();
 	} );
   $scope.$on('leafletDirectiveMarker.click', function(event, args) {
-		createMarkerPopup(args.markerName);
+  	$scope.campaign.leaflet.markers[markerName].focus;
+		createMarkerPopup(args.markerName, args.leafletEvent.target.getLatLng());
 	});
 
 	$scope.campaign.onSelectFilterChange = function () {
@@ -806,39 +809,6 @@ angular.module('dateaWebApp')
 	// 	}
  //    return "";
  //  }
-
-	openSpiderfy = function ( idx ) {
-		var markerId
-		  , sliceMarkerIds = []
-		  , slicePosition
-		  ;
-		// console.log( 'openSpiderfy', $scope.homeSI.leaflet.markers );
-		markerId  = $( $scope.campaign.leaflet.markers["marker"+idx].icon.html ).find('circle').data('datea-svg-circle-id');
-		// If there is no marker then it must be 'inside' the cluster
-		if ( !$('[data-datea-svg-circle-id="'+markerId+'"]').length ) {
-			// If multiples SVGs
-			if ( $('[data-datea-svg-slice-id]').length > 1 ) {
-				// Fill array with slice Ids
-				$.each( $('[data-datea-svg-slice-id]'), function () {
-					sliceMarkerIds.push( $(this).data('datea-svg-slice-id') );
-				} );
-				// Search for slice position to open
-				$.each( sliceMarkerIds, function ( i,v ) {
-					var idsBySlice = (v+'').split(',');
-					!slicePosition && !!~idsBySlice.indexOf( markerId+'' ) && ( slicePosition = i );
-				} );
-				// Select slice and open marker-cluster parent
-				$( $('[data-datea-svg-slice-id]').get( slicePosition ) ).parents('div.marker-cluster').click();
-				console.log('slicePosition', slicePosition);
-				slicePosition = null;
-			} else {
-				// Open marker-cluster parent
-				$('[data-datea-svg-slice-id]').parents('div.marker-cluster').click();
-				$('.datea-svg-cluster').parents('div.marker-cluster').click();
-			}
-		}
-	};
-
 
 	$scope.campaign.leaflet.clusterOptions = { 
 		  iconCreateFunction : buildClusterIcon
