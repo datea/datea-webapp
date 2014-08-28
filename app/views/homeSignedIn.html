@@ -11,7 +11,7 @@
 								<div class="info-head">
 									<div class="uimg-cell">
 										<div class="uimg-wrap">
-											<a class="uimg img-circle" href="#/{{user.username}}" da-bg-from-api="{{user.image}}" da-img-size="cover" da-img-type="user">&nbsp;</a>
+											<a class="uimg img-circle" href="#!/{{user.username}}" da-bg-from-api="{{user.image}}" da-img-size="cover" da-img-type="user">&nbsp;</a>
 										</div>
 										<!--<img src="{{user.image | imgFromApi}}" alt="{{user.username}}" class="img-circle">-->
 									</div>
@@ -31,7 +31,7 @@
 									</div>
 									<!--<a class="btn datea-btn ff1" href="#/crear-niciativa">Crear iniciativa</a>-->
 									<div class="user-menu">
-										<a href="#/{{user.username}}">Mi perfil</a>
+										<a href="#!/{{user.username}}">Mi perfil</a>
 									</div>
 								</div>
 							</div>
@@ -41,7 +41,7 @@
 						<div class="user-follows ff1" ng-show="homeSI.followingTags.length > 0">
 							<h5>etiquetas que sigo:</h5>
 							<div class="tag-buttons">
-								<a class="datea-tag-btn user-tag" ng-href="#/tag/{{tag.tag}}" ng-repeat="tag in homeSI.followingTags">
+								<a class="datea-tag-btn user-tag" ng-href="#!/tag/{{tag.tag}}" ng-repeat="tag in homeSI.followingTags">
 									#{{tag.tag}}
 								</a>
 							</div>
@@ -57,7 +57,7 @@
 						<div class="trending-tags-holder ff1" ng-show="homeSI.trendingTags.length > 0">
 							<h5>Tendencias:</h5>
 							<div class="tag-buttons">
-								<a class="datea-tag-btn trending-tag" ng-href="#/tag/{{tag.tag}}" ng-class="{followable: tag._followable}" ng-repeat="tag in homeSI.trendingTags">
+								<a class="datea-tag-btn trending-tag" ng-href="#!/tag/{{tag.tag}}" ng-class="{followable: tag._followable}" ng-repeat="tag in homeSI.trendingTags">
 									#{{tag.tag}}
 								</a>
 							</div>
@@ -70,8 +70,8 @@
 							<ul class="user-history">
 								<li class="user-history-item" ng-repeat="item in homeSI.history">
 									<div class="head">
-										<a class="uimg img-circle" href="#/{{item.actor.username}}" da-bg-from-api="{{item.actor.image_small}}" da-img-size="cover" da-img-type="user">&nbsp;</a>
-										<a class="activity-link" href="#{{item._url}}" >{{item._message}}</a>
+										<a class="uimg img-circle" href="#!/{{item.actor.username}}" da-bg-from-api="{{item.actor.image_small}}" da-img-size="cover" da-img-type="user">&nbsp;</a>
+										<a class="activity-link" href="#!{{item._url}}" >{{item._message}}</a>
 									</div>
 									<p class="activity-extract">{{item.data.extract}}</p>
 								</li>
@@ -102,7 +102,7 @@
 						<div class="icon-holder part">
 							<span class="glyphicon glyphicon-comment"></span> {{homeSI.weeklyDateo.comment_count}}
 						</div>
-						<a class="btn datea-btn pull-right ff1" href="#/{{homeSI.weeklyDateo.user.username}}/dateos/{{homeSI.weeklyDateo.id}}">ver detalle</a>
+						<a class="btn datea-btn pull-right ff1" href="#!/{{homeSI.weeklyDateo.user.username}}/dateos/{{homeSI.weeklyDateo.id}}">ver detalle</a>
 					</div>
 				</div>
 			</div>
@@ -189,8 +189,8 @@
 								<div class="campaigns-holder" da-loading="homeSI.loading.campaigns">
 									<div class="campaign-title">
 										<div class="pull-right">
-											<a class="btn btn-link hidden-xs" href="#/crear-iniciativa">crear iniciativa</a>&nbsp;
-											<a class="btn datea-btn ff1" href="#/iniciativas">VER TODAS</a>
+											<a class="btn btn-link hidden-xs" href="#!/crear-iniciativa">crear iniciativa</a>&nbsp;
+											<a class="btn datea-btn ff1" href="#!/iniciativas">VER TODAS</a>
 										</div>
 										<h4>INICIATIVAS DESTACADAS</h4>
 									</div>
