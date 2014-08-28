@@ -36,7 +36,7 @@
 	"da-piecluster": "*",
 	"datejs": "~1.0.0-rc1",
 	"angular-animate": "~1.2.23",
-	"leaflet-pip": "~0.1.0"
+	"leaflet-pip": "~0.1.0",
 	"da-angular-seo": "*"
   },
   "devDependencies": {
