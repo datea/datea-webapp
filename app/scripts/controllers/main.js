@@ -908,7 +908,7 @@ angular.module( 'dateaWebApp' )
 
 	$scope.flow.goToDetail = function ( tag ) {
 		if ( tag.campaigns[0].username ) {
-			$location.path('#/'+tag.campaigns[0].username+'/'+tag.tag );
+			$location.path('/'+tag.campaigns[0].username+'/'+tag.tag );
 		}
 	}
 

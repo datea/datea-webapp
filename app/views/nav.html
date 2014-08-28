@@ -12,10 +12,10 @@
 		</div>
 		<div class="navbar-collapse collapse pull-right" collapse="nav.isCollapsed">
 			<ul class="nav navbar-nav ff1">
-				<li ng-show="nav.visible"><a href="#/iniciativas">Iniciativas</a></li>
+				<li ng-show="nav.visible"><a href="#!/iniciativas">Iniciativas</a></li>
 				<li ng-show="nav.visible"><a href="http://blog.datea.pe">Blog</a></li>
-				<li ng-show="nav.visible"><a href="#/acerca">Acerca</a></li>
-				<li ng-show="nav.visible"><a href="#/ayuda">Ayuda</a></li>
+				<li ng-show="nav.visible"><a href="#!/acerca">Acerca</a></li>
+				<li ng-show="nav.visible"><a href="#!/ayuda">Ayuda</a></li>
 <!-- 				<li ng-show="nav.visible"><button type="button" class="btn datea-datear-btn navbar-btn" ng-click="nav.datear()">Datea<i class="glyphicon glyphicon-map-marker"></i></button></li> -->
 <!-- 				<li ng-show="!nav.visible"><button type="button" class="btn btn-success navbar-btn" ng-click="nav.signIn()">Ingresa</button></li> -->
 				<li ng-show="user.username" class="dropdown user-ctrl">
@@ -24,8 +24,8 @@
 					<!--{{ user.username }}-->
 					<b class="caret"></b></a>
 					<ul class="dropdown-menu">
-						<li><a href="#/{{ user.username }}">Mi Perfil</a></li>
-						<li><a href="#/configuracion">Configuración</a></li>
+						<li><a href="#!/{{ user.username }}">Mi Perfil</a></li>
+						<li><a href="#!/configuracion">Configuración</a></li>
 						<li><a href="#" ng-click="nav.signOut()" >Salir</a></li>
 					</ul>
 				</li>

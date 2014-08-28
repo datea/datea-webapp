@@ -4,7 +4,7 @@ angular
 .module('dateaWebApp')
 .constant('config',
 	{ app     : { name : 'Datea.pe'
-	            , url  : 'http://localhost:9000/#/'
+	            , url  : 'http://localhost:9000/#!/'
 	            }
 	, api     : { url    : 'http://173.255.200.68/api/v2/'
 	            , imgUrl : 'http://173.255.200.68' 

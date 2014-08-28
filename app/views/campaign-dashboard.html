@@ -4,8 +4,8 @@
 	</div>
 
 	<ul class="nav nav-tabs dashboard-tabs">
-		<li ng-class="{'active': flow.dashboardMode === 'edit'}"><a href="#/iniciativas/{{campaignId}}/edit">Configuración</a></li>
-		<li ng-class="{'active': flow.dashboardMode === 'admin'}"><a href="#/iniciativas/{{campaignId}}/admin">Administrador de dateos</a></li>
+		<li ng-class="{'active': flow.dashboardMode === 'edit'}"><a href="#!/iniciativas/{{campaignId}}/edit">Configuración</a></li>
+		<li ng-class="{'active': flow.dashboardMode === 'admin'}"><a href="#!/iniciativas/{{campaignId}}/admin">Administrador de dateos</a></li>
 	</ul>
 
 	<div class="config-holder" ng-if="flow.dashboardMode === 'edit'">
