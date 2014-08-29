@@ -2,8 +2,8 @@
 <!--[if lt IE 7]>      <html class="no-js lt-ie9 lt-ie8 lt-ie7"> <![endif]-->
 <!--[if IE 7]>         <html class="no-js lt-ie9 lt-ie8"> <![endif]-->
 <!--[if IE 8]>         <html class="no-js lt-ie9"> <![endif]-->
-<!--[if gt IE 8]><!--> <html class="no-js"> <!--<![endif]-->
-<head>
+<!--[if gt IE 8]><!--> <html class="no-js" ng-app="dateaWebApp"> <!--<![endif]-->
+<head ng-controller="HeadCtrl">
 	<meta charset="utf-8">
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
 	<meta name="viewport" content="width=device-width">
@@ -18,14 +18,14 @@
 	<meta property="twitter:site" content="@somosdateros" />
 	<meta property="twitter:title" content="{{share.title}}" />
 	<meta property="twitter:description" content="{{share.description}}" />
-	<meta property="twitter:image" content="{{share.image_url}}" />
+	<meta property="twitter:image" content="{{share.imageUrl}}" />
 
 	<!-- OG TAGS -->
 	<meta property="og:type" content="website" />
 	<meta property="og:title" content="{{share.title}}" />
 	<meta property="og:description" content="{{share.description}}" />
 	<meta property="og:url" content="{{share.url}}" />
-	<meta property="og:image" content="{{share.image_url}}" />
+	<meta property="og:image" content="{{share.imageUrl}}" />
 	<meta property="og:locale" content="es_ES" />
 	<meta property="og:site_name" content="Datea" />
 
@@ -55,7 +55,7 @@
 			}
 	</style>
 </head>
-<body ng-app="dateaWebApp" ng-controller="LayoutCtrl">
+<body ng-controller="LayoutCtrl">
 	<!--[if lt IE 7]>
 	<p class="browsehappy">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> to improve your experience.</p>
 	<![endif]-->
@@ -181,6 +181,8 @@
 	<script src="scripts/services/geoJSONStyle.js"></script>
 	<script src="scripts/controllers/changePassword.js"></script>
 	<script src="scripts/directives/loading.js"></script>
+	<script src="scripts/services/shareMetaData.js"></script>
+	<script src="scripts/controllers/htmlHead.js"></script>
 	<!-- endbuild -->
 
 	<!-- clip path for individual markers -->

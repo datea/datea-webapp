@@ -5,16 +5,19 @@ angular.module('dateaWebApp')
 , [ '$scope'
 	, 'Api'
 	, 'config'
+	, 'shareMetaData'
 
 , function (
 		$scope
 	, Api
 	, config
+	, shareMetaData
 ) {
 
 	var doQuery
 	  , getCategories
 	  , buildPagination
+	  , shareData
 	;
 
 	$scope.query = {
@@ -32,6 +35,13 @@ angular.module('dateaWebApp')
 	];
 
 	$scope.dateFormat        = config.defaultDateFormat;
+
+	// SEO AND SOCIAL TAGS
+	shareData = {
+		  title       : 'Datea | Iniciativas'
+		, description : 'Busca iniciativas dateras sobre temas que te importan.'
+	}
+	shareMetaData.setData(shareData);
 
 	getCategories = function () {
 		Api.category

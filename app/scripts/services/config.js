@@ -4,7 +4,7 @@ angular
 .module('dateaWebApp')
 .constant('config',
 	{ app     : { name : 'Datea.pe'
-	            , url  : 'http://localhost:9000/#!/'
+	            , url  : 'http://localhost:9000'
 	            }
 	, api     : { url    : 'http://173.255.200.68/api/v2/'
 	            , imgUrl : 'http://173.255.200.68' 
@@ -46,9 +46,9 @@ angular
 	, defaultDateFormat : "d 'de' MMMM yyyy - H:mm"
 	, shortDateFormat : "d/MM/yyyy - H:mm" 
 	, defaultBoundsRatio : +0.0075
-	, defaultImgProfile : 'static/images/globals/user-default.png'
-	, defaultImgBackground : 'static/images/globals/bg-gris.png'
-	, defaultImgCampaign: "static/images/globals/campaign-default.jpg"
+	, defaultImgProfile : '/static/images/globals/user-default.png'
+	, defaultImgBackground : '/static/images/globals/bg-gris.png'
+	, defaultImgCampaign: "/static/images/globals/campaign-default.jpg"
 	, homeSI : { campaignsOffset : 8
 	           , paginationLimit : 6
 	           , mapZoomOverride : 13
@@ -68,9 +68,9 @@ angular
 	            , dateosLimitByRequest : 100
 	            , defaultMarkersImage : '/static/images/globals/'
 	            }
-	, profile : { dateosOffset    : 6
-	            , campaignsOffset : 6
-	            , paginationLimit : 6
+	, profile : { dateosOffset    : 10
+	            , campaignsOffset : 10
+	            , paginationLimit : 10
 	            }
 	, activityLog : { activityVerbs : [ 'dateo', 'commented', 'voted' ]
 	                , activityContentMsg : { onUser : { 'dateo'     : 'dateó en #{{action_object.tags[0].tag}}'

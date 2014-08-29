@@ -5,7 +5,7 @@
 				<div class="inner">
 					<div class="main-info">
 						<h1 ng-class="{'title-fix' : flow.titleFix}">{{campaign.name}}</h1>
-						<h2>#{{campaign.main_tag.tag}}</h2>
+						<h2><a href="#!/tag/{{campaign.main_tag.tag}}">#{{campaign.main_tag.tag}}</a></h2>
 						<p class="shortdesc">{{campaign.short_description}}</p>
 						<div class="main-btns">
 							<div class="inner">
@@ -218,11 +218,11 @@
 					<div class="user-info">
 						<div class="parts-holder">
 							<div class="part part-1">
-								<div class="user-img img-circle" da-bg-from-api="{{campaign.user.image}}" da-img-size="cover" da-img-type="user"></div>
+								<a href="#!/{{campaign.user.username}}" class="user-img img-circle" da-bg-from-api="{{campaign.user.image}}" da-img-size="cover" da-img-type="user"></a>
 							</div>
 							<div class="part part-2">
 								<p>dater@</p>
-								<h3>{{campaign.user.username}}</h3>
+								<h3><a href="#!/{{campaign.user.username}}">{{campaign.user.username}}</a></h3>
 							</div>
 						</div>
 						<h4>#{{campaign.main_tag.tag}}</h4>

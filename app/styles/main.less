@@ -2718,6 +2718,13 @@ body {
 						margin: 5px 0 20px 0;
 						font-size: 18px;
 						font-weight: bold;
+						a {
+							color: white;
+							&:hover {
+								color: darken(white, 10%);
+								text-decoration: none;
+							}
+						}
 					}
 
 					.shortdesc { font-size: 17px;}
@@ -2829,7 +2836,7 @@ body {
 				.parts-holder {
 					.part-1 {
 						padding: 0;
-						width: 52px;
+						width: 56px;
 					}
 					.part-2 {
 						width: 150px;
@@ -2843,9 +2850,18 @@ body {
 							font-weight: bold;
 						}
 					}
+					h3 {
+						a {
+							color: @text-color;
+							&:hover {
+								color: black;
+							}
+						}
+					}
 					.user-img {
 						height: 52px;
 						width: 52px;
+						display: block;
 					}
 				}
 				h4 {
@@ -4922,44 +4938,71 @@ ul.input-list {
 		position: relative;
 		margin-bottom: 0;
 
-		.user-img {
-			height: 182px;
-			margin: 0 20px 0 0;
-			width: 182px;
-			border: 3px solid white;
-		}
+		.card-content {
+			//box-shadow: 0px 0px -75px #000000 inset;
+			display: inline-block;
+			border-radius: 40px;
+			position: relative;
+			.card-bg {
+				position: absolute;
+				top: -10px;
+				bottom: -10px;
+				left: -20px;
+				right: -20px;
 
-		.user-extra {
-			color: white;
-			width: 250px;
-			font-size: 16px;
-			text-shadow: 0px 0px 2px rgba(0, 0, 0, 0.5);
-			font-weight: 500;
-			h2 {
-				font-size: 24px;
-				font-weight: bold;
-				margin-top: 38px;
-				margin-bottom: 5px;
+				&.blur-bg {
+					border-radius: 30px; 
+					filter: blur(15px);
+			    -webkit-filter: blur(15px);
+			    -moz-filter: blur(15px);
+			    background-color: rgba(0, 0, 0, 0.45);
+			  }
 			}
-			p {
-				margin-bottom: 5px;
+
+			.user-img {
+				position: relative;
+				z-index: 2;
+				height: 182px;
+				margin: 0 20px 0 0;
+				width: 182px;
+				border: 3px solid white;
 			}
-			.dateo-count {
-				margin-right: 20px;
-			}
-			
-		}
-		.social-share {
-			position: absolute;
-			bottom: 20px;
-			right: 1%;
-			//width: 150px;
-			.datea-glyph-holder {
-				i.fa {
-					background-color: white; color: @color-10;
-					&:hover {
-						background-color: @color-12;
-						color: white;
+
+			.user-extra {
+				color: white;
+				width: 250px;
+				font-size: 16px;
+				text-shadow: 0px 0px 2px rgba(0, 0, 0, 0.5);
+				font-weight: 500;
+				position: relative;
+				z-index: 2;
+				min-height: 182px;
+				h2 {
+					font-size: 24px;
+					font-weight: bold;
+					margin-top: 38px;
+					margin-bottom: 5px;
+				}
+				p {
+					margin-bottom: 5px;
+				}
+				.dateo-count {
+					margin-right: 20px;
+				}
+
+				.social-share {
+					position: absolute;
+					bottom: 15px;
+					right: 5px;
+					//width: 150px;
+					.datea-glyph-holder {
+						i.fa {
+							background-color: white; color: @color-10;
+							&:hover {
+								background-color: @color-12;
+								color: white;
+							}
+						}
 					}
 				}
 			}
@@ -4984,11 +5027,18 @@ ul.input-list {
 		.main-content {
 			padding: 0 20px;
 			position: relative;
-			margin: 30px 0 80px;
+			margin: 25px 0 80px;
 			z-index:2 ;
 
 			.dateos-holder {
 				min-height: 250px;
+				.dateo.dateo-teaser {
+					margin-bottom: 30px;
+					padding-bottom: 30px;
+					&:last-child {
+						padding-bottom: 0;
+					}
+				}
 			}
 
 			.no-results {
@@ -4997,46 +5047,16 @@ ul.input-list {
 			}
 			.tab-body {
 				position: relative;
-				padding-top: 30px;
-				p {
-					margin: 10px 0 0;
-				}
-				.user-img {
-					height: 40px;
-					width: 40px;
-				}
-				.part-2 {
-					padding: 4px 0 0;
-					margin: 0 0 0 5px;
-					width: 200px;
-
-					h4 {
-						margin: 0;
-						font-weight: bold;
-					}
-					.date {
-						color: @color-6;
-						font-size: 11px;
-					}
-				}
-				.social-holder {
-					margin: 10px 0 0 0;
-
-					span {
-						color: @color-12;
-					}
-					span+span {
-						margin: 0 0 0 10px;
-					}
-				}
+				padding-top: 30px;			
 			}
 		}
 		.sidebar-content {
-			margin: 80px 0 80px;
+			margin: 75px 0 80px;
 			h4 {
 				text-transform: uppercase;
 				font-size: 14px;
 				font-weight: bold;
+				line-height: 18px;
 			}
 
 			.user-tag {
@@ -5047,6 +5067,13 @@ ul.input-list {
 				list-style: none;
 				margin: 0;
 				padding: 0;
+				a { 
+					color: @text-color;
+					&:hover {
+						color: @color-12;
+					}
+				}
+				p { color: @color-18}
 			}
 		}
 	}
@@ -5091,6 +5118,7 @@ ul.input-list {
 			.user-bgimg-wrap, .uploaded-bgimg-wrap {
 				.bgimg {
 					max-height: 160px;
+					max-width: 100%;
 				}
 				margin-bottom: 10px;
 			}

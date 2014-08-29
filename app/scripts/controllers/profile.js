@@ -11,6 +11,7 @@ angular.module('dateaWebApp')
   , 'ActivityUrl'
   , '$modal'
   , '$location'
+  , 'shareMetaData'
 , function (
     $scope
   , User
@@ -21,6 +22,7 @@ angular.module('dateaWebApp')
   , ActivityUrl
   , $modal
   , $location
+  , shareMetaData
 ) {
 
 	var sup
@@ -97,7 +99,7 @@ angular.module('dateaWebApp')
 		Api.dateo
 		.getDateos( defaultQuery )
 		.then( function ( response ) {
-			console.log( response );
+			console.log("PROFILE DATEOS", response );
 			$scope.targetUser.dateos = response.objects;
 			buildPaginationDateos( response );
 			$scope.targetUser.dateoLoading = false;
@@ -137,7 +139,8 @@ angular.module('dateaWebApp')
 		Api.user
 		.getUserByUserIdOrUsername( { username : $routeParams.username } )
 		.then( function ( response ) {
-			console.log( 'user info', response);
+			var shareData;
+			//console.log( 'user info', response);
 			angular.extend($scope.targetUser, response);
 			$scope.targetUser.isSameAsUser = $scope.targetUser.username === User.data.username;
 			$scope.flow.notFound = false;
@@ -146,6 +149,14 @@ angular.module('dateaWebApp')
 			buildUserCampaigns();
 			buildActivityLog();
 			buildUserFollows();
+
+			shareData = {
+				  title       : "Perfil datero de "+$scope.targetUser.username
+				, description : 'Chequea los dateos e iniciativas de '+$scope.targetUser.username+ ' en Datea. ¡Todos somos dateros!'
+				, imageUrl    : ($scope.targetUser.image_large) ? config.api.imgUrl + $scope.targetUser.image_large : config.app.url + config.defaultImgProfile
+			};
+			shareMetaData.setData(shareData);
+
 		}, function ( reason ) {
 			console.log( 'user error reason:', reason );
 			if ( reason.status === 404 ) {
@@ -181,9 +192,11 @@ angular.module('dateaWebApp')
 		             } } );
 	}
 
-	$scope.$watch( 'paginationDateos.currentPage', function () {
+	$scope.pageChanged = function () {
+		console.log("PAGE", $scope.paginationDateos.currentPage);
 		buildUserDateos( { index : $scope.paginationDateos.currentPage - 1 } );
-	} );
+	}
+
 
 	if ( $routeParams.username ) {
 		buildUserInfo();

@@ -1,30 +1,34 @@
 
 <div class="profile-holder" ng-hide="flow.notFound">
 	<div class="profile-card" da-bg-from-api="{{targetUser.bg_image}}" da-img-type="user-bg" da-img-size="cover" da-img-repeat="repeat-x">
-		<div class="part user-img img-circle" da-bg-from-api="{{ targetUser.image_large }}" da-img-size="cover" da-img-type="user"></div>
-		<div class="part ff1 user-extra">
-			<h2>{{targetUser.username}}</h2>
-			<p class="message" ng-if="targetUser.message">{{targetUser.message}}</p>
-			<p ng-if="targetUser.dateo_count > 0 || targetUser.cote_count > 0">
-				<span class="dateo-count" ng-if="targetUser.dateo_count > 0">{{targetUser.dateo_count}} <ng-pluralize count="targetUser.dateo_count" when="{'one':'dateo','other':'dateos'}" /></span>
-				<span class="votes-count" ng-if="targetUser.vote_count > 0">{{targetUser.vote_count}} <ng-pluralize count="targetUser.vote_count" when="{'one':'apoyo','other':'apoyos'}" /></span>
-			</p>
-			<p class="url" ng-if="targetUser.url"><strong>url</strong>: {{targetUser.url}}</p>
-		</div>
-		<div class="social-share pull-right">
-			<div class="datea-glyph-holder" ng-click="targetUser.share()">
-				<i class="fa fa-share-alt"></i>
-			</div>
-			<!--
-			<div class="form-group">
-				<div class="input-group input-group-sm">
-					<input type="text" class="form-control" ng-model="targetUser.url">
-					<span class="input-group-btn">
-						<button class="btn btn-default" type="button" ng-click="targetUser.share()"><i class="fa fa-share-alt"></i></button>
-					</span>
+		
+		<div class="card-content">
+			<div class="card-bg" ng-class="{'blur-bg': targetUser.bg_image}"></div>
+			<div class="part user-img img-circle" da-bg-from-api="{{ targetUser.image_large }}" da-img-size="cover" da-img-type="user"></div>
+			<div class="part ff1 user-extra">
+				<h2>{{targetUser.username}}</h2>
+				<p class="message" ng-if="targetUser.message">{{targetUser.message}}</p>
+				<p ng-if="targetUser.dateo_count > 0 || targetUser.cote_count > 0">
+					<span class="dateo-count" ng-if="targetUser.dateo_count > 0">{{targetUser.dateo_count}} <ng-pluralize count="targetUser.dateo_count" when="{'one':'dateo','other':'dateos'}" /></span>
+					<span class="votes-count" ng-if="targetUser.vote_count > 0">{{targetUser.vote_count}} <ng-pluralize count="targetUser.vote_count" when="{'one':'apoyo','other':'apoyos'}" /></span>
+				</p>
+				<p class="url" ng-if="targetUser.url"><strong>url</strong>: {{targetUser.url}}</p>
+				<div class="social-share pull-right">
+					<div class="datea-glyph-holder hover-enabled" ng-click="targetUser.share()">
+						<i class="fa fa-share-alt"></i>
+					</div>
+					<!--
+					<div class="form-group">
+						<div class="input-group input-group-sm">
+							<input type="text" class="form-control" ng-model="targetUser.url">
+							<span class="input-group-btn">
+								<button class="btn btn-default" type="button" ng-click="targetUser.share()"><i class="fa fa-share-alt"></i></button>
+							</span>
+						</div>
+					</div>
+					-->
 				</div>
 			</div>
-			-->
 		</div>
 	</div>
 
@@ -40,9 +44,10 @@
 								<p class="msg no-results" ng-show="targetUser.dateos.length === 0 && targetUser.dateoLoading === false">
 								No ha dateado todavia <i class="fa fa-meh-o"></i> 
 								</p>
-								<da-dateo-teaser ng-repeat="dateo in targetUser.dateos" map-present="false" detail-inline="false"></da-dateo-teaser>
-
-								<pagination ng-if="paginationDateos.totalItems > paginationDateos.itemsPerPage" boundary-links="true" items-per-page="paginationDateos.itemsPerPage" total-items="paginationDateos.totalItems" ng-model="paginationDateos.currentPage" class="pagination pagination-lg" previous-text="&lsaquo;" next-text="&rsaquo;" first-text="&laquo;" last-text="&raquo;" max-size="5"></pagination>
+								<div class="dateos-list">
+									<da-dateo-teaser ng-repeat="dateo in targetUser.dateos" map-present="false" detail-inline="false"></da-dateo-teaser>
+								</div>
+								<pagination ng-click="pageChanged()" ng-if="paginationDateos.totalItems > paginationDateos.itemsPerPage" boundary-links="true" items-per-page="paginationDateos.itemsPerPage" total-items="paginationDateos.totalItems" ng-model="paginationDateos.currentPage" class="pagination pagination-lg" previous-text="&lsaquo;" next-text="&rsaquo;" first-text="&laquo;" last-text="&raquo;" max-size="5"></pagination>
 							</div>
 						</tab>
 

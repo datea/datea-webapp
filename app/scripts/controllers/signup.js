@@ -8,6 +8,7 @@ angular.module('dateaWebApp')
   , '$location'
   , 'localStorageService'
   , 'Api'
+  , 'shareMetaData'
 , function (
     $scope
   , User
@@ -15,6 +16,7 @@ angular.module('dateaWebApp')
   , $location
   , localStorageService
   , Api
+  , shareMetaData
 ) {
 
 	var ls = localStorageService;
@@ -22,6 +24,8 @@ angular.module('dateaWebApp')
 	$scope.flow = {};
 
 	User.isSignedIn() && $location.path( '/' );
+
+	shareMetaData.setdata({title: "Datea | Regístrate", description: "Registra tu cuenta en Datea."});
 
 	$scope.flow.signIn = function () {
 		$location.path( '/signin' );

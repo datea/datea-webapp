@@ -5,14 +5,18 @@ angular.module( 'dateaWebApp' )
 , [ '$scope'
   , 'Api'
   , 'config'
+  , 'shareMetaData'
 , function (
     $scope
   , Api
   , config
+  , shareMetaData
 ) {
 
 	$scope.landing = {};
 	$scope.dateFormat = config.defaultDateFormat;
+
+	shareMetaData.resetToDefault();
 
 	Api.stats.getStats()
 	.then( function ( response ) {

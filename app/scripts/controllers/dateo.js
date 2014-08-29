@@ -13,6 +13,7 @@ angular.module('dateaWebApp')
   , 'leafletData'
   , '$timeout'
   , '$rootScope'
+  , 'shareMetaData'
 , function (
     $scope
   , $routeParams
@@ -25,6 +26,7 @@ angular.module('dateaWebApp')
   , leafletData
   , $timeout
   , $rootScope
+  , shareMetaData
  ) {
 	var dateos
 	  , dateosId = []
@@ -57,7 +59,10 @@ angular.module('dateaWebApp')
 	}
 
 	buildDateo = function ( response ) {
-		var leaflet = {};
+		var leaflet = {}
+			, shareData
+			, dataTags
+		;
 		if( response.objects[0] ) {
 			dateo   = response.objects[0];
 			$scope.flow.notFound = false;
@@ -65,12 +70,20 @@ angular.module('dateaWebApp')
 			$scope.flow.messageNext = hasNext() ? 'siguiente' : 'primer';
 			angular.extend( $scope.dateo, dateo );
 			setLeaflet();
-			$scope.flow.shareableUrl = config.app.url + $scope.dateo.user.username + '/dateos/' + $scope.dateo.id;
+			$scope.flow.shareableUrl = config.app.url + '/#!' + $location.path();
 			buildRelatedCampaigns();
 
-			
 			if (User.isSignedIn() && User.data.id === dateo.user.id) $scope.flow.showEditBtn = true;
-			console.log( 'buildDateo', dateo );
+				
+			// SEO AND SOCIAL TAGS
+				dataTags = dateo.tags.map(function(t) { return t.tag}).slice(0,2);
+				shareData = {
+					  title       : 'Datea | '+dateo.user.username+' dateó en '+ dataTags.join(", ")
+					, description : dateo.extract
+					, imageUrl    : dateo.images.length ? config.api.imgUrl + dateo.images[0].image : null
+				}
+				shareMetaData.setData(shareData);
+
 		} else {
 			$scope.flow.notFound = true;
 		}

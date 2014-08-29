@@ -22,6 +22,7 @@ angular.module('dateaWebApp')
   , 'Piecluster'
   , '$rootScope'
   , 'localStorageService'
+  , 'shareMetaData'
 , function (
     $scope
   , Api
@@ -43,6 +44,7 @@ angular.module('dateaWebApp')
   , Piecluster
   , $rootScope
   , localStorageService
+  , shareMetaData
 ) {
 
 	var sessionMarkersIdx = 0
@@ -256,7 +258,8 @@ angular.module('dateaWebApp')
 	}
 
 	buildCampaign = function () {
-		var campaignGivens = {};
+		var campaignGivens = {}
+			, shareData      = {};
 		campaignGivens.user     = $routeParams.username;
 		campaignGivens.main_tag = $routeParams.campaignName;
 
@@ -264,7 +267,7 @@ angular.module('dateaWebApp')
 		.getCampaigns( campaignGivens )
 		.then( function ( response ) {
 			if ( response.objects[0] ) {
-				console.log("CAMPAIGN", response.objects[0]);
+				//console.log("CAMPAIGN", response.objects[0]);
 				angular.extend( $scope.campaign, response.objects[0] );
 				if ($scope.campaign.secondary_tags && $scope.campaign.secondary_tags.length > 10) {
 					$scope.flow.colorRange = d3.scale.category20().range();
@@ -285,6 +288,15 @@ angular.module('dateaWebApp')
 				if (User.isSignedIn() && User.data.id == $scope.campaign.user.id) {
 					$scope.flow.userIsOwner = true;
 				}
+
+				// SEO AND SOCIAL TAGS
+				shareData = {
+					  title       : 'Datea | '+ $scope.campaign.name
+					, description : $scope.campaign.short_description
+					, imageUrl    : $scope.campaign.image.image || config.defaultImgCampaign 
+				}
+				shareMetaData.setData(shareData);
+
 			} else {
 				$scope.flow.notFound = true;
 			}

@@ -3,9 +3,11 @@ angular.module("dateaWebApp")
 [
 	'$rootScope'
 ,	'$location'
+, '$modal'
 ,	function (
 		$rootScope
 	, $location
+	, $modal
 ) {
 	return {
 			restrict    : "E"

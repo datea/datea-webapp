@@ -9,6 +9,7 @@ angular.module( 'dateaWebApp' )
   , '$routeParams'
   , '$document'
   , '$location'
+  , 'shareMetaData'
 , function (
     $scope
   , Api
@@ -17,6 +18,7 @@ angular.module( 'dateaWebApp' )
   , $routeParams
   , $document
   , $location
+  , shareMetaData
 ) {
 
 	var getCampaign
@@ -57,6 +59,8 @@ angular.module( 'dateaWebApp' )
 				, 'solved'   : 'solucionado'
 		}
 	};
+
+	shareMetaData.setData({title: 'Datea | administrador de dateos'});
 
 	getCampaign = function () {
 		$scope.flow.loading = true;

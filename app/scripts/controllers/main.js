@@ -25,6 +25,7 @@ angular.module( 'dateaWebApp' )
   , '$log'
   , 'Piecluster'
   , '$compile'
+  , 'shareMetaData'
 , function (
     $scope
   , User
@@ -49,6 +50,7 @@ angular.module( 'dateaWebApp' )
   , $log
   , Piecluster
   , $compile
+  , shareMetaData
 ) {
 	var data
 	  , ls = localStorageService
@@ -131,6 +133,8 @@ angular.module( 'dateaWebApp' )
 	//                }
 
 	$scope.homeSI.leaflet = angular.copy( config.defaultMap );
+
+	shareMetaData.resetToDefault();
 
 	buildFollowingTags = function () {
 		Api.tag

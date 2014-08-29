@@ -17,6 +17,7 @@ angular.module('dateaWebApp')
   , 'leafletMarkersHelpers'
   , '$http'
   , '$compile'
+  , 'shareMetaData'
 , function (
     $scope
   , Api
@@ -33,6 +34,7 @@ angular.module('dateaWebApp')
   , leafletMarkersHelpers
   , $http
   , $compile
+  , shareMetaData
 ) {
 
 	var sessionMarkersIdx = 0
@@ -87,10 +89,18 @@ angular.module('dateaWebApp')
 		Api.tag
 		.getTags( { tag: $routeParams.tagName } )
 		.then( function ( response ) {
+			var shareData;
 			if ( response.objects[0] ) {
 				angular.extend($scope.tag, response.objects[0]);
 				buildDateos();
 				buildDateosWithImages();
+
+				shareData = {
+					  title       : 'Datea | dateos en #'+$scope.tag.tag
+					, description : "Chequea los dateos con el hashtag "+$scope.tag.tag+" en Datea." 
+				}
+				shareMetaData.setData(shareData);
+
 			} else {
 				$scope.flow.notFound = true;
 			}

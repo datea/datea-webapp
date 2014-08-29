@@ -9,6 +9,7 @@ angular.module('dateaWebApp')
   , '$modal'
   , 'localStorageService'
   , '$location'
+  , 'shareMetaData'
 , function (
     $scope
   , User
@@ -17,6 +18,7 @@ angular.module('dateaWebApp')
   , $modal
   , localStorageService
   , $location
+  , shareMetaData
 ) {
 
 	var ls = localStorageService
@@ -35,6 +37,8 @@ angular.module('dateaWebApp')
 	$scope.accountMsgs   = config.accountMsgs;
 	$scope.flow.statusBeingChecked  = !User.data.status;
 	$scope.flow.activeTab = $location.search().tab || 'user';
+
+	shareMetaData.setData({ title : 'Datea | configuración de cuenta'});
 
 	$scope.flow.openTab = function (tab) {
 		$location.search({tab: tab});

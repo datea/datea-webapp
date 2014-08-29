@@ -9,6 +9,7 @@ angular.module('dateaWebApp')
 , 'config'
 , '$location'
 , 'User'
+, 'shareMetaData'
 , function (
   $scope
 , $http
@@ -17,6 +18,7 @@ angular.module('dateaWebApp')
 , config
 , $location
 , User
+, shareMetaData
 ) {
 
 	var ls = localStorageService
@@ -35,6 +37,8 @@ angular.module('dateaWebApp')
 	$scope.flow.registerSuccess         = false;
 
 	User.isSignedIn() && $location.path( '/' );
+
+	shareMetaData.setdata({title: "Datea | Regístrate", description: "Registra tu cuenta en Datea."});
 
 	$scope.auth.checkUsername = function () {
 		if ( $scope.auth.bio ) {

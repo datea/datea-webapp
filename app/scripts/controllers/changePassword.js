@@ -8,6 +8,7 @@ angular.module( 'dateaWebApp' )
 	, '$location'
 	, 'config'
 	, '$routeParams'
+	, 'shareMetaData'
 , function (
 		$scope
 	, Api
@@ -15,6 +16,7 @@ angular.module( 'dateaWebApp' )
 	, $location
 	, config
 	, $routeParams
+	, shareMetaData
 ) {
 
 	$scope.flow     = {};
@@ -27,6 +29,8 @@ angular.module( 'dateaWebApp' )
 	$scope.flow.validInput.samePassword = null;
 
 	$scope.flow.changeSuccess           = null;
+
+	shareMetaData.setData({ title : 'Datea | cambio de contraseña'});
 
 	$scope.flow.checkPassword = function () {
 		if ( $scope.auth.password ) {

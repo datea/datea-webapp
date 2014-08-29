@@ -9,6 +9,7 @@ angular.module( 'dateaWebApp' )
   , '$location'
   , 'State'
   , 'config'
+  , 'shareMetaData'
 , function (
     $scope
   , Api
@@ -17,6 +18,7 @@ angular.module( 'dateaWebApp' )
   , $location
   , State
   , config
+  , shareMetaData
 ) {
 	var ls = localStorageService
 		, msg
@@ -38,6 +40,8 @@ angular.module( 'dateaWebApp' )
 	$scope.auth.showResetPassword = false;
 
 	User.isSignedIn() && $location.path( '/' );
+
+	shareMetaData.setdata({title: "Datea | Ingresa", description: "Ingresa a tu cuenta en Datea."});
 
 	if ($location.search().msg) {
 		msg = $location.search().msg;
