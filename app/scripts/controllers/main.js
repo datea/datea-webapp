@@ -94,6 +94,7 @@ angular.module( 'dateaWebApp' )
 	  , buildPieClusterIcon
 	  , createMarkerPopup
 	  , clusterSizeRange
+	  , initHomeSIScope
 	 	, makeSVGClusterIcon
 	  , makeSVGPie
 	 	, selectClusterFunction
@@ -103,20 +104,6 @@ angular.module( 'dateaWebApp' )
 	$scope.flow           = {};
 	$scope.query          = {};
 	$scope.pagination     = {};
-	
-	$scope.homeSI                   = {};
-	$scope.homeSI.leaflet           = {};
-	$scope.homeSI.history           = [];
-	$scope.homeSI.selectedMarker    = 'last';
-	$scope.homeSI.loading           = {};
-	$scope.homeSI.loading.leaflet   = true;
-	$scope.homeSI.loading.campaigns = true;
-	$scope.homeSI.hasLegend         = false;
-	$scope.homeSI.userTagsArray     = [];
-	$scope.homeSI.activeTab 			  = 'dateos';
-	$scope.homeSI.activeDateoView   = 'map';
-	$scope.homeSI.dateosListView    = {limit: 20};
-	$scope.homeSI.campaignsFollowed = []
 
 	$scope.query.orderBy            = '-created';
 	$scope.query.orderByLabel       = 'últimos';
@@ -124,17 +111,33 @@ angular.module( 'dateaWebApp' )
 	$scope.query.followFilterLabel  = 'todos';
 
 	$scope.dateFormat = config.defaultDateFormat;
-	$scope.homeSI.leaflet.events = {enable: ['leafletDirectiveMarker.click', 'leafletDirectiveMarker.clusterclick']};
+
+	initHomeSIScope = function () {
+		$scope.homeSI                   = {};
+		$scope.homeSI.leaflet           = {};
+		$scope.homeSI.history           = [];
+		$scope.homeSI.selectedMarker    = 'last';
+		$scope.homeSI.loading           = {};
+		$scope.homeSI.loading.leaflet   = true;
+		$scope.homeSI.loading.campaigns = true;
+		$scope.homeSI.hasLegend         = false;
+		$scope.homeSI.userTagsArray     = [];
+		$scope.homeSI.activeTab 			  = 'dateos';
+		$scope.homeSI.activeDateoView   = 'map';
+		$scope.homeSI.dateosListView    = {limit: 20};
+		$scope.homeSI.campaignsFollowed = [];
+		$scope.homeSI.leaflet = angular.copy( config.defaultMap );
+		$scope.homeSI.leaflet.events    = {enable: ['leafletDirectiveMarker.click']};
+	} 
+
+	initHomeSIScope();
+	shareMetaData.resetToDefault();
 
 	// $scope.homeSI.leaflet = { bounds   : [ [ -12.0735, -77.0336 ], [ -12.0829, -77.0467 ] ]
 	//                , center   : { lat: -12.05, lng: -77.06, zoom: 13 }
 	//                , defaults : { scrollWheelZoom: false }
 	//                , markers  : {}
 	//                }
-
-	$scope.homeSI.leaflet = angular.copy( config.defaultMap );
-
-	shareMetaData.resetToDefault();
 
 	buildFollowingTags = function () {
 		Api.tag
@@ -638,7 +641,6 @@ angular.module( 'dateaWebApp' )
 			$scope.$watch('query.followFilter', function() {
 				$scope.homeSI.onFilterChange();
 			});
-			console.log("HOME SI", $scope.homeSI);
 		}
 	}
 
@@ -1115,7 +1117,6 @@ angular.module( 'dateaWebApp' )
 
 	$scope.$on( 'leafletDirectiveMarker.click', function ( ev, args ) {
 		var dateo;
-		console.log( 'focus event', args.markerName );
 		lastMarkerWithFocus = args.markerName;
 		dateo = $scope.homeSI.leaflet.markers[args.markerName]._dateo
 		leafletData.getMarkers("leafletHomeSI")
@@ -1127,7 +1128,7 @@ angular.module( 'dateaWebApp' )
 
 	$scope.$on('$destroy', function () {
 		console.log( 'destroy' );
-		$scope.homeSI = {};
+		initHomeSIScope();
 		leafletMarkersHelpers.resetCurrentGroups();
 	});
 
