@@ -25,7 +25,7 @@ angular.module('dateaWebApp')
 
 	User.isSignedIn() && $location.path( '/' );
 
-	shareMetaData.setdata({title: "Datea | Regístrate", description: "Registra tu cuenta en Datea."});
+	shareMetaData.setData({title: "Datea | Regístrate", description: "Registra tu cuenta en Datea."});
 
 	$scope.flow.signIn = function () {
 		$location.path( '/signin' );

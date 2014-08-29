@@ -41,7 +41,7 @@ angular.module( 'dateaWebApp' )
 
 	User.isSignedIn() && $location.path( '/' );
 
-	shareMetaData.setdata({title: "Datea | Ingresa", description: "Ingresa a tu cuenta en Datea."});
+	shareMetaData.setData({title: "Datea | Ingresa", description: "Ingresa a tu cuenta en Datea."});
 
 	if ($location.search().msg) {
 		msg = $location.search().msg;

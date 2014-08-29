@@ -38,7 +38,7 @@ angular.module('dateaWebApp')
 
 	User.isSignedIn() && $location.path( '/' );
 
-	shareMetaData.setdata({title: "Datea | Regístrate", description: "Registra tu cuenta en Datea."});
+	shareMetaData.setData({title: "Datea | Regístrate", description: "Registra tu cuenta en Datea."});
 
 	$scope.auth.checkUsername = function () {
 		if ( $scope.auth.bio ) {
