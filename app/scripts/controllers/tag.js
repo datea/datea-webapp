@@ -90,7 +90,8 @@ angular.module('dateaWebApp')
 		.getTags( { tag: $routeParams.tagName } )
 		.then( function ( response ) {
 			var shareData;
-			if ( response.objects[0] ) {
+			console.log("TAG", response);
+			if ( response.objects.length ) {
 				angular.extend($scope.tag, response.objects[0]);
 				buildDateos();
 				buildDateosWithImages();
@@ -135,11 +136,14 @@ angular.module('dateaWebApp')
 			dateoGivens.order_by = config.selectFilter[ $scope.tag.selectedMarker ];
 		}
 		if ( dateoGivens.tags ) {
+
 			$scope.tag.dateos = [];
 			Api.dateo
 			.getDateos( dateoGivens )
 			.then( function ( response ) {
+				console.log("DATEOS QUERY", response);
 				if ( response.objects.length ) {
+					console.log("dateos", response);
 					angular.forEach( response.objects , function ( value, key ) {
 						if ( value.position ) {
 							dateos.push( value );
@@ -343,7 +347,7 @@ angular.module('dateaWebApp')
 	} );
 
 	$scope.$on('leafletDirectiveMarker.click', function(event, args) {
-		$scope.flow.leaflet.markers[markerName].focus = true;
+		$scope.flow.leaflet.markers[args.markerName].focus = true;
 		createMarkerPopup(args.markerName);
 	});
 

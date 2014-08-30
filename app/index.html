@@ -10,7 +10,7 @@
 	<meta name="fragment" content="!" />
 
 	<!-- META TAGS -->
-	<title>{{share.title}}</title>
+	<title ng-bind="share.title || 'Datea - Todos somos dateros'"></title>
 	<meta name="description" content="{{share.description}}">
 
 	<!-- TWITTER CARD -->
@@ -33,13 +33,14 @@
 
 	<!-- build:css(.tmp) styles/main.css -->
 	<link rel="stylesheet" href="styles/main.css">
-  <!--
-	<link href='http://fonts.googleapis.com/css?family=Oswald' rel='stylesheet' type='text/css'>
-	<link href='http://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400' rel='stylesheet' type='text/css'>
-	 -->
 	<!-- endbuild -->
+
+	<!-- CDN -->
+	<link href="//netdna.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.min.css" rel="stylesheet">
+
+	<!--
+	<link rel="stylesheet" href="bower_components/font-awesome/css/font-awesome.css">
 	<link rel="stylesheet" href="bower_components/leaflet-dist/leaflet.css">
-	<!--<link rel="stylesheet" href="bower_components/font-awesome/css/font-awesome.css">-->
 	<link rel="stylesheet" href="bower_components/bootstrap-social/bootstrap-social.css">
 	<link rel="stylesheet" href="bower_components/Leaflet.label/dist/leaflet.label.css">
 	<link rel="stylesheet" href="bower_components/leaflet.markerclusterer/dist/MarkerCluster.css">
@@ -47,7 +48,7 @@
 	<link rel="stylesheet" href="bower_components/angular-social/angular-social.css">
 	<link rel="stylesheet" href="bower_components/leaflet.draw/dist/leaflet.draw.css">
 	<link rel="Stylesheet" href="bower_components/bootstrap-select/dist/css/bootstrap-select.min.css">
-	<link href="//netdna.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.min.css" rel="stylesheet">
+	-->
 
 	<style>
 		.colored-marker {
@@ -189,9 +190,10 @@
 	<svg height="0" width="0" style="padding:0; margin: 0; position: absolute;">
     <defs>
       <clipPath id="pinpath">
-        <!--<path d="M12.499,0.268c-6.782,0-12.282,5.639-12.282,12.597c0,11.026,12.282,18.9,12.282,18.9s12.284-7.678,12.284-18.9C24.783,5.906,19.283,0.268,12.499,0.268"/>-->
-        <!--<path d="M14.499,0C6.492,0,0,7.161,0,15.999C0,30,14.499,40,14.499,40S29,30.248,29,15.999C29,7.161,22.504,0,14.499,0"/>-->
-        <path d="M0.726,16.239c0-8.38,6.177-15.174,13.795-15.174s13.795,6.793,13.795,15.174c0,10.116-13.795,25.29-13.795,25.29  S0.726,26.355,0.726,16.239" />
+        <path d="M14.087,0.485c-7.566,0-13.694,6.133-13.698,13.695c0.027,3.938,2.02,8.328,4.637,10.878
+	c2.615,3.363,6.536,8.889,6.488,11.033v0.07c0,4.195,0.364,3.92,0.4,4.051c0.128,0.441,0.527,0.746,0.99,0.746h2.179
+	c0.464,0,0.858-0.309,0.983-0.74c0.04-0.137,0.407,0.139,0.411-4.057c0-0.039-0.004-0.059-0.004-0.068
+	c-0.038-2.047,3.399-7.35,6.109-10.877c2.875-2.498,5.175-6.814,5.196-11.035C27.779,6.618,21.65,0.485,14.087,0.485z" />
       </clipPath>
     </defs>
   </svg>

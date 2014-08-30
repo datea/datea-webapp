@@ -13,8 +13,8 @@
 	<div class="outstanding-dateo-img" bg-from-api="{{dateo.images[$index].image}}" ng-repeat="img in dateo.images"></div>
 	<a class="btn datea-btn pull-right outstanding-dateo-more-btn" href="#!/{{dateo.user.username}}/dateos/{{dateo.id}}">ver detalle</a>
 	<div class="stats">
-		<div class="icon-holder stat">
-			<span class="glyphicon glyphicon-thumbs-up" ng-show="dateo.vote_count > 0"></span> {{dateo.vote_count}}
+		<div class="icon-holder stat" ng-show="dateo.vote_count > 0">
+			<span class="glyphicon glyphicon-thumbs-up"></span> {{dateo.vote_count}}
 		</div>
 		<div class="icon-holder stat" ng-show="dateo.comment_count > 0">
 			<span class="glyphicon glyphicon-comment"></span> {{dateo.comment_count}}

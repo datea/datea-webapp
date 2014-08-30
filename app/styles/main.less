@@ -19,8 +19,16 @@
 
 @import "app/bower_components/bootstrap/less/bootstrap.less";
 @import "app/styles/modules.less";
-// @import "app/bower_components/bootstrap-social/bootstrap-social.less";
 
+// IMPORT EXTERNAL LIBS
+@import "../bower_components/bootstrap-social/bootstrap-social.less";
+@import (inline) "../bower_components/leaflet-dist/leaflet.css";
+@import (inline) "../bower_components/Leaflet.label/dist/leaflet.label.css";
+@import (inline) "../bower_components/leaflet.markerclusterer/dist/MarkerCluster.css";
+@import (inline) "../bower_components/leaflet.markerclusterer/dist/MarkerCluster.Default.css";
+@import (inline) "../bower_components/angular-social/angular-social.css";
+@import (inline) "../bower_components/leaflet.draw/dist/leaflet.draw.css";
+@import (inline) "../bower_components/bootstrap-select/dist/css/bootstrap-select.min.css";
 //
 // Variables
 //
@@ -230,6 +238,13 @@ textarea { resize: vertical; }
 		right: 0;
 		text-align: center;
 	}
+	&.loading-fixed {
+		.datea-loading-icon {
+			position: fixed;
+			top: 48%;
+			left: 0%;		
+		}
+	}
 }
 
 .title-fix {
@@ -355,6 +370,43 @@ body {
 			margin-left: 100px;
 			a.dropdown-toggle {padding: 0;}
 		}  
+	}
+}
+
+@media (max-width: @screen-sm-min) {
+	.datea-navbar {
+		.navbar-collapse.collapse .navbar-nav {
+			.user-ctrl {
+				margin-left: 0;
+				margin-top: 15px;
+				border-top: 1px solid black;
+				padding-top: 15px;
+				padding-bottom: 30px;
+				a.dropdown-toggle {
+					margin: 0px 15px;
+					display: none;
+				}
+				.dropdown-menu {
+					display: block !important;
+					position: static !important;
+					background-color: transparent;
+					border: none;
+					.box-shadow(none);
+					li {
+						a {
+							padding: 10px 15px;
+							text-transform: uppercase;
+							color: black;
+							font-size: 17px;
+							line-height: 20px;
+							&:hover {
+								background-color: transparent;
+							}
+						}
+					}
+				}
+			}
+		}
 	}
 }
 
@@ -661,7 +713,7 @@ body {
 		text-align: center;
 		color: black;
 
-		.btn-login-landing { width: 135px; text-transform: uppercase; font-weight: bold;}
+		.btn-login-landing { width: 140px; text-transform: uppercase; font-weight: bold;}
 
 		.col {
 			font-size: 15px;
@@ -679,6 +731,10 @@ body {
 		.question {
 			font-size: 17px;
 			margin: 30px 0 12px 0;
+		}
+		.btn.datea-btn.btn-lg.btn-login-landing {
+			padding-bottom: 7px;
+			padding-top: 13px;
 		}
 	}
 
@@ -2000,10 +2056,12 @@ body {
 				font-size: 16px;
 				.ff2;
 				text-transform: uppercase;
+				color: @color-10;
 			}
 
 			li.active a {
 				background-color: @color-18;
+				color: white;
 			}
 		}
 
@@ -2046,9 +2104,9 @@ body {
 		//border-color: @color-3;
 
 		.map-holder {
-			border-width: 0 2px;
-			border-style: solid;
-			border-color: @color-3;
+			//border-width: 0 2px;
+			//border-style: solid;
+			//border-color: @color-3;
 			position: relative ;
 			height: 450px; height: 60vh; min-height: 450px;
 			.leaflet-map {
@@ -2075,7 +2133,7 @@ body {
 		}
 
 		.legend-holder {
-			padding: 10px 0;
+			padding: 15px 5px;
 		}
 	}
 
@@ -2101,7 +2159,7 @@ body {
 				margin-bottom: 4px;
 				.clearfix;
 				.tag {
-					float :left;
+					float:left;
 					margin-right: 10px;
 					&:last-child {
 						margin-right: 0;
@@ -2138,7 +2196,7 @@ body {
 		.campaign-title {
 			h2 {margin: 0px 40px 0 0; display: inline-block; padding-top: 7px;}
 			a.btn {display: inline-block; vertical-align: top}
-			margin-bottom: 40px
+			margin-bottom: 30px
 		}
 
 		.search-box {
@@ -2175,12 +2233,16 @@ body {
 				background-color: @color-15;
 				margin: 15px 0 30px;
 				position:relative;
-				border-radius: 6px;
+				//border-radius: 6px;
 
 				.inner { padding: 20px; }
 
+				.datero {
+					margin-bottom: 3px;
+				}
+
 				a {
-					margin: 0 7px;
+					//margin: 0 7px;
 				}
 
 				.parts-holder {
@@ -2194,6 +2256,8 @@ body {
 						width: 63px;
 						vertical-align: top;
 						.uimg-wrap {
+							position: relative;
+							left: -5px;
 							width: 100%;
 							padding-top: 100%;
 							//border: 1px solid red;
@@ -2206,6 +2270,9 @@ body {
 								left: 0;
 								bottom: 0;
 								margin: 0;
+								&:hover {
+									text-decoration: none;
+								}
 							}
 						}
 					}
@@ -2219,11 +2286,14 @@ body {
 							font-weight: bold;
 							margin: 10px 0 0;
 							word-break: break-all;
+							a {
+								color: @text-color;
+							}
 						}
 						.stats {
-							margin-top: 4px;
+							margin-top: 6px;
 							span {
-								font-size: 15px;
+								font-size: 14px;
 							}
 							.votes-count {
 								margin: 0 0 0 10px;
@@ -2232,36 +2302,9 @@ body {
 					}
 				}
 
-				.part-1 {
-					//width: 75px;
-					text-align: center;
-					margin-right: 10px;
-					
-					img {
-						height: 63px;
-						width: 63px;
-					}
-				}
-				.part-2 {
-					h3 {
-						font-size: 18px;
-						font-weight: bold;
-						margin: 10px 0 0;
-						word-break: break-all;
-					}
-					.stats {
-						margin-top: 4px;
-						span {
-							font-size: 15px;
-						}
-						.votes-count {
-							margin: 0 0 0 10px;
-						}
-					}
-				}
-
 				.actions {
-					padding-top: 10px;
+					padding-top: 0px;
+					.ff1;
 					.datea-datear-btn {
 						margin: 0 0 0 12px;
 						font-size: 20px;
@@ -2523,7 +2566,7 @@ body {
 			}
 			.block.block-1 {
 				.user-info {
-					.inner { padding: 15px 20px; }
+					.inner { padding: 15px 15px; }
 					.info-head {
 						.uimg-cell {
 							width: 68px;
@@ -2644,33 +2687,137 @@ body {
 		right: 4px;
 		color: @color-5;
 		font-size: 12px;
+		&.active {
+			color: @color-5;
+		}
+		&.inactive {
+			color: @btn-danger-bg;
+		}
 	}
 }
 
 .campaign-list-holder {
-	.container-fluid {padding: 0px 40px;}
+	//.container-fluid {padding: 0px 40px;}
 	.search-bar {
-		h1 {margin-top: 0;}
+		h1 {margin-top: 10px;}
 		background-color: white;
-		padding: 30px 0;
+		padding-top: 20px;
+		position: relative;
+		.clearfix;
 		.search-input {
-			width: 280px;
+			width: 100%;
 		}
 		.form-group {
-			margin-right: 20px;
+			//margin-right: 20px;
+			//margin-bottom: 20px;
+			float: left;
 			&:last-child {
 				margin-right: 0;
 			}
 		}
-	}
-	.search-results {
-		background-color: #ddd;
+		.select-field {
+			position: relative;
+			min-width: 180px;
+			width: 100%;
+			label {
+				//position: absolute;
+				//left: 0;
+				//top: -25px;
+			}
+		}
+		.btn-search {
+			position: relative;
+			top: -6px;
+			margin-top: 10px;
+		}
+		.btn-create-holder {
+			position: absolute;
+			right: 25px;
+			top: 15px;
+		}
 		.num-results {
 			padding: 15px 0;
 			text-align: right;
 		}
+	}
+	.search-results {
+		background-color: @color-3;
+		padding: 30px 0;
 		.campaign-list {
 			min-height: 65vh;
+		}
+	}
+}
+
+@media (min-width: @screen-sm-min) {
+	.campaign-list-holder {
+		.search-bar {
+
+			.search-input {
+				width: 220px;
+			}
+
+			.form-group {
+				margin-right: 20px;
+				margin-bottom: 20px;
+				margin-top: 20px;
+				float: left;
+				&:last-child {
+					margin-right: 0;
+				}
+			}
+			.select-field {
+				position: relative;
+				min-width: 180px;
+				width: 200px;
+				label {
+					position: absolute;
+					left: 0;
+					top: -25px;
+				}
+			}
+			.btn-search {
+				position: relative;
+				top: -6px;
+				margin-top: 20px;
+			}
+			.num-results {
+				padding: 10px 0;
+				text-align: left;
+			}
+		}
+	}
+}
+
+@media (min-width: 600px) and  (max-width: @screen-sm-min) {
+	.campaign-list-holder .search-results .container-fluid .row .col-md-3 { width: 33.333333%; }
+}
+
+@media (min-width: @screen-md-min) and  (max-width: @screen-lg-min) {
+	.campaign-list-holder {
+		.container-fluid { padding: 0px 30px; }
+		.search-bar {
+			.form-group {
+				margin-right: 10px;
+				margin-bottom: 10px;
+			}
+		}
+		.search-results .container-fluid .row .col-md-3 { width: 20%; }
+	}
+}
+
+@media (min-width: @screen-lg-min) {
+	.campaign-list-holder {
+		.container-fluid { padding: 0px 40px; }
+		.search-bar {
+			h1 {margin-bottom: 0;}
+			.search-input {
+				width: 280px;
+			}
+			.form-group {
+				margin-right: 20px;
+				margin-bottom: 10px;
+			}
 		}
 	}
 }
@@ -4391,6 +4538,19 @@ ul.input-list {
 		}
 	}
 
+	.tags  {
+		.clearfix;
+		.tag {
+			font-size: 15px;
+			display: block;
+			float: left;
+			margin-right: 10px;
+			&:last-child {
+				margin-right: 0;
+			}
+		}
+	}
+
 	.extract {
 		font-size: 15px;
 	}
@@ -4930,6 +5090,32 @@ ul.input-list {
 //
 
 .profile-holder {
+	position: relative;
+	.btn-edit {
+		position: absolute;
+		top: 180px;
+		right: 2%;
+		display: block;
+		width: 38px;
+		height: 38px;
+		margin-right: 0 !important;
+		text-decoration: none;
+		.glyphicon, .fa {
+			color: white;
+			background-color: @color-10;
+			font-size: 22px;
+			line-height: 38px;
+			width: 38px;
+			height: 38px;
+			border-radius: 50%;
+			text-align: center;
+			display: block;
+			&:hover {
+				background-color: white;
+				color: darken(@color-10, 20%);
+			}
+		}
+	}
 	.profile-card {
 		//padding: 30px 30% 30px;
 		padding-left: 35%;
@@ -4945,8 +5131,8 @@ ul.input-list {
 			position: relative;
 			.card-bg {
 				position: absolute;
-				top: -10px;
-				bottom: -10px;
+				top: -15px;
+				bottom: -15px;
 				left: -20px;
 				right: -20px;
 

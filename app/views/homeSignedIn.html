@@ -7,7 +7,7 @@
 					<div class="block block-1">
 						<div class="user-info ff1">
 							<div class="inner">
-								<div class="datero">dater@</div>
+								<div class="datero ff1">dater@</div>
 								<div class="info-head">
 									<div class="uimg-cell">
 										<div class="uimg-wrap">
@@ -16,7 +16,7 @@
 										<!--<img src="{{user.image | imgFromApi}}" alt="{{user.username}}" class="img-circle">-->
 									</div>
 									<div class="udata-cell">
-										<h3>{{user.username}}</h3>
+										<h3><a href="#!/{{user.username}}">{{user.username}}</a></h3>
 										<div class="stats">
 											<span class="dateos-count" ng-if="user.dateo_count > 0">{{user.dateo_count}} <ng-pluralize count="user.dateo_count" when="{'one':
 											'dateo','other':'dateos'}"></ng-pluralize> </span>

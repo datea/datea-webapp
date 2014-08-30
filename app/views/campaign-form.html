@@ -14,7 +14,7 @@
 </nav>
 
 <div class="container campaign-form-container" ng-class="{fix: flow.fixMenu}">
-	<form class="form" da-loading="flow.loading">
+	<form class="form loading-fixed" da-loading="flow.loading">
 		<alert ng-repeat="alert in flow.alerts" type="'danger'" close="flow.closeAlert($index)" class="fix-alert form-alert">{{alert}}</alert>
 		<div class="row">
 			<div class="col-xs-8">
