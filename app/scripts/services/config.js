@@ -108,7 +108,8 @@ angular
 	, layout_100: [] 
 	, visualization: { default_other_color: '#CCCCCC'
 									 , default_color: '#28BC45'
-		}        
+		}
+	, embed : { defaultEmbedIframe : '<iframe width="800" height="500" src="http://embed.datea.pe/datea-embed-dist/#/{{embed.mainTag}}" frameborder="0" allowfullscreen></iframe>' }
 	}
 );
 

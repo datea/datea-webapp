@@ -11,6 +11,7 @@ angular.module('dateaWebApp')
   , 'State'
   , '$timeout'
   , '$window'
+  , 'Api'
 , function (
     $scope
   , User
@@ -21,11 +22,15 @@ angular.module('dateaWebApp')
   , State
   , $timeout
   , $window
+  , Api
 ) {
+
+	var userStatusOnInit    = 1
+	  , embedCampaignGivens = {}
 	// fn declarations
-	var onSignIn
 	  , updateUserDataFromApi
-	  , userStatusOnInit = 1
+	  , onSignIn
+	  , isCampaign
 	  ;
 
 	$scope.nav  = {};
@@ -33,9 +38,30 @@ angular.module('dateaWebApp')
 	$scope.state = State.state;
 
 	$scope.nav.visible = User.isSignedIn();
+	console.log( $location.path() );
 
 	$scope.nav.isCollapsed = true;
-	$scope.alerts = []
+	$scope.alerts = [];
+
+	isCampaign = function () {
+		var path
+		  , parsed
+		  ;
+		path   = $location.path();
+		parsed = path.split('/');
+		if ( parsed.length === 3 ) {
+			Api.campaign
+			.getCampaigns( { main_tag: parsed[2] } )
+			.then( function ( response ) {
+				$scope.nav.isCampaign = !!response.objects.length;
+				embedCampaignGivens.author  = parsed[1];
+				embedCampaignGivens.mainTag = parsed[2];
+				embedCampaignGivens.path    = path;
+			}, function ( reason ) {
+				console.log( reason );
+			} );
+		}
+	}
 
 	updateUserDataFromApi = function () {
 		console.log("UPDATE USER FROM API");
@@ -71,6 +97,7 @@ angular.module('dateaWebApp')
 	onSignIn = function ( givens ) {
 		var path = $location.path();
 		User.updateUserDataFromStorage();
+		isCampaign();
 		$scope.nav.visible = User.isSignedIn();
 		if ( path === '/signin'
 		  || path === '/signup'
@@ -141,6 +168,17 @@ angular.module('dateaWebApp')
 		                 }
 		               }
 		             } )
+	}
+
+	$scope.nav.loadEmbedBuilder = function () {
+		$modal.open( { templateUrl : 'views/embedbuilder.html'
+		             , controller  : 'EmbedbuilderCtrl'
+		             , resolve     : {
+		               embedBuilderGivens : function () {
+		                 return embedCampaignGivens;
+		               }
+		             }
+		             } );
 	}
 
 	if ( User.isSignedIn()) {
