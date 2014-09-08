@@ -51,7 +51,7 @@
 			</div>
 			
 			<div class="denounce-holder">
-				<a class="denounce" href="" ng-click="dateo.denounce( 'dateo', $event )">denunciar</a>
+				<da-flag flag-id="dateo.id" flag-obj-type="dateo"></da-flag>
 			</div>
 
 			<div class="dateo-actions">
@@ -105,7 +105,7 @@
 				<p class="comment-content newline2br" ng-bind-html="comment.comment | linky:'_blank'"></p>
 
 				<div class="denounce-holder">
-					<a class="denounce" href="" ng-click="dateo.denounce( 'comment', $event )">denunciar</a>
+					<da-flag flag-id="comment.id" flag-obj-type="comment"></da-flag>
 				</div>
 			</div>
 		</div>

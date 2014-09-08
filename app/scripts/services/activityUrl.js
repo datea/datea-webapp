@@ -32,6 +32,10 @@ angular.module('dateaWebApp')
 				}
 				break;
 
+			case 'campaign':
+					url = '/'+givens.actor.username+'/'+givens.action_object.main_tag.tag
+					break;
+
 			default:
 				url = '/' 
 		}

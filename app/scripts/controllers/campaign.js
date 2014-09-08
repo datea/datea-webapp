@@ -260,8 +260,8 @@ angular.module('dateaWebApp')
 	buildCampaign = function () {
 		var campaignGivens = {}
 			, shareData      = {};
-		campaignGivens.user     = $routeParams.username;
-		campaignGivens.main_tag = $routeParams.campaignName;
+		campaignGivens.user = $routeParams.username;
+		campaignGivens.slug = $routeParams.campaignName;
 
 		Api.campaign
 		.getCampaigns( campaignGivens )
@@ -293,7 +293,7 @@ angular.module('dateaWebApp')
 				shareData = {
 					  title       : 'Datea | '+ $scope.campaign.name
 					, description : $scope.campaign.short_description
-					, imageUrl    : $scope.campaign.image.image || config.defaultImgCampaign 
+					, imageUrl    : $scope.campaign.image ? $scope.campaign.image.image : config.defaultImgCampaign 
 				}
 				shareMetaData.setData(shareData);
 

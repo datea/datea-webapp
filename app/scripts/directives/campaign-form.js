@@ -23,6 +23,7 @@ angular.module("dateaWebApp")
 	    		var mode
 	    		  , campaignGivens
 	    		  , mainTagInApi
+	    		  , campaignNeedsSlug
 					// boundary map options fix
 					  , drawnItems  = new L.FeatureGroup()
 					  , options     = { edit: { featureGroup: drawnItems }
@@ -65,6 +66,7 @@ angular.module("dateaWebApp")
 					leafletData.getMap("leafletNewCampaign").then( function ( map ) {
 						$scope.flow.leaflet.map = map;
 					});
+					$scope.flow.urlBase = $location.protocol()+'://'+$location.host()+'/'+User.data.username+'/';
 
 					$scope.flow.dp = {
 						  minDate     : null
@@ -96,7 +98,7 @@ angular.module("dateaWebApp")
 					} );
 
 	    		// GET CAMPAIGN MODEL FROM API IF EDITING
-	    		if (mode == 'edit') {
+	    		if (mode === 'edit') {
 	    			$scope.flow.loading = true;
 	    			campaignGivens = {
 	    				  id     : $scope.campaignId
@@ -179,6 +181,11 @@ angular.module("dateaWebApp")
 
 									});
 								}
+								// Slug field, if necesary
+								if ($scope.campaign.main_tag.tag.toLowerCase() !== $scope.campaign.slug) {
+									$scope.flow.showSlugField = true;
+								}
+
 								$scope.flow.loading = false;
 								// only edit ones own campaigns (protected in api anyway)
 								//if (User.data.id != $scope.campaign.user.id) $location.path( '/' );
@@ -250,14 +257,31 @@ angular.module("dateaWebApp")
 							Api.campaign
 							.getCampaigns( { main_tag: $scope.campaign.main_tag.tag } )
 							.then( function ( response ) {
-								console.log( 'checkMainTag', response, !!response.objects.length );
-								if ($scope.campaign.id && !!response.objects.length && response.objects[0].id == $scope.campaign.id) {
+								var sameTagAndUser = false;
+								if ($scope.campaign.id && response.objects.length === 1 && response.objects[0].id == $scope.campaign.id) {
 									$scope.flow.validInput.mainTag = true;
 									$scope.flow.messages.mainTagExists = '';
+									$scope.campaign.slug = $scope.campaign.main_tag.tag;
+									$scope.flow.showSlugField = false;
+									$scope.flow.campaignNeedsSlug = false;
 									return;
-								}else{
+								} else {
 									$scope.flow.validInput.mainTag     = !response.objects.length ? true : 'warning';
 									$scope.flow.messages.mainTagExists = !response.objects.length ? '' : config.dashboard.validationMsgs.mainTagExists;
+									$scope.flow.showSlugField = false;
+									campaignNeedsSlug = false;
+									if (!$scope.campaign.id) {
+										angular.forEach(response.objects, function (c) {
+											if (c.user.id === User.data.id) {
+												sameTagAndUser = true;
+												$scope.flow.messages.mainTagExists = config.dashboard.validationMsgs.duplicateUserTag;
+												$scope.campaign.slug = null;
+												$scope.flow.showSlugField = true;
+												campaignNeedsSlug = true;
+											}
+										});
+									}
+									if (!sameTagAndUser) $scope.campaign.slug = $scope.campaign.main_tag.tag;
 								}
 								console.log($scope.flow.validInput);
 							}, function ( reason ) {
@@ -266,6 +290,25 @@ angular.module("dateaWebApp")
 						}else{
 							$scope.flow.validInput.mainTag = null;
 							$scope.flow.messages.mainTagExists = '';
+						}
+					}
+
+					$scope.flow.checkSlug = function () {
+						if ($scope.campaign.slug) $scope.campaign.slug = $scope.campaign.slug.replace(/[^a-z0-9-]/gi,'');
+						if ($scope.campaign.slug) {
+							Api.campaign
+							.getCampaigns( { slug: $scope.campaign.slug, user: User.data.username } )
+							.then( function ( response ) {
+								if ($scope.campaign.id && response.objects.length === 1 && response.objects[0].id === $scope.campaign.id) {
+									$scope.flow.validInput.slug = true;
+									$scope.flow.messages.slugError = '';
+								}else{
+									$scope.flow.validInput.slug = !response.objects.length ? true : false;
+									$scope.flow.messages.slugError = !response.objects.length ? '' : config.dashboard.validationMsgs.slugError;
+								}
+							});
+						}else{
+							$scope.flow.validInput.slug = null;
 						}
 					}
 
@@ -379,7 +422,7 @@ angular.module("dateaWebApp")
 	          		Api.campaign
 								.patchCampaign( {objects: [$scope.campaign]} )
 								.then( function ( response ) {
-									$location.path( '/'+User.data.username+'/'+response.objects[0].main_tag.tag );
+									$location.path( '/'+User.data.username+'/'+response.objects[0].slug );
 								}, function ( reason ) {
 									console.log( 'patchCampaign reason: ', reason );
 									$scope.flow.loading = false;
@@ -388,7 +431,7 @@ angular.module("dateaWebApp")
 								Api.campaign
 								.postCampaign( $scope.campaign )
 								.then( function ( response ) {
-									$location.path( '/'+User.data.username+'/'+response.main_tag.tag );
+									$location.path( '/'+User.data.username+'/'+response.slug );
 								}, function ( reason ) {
 									console.log( 'postCampaign reason: ', reason );
 									$scope.flow.loading = false;
@@ -400,6 +443,8 @@ angular.module("dateaWebApp")
 					validateCampaign = function () {
 						var requiredFields = ['name', 'main_tag', 'category', 'short_description', 'mission', 'information_destiny']
 						  , isValid = true;
+
+						if (campaignNeedsSlug) requiredFields.push('slug');
 
 						// clear validation
 						for (var f in $scope.flow.validInput) {
@@ -413,9 +458,11 @@ angular.module("dateaWebApp")
 								$scope.flow.validInput[f] = false;
 							}
 						}
+
 						if (!isValid) {
 							$scope.flow.alerts = ["Hmmm, parece que te faltó llenar algún campo. Chequea los campos marcados en rojo y vuélvelo a intentar."];
 						}
+
 						return isValid;
 					}
 
@@ -495,11 +542,19 @@ angular.module("dateaWebApp")
 							  				+ 'tus dateos y los que re-dateas. '
 							  				+ 'Los usuarios pueden desactivar el filtro si lo desean.'
 						}
+						, slug : {
+							  title   : 'Componente de URL'
+							, content : 'La URLs de iniciativas normalmente se compone de tu usuario y el tag principal. '
+							  				+ 'Como ya tienes una iniciativa con ese tag, es necesario que indiques una alternativa. '
+							  				+ 'Se aceptan letras, números y giones. Sin tildes, espacios, diéresis etc.'
+						}
 					}
 
 					buildCategories();
 					buildBoundariesMap();
 	    	}
+
+
 	  	, link: function ($scope, element, attrs) {
 
 	  		//var menuFixThold = angular.element('.campaign-form-nav').position().top - 51;

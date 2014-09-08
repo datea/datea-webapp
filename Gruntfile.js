@@ -170,7 +170,7 @@ module.exports = function (grunt) {
 		},
 		useminPrepare: {
 			html: '<%= yeoman.app %>/index.html',
-			css: ['<%= yeoman.dist %>/styles/{,*/}*.css'],
+			//css: ['<%= yeoman.dist %>/styles/{,*/}*.css'],
 			options: {
 				dest: '<%= yeoman.dist %>'
 			}

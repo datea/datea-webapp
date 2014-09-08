@@ -1,4 +1,4 @@
-<div class="dateo-detail-holder" ng-hide="flow.notFound">
+ <div class="dateo-detail-holder" ng-hide="flow.notFound">
 
 	<div class="graylight-bg"></div>
 	<div class="container z2">
@@ -83,7 +83,7 @@
 									</div>
 								</div>-->
 								<div class="denounce-holder no-print">
-									<a class="denounce" href="" ng-click="flow.denounce( 'dateo', $event )">denunciar</a>
+									<da-flag flag-id="dateo.id" flag-obj-type="dateo"></da-flag>
 								</div>
 							</div>
 						</div>
@@ -102,7 +102,7 @@
 									<p class="comment-content newline2br">{{comment.comment | linky}}</p>
 
 									<div class="denounce-holder">
-										<a class="denounce" href="" ng-click="flow.denounce( 'comment', $event )">denunciar</a>
+										<da-flag flag-id="comment.id" flag-obj-type="comment"></da-flag>
 									</div>
 								</div>
 							</div>

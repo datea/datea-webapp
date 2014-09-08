@@ -6,8 +6,8 @@ angular
 	{ app     : { name : 'Datea.pe'
 	            , url  : 'http://localhost:9000'
 	            }
-	, api     : { url    : 'http://173.255.200.68/api/v2/'
-	            , imgUrl : 'http://173.255.200.68' 
+	, api     : { url    : 'http://api.datea.pe/api/v2/'
+	            , imgUrl : 'http://api.datea.pe' //'http://173.255.200.68' 
 	          	} 
 	, marker  : ['<div class="marker-holder">'
 	              ,'<img class="img-circle" src="{{user.markerImage}}" alt="user image">'
@@ -53,39 +53,41 @@ angular
 	           , paginationLimit : 6
 	           , mapZoomOverride : 13
 	           , zoomAfterDatear : 16
-	           , activityVerbs : [ 'dateo', 'commented', 'voted' , 'redateo']
-	           , activityContentMsg : { onUser : { 'dateo'     : 'dateó en #{{action_object.tags[0].tag}}'
-	                                             , 'commented' : 'comentó tu dateo en #{{action_object.tags[0].tag}}'
-	                                             , 'voted'     : 'apoyó tu dateo en #{{action_object.tags[0].tag}}'
-	                                             , 'redateo'   : 'redateó tu dateo en #{{action_object.tags[0].tag}}'
-	                                             }
-	                                  , byUser : { 'dateo'     : 'dateaste en #{{action_object.tags[0].tag}}'
-	                                             , 'commented' : 'comentaste el dateo de {{target_user.username}} en #{{target_object.tags[0].tag}}'
-	                                             , 'voted'     : 'apoyaste el dateo de {{target_user.username}}'
-	                                             , 'redateo'   : 'redateaste a {{target_user.username}} en #{{target_object.tags[0].tag}}'
-	                                             }
-	                                  }
-	            , dateosLimitByRequest : 100
-	            , defaultMarkersImage : '/static/images/globals/'
-	            }
+	           , dateosLimitByRequest : 100
+	           , defaultMarkersImage : '/static/images/globals/'
+	           }
 	, profile : { dateosOffset    : 10
 	            , campaignsOffset : 10
 	            , paginationLimit : 10
 	            }
-	, activityLog : { activityVerbs : [ 'dateo', 'commented', 'voted' ]
-	                , activityContentMsg : { onUser : { 'dateo'     : 'dateó en #{{action_object.tags[0].tag}}'
-	                                                  , 'commented' : 'comentó tu dateo en #{{action_object.tags[0].tag}}'
-	                                                  , 'voted'     : 'apoyó tu dateo en #{{action_object.tags[0].tag}}'
-	                                                  }
-	                                       , byUser : { 'dateo'     : 'dateaste en #{{action_object.tags[0].tag}}'
-	                                                  , 'commented' : 'comentaste el dateo de {{target_user.username}} en #{{target_object.tags[0].tag}}'
-	                                                  , 'voted'     : 'apoyaste el dateo de {{target_user.username}}'
-	                                                  }
-	                                       }
-	                }
+	, activityLog : { activityVerbs : [ 'dateo', 'commented', 'voted' , 'redateo', 'campaign']
+	          		  , activityContentMsg : { onUser : { 'dateo'     : '{{actor.username}} dateó {{tags}}'
+			                                              , 'commented' : '{{actor.username}} comentó tu dateo {{tags}}'
+			                                              , 'voted'     : '{{actor.username}} apoyó tu dateo {{tags}}'
+			                                              , 'redateo'   : '{{actor.username}} redateó tu dateo {{tags}}'
+			                                              }
+			                                   , byUser : { 'dateo'     : 'dateaste en {{tags}}'
+			                                              , 'commented' : 'comentaste el dateo de {{target_user.username}} {{tags}}'
+			                                              , 'voted'     : 'apoyaste el dateo de {{target_user.username}} {{tags}}'
+			                                              , 'redateo'   : 'redateaste a {{target_user.username}} {{tags}}'
+			                   										 	  		, 'campaign'  : 'creaste una iniciativa {{tags}}'
+			                                              }
+			                                   , anyUser :{ 'dateo'     : '{{actor.username}} dateó {{tags}}'
+			                                  					  , 'commented' : '{{actor.username}} comentó dateo de {{target_user.username}} {{tags}}'
+			                                  					  , 'voted'     : '{{actor.username}} apoyó dateo de {{target_user.username}} {{tags}}'
+			                                  					  , 'redateo'   : '{{actor.username}} redateó a {{target_user.username}} {{tags}}'
+			                                  					  , 'campaign'  : '{{actor.username}} creó una iniciativa {{tags}}'
+			                                  					  }
+			                                   }
+			          }
 	, campaign : { mapZoomFocus : 15 }
 	, dashboard : { defaultZoom : 14
-	              , validationMsgs : { mainTagExists : 'La etiqueta ya está siendo usada en otra iniciativa. Al menos que quieras compartirla, usa otra.' } }
+	              , validationMsgs : { mainTagExists    : 'La etiqueta ya está siendo usada en alguna iniciativa. Al menos que quieras compartirla, usa otra.' 
+	              									 , duplicateUserTag : 'Ya has utilizado esta etiqueta en otra iniciativa. Si quieres reutilizarla, debes llenar el campo "Componente de URL". De otro modo mejor cámbiala.' 
+	              									 , slugError        : 'Esta url ya esta siendo utilizada. Por favor, elige otra.'
+	              									 , emptyField       : 'Campo obligatorio'
+	              									 }
+	              }
 	, signupForm : { validationMsgs : { usernameExists : 'El nombre de usuario ya ha sido usado.'
 																		, emailExists    : 'La dirección ya está siendo utilizada. ¡Recupera tu contraseña!'
 	                                  , http400        : 'El nombre de usuario o correo ya está siendo usado.'} }

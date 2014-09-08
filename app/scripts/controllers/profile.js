@@ -9,6 +9,7 @@ angular.module('dateaWebApp')
   , '$routeParams'
   , '$interpolate'
   , 'ActivityUrl'
+  , 'ActivityTitle'
   , '$modal'
   , '$location'
   , 'shareMetaData'
@@ -20,6 +21,7 @@ angular.module('dateaWebApp')
   , $routeParams
   , $interpolate
   , ActivityUrl
+  , ActivityTitle
   , $modal
   , $location
   , shareMetaData
@@ -64,17 +66,16 @@ angular.module('dateaWebApp')
 		Api.activityLog
 		.getActivityOfUserByUserId(
 		{ user : User.data.id
-		, mode : 'all'
+		, mode : 'actor'
 		} )
 		.then( function ( response ) {
-			console.log( 'buildActivityLog response', response );
-			activityLog = response.objects.filter( function ( value ) {
-				return !!~config.activityLog.activityVerbs.indexOf( value.verb );
-			} );
-			angular.forEach( activityLog, function ( value, key ){
+			//console.log( 'buildActivityLog response', response );
+			//activityLog = response.objects.filter( function ( value ) {
+			//	return !!~config.activityLog.activityVerbs.indexOf( value.verb );
+			//} );
+			angular.forEach( response.objects , function ( value, key ){
 				value._url = ActivityUrl.parse( value );
-				value._message = $interpolate( config.activityLog.activityContentMsg.byUser[ value.verb ] )(value);
-				console.log( '$scope.targetUser', $scope.targetUser );
+				value._message = ActivityTitle.createTitle( value );
 				$scope.targetUser.history.push( value );
 			});
 		} )

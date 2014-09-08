@@ -31,15 +31,8 @@
 
 	<!-- Place favicon.ico and apple-touch-icon.png in the root directory -->
 
-	<!-- build:css(.tmp) styles/main.css -->
+	<!-- build:css({app,.tmp}) styles/main.css -->
 	<link rel="stylesheet" href="styles/main.css">
-	<!-- endbuild -->
-
-	<!-- CDN -->
-	<link href="//netdna.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.min.css" rel="stylesheet">
-
-	<!--
-	<link rel="stylesheet" href="bower_components/font-awesome/css/font-awesome.css">
 	<link rel="stylesheet" href="bower_components/leaflet-dist/leaflet.css">
 	<link rel="stylesheet" href="bower_components/bootstrap-social/bootstrap-social.css">
 	<link rel="stylesheet" href="bower_components/Leaflet.label/dist/leaflet.label.css">
@@ -48,7 +41,10 @@
 	<link rel="stylesheet" href="bower_components/angular-social/angular-social.css">
 	<link rel="stylesheet" href="bower_components/leaflet.draw/dist/leaflet.draw.css">
 	<link rel="Stylesheet" href="bower_components/bootstrap-select/dist/css/bootstrap-select.min.css">
-	-->
+	<!-- endbuild -->
+
+	<!-- CDN -->
+	<link href="//netdna.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.min.css" rel="stylesheet">
 
 	<style>
 		.colored-marker {
@@ -184,6 +180,8 @@
 	<script src="scripts/directives/loading.js"></script>
 	<script src="scripts/services/shareMetaData.js"></script>
 	<script src="scripts/controllers/htmlHead.js"></script>
+	<script src="scripts/services/activityTitle.js"></script>
+	<script src="scripts/directives/flag.js"></script>
 	<!-- endbuild -->
 
 	<!-- clip path for individual markers -->

@@ -16,6 +16,7 @@ angular.module( 'dateaWebApp' )
   , 'leafletData'
   , '$q'
   , 'Fullscreen'
+  , 'ActivityTitle'
   , 'ActivityUrl'
   , '$filter'
   , '$timeout'
@@ -41,6 +42,7 @@ angular.module( 'dateaWebApp' )
   , leafletData
   , $q
   , Fullscreen
+  , ActivityTitle
   , ActivityUrl
   , $filter
   , $timeout
@@ -207,12 +209,12 @@ angular.module( 'dateaWebApp' )
 		} )
 		.then( function ( response ) {
 			//console.log( 'buildActivityLog response', response );
-			activityLog = response.objects.filter( function ( value ) {
-				return !!~config.homeSI.activityVerbs.indexOf( value.verb );
-			} );
-			angular.forEach( activityLog, function ( value, key ){
+			//activityLog = response.objects.filter( function ( value ) {
+			//	return !!~config.homeSI.activityVerbs.indexOf( value.verb );
+			//} );
+			angular.forEach( response.objects, function ( value, key ){
 				value._url = ActivityUrl.parse( value );
-				value._message = $interpolate( config.homeSI.activityContentMsg.byUser[ value.verb ] )(value);
+				value._message = ActivityTitle.createTitle( value );
 				$scope.homeSI.history.push( value );
 			});
 		} )

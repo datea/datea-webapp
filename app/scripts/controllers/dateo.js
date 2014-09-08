@@ -126,7 +126,7 @@ angular.module('dateaWebApp')
 
 	updateComments = function ( response ) {
 		var oldIds = $scope.dateo.comments.map(function (c) {return c.id;});
-		Api.comment.getList({content_type__model: 'dateo', object_id: $scope.dateo.id})
+		Api.comment.getList({content_type__model: 'dateo', object_id: $scope.dateo.id, order_by: 'created'})
 		.then(function (response) {
 			console.log(response);
 			$scope.dateo.comment_count = response.meta.total_count;

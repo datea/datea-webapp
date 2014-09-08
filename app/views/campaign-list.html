@@ -47,7 +47,7 @@
 				</div>
 			</div>
 
-			<pagination ng-show="query.totalCount > query.numResults && !flow.loading" boundary-links="true" items-per-page="query.numResults" total-items="query.totalCount" max-size="5" page="query.page" class="pagination-lg" previous-text="&lsaquo;" next-text="&rsaquo;" first-text="&laquo;" last-text="&raquo;"></pagination>
+			<pagination ng-show="query.totalCount > query.numResults && !flow.loading" boundary-links="true" items-per-page="query.numResults" total-items="query.totalCount" max-size="5" ng-model="query.page" class="pagination-lg" previous-text="&lsaquo;" next-text="&rsaquo;" first-text="&laquo;" last-text="&raquo;"></pagination>
 		</div>
 	</div>
 </div>

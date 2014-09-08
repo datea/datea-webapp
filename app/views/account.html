@@ -47,7 +47,7 @@
 
 				<div class="account-form-holder">
 					<h2 ng-hide="flow.userIsNew || flow.userStatus === 0 || flow.statusChanged">Configuración</h2>
-					<alert ng-repeat="alert in alerts" type="alert.type" close="closeAlert($index)">{{alert.msg}}</alert>
+					<alert ng-repeat="alert in alerts" type="{{alert.type}}" close="closeAlert($index)">{{alert.msg}}</alert>
 					<form role="form" name="form" ng-submit="account.save()" class="form">
 						<tabset>
 							<tab heading="Cuenta de Usuario" active="flow.activeTab.user" select="flow.openTab('user')">
@@ -100,11 +100,13 @@
 									<div class="form-group">
 										<label for="message">Mensaje personal/ Slogan</label>
 										<input type="text" class="form-control" id="message" ng-model="account.message">
+										<p class="help-block">máximo 140 caracteres</p>
 									</div>
 									<div class="form-group">
 										<label for="url">URL personal o de tu organización</label>
 										<input type="text" class="form-control" id="url" pattern="https?://.+" ng-model="account.url">
 									</div>
+									<br />
 									<p>Los siguiente campos son para los iconos de "sígueme en..."</p>
 									<div class="form-group">
 										<label for="facebookUrl">URL en facebook</label>

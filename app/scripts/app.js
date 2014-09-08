@@ -84,10 +84,6 @@ angular.module( 'dateaWebApp'
 	  , { templateUrl: 'views/campaign-dashboard.html'
 	    , controller: 'CampaignDashboardCtrl'
 	    } )
-	.when( '/dateos'
-	  , { templateUrl: 'views/dateos-main.html'
-	    , controller: 'DateosMainCtrl'
-	    } )
 	.when( '/iniciativas'
 	  , { templateUrl: 'views/campaign-list.html'
 	    , controller: 'CampaignListCtrl'

@@ -21,14 +21,14 @@
 @import "app/styles/modules.less";
 
 // IMPORT EXTERNAL LIBS
-@import "../bower_components/bootstrap-social/bootstrap-social.less";
-@import (inline) "../bower_components/leaflet-dist/leaflet.css";
-@import (inline) "../bower_components/Leaflet.label/dist/leaflet.label.css";
-@import (inline) "../bower_components/leaflet.markerclusterer/dist/MarkerCluster.css";
-@import (inline) "../bower_components/leaflet.markerclusterer/dist/MarkerCluster.Default.css";
-@import (inline) "../bower_components/angular-social/angular-social.css";
-@import (inline) "../bower_components/leaflet.draw/dist/leaflet.draw.css";
-@import (inline) "../bower_components/bootstrap-select/dist/css/bootstrap-select.min.css";
+// @import "../bower_components/bootstrap-social/bootstrap-social.less";
+// @import (inline) "../bower_components/leaflet-dist/leaflet.css";
+// @import (inline) "../bower_components/Leaflet.label/dist/leaflet.label.css";
+// @import (inline) "../bower_components/leaflet.markerclusterer/dist/MarkerCluster.css";
+// @import (inline) "../bower_components/leaflet.markerclusterer/dist/MarkerCluster.Default.css";
+// @import (inline) "../bower_components/angular-social/angular-social.css";
+// @import (inline) "../bower_components/leaflet.draw/dist/leaflet.draw.css";
+// @import (inline) "../bower_components/bootstrap-select/dist/css/bootstrap-select.min.css";
 //
 // Variables
 //
@@ -138,6 +138,7 @@ body {
   overflow-x: hidden;
   -webkit-font-smoothing: antialiased;
   height: 100%;
+  padding: 0 !important;
   a {
   	text-decoration: none;
   }
@@ -1845,6 +1846,13 @@ body {
 	}
 }
 
+.flag-btn.btn-link {
+	padding: 0;
+	outline: none !important;
+	&:hover { color: red}
+	&.flagged { color: red !important}
+}
+
 //
 // Home Signed In
 //
@@ -3317,7 +3325,7 @@ body {
 		}
 		.form-inline .form-group { margin-bottom: 0;}
 
-		.form-group.maintag-field {
+		.form-group.maintag-field, .form-group.slug-field {
 			.input-group {
 				position: relative;
 				.form-control-feedback {
@@ -4455,8 +4463,10 @@ ul.input-list {
 					right: 0;
 					bottom: 10px;
 					font-size: 11px;
-					a {
+					.btn-link.flag-btn {
+						font-size: 11px;
 						color: @color-18;
+						font-weight: normal;
 						&:hover {
 							color: red;
 						}
@@ -4743,7 +4753,7 @@ ul.input-list {
 			position: absolute;
 			bottom: 3px;
 			right: 0;
-			a {
+			.btn-link.flag-btn {
 				color: @color-20;
 				font-size: 11px;
 				&:hover { color: red}
@@ -4839,7 +4849,7 @@ ul.input-list {
 			width: 100%;
 			bottom: 3px;
 			text-align: right;
-			a {
+			.btn-link.flag-btn {
 				color: @color-20;
 				font-size: 11px;
 				&:hover { color: red}
@@ -5094,19 +5104,19 @@ ul.input-list {
 	.btn-edit {
 		position: absolute;
 		top: 180px;
-		right: 2%;
+		right: 15px;
 		display: block;
-		width: 38px;
-		height: 38px;
+		width: 32px;
+		height: 32px;
 		margin-right: 0 !important;
 		text-decoration: none;
 		.glyphicon, .fa {
 			color: white;
 			background-color: @color-10;
-			font-size: 22px;
-			line-height: 38px;
-			width: 38px;
-			height: 38px;
+			font-size: 18px;
+			line-height: 32px;
+			width: 32px;
+			height: 32px;
 			border-radius: 50%;
 			text-align: center;
 			display: block;
