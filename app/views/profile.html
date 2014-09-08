@@ -1,5 +1,5 @@
 
-<div class="profile-holder" ng-hide="flow.notFound">
+<div class="profile-holder">
 	<div class="profile-card" da-bg-from-api="{{targetUser.bg_image}}" da-img-type="user-bg" da-img-size="cover" da-img-repeat="repeat-x">
 		
 		<div class="card-content">
@@ -91,6 +91,4 @@
 			</div>
 		</div>
 	</div>
-</div>
-<div class="not-found" ng-if="flow.notFound" ng-include="'views/notFound.html'" ng-hide="!flow.notFound">
 </div>

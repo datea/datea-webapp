@@ -195,10 +195,16 @@
 										<h4>INICIATIVAS DESTACADAS</h4>
 									</div>
 
-									<div class="campaign-list row">
-										<div class="col-lg-3 col-md-4 col-sm-4 col-xs-6" ng-repeat="campaign in homeSI.campaigns">
-											<da-campaign-teaser></da-campaign-teaser>
+									<div class="main-campaign-carousel campaign-list row" da-jcarousel>
+										<div class="jcarousel">
+											<div class="carousel-container">
+												<div class="col-lg-1 col-md-1 col-sm-1 col-xs-1 carousel-item" ng-repeat="campaign in homeSI.campaigns" da-on-last-repeat="onLastCarouselItem()">
+													<da-campaign-teaser></da-campaign-teaser>
+												</div>
+											</div>
 										</div>
+										<div class="prev-btn carousel-prev"></div>
+										<div class="next-btn carousel-next"></div>
 									</div>
 								</div>
 							</div>

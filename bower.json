@@ -37,7 +37,8 @@
     "datejs": "~1.0.0-rc1",
     "angular-animate": "~1.2.23",
     "leaflet-pip": "~0.1.0",
-    "da-angular-seo": "*"
+    "da-angular-seo": "*",
+    "jcarousel": "~0.3.1"
   },
   "devDependencies": {
     "angular-mocks": "~1.2.0",

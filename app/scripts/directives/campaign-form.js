@@ -106,6 +106,12 @@ angular.module("dateaWebApp")
 	    			Api.campaign
 						.getCampaigns( campaignGivens )
 						.then( function (response) {
+
+								if (response.objects.length === 0 ) {
+									$location.path('/404').replace();
+									return;
+								}
+
 								var latLngs = []
 									, polygon
 									, polygonBounds
@@ -192,12 +198,18 @@ angular.module("dateaWebApp")
 							}, function (reason) {
 								$scope.flow.loading = false;
 								console.log(reason);
+								if ( reason.status === 404 ) {
+									$location.path('/404').replace();
+								}
 						} );
 	    		}
 
 	    		onGeolocation = function ( data ) {
 						var leaflet = {};
-						console.log('sup onGeolocation')
+						console.log('sup onGeolocation');
+						
+						leaflet = angular.copy( config.defaultMap );
+
 						leaflet.center = { lat  : data.coords.latitude
 						                 , lng  : data.coords.longitude
 						                 , zoom : config.dashboard.defaultZoom

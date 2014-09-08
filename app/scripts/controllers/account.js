@@ -46,6 +46,7 @@ angular.module('dateaWebApp')
 	$scope.$on('$routeUpdate', function () {
 		activateTab($location.search().tab);
 	});
+	
 	activateTab = function (tab) {
 		tab = tab ? tab : 'user';
 		$scope.flow.activeTab = {'user': false, 'profile': false, 'notifications': false};
@@ -65,12 +66,9 @@ angular.module('dateaWebApp')
 	if (User.data.status === 1) buildUserMsgs(1, false);
 
 	$scope.$on('user:statusCheck', function (ev, args) {
-		console.log("USER STATUS CHECK", args);
 		buildUserMsgs(args.status, args.changed);
 		$scope.flow.statusBeingChecked = false;
 	});
-
-	console.log("USER DATA", User);
 
 	$scope.closeAlert = function(index) {
 		$scope.alerts.splice(index, 1);

@@ -62,7 +62,6 @@ angular.module('dateaWebApp')
 	$scope.tag.selectedMarker   = 'last';
 	$scope.flow                 = {};
 	$scope.flow.loading 		    = true;
-	$scope.flow.notFound        = false;
 	$scope.flow.leaflet         = {};
 	$scope.flow.isUserSignedIn  = User.isSignedIn();
 	$scope.flow.dateoDetail     = {
@@ -90,7 +89,6 @@ angular.module('dateaWebApp')
 		.getTags( { tag: $routeParams.tagName } )
 		.then( function ( response ) {
 			var shareData;
-			console.log("TAG", response);
 			if ( response.objects.length ) {
 				angular.extend($scope.tag, response.objects[0]);
 				buildDateos();
@@ -103,14 +101,12 @@ angular.module('dateaWebApp')
 				shareMetaData.setData(shareData);
 
 			} else {
-				$scope.flow.notFound = true;
+				$location.path('/404').replace();
 			}
 		}, function ( reason ) {
 			console.log( reason );
 			if ( reason.status === 404 ) {
-				$scope.$apply( function () {
-					$scope.flow.notFound = true;
-				} );
+				$location.path('/404').replace();
 			}
 		} );
 	}

@@ -275,7 +275,6 @@ angular.module('dateaWebApp')
 				$scope.campaign.shareableUrl = config.app.url
 				                               + $scope.campaign.user.username + '/'
 				                               + $scope.campaign.main_tag.tag;
-				$scope.flow.notFound = false;
 				buildSubTags();
 				initQueryOptions();
 				$scope.flow.getDateos();
@@ -298,14 +297,12 @@ angular.module('dateaWebApp')
 				shareMetaData.setData(shareData);
 
 			} else {
-				$scope.flow.notFound = true;
+				$location.path('/404').replace();
 			}
 		}, function ( reason ) {
 			console.log( reason );
 			if ( reason.status === 404 ) {
-				$scope.$apply( function () {
-					$scope.flow.notFound = true;
-				} );
+				$location.path('/404').replace();
 			}
 		} );
 	}

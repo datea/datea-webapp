@@ -43,7 +43,6 @@ angular.module('dateaWebApp')
 
 	$scope.dateo              = {};
 	$scope.flow               = {};
-	$scope.flow.notFound      = false;
 	$scope.flow.imgUrl        = config.api.imgUrl;
 	$scope.flow.showEditBtn   = false;
 	$scope.flow.form          = {};
@@ -65,7 +64,6 @@ angular.module('dateaWebApp')
 		;
 		if( response.objects[0] ) {
 			dateo   = response.objects[0];
-			$scope.flow.notFound = false;
 			
 			$scope.flow.messageNext = hasNext() ? 'siguiente' : 'primer';
 			angular.extend( $scope.dateo, dateo );
@@ -85,7 +83,7 @@ angular.module('dateaWebApp')
 				shareMetaData.setData(shareData);
 
 		} else {
-			$scope.flow.notFound = true;
+			$location.path('/404').replace();
 		}
 	}
 
@@ -248,10 +246,7 @@ angular.module('dateaWebApp')
 			} )
 			.then( buildDateo, function ( reason ) {
 				if ( reason.status === 404 ) {
-					$scope.$apply( function () {
-						$scope.flow.notFound = true;
-					} );
-					console.log( 'usuario no encontrado' );
+					$location.path('/404').replace();
 				}
 			} );
 			angular.extend( $scope.flow.leaflet, config.defaultMap );

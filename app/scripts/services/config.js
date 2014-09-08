@@ -49,7 +49,7 @@ angular
 	, defaultImgProfile : '/static/images/globals/user-default.png'
 	, defaultImgBackground : '/static/images/globals/bg-gris.png'
 	, defaultImgCampaign: "/static/images/globals/campaign-default.jpg"
-	, homeSI : { campaignsOffset : 8
+	, homeSI : { campaignsOffset : 12
 	           , paginationLimit : 6
 	           , mapZoomOverride : 13
 	           , zoomAfterDatear : 16

@@ -67,17 +67,23 @@ angular.module( 'dateaWebApp' )
 		Api.campaign
 		.getCampaigns( {id: $scope.campaignId} )
 		.then( function (response) {
-			$scope.campaign = response.objects[0];
-			if (User.data.id != $scope.campaign.user.id) {
-					$location.path('/');
-					return;
+			if (response.objects.length){
+				$scope.campaign = response.objects[0];
+				if (User.data.id != $scope.campaign.user.id) {
+						$location.path('/');
+						return;
+				}
+				$scope.query.tags = $scope.campaign.main_tag.tag;
+				buildTagFilterOptions();
+				$scope.flow.getDateos();
+			}else{
+				$location.path('/404').replace();
 			}
-			$scope.query.tags = $scope.campaign.main_tag.tag;
-			buildTagFilterOptions();
-			$scope.flow.getDateos();
-
 		}, function (reason) {
 			console.log(reason);
+			if ( reason.status === 404 ) {
+				$location.path('/404').replace();
+			}
 		});
 	}
 

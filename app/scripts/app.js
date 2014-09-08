@@ -109,11 +109,14 @@ angular.module( 'dateaWebApp'
 			,	controller:  'DateosAdminCtrl'
 			, reloadOnSearch: false
 		} )
+	.when( '/404'
+		, { templateUrl: 'views/404.html'} 
+			)
 	.when( '/:username'
 	  , { templateUrl: 'views/profile.html'
 	    , controller : 'ProfileCtrl'
 	    } )
-	.otherwise( { redirectTo: '/' } );
+	.otherwise( { redirectTo: '/404' } );
 
 	localStorageServiceProvider.prefix = 'datea';
 

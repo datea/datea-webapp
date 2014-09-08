@@ -47,7 +47,6 @@ angular.module('dateaWebApp')
 	$scope.paginationCampaigns = {};
 	$scope.paginationDateos = {};
 	$scope.flow = {};
-	$scope.flow.notFound = false;
 	$scope.map_is_present = false;
 
 	buildUserFollows = function () {
@@ -161,10 +160,7 @@ angular.module('dateaWebApp')
 		}, function ( reason ) {
 			console.log( 'user error reason:', reason );
 			if ( reason.status === 404 ) {
-				$scope.$apply( function () {
-					$scope.flow.notFound = true;
-				} );
-				console.log( 'usuario no encontrado' );
+				$location.path('/404');
 			}
 		} );
 	}
