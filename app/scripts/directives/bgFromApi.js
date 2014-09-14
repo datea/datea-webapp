@@ -28,6 +28,11 @@ angular.module('dateaWebApp')
 			switch (img_type) {
 				case 'campaign':
 					default_img_url = config.defaultImgCampaign;
+					img_size = 'auto';
+					break;
+				case 'campaign-lg':
+					default_img_url = config.defaultImgCampaignLarge;
+					img_size = 'auto';
 					break;
 				case 'user':
 					default_img_url = config.defaultImgProfile;

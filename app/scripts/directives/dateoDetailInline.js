@@ -59,7 +59,6 @@ angular.module("dateaWebApp")
 					var oldIds = $scope.dateo.comments.map(function (c) {return c.id;});
 					Api.comment.getList({content_type__model: 'dateo', object_id: $scope.dateo.id})
 					.then(function (response) {
-						console.log(response);
 						$scope.dateo.comment_count = response.meta.total_count;
 						$scope.dateo.comments = response.objects.map( function (c) {
 							c.new = oldIds.indexOf(c.id) === -1;
@@ -110,11 +109,10 @@ angular.module("dateaWebApp")
 						Api.comment
 						.postCommentByDateoId( comment )
 						.then( function ( response ) {
-							//console.log( response );
 							$rootScope.$broadcast('user:doFollow', {followKey: 'dateo.'+$scope.dateo.id});
 							updateComments();
 							/*Api.dateo
-							.getDateoByUsernameAndDateoId(
+							.getDateos(
 							{ user : $routeParams.username
 							, id   : +$routeParams.dateoId
 							} )
@@ -144,7 +142,6 @@ angular.module("dateaWebApp")
 					.doFlag( { content_type : type
 					         , object_id    : +$routeParams.dateoId } )
 					.then( function ( response ) {
-						console.log( 'flag', type, +$routeParams.dateoId )
 						$( ev.target ).hide();
 					}, function ( reason ) {
 						console.log( reason );
@@ -176,13 +173,9 @@ angular.module("dateaWebApp")
 						             , windowClass : 'datear-modal'
 						             , backdrop    : 'static'
 						             , resolve     : {
-						                datearModalGivens : function () {
-						                  return { dateo : $scope.dateo 
-						                         , datearSuccessCallback: function (dateo) {
-																				console.log("EDIT SUCCESS CALLBACK", dateo)
-						                         }
-						                         };
-						                 }
+						               datearModalGivens : function () {
+						                  return { dateo : $scope.dateo };
+						               		}
 						               }
 						             } );
 				}

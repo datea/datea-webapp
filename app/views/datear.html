@@ -24,7 +24,7 @@
 			</li>
 
 		</ol>
-		<alert ng-repeat="alert in alerts" type="alert.type" close="closeAlert($index)">{{alert.msg}}</alert>
+		<alert ng-repeat="alert in alerts" type="{{alert.type}}" close="closeAlert($index)">{{alert.msg}}</alert>
 	</div>
 
 	<div id="modal-body" class="modal-body" ng-class="{'fixed-height': !datear.onFinished }" da-loading="flow.loading">
@@ -36,7 +36,7 @@
 				<div id="spy-step1" class="step">
 				  <div class="step-cover" ng-if="datear.step != 1" ng-click="scrollTo($event, 'spy-step1', 30)"></div>
 					<h4 class="modal-scroll-1 scroll-section">1. Describe tu dateo</h4>
-					<div class="form-group content1">
+					<div class="form-group content1" ng-class="{false: 'has-feedback has-error'}[flow.validateContent]">
 						<textarea id="message" class="form-control" msd-elastic="\n" rows="3" placeholder="Ingresa aquí el contenido" ng-model="dateo.content"></textarea>
 					</div>
 
@@ -198,7 +198,6 @@
 				</div>
 
 				<div class="actions">
-					<div class="alert alert-danger" ng-show="datear.errorMessage">{{datear.errorMessage}}</div>
 					<button class="btn btn-success pull-right btn-lg" ng-click="datear.doDatear()">Enviar</button>
 					<div class="checkbox published-field pull-right" ng-show="datear.mode === 'edit'">
 						<label><input type="checkbox" class="form-control" ng-model="dateo.published" /> publicado</label>

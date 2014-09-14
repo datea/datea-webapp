@@ -43,9 +43,8 @@ angular.module( 'dateaWebApp' )
 	} );
 
 	Api.campaign
-	.getCampaigns( { limit: 4, featured: 1, order_by: '-created' } )
+	.getCampaigns( { limit: 4, order_by: '-featured,-created' } )
 	.then( function ( response ) {
-		console.log( 'campaign', response.objects );
 		$scope.landing.outstandingCampaigns = response.objects;
 	}, function ( reason ) {
 		console.log( reason );

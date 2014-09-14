@@ -145,7 +145,6 @@ angular.module( 'dateaWebApp' )
 		Api.tag
 		.getTags( { followed: User.data.id } )
 		.then( function ( response ) {
-			//console.log( 'followingTags', response );
 			$scope.homeSI.userTags = {};
 			$scope.homeSI.followingTags = response.objects.map( function (t, i) {
 				t.color = $scope.homeSI.colorRange[i];
@@ -193,7 +192,6 @@ angular.module( 'dateaWebApp' )
 		Api.dateo
 		.getDateos( { limit: 1 } )
 		.then( function ( response ) {
-			console.log('weekly', response.objects[0]);
 			$scope.homeSI.weeklyDateo = response.objects[0];
 		}, function ( reason ) {
 			console.log( reason );
@@ -237,7 +235,6 @@ angular.module( 'dateaWebApp' )
 		Api.campaign
 		.getCampaigns( query )
 		.then( function ( response ) {
-			// console.log( response.objects );
 			$scope.homeSI.campaigns = response.objects;
 			//buildPagination( response );
 			$scope.homeSI.loading.campaigns = false;
@@ -260,7 +257,6 @@ angular.module( 'dateaWebApp' )
 		Api.campaign
 		.getCampaigns( params )
 		.then( function ( response ) {
-			// console.log( response.objects );
 			$scope.homeSI.campaignsFollowed = response.objects;
 			//buildPagination( response );
 			$scope.homeSI.loading.campaignsFollowed = false;
@@ -340,7 +336,6 @@ angular.module( 'dateaWebApp' )
 						// PREGUNTAR A JUAN POR EL watch al zoom
 						// Intentando cambiar esto para usar mejor el evento moveend
 						//$scope.$watch( 'homeSI.leaflet.center.lat+homeSI.leaflet.center.lng+homeSI.leaflet.center.zoom', function () {
-						//	console.log("WATCH END");
 							//isCenterOutOfBounds();
 						//} );
 						buildMarkers( dateosGivens );
@@ -375,7 +370,6 @@ angular.module( 'dateaWebApp' )
 
 	isCenterOutOfBounds = function () {
 		if ( !dontCheckCenterOutOfBounds && finishedGeolocating) {
-			//console.log("IS CENTER OUT OF BOUNDS");
 			$scope.homeSI.loading.leafletMore = true;
 			leafletData.getMap('leafletHomeSI')
 			.then( function ( map ) {
@@ -396,7 +390,6 @@ angular.module( 'dateaWebApp' )
 		// 		var bounds = lastBounds;
 		// 		if ( $scope.homeSI.leaflet.center.lat >= bounds._northEast.lat || $scope.homeSI.leaflet.center.lat < bounds._southWest.lat
 		// 		|| $scope.homeSI.leaflet.center.lng <= bounds._southWest.lng || $scope.homeSI.leaflet.center.lng < bounds._southWest.lng ) {
-		// 			console.log('out of bounds');
 		// 			buildMarkers( { latitude : $scope.homeSI.leaflet.center.lat
 		// 			              , longitude: $scope.homeSI.leaflet.center.lng
 		// 			              , distance : 2000
@@ -446,8 +439,6 @@ angular.module( 'dateaWebApp' )
 			if (User.data.tags_followed.length > 0) {
 				userTags = User.data.tags_followed.map( function (t) { return t.tag});
 				givens.tags = userTags.join(',');
-			}else{
-				console.log('following no tags');
 			}
 		}
 
@@ -490,17 +481,15 @@ angular.module( 'dateaWebApp' )
 								markers['marker'+sessionMarkersIdx].label = { message: '#'+labelTags.join(', #') };
 							}else{
 								label = { message: '#'+tags.slice(0,2).join(', #')};
-								markers['marker'+sessionMarkersIdx].label = (tags.length > 2) ? label+'...' : label;  
+								markers['marker'+sessionMarkersIdx].label.message = (tags.length > 2) ? label+'...' : label;  
 							}
 						}
 						sessionMarkersIdx += 1;
 					}
 				});
-				//console.log( 'sessionMarkers', sessionMarkers );
 				angular.extend( sessionMarkers, markers );
 				map.markers = sessionMarkers;
 				$scope.homeSI.markers = Object.keys( sessionMarkers );
-				// console.log( 'updateCenter', givens, givens.updateCenter );
 				//if ( updateCenter && Object.keys(map.markers).length > 0) {
 				//	map.center      = {};
 				//	map.center.lat  = map.markers[ 'marker'+0 ].lat;
@@ -555,15 +544,12 @@ angular.module( 'dateaWebApp' )
 		// no spam
 		geo.getLocation( { timeout:3000 } )
 		.then( function ( data ) {
-			//console.log( 'GEOLOCATE RESULT', data );
 			sessionCenter = data;
 			buildMap( { center : data } );
 			finishedGeolocating = true;
 		}, function () {
-			//console.log("GEOLOCATE ERROR");
 			Api.ipLocation.getLocationByIP()
 			.then( function ( response ) {
-				//console.log("GEOLOCATE WITH IP", response);
 				var ipLocation = {};
 				ipLocation.coords           = {};
 				ipLocation.coords.latitude  = response.ip_location.latitude;
@@ -592,7 +578,6 @@ angular.module( 'dateaWebApp' )
 		nextURL = ls.get( 'nextURL' );
 		if ( nextURL && nextURL.count === 0 ) {
 			$timeout( function () {
-				console.log( 'using nextURL', nextURL );
 				nextURL.count = nextURL.count + 1;
 				ls.set( 'nextURL', nextURL );
 				$location.path( nextURL.path );
@@ -726,19 +711,6 @@ angular.module( 'dateaWebApp' )
 		$location.path( '/registrate' );
 	}
 
-	$scope.flow.datear = function () {
-		$modal.open( { templateUrl : 'views/datear.html'
-		             , controller  : 'DatearCtrl'
-		             , windowClass : 'datear-modal'
-		             , backdrop    : 'static'
-		             , resolve     : {
-		                datearModalGivens : function () {
-		                   return {};
-		                  }
-		                }
-		            } );
-	}
-
 	$scope.$on('user:hasDateado', function(event, args) {
 		var test, newCenter, dateo;
 
@@ -835,10 +807,8 @@ angular.module( 'dateaWebApp' )
 	}
 
 	$scope.homeSI.searchCampaigns = function () {
-		console.log( '$scope.homeSI.searchCampaigns', $scope.homeSI.loading.campaigns,$scope.homeSI);
 		$scope.homeSI.loading.campaigns = true;
 		if ( $scope.homeSI.searchCampaignsKeyword ) {
-			console.log( '$scope.homeSI.searchCampaigns 2', $scope.homeSI.loading.campaigns);
 			buildCampaigns( { query :
 			{ q      : $scope.homeSI.searchCampaignsKeyword
 			, limit  : config.homeSI.campaignOffset
@@ -1129,7 +1099,6 @@ angular.module( 'dateaWebApp' )
 	} );
 
 	$scope.$on('$destroy', function () {
-		console.log( 'destroy' );
 		initHomeSIScope();
 		leafletMarkersHelpers.resetCurrentGroups();
 	});

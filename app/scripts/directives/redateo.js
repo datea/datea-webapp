@@ -83,7 +83,6 @@ angular.module("dateaWebApp")
 						Api.redateo
 						.post( { user : User.data.id, dateo : $scope.dateo.id } )
 						.then( function ( response ) {
-							console.log( 'doRedateo', response );
 							$scope.dateo.redateo_count++;
 							if (typeof($scope.redateoCallback) != 'undefined') $scope.redateoCallback(response, 'post');
 							$scope.flow.loading  = false;
@@ -100,7 +99,6 @@ angular.module("dateaWebApp")
 						Api.redateo
 						.deleteList( { user : User.data.id, dateo : $scope.dateo.id, id: $scope.flow.redateo.id } )
 						.then( function ( response ) {
-							console.log( 'deleteRedateo', response );
 							$scope.dateo.redateo_count--;
 							if (typeof($scope.redateoCallback) != 'undefined') $scope.redateoCallback(response, 'delete');
 							$scope.flow.loading  = false;

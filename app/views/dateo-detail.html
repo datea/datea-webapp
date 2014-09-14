@@ -32,7 +32,7 @@
 						
 						<p class="dateo-content newline2br" ng-bind-html="dateo.content | linky:'_blank'"></p>
 						
-						<a href ng-repeat="img in dateo.images" ng-click="dateo.imgDetail(img.image)" class="image">
+						<a href ng-repeat="img in dateo.images" ng-click="flow.imgDetail(img.image)" class="image">
 							<img class="part" ng-src="{{img.image | imgFromApi}}" alt="sorry">
 						</a>
 
@@ -99,7 +99,7 @@
 										<span class="date">el {{comment.created | date:dateFormat}}</span>
 									</div>
 									
-									<p class="comment-content newline2br">{{comment.comment | linky}}</p>
+									<p class="comment-content newline2br" ng-bind-html="comment.comment | linky:'_blank'"></p>
 
 									<div class="denounce-holder">
 										<da-flag flag-id="comment.id" flag-obj-type="comment"></da-flag>

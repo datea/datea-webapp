@@ -27,7 +27,7 @@
 								</div>
 								<div class="clearfix actions">
 									<div class="pull-right">
-										<button class="btn datea-datear-btn" ng-click="flow.datear()">Datea<i class="glyphicon glyphicon-map-marker"></i></button>
+										<datear-btn></datear-btn>
 									</div>
 									<!--<a class="btn datea-btn ff1" href="#!/crear-niciativa">Crear iniciativa</a>-->
 									<div class="user-menu">
@@ -113,8 +113,8 @@
 					<div class="homeSI-dateos-holder" ng-class="{'fullscreen': homeSI.mapFullscreen }" id="homeSI-map-holder">
 						<div class="view-frame-top view-frame">
 							<ul class="nav-pills nav pull-right ff2" role="tablist">
-							<li ng-class="{active: homeSI.activeDateoView ==='map'}"><a ng-click="homeSI.openDateoView('map')">Mapa</a></li>
-							<li ng-class="{active: homeSI.activeDateoView ==='list'}"><a ng-click="homeSI.openDateoView('list')">Lista</a></li>
+							<li ng-class="{active: homeSI.activeDateoView ==='map'}"><a ng-click="homeSI.openDateoView('map')"><i class="icon-pin2"></i>Mapa</a></li>
+							<li ng-class="{active: homeSI.activeDateoView ==='list'}"><a ng-click="homeSI.openDateoView('list')"><i class="icon-lista"></i>Lista</a></li>
 						</ul>
 							<div class="form-group search-box">
 								<form ng-submit="homeSI.searchDateos()">
@@ -198,13 +198,13 @@
 									<div class="main-campaign-carousel campaign-list row" da-jcarousel>
 										<div class="jcarousel">
 											<div class="carousel-container">
-												<div class="col-lg-1 col-md-1 col-sm-1 col-xs-1 carousel-item" ng-repeat="campaign in homeSI.campaigns" da-on-last-repeat="onLastCarouselItem()">
+												<div class="col-lg-1 col-md-1 col-sm-1 col-xs-1 carousel-item" ng-repeat="campaign in homeSI.campaigns" da-on-last-repeat="carousel.onLastCarouselItem()">
 													<da-campaign-teaser></da-campaign-teaser>
 												</div>
 											</div>
 										</div>
-										<div class="prev-btn carousel-prev"></div>
-										<div class="next-btn carousel-next"></div>
+										<div class="prev-btn carousel-prev" ng-show="!homeSI.loading.campaigns" ng-click="carousel.goToPrev()"></div>
+										<div class="next-btn carousel-next" ng-show="!homeSI.loading.campaigns" ng-click="carousel.goToNext()"></div>
 									</div>
 								</div>
 							</div>

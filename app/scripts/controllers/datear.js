@@ -71,8 +71,8 @@ $scope.datear.mode          = $scope.dateo.id ? 'edit' : 'new';
 $scope.alerts               = [];
 $scope.datear.step				  = 1;
 
-var $modal_body = angular.element(document.getElementById('modal-body'));
-if ($modal_body.scrollTop() != 0 ) $modal_body.scrollTop(0);
+var $modal_body = $('#modal-body');
+if ($modal_body.size() && $modal_body.scrollTop() != 0 ) $modal_body.scrollTo(0,0);
 
 $scope.$on( 'leafletDirectiveMarker.dragend', function ( event ) {
 	if ( $scope.datear.leaflet.center.zoom <= 16 ) {
@@ -152,7 +152,6 @@ onGeolocationError = function ( reason ) {
 	  , pipResult
 	  , boundaryBounds;
 	  ;
-	console.log( 'onGeolocationError' );
 	
 	// TRY IP LOCATION
 	Api.ipLocation.getLocationByIP()
@@ -234,7 +233,6 @@ onGeolocationError = function ( reason ) {
 }
 
 $scope.$on( 'leafletDirectiveMap.click', function ( event, args ) {
-	console.log( 'leafletDirectiveMap.click' );
 	var leafEvent = args.leafletEvent
 	  , newDraggy = {}
 	  ;
@@ -394,7 +392,6 @@ $scope.$watch( 'flow.dp.dateoDate', function () {
 
 $scope.datear.doDatear = function () {
 	
-	$scope.datear.loading = true;
 
 	var tags = [];
 	// Tags
@@ -444,6 +441,7 @@ $scope.datear.doDatear = function () {
 	//}
 
 	if ( $scope.dateo.content && $scope.dateo.tags.length ) {
+		$scope.datear.loading = true;
 		if (!$scope.dateo.id) {
 			Api.dateo.postDateo( $scope.dateo )
 			.then( function ( response ) {
@@ -472,20 +470,22 @@ $scope.datear.doDatear = function () {
 		}
 	} else {
 		if ( !$scope.dateo.content ) {
-			$scope.datear.errorMessage = 'Escriba una descripción de su dateo';
+			$scope.addAlert({type: 'danger', 'msg': 'Por favor, agrega contenido a tu dateo.'});
+			$scope.flow.validateContent = false;
+			$('#modal-body').scrollTo(0,0);
 		} else if ( !$scope.dateo.tags.length ) {
-			$scope.datear.errorMessage = 'Elija una etiqueta';
+			$scope.addAlert({type: 'danger', 'msg': 'Debes elegir al menos una etiqueta.'});
 		} else {
-			$scope.datear.errorMessage = 'Hubo un error al datear';
+			$scope.addAlert({type: 'danger', 'msg': 'Hubo un error al datear :('});
 		}
 	}
 };
+
 
 followNewDateo = function () {
 	Api.follow
 	.doFollow( { follow_key: 'dateo.'+$scope.dateo.id} )
 	.then( function ( response ) {
-		console.log("FOLLOWED NEW DATEO", response);
 	}, function ( reason ) {
 		console.log( reason );
 	} );
@@ -551,7 +551,6 @@ reverseGeocode = function (lat, lng) {
 				, 'accept-language' : 'es,en' 
  			}
 		}).success(function (data, status){
-			console.log("NOMINATIM REVERSE", data);
 			$scope.dateo.address = data.display_name;
 		}); 
 	}
@@ -569,7 +568,6 @@ geocode = function (query) {
 			, countrycodes      : User.data.ip_country
 			}
 	}).success(function (data, status){
-		console.log("NOMINATIM SEARCH", data);
 		if (data.length == 1) {
 			mapToAddress(data[0]);
 		} else if (data.length > 1) {

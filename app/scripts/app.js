@@ -43,6 +43,10 @@ angular.module( 'dateaWebApp'
 	  , { templateUrl : 'views/main.html'
 	    , controller  : 'MainCtrl'
 	    } )
+	.when('/home2'
+	  , { templateUrl : 'views/homeSignedInAlt.html'
+	    , controller  : 'MainAltCtrl'
+	    } )
 	.when( '/registrate'
 	  , { templateUrl : 'views/signup.html'
 	    , controller  : 'SignupCtrl'
@@ -58,10 +62,6 @@ angular.module( 'dateaWebApp'
 	.when( '/twitter-callback'
 	  , { templateUrl : 'views/twitter-callback.html'
 	    , controller  : 'TwitterCallbackCtrl'
-	    } )
-	.when( '/:username/dateos/:dateoId'
-	  , { templateUrl: 'views/dateo-detail.html'
-	    , controller : 'DateoCtrl'
 	    } )
 	.when( '/signin'
 	  , { templateUrl: 'views/signIn.html'
@@ -96,10 +96,6 @@ angular.module( 'dateaWebApp'
 	  , { templateUrl: 'views/tag.html'
 	    , controller: 'TagCtrl'
 	    } )
-	.when( '/:username/:campaignName'
-	  , { templateUrl: 'views/campaign.html'
-	    , controller: 'CampaignCtrl'
-	    } )
 	.when( '/iniciativas/:campaignId/edit'
 		, { templateUrl: 'views/campaign-dashboard.html'
 			,	controller:  'CampaignEditCtrl'
@@ -111,7 +107,39 @@ angular.module( 'dateaWebApp'
 		} )
 	.when( '/404'
 		, { templateUrl: 'views/404.html'} 
-			)
+	)
+	.when( '/buscar'
+		, { templateUrl: 'views/dateo-search.html'
+			, controller : 'DateoSearchCtrl' 
+			, reloadOnSearch: false
+	} )
+	.when( '/buscar/:search'
+		, { templateUrl: 'views/dateo-search.html'
+			, controller : 'DateoSearchCtrl' 
+			, reloadOnSearch: false
+	} )
+		/* COMPATIBILITY WITH OLD URLS */
+	.when( '/dateos/:dateoId'
+		, { templateUrl: 'views/redirect.html'
+			, controller : 'redirectToDateoCtrl' 
+		} )
+	.when( '/mapeo/:campaignId/dateos/:dateoId'
+		, { templateUrl: 'views/redirect.html'
+			, controller : 'RedirectToDateoCtrl' 
+		} )
+	.when( '/mapeo/:campaignId'
+		, { templateUrl: 'views/redirect.html'
+			, controller : 'RedirectToCampaignCtrl' 
+		} )
+
+	.when( '/:username/:campaignName'
+	  , { templateUrl: 'views/campaign.html'
+	    , controller: 'CampaignCtrl'
+	    } )
+	.when( '/:username/dateos/:dateoId'
+	  , { templateUrl: 'views/dateo-detail.html'
+	    , controller : 'DateoCtrl'
+	    } )
 	.when( '/:username'
 	  , { templateUrl: 'views/profile.html'
 	    , controller : 'ProfileCtrl'
@@ -149,5 +177,11 @@ angular.module( 'dateaWebApp'
 	}];
 
 	$httpProvider.responseInterceptors.push(interceptor);
+
+	var path = document.location.pathname;
+	if (path != '/' && path != '/index.html') {
+		console.log('redirect', path);
+		document.location.href = '/#!'+path;
+	}
 
 } ] );

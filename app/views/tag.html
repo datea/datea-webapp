@@ -7,7 +7,7 @@
 		</div>
 		<div class="buttons pull-left">
 			<da-follow follow-obj="tag" follow-id="{{tag.id}}"></da-follow>
-			<button class="btn datea-datear-btn btn-lg" ng-click="tag.datear()">Datea <i class="glyphicon glyphicon-map-marker"></i></button>
+			<button class="btn datea-datear-btn btn-lg" ng-click="tag.datear()">Datea <i class="daicon icon-burbuja"></i></button>
 		</div>
 	</div>
 	<div class="viz-holder">
@@ -35,7 +35,7 @@
 		</div>
 		<div class="viz-viewer" da-loading="flow.loading">
 			<tabset>
-				<tab heading="&nbsp;" class="glyphicon glyphicon-map-marker datea-glyphtab-fix">
+				<tab heading="&nbsp;" class="daicon icon-pin2 datea-glyphtab-fix">
 					<div class="container-fluid dateo-map-viz">
 						<div class="row">
 							<div class="col-xs-12 col-sm-45 col-md-45 dateos-holder">
@@ -52,7 +52,7 @@
 						</div>
 					</div>
 				</tab>
-				<tab heading="&nbsp;" class="glyphicon glyphicon-camera datea-glyphtab-fix" ng-show="tag.image_count > 0">
+				<tab heading="&nbsp;" class="daicon icon-camara datea-glyphtab-fix" ng-show="tag.image_count > 0">
 					<div class="dateo-thumbs-holder" ng-style="tag.dateosWithImagesHolderHeight">
 						<da-dateo-thumb ng-repeat="dateo in tag.dateosWithImages"></da-dateo-thumb>
 					</div>

@@ -38,7 +38,6 @@ angular.module('dateaWebApp')
 	$scope.alerts = []
 
 	updateUserDataFromApi = function () {
-		console.log("UPDATE USER FROM API");
 		var ls = localStorageService
 		  , updatedData
 		  , currentData = ls.get('user')

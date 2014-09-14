@@ -26,6 +26,7 @@ angular.module('dateaWebApp')
 	  , updateUserDataFromApi
 	  , buildUserMsgs
 	  , activateTab
+	  , oldUsername = User.data.username
 	  ;
 
 	//User.isSignedIn() || $location.path( '/' );
@@ -108,27 +109,29 @@ angular.module('dateaWebApp')
 		if ( data.username && data.email ) {
 			User.updateUser( data )
 			.then( function ( response ) {
-				console.log("CONFIG SAVE RESPONSE", response);
-				if ( data.email ) {
-					if ( User.data.status === 0) {
-						$modal.open( { templateUrl : 'views/verifyEmailModal.html'
+
+				if (response.token) {
+					User.updateHeader(response.username, response.token);
+				}
+
+				if ( data.email && User.data.status === 0) {
+					$modal.open( { templateUrl : 'views/verifyEmailModal.html'
 						             , backdrop    : 'static'
 						             } );
 						//$scope.addAlert({type: 'success', msg: config.accountMsgs.checkEmailMsg});
-					}
 				// update user object with response and no use updateUserDataFromApi
 				// User.updateUserDataFromApi();
 				// $location.path( '/' );
-					$scope.loading = false;
-				} else {
+				} else if (!data.email) {
 					$scope.addAlert( { type : 'danger'
 					                 , msg  : 'Por favor indique un correo válido.'
 					                 } );
-					$scope.loading = false;
+				} else {
+					$location.path("/"+data.username);
 				}
+				$scope.loading = false;
 			}, function ( reason ) {
 				var error;
-				console.log("CONFIG SAVE ERROR", reason);
 				if (reason.status === 400) {
 					if (reason.data && reason.data.error && reason.data.error.length) {
 						error = reason.data.error;

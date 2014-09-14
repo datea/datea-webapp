@@ -46,7 +46,6 @@ angular.module("dateaWebApp")
 					.doFlag( { content_type : flagObjType
 					         , object_id    : flagId } )
 					.then( function ( response ) {
-						console.log( 'flag', flagObjType, flagId );
 						$scope.flow.flagLabel = 'denunciado!';
 						$scope.flow.isFlagged = true;
 					}, function ( reason ) {

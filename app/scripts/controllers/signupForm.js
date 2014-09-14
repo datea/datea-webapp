@@ -46,7 +46,6 @@ angular.module('dateaWebApp')
 			Api.account.register
 			.usernameExists( { username: $scope.auth.bio } )
 			.then( function ( response ) {
-				console.log( 'checkUsername', response );
 				$scope.flow.validInput.username = !response.result;
 				$scope.auth.messages.usernameExists = !$scope.flow.validInput.username ? config.signupForm.validationMsgs.usernameExists : null;
 				$scope.form.$setValidity( 'usernameExists', $scope.flow.validInput.username );
@@ -60,7 +59,6 @@ angular.module('dateaWebApp')
 
 	$scope.auth.checkEmail = function () {
 		var isValid;
-		console.log('checkEmail', 'blur', $scope.auth.email );
 		isValid = config.regex.email.test( $scope.auth.email );
 		//$scope.auth.message = null;
 		if (isValid) {
@@ -106,7 +104,6 @@ angular.module('dateaWebApp')
 			$scope.flow.loading = true;
 			Api.account.register.createUser( data )
 			.then( function ( response ) {
-				console.log( response )
 				if ( response.status === 201 ) {
 					ls.set( 'user', response.user );
 					$scope.auth.message = 'usuario creado.';

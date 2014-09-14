@@ -88,7 +88,6 @@ angular.module( 'dateaWebApp' )
 			$scope.flow.loading = true;
 			User.signInBy3rdParty( partyGivens )
 			.then( function ( response ) {
-				console.log( response );
 				$location.path( '/' );
 				$scope.flow.loading = false;
 			}, function ( reason ) {
@@ -107,7 +106,6 @@ angular.module( 'dateaWebApp' )
 			$scope.flow.loading = true;
 			User.signInBy3rdParty( partyGivens )
 			.then( function ( response ) {
-				console.log( 'auth.withTwitter', 'updateUserDataFromStorage' );
 				if ( response.status === 0 ) {
 					$location.path( '/configuracion' );
 				} else {
@@ -127,7 +125,6 @@ angular.module( 'dateaWebApp' )
 		$scope.flow.loading = true;
 		User.resetPassword( resetGivens )
 		.then(function(response){
-			console.log("RESET RESPONSE", response);
 			$scope.addAlert({type: 'success', msg: config.accountMsgs.PasswdResetEmailMsg})
 			$scope.flow.loading = false;
 		}, function (reason) {

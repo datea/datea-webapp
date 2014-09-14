@@ -94,7 +94,6 @@ angular.module("dateaWebApp")
 						}else {
 							$scope.campaign.end_date = null;
 						}
-						console.log($scope.campaign.end_date);
 					} );
 
 	    		// GET CAMPAIGN MODEL FROM API IF EDITING
@@ -206,7 +205,6 @@ angular.module("dateaWebApp")
 
 	    		onGeolocation = function ( data ) {
 						var leaflet = {};
-						console.log('sup onGeolocation');
 						
 						leaflet = angular.copy( config.defaultMap );
 
@@ -255,7 +253,7 @@ angular.module("dateaWebApp")
 							});
 							map.on('draw:deleted', function ( e ) {
 								var layer = e.layers._layers[ Object.keys( e.layers._layers )[0] ];
-								console.log( 'draw:deleted', e.layers._layers );
+								//console.log( 'draw:deleted', e.layers._layers );
 								map.removeLayer( layer );
 								angular.element('div.leaflet-draw-toolbar-top').show();
 							});
@@ -351,15 +349,12 @@ angular.module("dateaWebApp")
 								xmlStr = b64_to_utf8(givens.file.split(';base64,')[1]);
 								xmlDom = (new DOMParser()).parseFromString(xmlStr, 'text/xml');
 								gjson  = toGeoJSON.kml(xmlDom, { styles: true });
-								//console.log("MAPBOX KML", gjson);
 														
 							}else if (ext === 'json') {
 								gjson = JSON.parse(b64_to_utf8(givens.file.split(';base64,')[1]));
-								//console.log("MAPBOX GEOJSON", gjson);
 							}
 							layer = L.geoJson(gjson, geoJSONStyle).addTo($scope.flow.leaflet.map);	
 							$scope.flow.leaflet.fileLayers.push({layer: layer, name: givens.data.name});
-							//console.log("GEOJSON", gjson);
 						}
 						$scope.flow.nextFile     = null;
 						$scope.flow.nextFileData = null;
@@ -571,7 +566,6 @@ angular.module("dateaWebApp")
 
 	  		//var menuFixThold = angular.element('.campaign-form-nav').position().top - 51;
 	  		var menuFixThold = 60;
-	  		//console.log(menuFixThold);
 	  		$scope.scrollTo = function($event, element, offset) {
 						$event.stopPropagation();
 						$event.preventDefault();
@@ -583,7 +577,6 @@ angular.module("dateaWebApp")
 					}
 
 				$document.on('scroll', function() {
-					//console.log($document.scrollTop());
 					$scope.$apply(function() { $scope.flow.fixMenu = $document.scrollTop() > menuFixThold; });
 				});
 

@@ -34,9 +34,8 @@ angular.module('dateaWebApp')
 	  , ipLocation  = {}
 	  // fn declarations
 	  , reconfigUserRsrc
+	  , configureResources
 	  ;
-
-	headers = ls.get('token');
 
 	account.social          = {};
 	account.social.twitter  = {};
@@ -59,128 +58,134 @@ angular.module('dateaWebApp')
 		           , params : { id: '@id' }
 		           , headers: headers || ls.get('token')
 		           } }
+		);
+	};
+
+	configureResources = function () { 
+		headers = ls.get('token');
+
+		dateo.rsrc   = $resource( config.api.url + 'dateo/'  , {},
+		{ 'query': { method: 'GET' }
+		, 'post' : { method  : 'POST'
+		           , headers : headers || ls.get('token') }
+		, 'patch' : { method  : 'PATCH'
+		           , headers : headers || ls.get('token') }
+		, 'put' : { method  : 'PUT'
+		           , headers : headers || ls.get('token') }
+		} );
+		dateoStatus.rsrc   = $resource( config.api.url + 'dateo_status/'  , {},
+		{ 'query': { method  : 'GET' }
+		, 'post' : { method  : 'POST'
+		           , headers : headers || ls.get('token') }
+		, 'patch': { method  : 'PATCH'
+		           , params  : { id: '@id' }
+		           , headers : headers || ls.get('token') }
+		, 'put'  : { method  : 'PUT'
+		           , params  : { id: '@id' }
+		           , headers : headers || ls.get('token') }
+		, 'delete' : { method : 'DELETE'
+		             , headers : headers || ls.get('token') }
+		} );
+		comment.rsrc = $resource( config.api.url + 'comment/', {},
+		{ 'query': { method : 'GET' }
+		, 'post' : { method  : 'POST'
+		           , headers : headers || ls.get('token')
+		           }
+		} );
+		account.social.twitter.rsrc = $resource( config.api.url + 'account/socialauth/twitter/', {},
+		{ 'post': { method: 'POST' } }
+		);
+		account.social.facebook.rsrc = $resource( config.api.url + 'account/socialauth/facebook/', {},
+		{ 'post': { method: 'POST' } }
+		);
+		account.register.rsrc = $resource( config.api.url + 'account/register/', {},
+		{ 'post': { method : 'POST' } }
+		);
+		account.signIn.rsrc = $resource( config.api.url + 'account/signin/ ', {},
+		{ 'post': { method : 'POST' } }
+		);
+		account.password.rsrc = $resource( config.api.url + 'account/reset-password/', {},
+		{ 'save': { method : 'POST' } }
+		);
+		account.passwordChange.rsrc = $resource( config.api.url + 'account/reset-password-confirm/', {},
+		{ 'save': { method : 'POST' } }
+		);
+		account.usernameExists.rsrc = $resource( config.api.url + 'account/username-exists', {},
+		{ 'query': { method : 'GET'} }
 		)
+		account.emailExists.rsrc = $resource( config.api.url + 'account/email-exists', {},
+		{ 'query': { method : 'GET'} }
+		)
+		user.rsrc = $resource( config.api.url + 'user/:id', {},
+		{ 'get'  : { method  : 'GET'
+		           , params  : { id: '@id' }
+		           , headers : headers || ls.get('token') }
+		// , 'query': { method : 'GET'
+		//            , params : {} }
+		, 'patch': { method : 'PATCH'
+		           , params : { id: '@id' }
+		           , headers: headers || ls.get('token')
+		           } }
+		);
+		userFollow.rsrc = $resource( config.api.url + 'user/', {},
+		{ 'query' : { method : 'GET' } }
+		);
+		tag.rsrc = $resource( config.api.url + 'tag/', {},
+		{ 'get' : { method : 'GET' } }
+		);
+		tag.autocomplete.rsrc = $resource( config.api.url + 'tag/autocomplete/', {},
+		{ 'get' : { method : 'GET' } }
+		);
+		tag.trending.rsrc = $resource( config.api.url + 'tag/trending/', {},
+		{ 'get' : { method : 'GET' } }
+		);
+		campaign.rsrc = $resource( config.api.url + 'campaign/', {},
+		{ 'query': { method : 'GET' }
+		, 'post' : { method : 'POST'
+		           , headers : headers || ls.get('token') }
+		, 'patch': { method : 'PATCH'
+							 , headers : headers || ls.get('token') }
+		} );
+		activityLog.rsrc = $resource( config.api.url + 'activity_log/', {},
+		{ 'query': { method : 'GET' } }
+		)
+		category.rsrc = $resource( config.api.url + 'category/', {},
+		{ 'query': { method : 'GET' } }
+		)
+		follow.rsrc = $resource( config.api.url + 'follow/', {},
+		{ 'query'  : { method : 'GET' }
+		, 'post'   : { method : 'POST'
+		             , headers : headers || ls.get('token') }
+		, 'delete' : { method : 'DELETE'
+		             , headers : headers || ls.get('token') }
+		} );
+		vote.rsrc = $resource( config.api.url + 'vote/', {},
+		{ 'query' : { method : 'GET' }
+		, 'post'  : { method : 'POST'
+		            , headers : headers || ls.get('token') }
+		, 'delete' : { method : 'DELETE'
+		             , headers : headers || ls.get('token') }
+		} );
+		flag.rsrc = $resource( config.api.url + 'flag/', {},
+		{ 'post' : { method : 'POST'
+		           , headers : headers || ls.get('token') }
+		} );
+		stats.rsrc = $resource( config.api.url + 'dateo/stats/', {},
+		{ 'query' : { method : 'GET' } }
+		)
+		redateo.rsrc   = $resource( config.api.url + 'redateo/'  , {},
+		{ 'query': { method  : 'GET' }
+		, 'post' : { method  : 'POST'
+		           , headers : headers || ls.get('token') }
+		, 'delete' : { method : 'DELETE'
+		             , headers : headers || ls.get('token') }
+		} );
+		ipLocation.rsrc = $resource( config.api.url + 'ip_location', {},
+		{ 'query' : { method : 'GET'} }
+		);
 	}
 
-	dateo.rsrc   = $resource( config.api.url + 'dateo/'  , {},
-	{ 'query': { method: 'GET' }
-	, 'post' : { method  : 'POST'
-	           , headers : headers || ls.get('token') }
-	, 'patch' : { method  : 'PATCH'
-	           , headers : headers || ls.get('token') }
-	, 'put' : { method  : 'PUT'
-	           , headers : headers || ls.get('token') }
-	} );
-	dateoStatus.rsrc   = $resource( config.api.url + 'dateo_status/'  , {},
-	{ 'query': { method  : 'GET' }
-	, 'post' : { method  : 'POST'
-	           , headers : headers || ls.get('token') }
-	, 'patch': { method  : 'PATCH'
-	           , params  : { id: '@id' }
-	           , headers : headers || ls.get('token') }
-	, 'put'  : { method  : 'PUT'
-	           , params  : { id: '@id' }
-	           , headers : headers || ls.get('token') }
-	, 'delete' : { method : 'DELETE'
-	             , headers : headers || ls.get('token') }
-	} );
-	comment.rsrc = $resource( config.api.url + 'comment/', {},
-	{ 'query': { method : 'GET' }
-	, 'post' : { method  : 'POST'
-	           , headers : headers || ls.get('token')
-	           }
-	} );
-	account.social.twitter.rsrc = $resource( config.api.url + 'account/socialauth/twitter/', {},
-	{ 'post': { method: 'POST' } }
-	);
-	account.social.facebook.rsrc = $resource( config.api.url + 'account/socialauth/facebook/', {},
-	{ 'post': { method: 'POST' } }
-	);
-	account.register.rsrc = $resource( config.api.url + 'account/register/', {},
-	{ 'post': { method : 'POST' } }
-	);
-	account.signIn.rsrc = $resource( config.api.url + 'account/signin/ ', {},
-	{ 'post': { method : 'POST' } }
-	);
-	account.password.rsrc = $resource( config.api.url + 'account/reset-password/', {},
-	{ 'save': { method : 'POST' } }
-	);
-	account.passwordChange.rsrc = $resource( config.api.url + 'account/reset-password-confirm/', {},
-	{ 'save': { method : 'POST' } }
-	);
-	account.usernameExists.rsrc = $resource( config.api.url + 'account/username-exists', {},
-	{ 'query': { method : 'GET'} }
-	)
-	account.emailExists.rsrc = $resource( config.api.url + 'account/email-exists', {},
-	{ 'query': { method : 'GET'} }
-	)
-	user.rsrc = $resource( config.api.url + 'user/:id', {},
-	{ 'get'  : { method  : 'GET'
-	           , params  : { id: '@id' }
-	           , headers : headers || ls.get('token') }
-	// , 'query': { method : 'GET'
-	//            , params : {} }
-	, 'patch': { method : 'PATCH'
-	           , params : { id: '@id' }
-	           , headers: headers || ls.get('token')
-	           } }
-	);
-	userFollow.rsrc = $resource( config.api.url + 'user/', {},
-	{ 'query' : { method : 'GET' } }
-	);
-	tag.rsrc = $resource( config.api.url + 'tag/', {},
-	{ 'get' : { method : 'GET' } }
-	);
-	tag.autocomplete.rsrc = $resource( config.api.url + 'tag/autocomplete/', {},
-	{ 'get' : { method : 'GET' } }
-	);
-	tag.trending.rsrc = $resource( config.api.url + 'tag/trending/', {},
-	{ 'get' : { method : 'GET' } }
-	);
-	campaign.rsrc = $resource( config.api.url + 'campaign/', {},
-	{ 'query': { method : 'GET' }
-	, 'post' : { method : 'POST'
-	           , headers : headers || ls.get('token') }
-	, 'patch': { method : 'PATCH'
-						 , headers : headers || ls.get('token') }
-	} );
-	activityLog.rsrc = $resource( config.api.url + 'activity_log/', {},
-	{ 'query': { method : 'GET' } }
-	)
-	category.rsrc = $resource( config.api.url + 'category/', {},
-	{ 'query': { method : 'GET' } }
-	)
-	follow.rsrc = $resource( config.api.url + 'follow/', {},
-	{ 'query'  : { method : 'GET' }
-	, 'post'   : { method : 'POST'
-	             , headers : headers || ls.get('token') }
-	, 'delete' : { method : 'DELETE'
-	             , headers : headers || ls.get('token') }
-	} );
-	vote.rsrc = $resource( config.api.url + 'vote/', {},
-	{ 'query' : { method : 'GET' }
-	, 'post'  : { method : 'POST'
-	            , headers : headers || ls.get('token') }
-	, 'delete' : { method : 'DELETE'
-	             , headers : headers || ls.get('token') }
-	} );
-	flag.rsrc = $resource( config.api.url + 'flag/', {},
-	{ 'post' : { method : 'POST'
-	           , headers : headers || ls.get('token') }
-	} );
-	stats.rsrc = $resource( config.api.url + 'dateo/stats/', {},
-	{ 'query' : { method : 'GET' } }
-	)
-	redateo.rsrc   = $resource( config.api.url + 'redateo/'  , {},
-	{ 'query': { method  : 'GET' }
-	, 'post' : { method  : 'POST'
-	           , headers : headers || ls.get('token') }
-	, 'delete' : { method : 'DELETE'
-	             , headers : headers || ls.get('token') }
-	} );
-	ipLocation.rsrc = $resource( config.api.url + 'ip_location', {},
-	{ 'query' : { method : 'GET'} }
-	);
+	configureResources();
 
   //console.log( 'api', headers );
 	// User
@@ -334,17 +339,8 @@ angular.module('dateaWebApp')
 		return dfd.promise;
 	}
 
-	dateo.getDateoByUsernameAndDateoId = function ( givens ) {
-		var dfd = $q.defer();
-		dateo.rsrc.query( givens, function ( response ) {
-			dfd.resolve( response );
-		}, function ( error ) {
-			dfd.reject( error );
-		} );
-		return dfd.promise;
-	}
-
 	dateo.postDateo = function ( givens ) {
+		console.log("DATEO TOKEN", ls.get('token'));
 		var dfd = $q.defer();
 		dateo.rsrc.post( givens, function ( response ) {
 			dfd.resolve( response );
@@ -701,6 +697,7 @@ angular.module('dateaWebApp')
 	       , flag        : flag
 	       , stats       : stats
 	       , ipLocation  : ipLocation
+	       , resetRscs   : configureResources
 	       };
 
 } ] );

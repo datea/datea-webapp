@@ -15,7 +15,7 @@ angular.module("dateaWebApp")
 					element.removeClass('datea-loading');
 				}
 			})
-			element.append('<div class="datea-loading-icon"><i class="fa fa-circle-o-notch fa-spin"></i></div>');
+			element.append('<div class="datea-loading-icon"><i class="icon-loading fa-spin"></i></div>');
 		}
 	}
 } );

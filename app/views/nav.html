@@ -18,6 +18,7 @@
 				<li ng-show="nav.visible"><a href="#!/ayuda">Ayuda</a></li>
 <!-- 				<li ng-show="nav.visible"><button type="button" class="btn datea-datear-btn navbar-btn" ng-click="nav.datear()">Datea<i class="glyphicon glyphicon-map-marker"></i></button></li> -->
 <!-- 				<li ng-show="!nav.visible"><button type="button" class="btn btn-success navbar-btn" ng-click="nav.signIn()">Ingresa</button></li> -->
+				<li ng-show="nav.visible"><datear-btn btn-class="nav-btn" btn-text=""></datear-btn></li> 
 				<li ng-show="user.username" class="dropdown user-ctrl">
 					<a href="#" class="dropdown-toggle" data-toggle="dropdown">
 					<img ng-src="{{ user.image | imgFromApi }}" alt="" height="38px" class="img-circle">

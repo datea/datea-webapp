@@ -52,6 +52,12 @@ angular.module('dateaWebApp')
 		return header;
 	}
 
+	user.updateHeader = function (username, token) {
+  	var header = buildAuthorizationHeader({username: username, token: token});
+  	ls.set( 'token', header );
+		Api.resetRscs();
+	}
+
 	getUserData = function ( givens ) {
 		var username = givens && givens.username
 		  , id       = givens && givens.id
@@ -111,7 +117,7 @@ angular.module('dateaWebApp')
 		getUserData( { username: currentData.username } )
 		.then( function ( response ) {
 			updatedData = response;
-			console.log( '!! updateUserDataFromApi !!', response );
+			//console.log( '!! updateUserDataFromApi !!', response );
 			angular.extend( currentData, updatedData );
 			ls.set( 'user', currentData );
 			user.updateUserDataFromStorage();
@@ -158,6 +164,7 @@ angular.module('dateaWebApp')
 
 			header = buildAuthorizationHeader( headerGivens );
 			ls.set( 'token', header );
+			Api.resetRscs();
 			user.isSignedIn();
 			data = response.user;
 			user.data = data;
@@ -183,10 +190,10 @@ angular.module('dateaWebApp')
 			headerGivens.username = username;
 			headerGivens.token    = response.token;
 
-			console.log("SIGN IN RESPONSE", response);
 			user.isNew = response.is_new;
 
 			header = buildAuthorizationHeader( headerGivens );
+			Api.resetRscs();
 			ls.set( 'token', header );
 			user.isSignedIn();
 

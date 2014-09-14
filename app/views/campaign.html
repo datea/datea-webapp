@@ -29,7 +29,7 @@
 									<da-follow follow-obj="tag" follow-id="{{campaign.main_tag.id}}" btn-class="follow-campaign"></da-follow>
 								</div>
 								<div class="mbtn datear-btn">
-									<button class="btn datea-datear-btn btn-lg" ng-click="flow.datear()">Datea <i class="glyphicon glyphicon-map-marker"></i></button>
+									<button class="btn datea-datear-btn btn-lg" ng-click="flow.datear()">Datea <i class="daicon icon-burbuja"></i></button>
 									<div class="time-left {{flow.endDate.type}}" ng-show="flow.endDate">{{flow.endDate.msg}}</div>
 								</div>
 							</div>
@@ -44,7 +44,7 @@
 					<div class="unpublished-msg" ng-show="campaign.id && !campaign.published">Iniciativa sin publicar</div>
 				</div>
 			</div>
-			<div class="col-sm-5 hidden-xs campaign-img" da-bg-from-api="{{campaign.image.image}}" da-img-size="contain"></div>
+			<div class="col-sm-5 hidden-xs campaign-img" da-bg-from-api="{{campaign.image.image}}" da-img-size="contain" da-img-type="campaign-lg"></div>
 		</div>
 	</div>
 
@@ -72,7 +72,7 @@
 						<div class="input-group">
 							<input type="text" class="form-control" ng-model="query.search">
 							<span class="input-group-btn">
-								<button class="btn btn-default" type="button"><i class="fa fa-search" ng-click="flow.getDateos()"></i></button>
+								<button class="btn btn-default" type="button" ng-click="flow.getDateos()"><i class="fa fa-search"></i></button>
 							</span>
 						</div>
 					<!--</div>-->
@@ -153,7 +153,7 @@
 		<div class="viz-viewer" da-loading="flow.loading">
 			<div class="protect-cover" ng-show="flow.showFilter" ng-click="flow.showFilter = false"></div>
 			<tabset>
-				<tab heading="&nbsp;" class="glyphicon glyphicon-map-marker datea-glyphtab-fix" ng-click="flow.activeTab = 'map'" ng-hide="flow.showFilter">
+				<tab heading="&nbsp;" class="daicon icon-pin2 datea-glyphtab-fix" ng-click="flow.activeTab = 'map'" ng-hide="flow.showFilter">
 					<div class="container-fluid dateo-map-viz">
 						<div class="row">
 							<div class="hidden-xs col-sm-45 dateos-holder">
@@ -161,7 +161,12 @@
 									<da-dateo-detail-inline dateo="flow.dateoDetail.dateo" marker-index="flow.dateoDetail.markerIndex" campaign-id="campaign.id"></da-dateo-detail-inline>
 								</div>
 								<div class="dateo-description-holder" ng-hide="flow.dateoDetail.show">
-										<da-dateo-teaser ng-repeat="dateo in campaign.dateos" campaign-id="campaign.id"></da-dateo-teaser>
+										<div class="teaser-list">
+											<da-dateo-teaser ng-repeat="dateo in campaign.dateos | limitTo:flow.dateoShowListNumResults" campaign-id="campaign.id"></da-dateo-teaser>
+										</div>
+										<p class="dateos-more-results" ng-show="campaign.dateos.length > flow.dateoShowListNumResults">
+											<button class="btn btn-default btn-lg" ng-click="flow.showMoreListResults()">Ver más resultados</button>
+										</p>
 										<div class="no-results" ng-show="campaign.dateos.length == 0 && flow.query.done">
 										Aún no hay dateos en esta iniciativa. ¡Datea!
 										</div>
@@ -183,12 +188,12 @@
 						</div>
 					</div>
 				</tab>
-				<tab heading="&nbsp;" class="glyphicon glyphicon-camera datea-glyphtab-fix" ng-click="flow.activeTab = 'images'" ng-hide="flow.showFilter">
+				<tab heading="&nbsp;" class="daicon icon-camara datea-glyphtab-fix" ng-click="flow.activeTab = 'images'" ng-hide="flow.showFilter">
 					<div class="dateo-thumbs-holder dateo-img-viz"> <!-- ng-style="campaign.dateosWithImagesHolderHeight"> -->
 						<da-dateo-thumb ng-repeat="dateo in campaign.dateosWithImages"></da-dateo-thumb>
 					</div>
 				</tab>
-				<tab heading="&nbsp;" class="glyphicon glyphicon-signal datea-glyphtab-fix" ng-click="chart.buildCharts()" ng-show="campaign.dateo_count > 0" ng-click="flow.activeTab = 'stats'" ng-hide="flow.showFilter">
+				<tab heading="&nbsp;" class="daicon icon-barras datea-glyphtab-fix" ng-click="chart.buildCharts()" ng-show="campaign.dateo_count > 0" ng-click="flow.activeTab = 'stats'" ng-hide="flow.showFilter">
 					<div class="dateo-stats-holder" ng-if="statsVisible">
 						<div class="container-fluid">
 							<div class="row">

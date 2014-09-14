@@ -21,7 +21,6 @@ angular.module('dateaWebApp')
 	  ;
 
 	url = $location.absUrl();
-	console.log( $location );
 
 	if ( url.match(/\?(.+)$/) ) {
 		query = url.match(/\?(.+)$/)[0].split("&");

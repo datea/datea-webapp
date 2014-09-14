@@ -4,10 +4,12 @@ angular
 .module('dateaWebApp')
 .constant('config',
 	{ app     : { name : 'Datea.pe'
-	            , url  : 'http://localhost:9000'
+	            , url  : 'http://test2.datea.pe'
 	            }
 	, api     : { url    : 'http://api.datea.pe/api/v2/'
-	            , imgUrl : 'http://api.datea.pe' //'http://173.255.200.68' 
+								//url    : 'http://127.0.0.1:8000/api/v2/'
+	            , imgUrl : 'http://api.datea.pe'
+	            //, imgUrl : 'http://127.0.0.1:8000'
 	          	} 
 	, marker  : ['<div class="marker-holder">'
 	              ,'<img class="img-circle" src="{{user.markerImage}}" alt="user image">'
@@ -48,7 +50,9 @@ angular
 	, defaultBoundsRatio : +0.0075
 	, defaultImgProfile : '/static/images/globals/user-default.png'
 	, defaultImgBackground : '/static/images/globals/bg-gris.png'
-	, defaultImgCampaign: "/static/images/globals/campaign-default.jpg"
+	, defaultImgCampaign: "/static/images/campaign/iniciativa-default-sm.png"
+	, defaultImgCampaignLarge: "/static/images/campaign/iniciativa-default.png"
+	, defaultdateoNumResults : 30 
 	, homeSI : { campaignsOffset : 12
 	           , paginationLimit : 6
 	           , mapZoomOverride : 13

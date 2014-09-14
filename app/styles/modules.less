@@ -178,8 +178,28 @@
 
 .datea-datear-btn {
 	.datea-button-variant(@datea-datear-btn-color; @datea-datear-btn-bg; @datea-datear-btn-border; @datea-datear-btn-hover);
-	padding-top: 10px;
+	padding-top: 7px;
+	padding-bottom: 5px;
 	text-transform: uppercase;
+	.daicon {
+		font-size: 24px;
+	}
+	
+	&.nav-btn {
+		//background-color: @color-18;
+		//border: 0px solid white;
+		color: white;
+		font-size: 20px;
+		//border-radius: 0;
+		padding: 2px 10px 5px;
+		outline: none;
+		line-height: 26px;
+		.daicon {
+			position: relative;
+			top: 3px;
+			font-size: 24px;
+		}
+	}
 }
 
 .datea-btn-nopad {

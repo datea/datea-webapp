@@ -18,6 +18,7 @@ angular.module('dateaWebApp')
   , '$http'
   , '$compile'
   , 'shareMetaData'
+  , 'Datear'
 , function (
     $scope
   , Api
@@ -35,6 +36,7 @@ angular.module('dateaWebApp')
   , $http
   , $compile
   , shareMetaData
+  , Datear
 ) {
 
 	var sessionMarkersIdx = 0
@@ -137,9 +139,7 @@ angular.module('dateaWebApp')
 			Api.dateo
 			.getDateos( dateoGivens )
 			.then( function ( response ) {
-				console.log("DATEOS QUERY", response);
 				if ( response.objects.length ) {
-					console.log("dateos", response);
 					angular.forEach( response.objects , function ( value, key ) {
 						if ( value.position ) {
 							dateos.push( value );
@@ -179,7 +179,6 @@ angular.module('dateaWebApp')
 		  , markers = {}
 		  , center  = {}
 		  ;
-		console.log( 'buildMarkers' );
 		// Cleaning
 		sessionMarkersIdx = 0;
 		$scope.flow.leaflet.markers = {};
@@ -272,24 +271,7 @@ angular.module('dateaWebApp')
 		return isUserFollowing();
 	}
 
-	$scope.tag.datear = function () {
-		if ( $scope.flow.isUserSignedIn  ) {
-			$modal.open( { templateUrl : 'views/datear.html'
-			             , controller  : 'DatearCtrl'
-			             , windowClass : 'datear-modal'
-			             , backdrop    : 'static'
-			             , resolve     : {
-			                datearModalGivens : function () {
-			                   return { 
-			                   		defaultTag : $scope.tag.tag
-			                   };
-			                 }
-			               }
-			             } );
-		} else {
-			$location.path('/registrate');
-		}
-	}
+	Datear.setContext({ defaultTag : $scope.tag.tag });
 
 	$scope.$on('user:hasDateado', function (event, args){
 		if (args.created) {
@@ -447,7 +429,6 @@ angular.module('dateaWebApp')
 
 	if ( $routeParams.tagName ) {
 		isMainTag().then( function ( givens ) {
-			console.log("TAG MAINTAG", givens);
 			if ( givens.isMainTag && givens.tagObj.length === 1) {
 				goToMainTag( { username: givens.tagObj[0].user.username
 				             , tagName : givens.tagObj[0].main_tag.tag
@@ -468,6 +449,7 @@ angular.module('dateaWebApp')
 		markersBounds   = [];
 		$scope.tag = {};
 		leafletMarkersHelpers.resetCurrentGroups();
+		Datear.resetContext();
 	});
 
 } ] );

@@ -127,7 +127,6 @@ angular.module( 'dateaWebApp' )
 		.getDateos( givens )
 		.then( function (response) {
 			var openedId;
-			console.log("DATEOS", response);
 			$scope.campaign.dateos = response.objects.map(function (d) {return processDateoStatus(d)});
 			$scope.query.totalCount = response.meta.total_count;
 			if ($location.search().item) {
@@ -141,7 +140,6 @@ angular.module( 'dateaWebApp' )
 	}
 
 	$scope.flow.openDateo = function (idx) {
-		console.log(idx);
 		$location.search('item', $scope.campaign.dateos[idx].id);
 	}
 
@@ -216,7 +214,6 @@ angular.module( 'dateaWebApp' )
 			if ($scope.flow.dateoStatus === 'new') {
 				Api.dateoStatus.deleteList({id: adm.id})
 				.then(function (response) {
-					console.log('DELETE', response);
 					updateDateo($scope.flow.dateo);
 					$scope.flow.statusLoading = false;
 				}, function (reason) {
@@ -227,10 +224,8 @@ angular.module( 'dateaWebApp' )
 					  id     : $scope.flow.dateo.admin[$scope.campaignId].id
 					, status : $scope.flow.dateoStatus
 				};
-				console.log('new Admin', newAdmin);
 				Api.dateoStatus.patchList({objects: [newAdmin]})
 				.then(function (response){
-					console.log("STATUS", response);
 					updateDateo($scope.flow.dateo);
 					$scope.flow.statusLoading = false;
 				}, function (reason){
@@ -246,7 +241,6 @@ angular.module( 'dateaWebApp' )
 			}
 			Api.dateoStatus.post(newAdmin)
 			.then(function (response) {
-				console.log("STATUS", response);
 				updateDateo($scope.flow.dateo);
 				$scope.flow.statusLoading = false;
 			}, function (reason) {
@@ -280,7 +274,6 @@ angular.module( 'dateaWebApp' )
 	});
 
 	$document.on('scroll', function() {
-		//console.log($document.scrollTop());
 		$scope.$apply(function() { $scope.flow.fixMenu = $document.scrollTop() > menuFixThold; });
 	});
 

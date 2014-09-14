@@ -225,10 +225,16 @@ textarea { resize: vertical; }
 	.datea-loading-icon {
 		z-index: 10;
 		display: block;
-		font-size: 30px;
-		line-height: 15px;
-		.fa {
-			line-height: 15px;
+		font-size: 40px;
+		line-height: 40px;
+		.icon-loading {
+			position: relative;
+			top: 20px;
+			line-height: 40px;
+			width: 40px;
+			height: 0.884em;
+			display: inline-block;
+			vertical-align: top;
 		}
 		position: absolute;
 		color: @color-18;
@@ -365,8 +371,12 @@ body {
 			padding-top: 15px;
 		}
 
+		.datea-datear-btn {
+			margin-left: 40px;
+		}
+
 		.user-ctrl.dropdown {
-			margin-left: 100px;
+			margin-left: 60px;
 			a.dropdown-toggle {padding: 0;}
 		}  
 	}
@@ -559,10 +569,13 @@ body {
 //
 
 .register-btns {
-	.btn-social {
+	.btn.btn-social {
 		margin-bottom: 15px;
+		padding-right: 15px;
+		&:hover {
+			color: white !important;
+		}
 	}
-
 }
 
 .signup-holder {
@@ -1896,6 +1909,73 @@ body {
 	}
 }
 
+.home-holder {
+	.intro-holder {
+		h1, h2 {
+			margin-top: 0;
+		}
+		text-align: left;
+		padding: 20px;
+		color: white;
+		background: rgba(255, 255, 255, 0.5) url("@{imgUrl}globals/bg-gris.png") repeat-y center center;
+		text-align: center;
+
+		.search-holder {
+			font-size: 18px;
+			text-align: center;
+			max-width: 400px;
+			margin-left: auto;
+			margin-right: auto;
+			p { margin-bottom: 0}
+			.input-group {
+				margin: 20px 0;
+			}
+		}
+		.trending-tags-holder {
+			text-align: left;
+			font-size: 18px;
+			//a { color: white}
+			h4, h5 { font-size: 16px;}
+			.tag-buttons {
+				padding: 10px 10px 0;
+				background-color: white;
+			}
+		}
+	}
+	.campaign-list-holder {
+		border-top: 1px solid @color-15;
+		margin-top: 40px;
+		padding-top: 10px;
+		position: relative;
+
+		.help-menu {
+			padding-top: 15px;
+			margin-right: 15px;
+			a {
+				color: @text-color;
+				&:hover {
+					color: @color-12;
+				}
+			}
+			.separator {
+				margin: 0 15px;
+			}
+		}
+		.campaign-block {
+			h4 {
+				font-size: 20px;
+			}
+			margin-top: 20px;
+			margin-bottom: 40px;
+			&:last-child { margin-bottom: 0; }
+			position: relative;
+			.campaign-list {
+				padding: 0 8px;
+			}
+		}
+	}
+}
+
 
 .homeSI-holder {
 	background-color: @color-15;
@@ -2316,7 +2396,7 @@ body {
 						font-size: 20px;
 						line-height: 20px;
 						font-weight: 500;
-
+						padding-bottom: 8px;
 					}
 
 					.user-menu {
@@ -2522,7 +2602,7 @@ body {
 }
 @media (min-width: @screen-md-min) {
 	.homeSI-holder.container-fluid {
-		padding: 15px 15px 50px;
+		padding: 0px 15px 50px;
 		.homeSI-meta-holder {
 			.block {
 				padding-right: 0;
@@ -2565,7 +2645,7 @@ body {
 }
 @media (min-width: @screen-lg-min) {
 	.homeSI-holder.container-fluid {
-		padding: 15px 4% 50px;
+		padding: 0px 4% 50px;
 		.homeSI-meta-holder {
 			.block {
 				padding-right: 0;
@@ -2626,6 +2706,10 @@ body {
 
 
 // Campaign teaser
+
+.col-campaign-teaser {
+	padding: 0 7px !important;
+}
 
 .campaign {
 	color: black;
@@ -3417,7 +3501,7 @@ ul.input-list {
 	}
 }
 
-.tag-holder {
+.tag-holder, .search-holder {
 	height: 100%;
 	.tag-card {
 		line-height: 70px;
@@ -3431,6 +3515,16 @@ ul.input-list {
 			span {margin-right: 15px;}
 		}
 		.buttons { button { margin-right: 30px}}
+	}
+
+	.search-card {
+		background-color: @color-9;
+		h2 {
+			margin: 0;
+			font-size: 30px;
+			padding: 20px 0 10px;
+			color: white;
+		}
 	}
 
 	/*
@@ -3547,13 +3641,13 @@ ul.input-list {
 				float: left;
 				&:hover {
 					.filter-toggle-link, .query-text {
-						color: darken(@color-10, 15%);
+						color: @color-9;
 					}
 					cursor: pointer;
 				}
 
 				.filter-toggle-link {
-					color: @color-18;
+					color: lighten(@color-9, 10%);
 					font-size: 32px;
 					display: block;
 					float: left;
@@ -3584,6 +3678,23 @@ ul.input-list {
 					}
 				}
 			}
+			.tag-link {
+				float: left;
+				margin: 0 15px;
+				line-height: @viz-nav-height;
+				.btn.btn-link {
+					font-size: 16px;
+					line-height: @viz-nav-height;
+					padding: 0;
+
+					.glyphicon {
+						font-size: 20px; 
+						margin-right: 5px;
+						position: relative;
+						top: 4px;
+					}
+				}
+			}
 		}
 		.menu-right {
 			float: right;
@@ -3600,9 +3711,9 @@ ul.input-list {
 					font-size: 30px;
 					overflow:hidden;
 					height: 40px;
-					color: @color-18;
+					color: lighten(@color-9, 10%);
 					&:hover {
-						color: darken(@color-10, 15%);
+						color: @color-9;
 					}
 				}
 				.dropdown-menu {
@@ -3735,20 +3846,20 @@ ul.input-list {
 		background-color: @color-17;
 		li {
 			margin-bottom: 0;
-			line-height: inherit;
 			position: relative;
 			top: 0;
 			//background-color: transparent;
 			width: 50px;
 			text-align: center;
-			font-size: 28px;
-			color: @color-18;
+			font-size: 32px;
+			color: lighten(@color-9, 10%);
 			float: left;
-			line-height: @viz-nav-height;
+			padding-top: 8px;
+			line-height: @viz-nav-height - 8px;
 			height: @viz-nav-height;
 			//background-color: white;
 			&:hover {
-				color: darken(@color-10, 15%);
+				color: @color-9;
 				border: 0;
 			}
 			&.active {
@@ -3818,6 +3929,11 @@ ul.input-list {
 					}
 				}
 			}
+		}
+
+		.dateos-more-results {
+			padding: 20px 0;
+			text-align: center;
 		}
 
 		.dateo-stats-holder {
@@ -3917,6 +4033,11 @@ ul.input-list {
 			padding: 0 20px;
 		}
 	}
+	.search-holder {
+		.search-card {
+			padding: 0 20px;
+		}
+	}
 	.viz-holder {
 		.viz-nav .search { padding-left: 35px}
 		.viz-nav .menu-right { padding-right: 20px}
@@ -3934,6 +4055,11 @@ ul.input-list {
 	}
 	.tag-holder {
 		.tag-card {
+			padding: 0 40px;
+		}
+	}
+	.search-holder {
+		.search-card {
 			padding: 0 40px;
 		}
 	}
@@ -4070,7 +4196,7 @@ ul.input-list {
 // Tag
 //
 
-.tag-holder {
+.tag-holder, .search-holder {
 	.map-holder {
 		position: relative;
 

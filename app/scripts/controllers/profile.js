@@ -53,7 +53,6 @@ angular.module('dateaWebApp')
 		Api.tag
 		.getTags( { followed: User.data.id } )
 		.then( function ( response ) {
-			console.log( 'targetUser follow', response );
 			$scope.targetUser.follows = response.objects;
 		}, function ( reason ) {
 			console.log( reason );
@@ -68,10 +67,6 @@ angular.module('dateaWebApp')
 		, mode : 'actor'
 		} )
 		.then( function ( response ) {
-			//console.log( 'buildActivityLog response', response );
-			//activityLog = response.objects.filter( function ( value ) {
-			//	return !!~config.activityLog.activityVerbs.indexOf( value.verb );
-			//} );
 			angular.forEach( response.objects , function ( value, key ){
 				value._url = ActivityUrl.parse( value );
 				value._message = ActivityTitle.createTitle( value );
@@ -99,7 +94,6 @@ angular.module('dateaWebApp')
 		Api.dateo
 		.getDateos( defaultQuery )
 		.then( function ( response ) {
-			console.log("PROFILE DATEOS", response );
 			$scope.targetUser.dateos = response.objects;
 			buildPaginationDateos( response );
 			$scope.targetUser.dateoLoading = false;
@@ -126,7 +120,6 @@ angular.module('dateaWebApp')
 		Api.campaign
 		.getCampaigns( defaultQuery )
 		.then( function ( response ) {
-			console.log( 'buildUserCampaigns', response.objects );
 			$scope.targetUser.campaigns = response.objects;
 			buildPaginationCampaigns( response );
 			$scope.targetUser.campaign_loading = false;
@@ -140,7 +133,6 @@ angular.module('dateaWebApp')
 		.getUserByUserIdOrUsername( { username : $routeParams.username } )
 		.then( function ( response ) {
 			var shareData;
-			//console.log( 'user info', response);
 			angular.extend($scope.targetUser, response);
 			$scope.targetUser.isSameAsUser = $scope.targetUser.username === User.data.username;
 			$scope.flow.notFound = false;
@@ -190,7 +182,6 @@ angular.module('dateaWebApp')
 	}
 
 	$scope.pageChanged = function () {
-		console.log("PAGE", $scope.paginationDateos.currentPage);
 		buildUserDateos( { index : $scope.paginationDateos.currentPage - 1 } );
 	}
 

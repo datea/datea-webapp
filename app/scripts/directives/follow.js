@@ -11,7 +11,7 @@ angular.module("dateaWebApp")
     		,followLabel    : '@'
     	}
 
-    	,controller: function ($scope, $element, $attrs) {
+    	, controller: function ($scope, $element, $attrs) {
 
 
     		var followKey
@@ -59,7 +59,6 @@ angular.module("dateaWebApp")
 						Api.follow
 						.doFollow( { follow_key: followKey} )
 						.then( function ( response ) {
-							console.log(response);
 							User.updateUserDataFromApi();
 							$scope.flow.loading = false;
 							$scope.flow.isFollowing = true;
@@ -100,7 +99,7 @@ angular.module("dateaWebApp")
 				}
 
 				$scope.$on('user:doFollow', function (event, args) {
-					console.log("IS FOLLOWIGN", $scope.flow.isFollowing);
+					//console.log("IS FOLLOWIGN", $scope.flow.isFollowing);
 					if (args.followKey === followKey && !$scope.flow.isFollowing) {
 						follow();
 					}

@@ -6,7 +6,7 @@
 				<div class="signin-holder-inner" da-loading="flow.loading">
 					<div class="row signin login-form-inner">
 						<div class="col-xs-12 col-md-8">
-							<alert ng-repeat="alert in alerts" type="alert.type" close="closeAlert($index)">{{alert.msg}}</alert>
+							<alert ng-repeat="alert in alerts" type="{{alert.type}}" close="closeAlert($index)">{{alert.msg}}</alert>
 							<h1 ng-hide="flow.hideSocial">Bienvenido a Datea</h1>
 							<h4 ng-hide="flow.hideSocial" class="subheading">Comparte datos útiles con tu comunidad</h4>
 							<div class="usr-msg hey" ng-show="flow.hideSocial">
@@ -15,10 +15,14 @@
 									<p>{{flow.activationMsg}}</p>
 								</div>
 							</div>
-							<div class="row" ng-hide="flow.hideSocial">
-								<div class="register-btns col-xs-12 col-sm-9 col-md-9 col-lg-9">
-									<button class="btn btn-social btn-facebook btn-block btn-lg" ng-click="auth.withFacebook()"><i class="fa fa-facebook"></i>Ingresa con Facebook</button>
-									<button class="btn btn-social btn-twitter btn-block btn-lg" ng-click="auth.withTwitter()"><i class="fa fa-twitter"></i>Ingresa con Twitter</button>
+							<div class="row" ng-hide="flow.hideSocial || auth.showResetPassword">
+								<div class="register-btns">
+									<div class=" col-xs-12 col-sm-9 col-md-9 col-lg-9">
+										<button class="btn btn-social btn-facebook btn-block btn-lg" ng-click="auth.withFacebook()"><i class="fa fa-facebook"></i>Ingresa con Facebook</button>
+									</div>
+									<div class="col-xs-12 col-sm-9 col-md-9 col-lg-9">
+										<button class="btn btn-social btn-twitter btn-block btn-lg" ng-click="auth.withTwitter()"><i class="fa fa-twitter"></i>Ingresa con Twitter</button>
+									</div>
 								</div>
 							</div>
 							<div class="row">
@@ -46,7 +50,7 @@
 											<input placeholder="ingresa tu correo electrónico" type="email" class="form-control" id="email" ng-required="auth.passwordRequired" ng-model="reset.email">
 										</div>
 										<button type="button" class="btn btn-sm btn-link pull-right btn-datea-link" ng-click="flow.toggleResetPassword()">&lt; regresar</button>
-										<input type="submit" class="btn datea-datear-btn" value="Enviar" ng-show="form.$valid">
+										<input type="submit" class="btn datea-datear-btn" value="Enviar" ng-show="forgotMail.$valid">
 										<button class="btn datea-datear-btn" ng-disabled="true">Enviar</button>
 									</form>
 								</div>

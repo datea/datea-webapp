@@ -49,8 +49,6 @@ angular.module('dateaWebApp')
 		.then( function ( response ) {
 			$scope.flow.categories = response.objects;
 			$scope.flow.categories.unshift({id: 'all', 'name': '-- todas --'});
-			console.log($scope.flow.categories);
-			//console.log( $scope.flow.categories )
 		} );
 	}
 
@@ -71,10 +69,8 @@ angular.module('dateaWebApp')
 		Api.campaign
 		.getCampaigns( params )
 		.then( function ( response ) {
-			console.log("RESPONSE", response );
 			$scope.flow.campaigns = response.objects;
 			$scope.query.totalCount = response.meta.total_count;
-			console.log($scope.flow.campaigns);
 			buildPagination( response );
 			$scope.flow.loading = false;
 		}, function ( reason ) {
