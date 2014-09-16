@@ -11,6 +11,7 @@ angular.module('dateaWebApp')
   , 'State'
   , '$timeout'
   , '$window'
+  , 'Api'
 , function (
     $scope
   , User
@@ -21,11 +22,14 @@ angular.module('dateaWebApp')
   , State
   , $timeout
   , $window
+  , Api
 ) {
+
+	var userStatusOnInit    = 1
+	  , embedCampaignGivens = {}
 	// fn declarations
-	var onSignIn
 	  , updateUserDataFromApi
-	  , userStatusOnInit = 1
+	  , onSignIn
 	  ;
 
 	$scope.nav  = {};
@@ -33,9 +37,10 @@ angular.module('dateaWebApp')
 	$scope.state = State.state;
 
 	$scope.nav.visible = User.isSignedIn();
+	console.log( $location.path() );
 
 	$scope.nav.isCollapsed = true;
-	$scope.alerts = []
+	$scope.alerts = [];
 
 	updateUserDataFromApi = function () {
 		var ls = localStorageService

@@ -186,6 +186,12 @@ angular.module('dateaWebApp')
 	$scope.flow.openTab = function(tab) {
 		$scope.query.tab = tab;
 		$scope.flow.doSearch();
+		if (tab == 'map') {
+			leafletData.getMap("leafletSearch")
+			.then( function ( map ) {
+				map.invalidateSize();
+			});
+		}
 	};
 
 	$scope.flow.autocompleteSearch = function ( val ) {
@@ -221,7 +227,7 @@ angular.module('dateaWebApp')
 		//center.zoom = config.campaign.mapZoomFocus;
 		//angular.extend( $scope.flow.leaflet.markers, markers );
 		//angular.extend( $scope.flow.leaflet.center, center );
-		leafletData.getMap("leafletTag")
+		leafletData.getMap("leafletSearch")
 		.then( function ( map ) {
 			map.fitBounds( markersBounds );
 		} );
@@ -272,7 +278,7 @@ angular.module('dateaWebApp')
  				latLng = L.latLng(pscope.dateo.position.coordinates[1], pscope.dateo.position.coordinates[0]);
  			}
 
- 			leafletData.getMap("leafletTag")
+ 			leafletData.getMap("leafletSearch")
 			.then( function ( map ) {
 				L.popup({
 					offset: L.point(0, -32)

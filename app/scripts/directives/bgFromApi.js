@@ -32,7 +32,6 @@ angular.module('dateaWebApp')
 					break;
 				case 'campaign-lg':
 					default_img_url = config.defaultImgCampaignLarge;
-					img_size = 'auto';
 					break;
 				case 'user':
 					default_img_url = config.defaultImgProfile;
@@ -49,6 +48,9 @@ angular.module('dateaWebApp')
 					img_url = config.api.imgUrl + attrs.daBgFromApi;
 				}else{
 					img_url = default_img_url; 
+				}
+				if (img_type === 'campaign-lg') {
+					img_size = (attrs.daBgFromApi) ? attrs.daImgSize : 'auto';
 				}
 			}
 

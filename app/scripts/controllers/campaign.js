@@ -832,6 +832,22 @@ angular.module('dateaWebApp')
 		if (cardHeight) $scope.$apply(function() { $scope.flow.titleFix = st > cardHeight - 60; });
 	});
 
+	/** EMBED BUILDER **/
+	$scope.flow.loadEmbedBuilder = function () {
+		$modal.open( { templateUrl : 'views/embedbuilder.html'
+		             , controller  : 'EmbedbuilderCtrl'
+		             , resolve     : {
+		               embedBuilderGivens : function () {
+		                 return {
+		                 	  author  : $scope.campaign.user.username
+		                 	, mainTag : $scope.campaign.main_tag.tag
+		                 	, path    : $location.path() 
+		                 };
+		               }
+		             }
+		             } );
+	};
+
 
 	$scope.$on('$destroy', function () {
 		markersBounds   = [];

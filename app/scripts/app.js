@@ -44,8 +44,8 @@ angular.module( 'dateaWebApp'
 	    , controller  : 'MainCtrl'
 	    } )
 	.when('/home2'
-	  , { templateUrl : 'views/homeSignedInAlt.html'
-	    , controller  : 'MainAltCtrl'
+	  , { templateUrl : 'views/homeSignedIn-bckp.html'
+	    , controller  : 'MainBckpCtrl'
 	    } )
 	.when( '/registrate'
 	  , { templateUrl : 'views/signup.html'

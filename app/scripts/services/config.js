@@ -139,6 +139,14 @@ angular
 																					 		 				+ '</g></svg>'
 																			   }  
 									 }      
+	, embed : { baseUrl       : 'http://embed.datea.pe/datea-embed-dist/#/' 
+						, defaultWidth  : 800
+						, defaultHeight : 500
+						, minWidth      : 600
+						, maxWidth      : 1000
+						, minHeight     : 400
+						, maxHeight     : 800
+						}
 	}
 );
 

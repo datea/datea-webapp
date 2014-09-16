@@ -282,10 +282,13 @@ body {
 }
 
 .caret {
-    border-left: 8px solid transparent;
-    border-right: 8px solid transparent;
-    border-top: 8px solid #000;
-    top: 30%;
+    border-left: 6px solid transparent;
+    border-right: 6px solid transparent;
+    border-top: 6px solid #000;
+    top: 7px;
+    left: -4px;
+    position: relative;
+    vertical-align: top;
 }
 
 .opcional {
@@ -361,18 +364,17 @@ body {
 		padding: 5px 0 5px 40px;
 	}
 	.navbar-nav {
-		font-size: 17px;
+		font-size: 18px;
 		margin: 5px 40px 0px 0px;
 
 		& > li > a {
 			color: black;
 			text-transform: uppercase;
 			padding-bottom: 0;
-			padding-top: 15px;
-		}
-
-		.datea-datear-btn {
-			margin-left: 40px;
+			padding: 18px 10px 0;
+			&:hover {
+				text-decoration: underline;
+			}
 		}
 
 		.user-ctrl.dropdown {
@@ -380,11 +382,27 @@ body {
 			a.dropdown-toggle {padding: 0;}
 		}  
 	}
+	.datea-datear-btn {
+		position: absolute;
+		right: 125px;
+		top: 5px;
+	}
 }
 
 @media (max-width: @screen-sm-min) {
 	.datea-navbar {
+		.navbar-brand {
+			padding: 5px 0 5px 15px;
+		}
+		.datea-datear-btn {
+				right: 80px;
+		}
 		.navbar-collapse.collapse .navbar-nav {
+
+			&.nav > li {
+				position: static;
+			}
+
 			.user-ctrl {
 				margin-left: 0;
 				margin-top: 15px;
@@ -396,6 +414,7 @@ body {
 					display: none;
 				}
 				.dropdown-menu {
+					padding-top: 10px;
 					display: block !important;
 					position: static !important;
 					background-color: transparent;
@@ -415,6 +434,41 @@ body {
 					}
 				}
 			}
+		}
+	}
+}
+
+@media (min-width: @screen-sm-min) {
+	.datea-navbar {
+		.navbar-brand {
+			padding: 5px 0 5px 15px;
+		}
+		.datea-datear-btn {
+				right: 85px;
+		}
+		.navbar-nav {
+			font-size: 18px;
+			margin: 5px 0px 0px 0px;
+		}
+	}
+}
+
+@media (min-width: @screen-lg-min) {
+	.datea-navbar.navbar {
+		padding: 0 4%;
+		.navbar-brand {
+			padding: 5px 0 5px 0px;
+			margin-left: 0;
+		}
+		.datea-datear-btn {
+				right: ~"calc(4% + 70px)";
+		}
+		.navbar-nav {
+			font-size: 18px;
+			margin: 5px 0px 0px 0px;
+		}
+		.container-fluid {
+			padding: 0;
 		}
 	}
 }
@@ -1910,67 +1964,174 @@ body {
 }
 
 .home-holder {
-	.intro-holder {
-		h1, h2 {
-			margin-top: 0;
-		}
-		text-align: left;
-		padding: 20px;
-		color: white;
-		background: rgba(255, 255, 255, 0.5) url("@{imgUrl}globals/bg-gris.png") repeat-y center center;
-		text-align: center;
 
-		.search-holder {
-			font-size: 18px;
-			text-align: center;
-			max-width: 400px;
-			margin-left: auto;
-			margin-right: auto;
-			p { margin-bottom: 0}
-			.input-group {
-				margin: 20px 0;
-			}
+	.bubble-title {
+		background-color: @color-1;
+		padding: 7px;
+		border-radius: 5px;
+		position:relative;
+		display: inline-block;
+		font-size: 13px !important;
+		text-transform: uppercase;
+		margin-bottom: 20px;
+		.ff2;
+		&:after {
+			content: ' ';
+			height: 10px;
+			width: 20px;
+			border-right: 10px solid transparent;
+			border-left: 10px solid transparent;
+			border-top: 10px solid @color-1;
+			position: absolute;
+			bottom: -10px;
+			left: ~"calc(50% - 10px)";
 		}
-		.trending-tags-holder {
-			text-align: left;
-			font-size: 18px;
-			//a { color: white}
-			h4, h5 { font-size: 16px;}
-			.tag-buttons {
-				padding: 10px 10px 0;
-				background-color: white;
+	}
+
+	.main-content {
+	 .main-content-inner {
+			padding-top: 0;
+			padding-right: 15px;
+
+			.intro-holder {
+				h1, h2 {
+					margin-top: 0;
+					//color: @color-9;
+					color: white;
+					margin-bottom: 0px;
+					font-size: 35px;
+					.ff1;
+				}
+				text-align: left;
+				padding: 70px 20px 20px;
+				color: white;
+				background: rgba(255, 255, 255, 0.5) url("@{imgUrl}homeSI/fondo-gris-home.png") repeat-y center top;
+				background-size: auto;
+				text-align: center;
+				margin-left: -15px;
+				margin-right: -15px;
+
+				.search-holder {
+					font-size: 19px;
+					text-align: center;
+					max-width: 400px;
+					margin-left: auto;
+					margin-right: auto;
+					p { 
+						margin-bottom: 0; 
+						//color: @color-22;
+						color: white;
+					}
+					.input-group {
+						margin: 10px 0;
+						.dropdown-menu {
+							text-align: left;
+						}
+					}
+				}
+				.trending-tags-holder {
+					position: relative;
+					text-align: left;
+					font-size: 18px;
+					margin-top: 10px;
+					//a { color: white}
+					h4, h5 { 
+						font-size: 16px; 
+						color: @text-color; 
+						margin-bottom: 10px; 
+						margin-top: 0px; 
+						position: absolute;
+						top: -35px;
+						left: 3%;
+					}
+					.tag-buttons {
+						text-align: center;
+						padding: 10px 10px 0;
+						.datea-tag-btn {
+							padding: 5px 7px 1px;
+							border-radius: 4px;
+							background-color: @color-12;
+							color: white;
+							float: none;
+							display: inline-block;
+							margin-bottom: 8px;
+							&:hover {
+								text-decoration: none;
+								background-color: darken(@color-12, 10%);
+							}
+						}
+					}
+				}
+			}
+			.campaign-list-holder {
+				//border-top: 1px solid @color-15;
+				margin-top: 40px;
+				//padding-top: 10px;
+				position: relative;
+				padding-left: 15px;
+				margin-bottom: 40px;
+
+				.campaign-title {
+					background-color: darken(@color-15, 10%);
+					padding: 15px;
+					line-height: 26px;
+					border-radius: 7px;
+					h3 {
+						margin: 0;
+						position: relative;
+						top: 3px;
+						font-size: 23px;
+					}
+					.help-menu {
+						a {
+							color: @text-color;
+							&:hover {
+								color: @color-12;
+							}
+						}
+						.separator {
+							margin: 0 15px;
+						}
+					}
+				}
+				.campaign-block {
+					h4 {
+						font-size: 20px;
+					}
+					margin-top: 20px;
+					margin-bottom: 20px;
+					&:last-child { margin-bottom: 0; }
+					position: relative;
+					.campaign-list {
+						padding: 0 8px;
+					}
+				}
 			}
 		}
 	}
-	.campaign-list-holder {
-		border-top: 1px solid @color-15;
-		margin-top: 40px;
-		padding-top: 10px;
-		position: relative;
+}
 
-		.help-menu {
-			padding-top: 15px;
-			margin-right: 15px;
-			a {
-				color: @text-color;
-				&:hover {
-					color: @color-12;
+@media (min-width: @screen-sm-min) {
+	.home-holder {
+		.main-content {
+			.main-content-inner {
+				.campaign-list-holder {
+					padding-left: 0;
 				}
 			}
-			.separator {
-				margin: 0 15px;
-			}
 		}
-		.campaign-block {
-			h4 {
-				font-size: 20px;
-			}
-			margin-top: 20px;
-			margin-bottom: 40px;
-			&:last-child { margin-bottom: 0; }
-			position: relative;
-			.campaign-list {
-				padding: 0 8px;
+	}
+}
+
+@media (min-width: @screen-lg-min) {
+	.home-holder {
+		.main-content {
+			.main-content-inner {
+				.intro-holder {
+					.trending-tags-holder {
+						h4, h4 { left: 6%;}
+					}
+				}
 			}
 		}
 	}
@@ -2316,15 +2477,18 @@ body {
 			//border-radius: 3px;
 			//padding: 0;
 			.user-info {
-				background-color: @color-15;
-				margin: 15px 0 30px;
+				background-color: @color-17;
+				margin: 0px -15px 20px -15px;
 				position:relative;
 				//border-radius: 6px;
+				//padding-bottom: 40px;
 
 				.inner { padding: 20px; }
 
 				.datero {
 					margin-bottom: 3px;
+					color: @color-22;
+					font-size: 13px;
 				}
 
 				a {
@@ -2373,13 +2537,14 @@ body {
 							margin: 10px 0 0;
 							word-break: break-all;
 							a {
-								color: @text-color;
+								color: @color-22;
 							}
 						}
 						.stats {
+							color: @color-22;
 							margin-top: 6px;
 							span {
-								font-size: 14px;
+								font-size: 13px;
 							}
 							.votes-count {
 								margin: 0 0 0 10px;
@@ -2389,6 +2554,10 @@ body {
 				}
 
 				.actions {
+					//position: absolute;
+					//bottom: 10px;
+					//left: 30px;
+					//right: 15px;
 					padding-top: 0px;
 					.ff1;
 					.datea-datear-btn {
@@ -2397,12 +2566,17 @@ body {
 						line-height: 20px;
 						font-weight: 500;
 						padding-bottom: 8px;
+						padding-right: 7px;
 					}
 
 					.user-menu {
+						.ff1;
 						line-height: 20px;
 						padding-top: 17px;
-						font-size: 16px;
+						font-size: 15px;
+						a {
+							color: @color-22;
+						}
 					}
 				}
 			}
@@ -2432,7 +2606,7 @@ body {
 		}
 
 		.user-follows {
-			margin-bottom: 15px;
+			margin-bottom: 35px;
 		}
 
 		.follow-welcome {
@@ -2556,7 +2730,7 @@ body {
 			.block.block-1 {
 				padding-right: 0;
 				.user-info {
-					.inner { padding: 10px; }
+					.inner { padding: 10px 10px 10px 15px; }
 					.info-head {
 						.uimg-cell {
 							width: 48px;
@@ -2609,7 +2783,7 @@ body {
 			}
 			.block.block-1 {
 				.user-info {
-					.inner { padding: 10px; }
+					.inner { padding: 10px 10px 10px 15px; }
 					.info-head {
 						.uimg-cell {
 							width: 54px;
@@ -2652,7 +2826,7 @@ body {
 			}
 			.block.block-1 {
 				.user-info {
-					.inner { padding: 15px 15px; }
+					.inner { padding: 15px 30px 15px; }
 					.info-head {
 						.uimg-cell {
 							width: 68px;
@@ -3885,6 +4059,15 @@ ul.input-list {
 	}
 	.tab-content {
 		position: relative;
+
+		.no-results {
+			padding: 50px 0;
+			text-align: center;
+			font-size: 18px;
+			.fa {
+				font-size: 24px;
+			}
+		}
 
 		.dateos-holder {
 			background: white;
@@ -5252,7 +5435,7 @@ ul.input-list {
 	}
 	.profile-card {
 		//padding: 30px 30% 30px;
-		padding-left: 35%;
+		padding-left: 34%;
 		padding-top: 30px;
 		height: 234px;
 		position: relative;
@@ -5272,9 +5455,9 @@ ul.input-list {
 
 				&.blur-bg {
 					border-radius: 30px; 
-					filter: blur(15px);
-			    -webkit-filter: blur(15px);
-			    -moz-filter: blur(15px);
+					//filter: blur(15px);
+			    //-webkit-filter: blur(15px);
+			    //-moz-filter: blur(15px);
 			    background-color: rgba(0, 0, 0, 0.45);
 			  }
 			}
@@ -5353,8 +5536,8 @@ ul.input-list {
 			.dateos-holder {
 				min-height: 250px;
 				.dateo.dateo-teaser {
-					margin-bottom: 30px;
-					padding-bottom: 30px;
+					margin-bottom: 15px;
+					padding-bottom: 15px;
 					&:last-child {
 						padding-bottom: 0;
 					}
@@ -5700,6 +5883,21 @@ ul.input-list {
 		border-top: 30px solid transparent;
 		border-bottom: 30px solid transparent;
 		border-right: 30px solid transparent;
+	}
+}
+
+.embed-build-holder {
+	.size-control {
+		label { width: 80px}
+		.number {
+			width: 65px;
+			display: inline-block;
+		}
+		.slider {
+			width: 200px;
+			display: inline-block;
+			margin-left: 20px;
+		}
 	}
 }
 

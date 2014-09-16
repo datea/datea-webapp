@@ -86,13 +86,13 @@
 								</div>
 							</div>
 							<div class="col-xs-12 col-sm-75 col-md-75 leaflet-map-holder">
-								<leaflet id="leafletTag" events="flow.leaflet.events" defaults="flow.leaflet.defaults" markers="flow.leaflet.markers" center="flow.leaflet.center" width="100%" cluster-options="flow.leaflet.clusterOptions" tiles="flow.leaflet.tiles"></leaflet>
+								<leaflet id="leafletSearch" events="flow.leaflet.events" defaults="flow.leaflet.defaults" markers="flow.leaflet.markers" center="flow.leaflet.center" width="100%" cluster-options="flow.leaflet.clusterOptions" tiles="flow.leaflet.tiles"></leaflet>
 							</div>
 						</div>
 					</div>
 				</tab>
 				<tab heading="&nbsp;" class="daicon icon-camara datea-glyphtab-fix" active="flow.activeTab.images" ng-click="flow.openTab('images')">
-					<div class="dateo-thumbs-holder">
+					<div class="dateo-thumbs-holder" ng-show="result.dateosWithImages.length">
 						<da-dateo-thumb ng-repeat="dateo in result.dateosWithImages"></da-dateo-thumb>
 					</div>
 					<div class="no-results" ng-show="!result.dateosWithImages.length && !flow.loading">No hay resultados <i class="fa fa-meh-o"></i></div>
