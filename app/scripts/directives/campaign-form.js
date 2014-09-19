@@ -405,12 +405,17 @@ angular.module("dateaWebApp")
 
 						// Image (if imgData exits, new file is being uploaded, else, stay with the old one, if any)
 						if ( $scope.flow.imgData ) {
-							$scope.campaign.image = [ { image : { name  : $scope.flow.imgData.name
-		                                  						, data_uri : $scope.flow.img
+							$scope.campaign.image = { image : { name  : $scope.flow.imgData.name
+	                                  						, data_uri : $scope.flow.img
+	                                  					}
+		                        					}
+						}
+						// Image2
+						if ( $scope.flow.imgData2 ) {
+							$scope.campaign.image2 = { image : { name  : $scope.flow.imgData2.name
+		                                  						 , data_uri : $scope.flow.img2
 		                                  					}
-		                        						, order : 0
 		                        						}
-		                      						];
 						}
 			
 						center = $scope.flow.leaflet.map.getCenter();
@@ -467,7 +472,7 @@ angular.module("dateaWebApp")
 						}
 
 						if (!isValid) {
-							$scope.flow.alerts = ["Hmmm, parece que te faltó llenar algún campo. Chequea los campos marcados en rojo y vuélvelo a intentar."];
+							$scope.flow.alerts = ["Uy, parece que te faltó llenar algún campo. Chequea los campos marcados en rojo y vuélvelo a intentar."];
 						}
 
 						return isValid;
@@ -504,8 +509,13 @@ angular.module("dateaWebApp")
 							  content : 'Las iniciativas publicadas aparece en nuestra busqueda.'
 						}
 						, image : {
-							  content : 'La imágen que identifica a tu iniciativa en la plataforma. '
-							          + 'Elige una que sea legible en varios tamaños.'
+							  content : 'La imágen que identifica a tu iniciativa en los listados (busqueda, inicio etc). '
+							          + 'Recomendamos una imagen distinctiva (logo, afiche, foto emblemática), y que el contenido principal se encuentre'
+							          + 'centrado.'
+						}
+						, image2 : {
+							  content : 'La imágen que sale en tu iniciativa en el banner (arriba a la derecha).'
+							          + 'Recomendamos una imagen con formato horizontal, de preferencia alargado (16:9), para que ocupe mas espacio en el banner.'
 						}
 						, endDate : {
 							  content : 'Opcionalmente puedes indicar una fecha de cierre de tu iniciativa.'

@@ -10,25 +10,51 @@ angular.module('dateaWebApp')
 ) {
 	return {
 		scope: { 
-				fileread: "="
-			, filedata: "="
+				fileread   : "="
+			, filedata   : "="
+			, maxImgSize : '@'
 		},
-		link: function (scope, element, attributes) {
-			element.bind("change", function (changeEvent) {
-				var reader = new FileReader()
-					, args
-				;
-				reader.onload = function (loadEvent) {
-					scope.$apply(function () {
-						scope.fileread = loadEvent.target.result;
-						scope.filedata = changeEvent.target.files[0];
-						args = { data: changeEvent.target.files[0], file: loadEvent.target.result }
-						if (element[0].id) args.id = element[0].id;
-						$rootScope.$broadcast( 'datea:fileLoaded',args);
+		link: function (scope, element, attrs) {
+
+			var maxImgSize = attrs.maxImgSize ? parseInt(attrs.maxImgSize) : config.maxImgSize;
+
+			FileAPI.event.on(element[0], 'change', function (ev) {
+				var file = FileAPI.getFiles(ev)[0]
+					,	args
+					, mime
+					;
+				
+				if (file.type.split('/')[0] == 'image') {
+					FileAPI.getInfo(file, function (err, info) { console.log(info)});
+					FileAPI.Image(file)
+					.rotate('auto')
+					.resize(maxImgSize, maxImgSize, 'max')
+					.get(function (err, canvas) {
+						scope.$apply(function () {
+							scope.filedata = file;
+							mime = (file.type == 'image/jpeg' || file.type == 'image/png') ? file.type : 'image/png';
+							scope.fileread = canvas.toDataURL(mime, 0.85);
+							args = { data: file, file: scope.fileread };
+							$rootScope.$broadcast( 'datea:fileLoaded', args);
+						});
+					});
+				}else{
+					FileAPI.readAsDataURL(file, function (ev) {
+						if (ev.type == 'load') {
+							scope.$apply(function () {
+								scope.filedata = file;
+								scope.fileread = ev.result;
+								args = { data: file, file: scope.fileread };
+								$rootScope.$broadcast( 'datea:fileLoaded', args);
+							});
+						}
 					});
 				}
-				reader.readAsDataURL(changeEvent.target.files[0]);
 			});
+
+			scope.$on('$destroy', function() {
+        FileAPI.event.off(element, 'change');
+      });
 		}
 	}
 } ] );

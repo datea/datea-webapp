@@ -52,7 +52,8 @@ angular
 	, defaultImgBackground : '/static/images/globals/bg-gris.png'
 	, defaultImgCampaign: "/static/images/campaign/iniciativa-default-sm.png"
 	, defaultImgCampaignLarge: "/static/images/campaign/iniciativa-default.png"
-	, defaultdateoNumResults : 30 
+	, defaultdateoNumResults : 30
+	, maxImgSize: 2048 
 	, homeSI : { campaignsOffset : 12
 	           , paginationLimit : 6
 	           , mapZoomOverride : 13

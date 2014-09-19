@@ -63,14 +63,27 @@
 		    			</label>
 		  			</div>
 		  		</div>
+
 					<div class="form-group" popover="{{help.image.content}}" popover-placement="right" popover-trigger="mouseenter" popover-popup-delay="600">
-						<label>Imágen</label>
+						<label>Imágen para listado</label>
 						<div>
-						<label for="image" class="datea-custom-imgUL">
-							<input class="img-file-input" type="file" id="image" fileread="flow.img" filedata="flow.imgData" accept="image/*" ng-hide="flow.img">
-							<img class="uploaded-img" ng-show="flow.img" ng-src="{{flow.img}}" alt="{{flow.imgData.name}}" width="300px">
-						</label>
+							<label for="image" class="datea-custom-imgUL">
+								<input class="img-file-input" type="file" id="image" fileread="flow.img" filedata="flow.imgData" accept="image/*" ng-hide="flow.img" max-image-size="800">
+								<img class="uploaded-img" ng-show="flow.img" ng-src="{{flow.img}}" alt="{{flow.imgData.name}}" width="300px">
+							</label>
 						</div>
+						<p class="help-block">mínimo 400 por 600px (vertical o horizontal)</p>
+					</div>
+
+					<div class="form-group" popover="{{help.image2.content}}" popover-placement="right" popover-trigger="mouseenter" popover-popup-delay="600">
+						<label>Imágen para banner</label>
+						<div>
+							<label for="image2" class="datea-custom-imgUL">
+								<input class="img-file-input" type="file" id="image2" fileread="flow.img2" filedata="flow.imgData2" accept="image/*" ng-hide="flow.img2" max-image-size="800">
+								<img class="uploaded-img" ng-show="flow.img2" ng-src="{{flow.img2}}" alt="{{flow.imgData2.name}}" width="300px">
+							</label>
+						</div>
+						<p class="help-block">mínimo 600 por 800px (vertical o horizontal)</p>
 					</div>
 
 					<div class="form-group" popover="{{help.endDate.content}}" popover-placement="right" popover-trigger="mouseenter" popover-popup-delay="600">
@@ -124,7 +137,7 @@
 							<input type="text" ng-model="flow.nextTag" class="form-control" ng-enter="flow.addTag()" typeahead="tags for tags in flow.autocompleteTag($viewValue) | filter:$viewValue" typeahead-loading="loadingLocations">
 							<i ng-show="loadingLocations" class="autocomplete-loading fa fa-circle-o-notch fa-spin"></i>
 							<span class="input-group-btn">
-								<button class="btn btn-default" type="button" ng-click="flow.addTag()">+</button>
+								<button class="btn btn-default" type="button" ng-click="flow.addTag()">agregar</button>
 							</span>
 						</div>
 					</div>

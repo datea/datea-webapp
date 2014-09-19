@@ -217,13 +217,14 @@ textarea { resize: vertical; }
 	bottom: 0;
 	right: 0;
 	left: 0;
+	z-index: 1000;
 }
 .datea-loading-icon {
 	display: none;
 }
 .datea-loading {
 	.datea-loading-icon {
-		z-index: 10;
+		z-index: 10001;
 		display: block;
 		font-size: 40px;
 		line-height: 40px;
@@ -3568,6 +3569,7 @@ body {
 		position: fixed;
 		top: 51px;
 		width: 100%;
+		z-index: 2000;
 	}
 	ul.nav {
 		padding-left: 20px;
