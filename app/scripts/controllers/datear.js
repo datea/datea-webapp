@@ -50,6 +50,7 @@ angular.module('dateaWebApp')
 	  , geocode
 	  , reverseGeocode
 	  , mapToAddress
+	  , positionChanged  = false
 	;
 
 // Object to be sent
@@ -75,6 +76,7 @@ var $modal_body = $('#modal-body');
 if ($modal_body.size() && $modal_body.scrollTop() != 0 ) $modal_body.scrollTo(0,0);
 
 $scope.$on( 'leafletDirectiveMarker.dragend', function ( event ) {
+	positionChanged = true;
 	if ( $scope.datear.leaflet.center.zoom <= 16 ) {
 		$scope.datear.leaflet.center.lat  = $scope.datear.leaflet.markers.draggy.lat;
 		$scope.datear.leaflet.center.lng  = $scope.datear.leaflet.markers.draggy.lng;
@@ -237,6 +239,7 @@ $scope.$on( 'leafletDirectiveMap.click', function ( event, args ) {
 	  , newDraggy = {}
 	  ;
 
+	positionChanged = true;
 	newDraggy = { lat : leafEvent.latlng.lat
 	            , lng : leafEvent.latlng.lng
 	            , draggable : true
@@ -401,9 +404,11 @@ $scope.datear.doDatear = function () {
 	$scope.dateo.tags = tags;
 
 	// Position
-	$scope.dateo.position = { coordinates : [ $scope.datear.leaflet.markers.draggy.lng, $scope.datear.leaflet.markers.draggy.lat ]
-	                        , type : 'Point'
-	                        }
+	if (positionChanged) {
+		$scope.dateo.position = { coordinates : [ $scope.datear.leaflet.markers.draggy.lng, $scope.datear.leaflet.markers.draggy.lat ]
+	  	                      , type : 'Point'
+	    	                    }
+	}
 
 	// Images
 	if ( $scope.datear.imgData ) {

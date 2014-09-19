@@ -32,7 +32,7 @@
 										<p ng-show="flow.hideSocial">Ingresa tu usuario y contraseña</p>
 										<div class="form-group" ng-show="!auth.resetPasswordCheckbox">
 											<!--<label for="username">Usuario</label>-->
-											<input placeholder="usuario" type="text" class="form-control" id="username" pattern="^[A-Za-z0-9]{3,10}$" ng-required="auth.passwordRequired" ng-model="auth.username">
+											<input placeholder="usuario" type="text" class="form-control" id="username" pattern="^[A-Za-z0-9-_]{1,32}$" ng-required="auth.passwordRequired" ng-model="auth.username">
 										</div>
 										<div class="form-group" ng-show="!auth.resetPasswordCheckbox">
 											<!--<label for="password">Contraseña</label>-->

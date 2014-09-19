@@ -185,6 +185,17 @@ angular.module('dateaWebApp')
 		buildUserDateos( { index : $scope.paginationDateos.currentPage - 1 } );
 	}
 
+	$scope.$on('user:hasDateado', function (event, args){
+		if (args.created) {
+			$scope.targetUser.dateos.unshift(args.dateo);
+			$scope.targetUser.dateo_count++;
+			//if (args.dateo.is_geolocated) addMarker(args.dateo);
+			//if (args.dateo.has_images) $scope.campaign.dateosWithImages.unshift(args.dateo);
+			//updateCampaign();
+			//$scope.dateamap.focusDateo(0);
+		}
+	});
+
 
 	if ( $routeParams.username ) {
 		buildUserInfo();

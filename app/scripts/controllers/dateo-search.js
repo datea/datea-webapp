@@ -59,9 +59,11 @@ angular.module('dateaWebApp')
 
 	$scope.query  = {
 		  q        : $routeParams.search || ''
-		, limit    : $routeParams.limit  || 100
-		, order_by : $routeParams.order_by || '-created'
+		, limit    : $location.search().limit  || 100
+		, order_by : $location.search().order_by || '-created'
 	};
+	if ($location.search().since) $scope.query.since = Date.parse($location.search().since) || undefined;
+	if ($location.search().until) $scope.query.until = Date.parse($location.search().until) || undefined;
 
 	$scope.result  = {};
 	$scope.flow              = {};
@@ -76,7 +78,7 @@ angular.module('dateaWebApp')
 	$scope.flow.activeTab = { 
 		  map    : $location.search().tab ? $location.search().tab === 'map': true
 		, images : $location.search().tab ? $location.search().tab === 'images': false
-	}
+	};
 	$scope.flow.orderByOptions = [
 			  { val: '-created', label: 'últimos'}
 			, { val: '-vote_count', label: 'más apoyados'}
@@ -99,7 +101,6 @@ angular.module('dateaWebApp')
 			if (p !== 'tab') query[p] = $location.search()[p];
 		}
 		checkForHashtagInSearch();
-		queryParamsToText();
 		return query;
 	}
 
@@ -113,21 +114,31 @@ angular.module('dateaWebApp')
 		var params = {}
 			, q;
 		for (var p in $scope.query) {
-			if (p !== 'q') params[p] = $scope.query[p]; 
+			if (p !== 'q' && $scope.query[p]) {
+				params[p] = $scope.query[p];
+				if (p === 'since' || p === 'until') {
+					params[p] = $scope.query[p].toISOString();
+				}else{
+					params[p] = $scope.query[p]; 
+				} 
+			}
 		}
 		q = $scope.query.q || '';
 		$location.path('/buscar/'+q);
 		$location.search(params);
 	}
 
-	queryParamsToText = function () {
+	queryParamsToText = function (numResults) {
 		var text = []
 			, q    = $scope.query
+			, showing
 		;
+
+		showing = numResults > q.limit ? q.limit : numResults;
 		// order by
-		if (q.order_by === '-created') text.push('últimos '+q.limit);
-		if (q.order_by === '-vote_count') text.push(q.limit+' más apoyados');
-		if (q.order_by === '-comment_count') text.push(q.limit+' más comentados');
+		if (q.order_by === '-created') text.push('últimos '+showing);
+		if (q.order_by === '-vote_count') text.push(showing+' más apoyados');
+		if (q.order_by === '-comment_count') text.push(showing+' más comentados');
 		// date
 		if (q.since && q.until) {
 			text.push($filter('date')(q.since, 'd/M/yy') + ' > '+ $filter('date')(q.until, 'd/M/yy'));
@@ -173,6 +184,7 @@ angular.module('dateaWebApp')
 				$scope.result.dateosWithImages = response.objects;
 			} 
 			$scope.flow.loading = false;
+			queryParamsToText(response.objects.length);
 		}, function ( reason ) {
 			console.log( reason );
 		} );

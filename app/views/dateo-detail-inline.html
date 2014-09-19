@@ -8,7 +8,7 @@
 		<div class="user-img img-circle" da-bg-from-api="{{dateo.user.image_small}}" da-img-size="cover" da-img-type="user"></div>
 		<div class="user-info">
 			<h4 class="username"><a href="/#!/{{dateo.user.username}}">{{dateo.user.username}}</a></h4>
-			<div class="date">{{dateo.created | date:dateFormat}}</div>
+			<div class="date"><a href="/#!/{{dateo.user.username}}/dateos/{{dateo.id}}">{{dateo.created | date:dateFormat}}</a></div>
 		</div>
 		<div class="admin-info">
 			<div class="label admin-status" ng-show="flow.status" ng-class="{'label-success': flow.status.type === 'solved', 'label-info': flow.status.type === 'reviewed'}">{{flow.status.msg}}</div>
@@ -59,13 +59,13 @@
 				<da-vote vote-obj="dateo" vote-obj-type="dateo"></da-vote>
 
 				<div class="datea-glyph-holder hover-enabled" ng-click="flow.focusCommentForm()">	
-					<span class="glyphicon glyphicon-comment datea-glyph"></span> <span class="datea-glyph-text" ng-show="dateo.comment_count > 0"><p>{{dateo.comments.length}}</p><p><ng-pluralize count="dateo.comments.length" when="{'one':
+					<span class="glyphicon glyphicon-comment datea-glyph" tooltip="comenta!" tootltip-trigger="mouseenter" tooltip-placement="bottom" tooltip-popup-delay="500"></span> <span class="datea-glyph-text" ng-show="dateo.comment_count > 0"><p>{{dateo.comments.length}}</p><p><ng-pluralize count="dateo.comments.length" when="{'one':
 					'comentario','other':'comentarios'}"></ng-pluralize></p></span>
 				</div>
 
 				<da-redateo dateo="dateo"></da-redateo>
 
-				<div class="datea-glyph-holder hover-enabled share-btn" ng-click="flow.share()">
+				<div class="datea-glyph-holder hover-enabled share-btn" ng-click="flow.share()" tooltip="comparte!" tootltip-trigger="mouseenter" tooltip-placement="bottom" tooltip-popup-delay="500">
 					<i class="fa fa-share-alt"></i>
 				</div>
 			</div>

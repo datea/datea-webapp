@@ -5,7 +5,7 @@
 	<div class="viz-holder">
 		<div class="viz-nav">
 			<div class="search">
-				<form class="form search-form" ng-submit="flow.searchDateos()">
+				<form class="form search-form" ng-submit="flow.doSearch()">
 					<!--<div class="form-group">-->
 						<div class="input-group">
 							<input type="text" class="form-control" ng-model="query.q" placeholder="buscar" typeahead="tags for tags in flow.autocompleteSearch($viewValue) | filter:$viewValue" typeahead-loading="loadingSearchSuggestions">
@@ -34,9 +34,9 @@
 									<label>filtrar fecha</label>
 									<div class="form-inline">
 										<label>del</label>
-										<input type="text" class="form-control since" ng-model="query.since" datepicker-popup="yyyy/MM/dd" is-open="flow.sincePopup" ng-focus="flow.sincePopup = true" />
+										<input type="text" class="form-control since" ng-model="query.until" datepicker-popup="yyyy/MM/dd" />
 										<label>al</label>
-										<input type="text" class="form-control until" ng-model="query.until" datepicker-popup="yyyy/MM/dd" is-open="flow.untilPopup" ng-focus="flow.untilPopup = true" />
+										<input type="text" class="form-control until" ng-model="query.since" datepicker-popup="yyyy/MM/dd" />
 									</div>
 								</div>
 							</div>
@@ -77,12 +77,12 @@
 								</div>
 								<div class="dateo-description-holder" ng-hide="flow.dateoDetail.show">
 									<div class="teaser-list">
-										<da-dateo-teaser ng-repeat="dateo in result.dateos | limitTo:flow.dateoShowListNumResults"></da-dateo-teaser>
+										<da-dateo-teaser ng-repeat="dateo in tag.dateos | limitTo:flow.dateoShowListNumResults"></da-dateo-teaser>
 									</div>
-									<p class="dateos-more-results" ng-show="result.dateos.length > flow.dateoShowListNumResults">
+									<p class="dateos-more-results" ng-show="tag.dateos.length > flow.dateoShowListNumResults">
 										<button class="btn btn-default btn-lg" ng-click="flow.showMoreListResults()">Ver más resultados</button>
 									</p>
-									<div class="no-results" ng-show="!result.dateos.length && !flow.loading">No hay resultados <i class="fa fa-meh-o"></i></div>
+									<div class="no-results" ng-show="!tag.dateos.length && !flow.loading">No hay resultados <i class="fa fa-meh-o"></i></div>
 								</div>
 							</div>
 							<div class="col-xs-12 col-sm-75 col-md-75 leaflet-map-holder">
@@ -95,7 +95,7 @@
 					<div class="dateo-thumbs-holder" ng-show="result.dateosWithImages.length">
 						<da-dateo-thumb ng-repeat="dateo in result.dateosWithImages"></da-dateo-thumb>
 					</div>
-					<div class="no-results" ng-show="!result.dateosWithImages.length && !flow.loading">No hay resultados <i class="fa fa-meh-o"></i></div>
+					<div class="no-results" ng-show="!tag.dateosWithImages.length && !flow.loading">No hay resultados <i class="fa fa-meh-o"></i></div>
 				</tab>
 			</tabset>
 		</div>

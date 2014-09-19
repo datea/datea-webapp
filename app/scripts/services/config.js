@@ -31,7 +31,7 @@ angular
 	                 , 'mostVoted'     : '-vote_count,-created'
 	                 , 'mostCommented' : '-comment_count,-created'
 	                 }
-	, dateo   : { sizeImgMax    : 3500000
+	, dateo   : { sizeImgMax    : 5242880
 	            , sizeImgMaxMsg : 'Su archivo es muy grande'
 	            , tagsMax       : 7
 	            }
@@ -70,7 +70,7 @@ angular
 			                                              , 'voted'     : '{{actor.username}} apoyó tu dateo {{tags}}'
 			                                              , 'redateo'   : '{{actor.username}} redateó tu dateo {{tags}}'
 			                                              }
-			                                   , byUser : { 'dateo'     : 'dateaste en {{tags}}'
+			                                   , byUser : { 'dateo'     : 'dateaste {{tags}}'
 			                                              , 'commented' : 'comentaste el dateo de {{target_user.username}} {{tags}}'
 			                                              , 'voted'     : 'apoyaste el dateo de {{target_user.username}} {{tags}}'
 			                                              , 'redateo'   : 'redateaste a {{target_user.username}} {{tags}}'

@@ -9,10 +9,10 @@ angular.module('dateaWebApp')
 	return {
 		restrict: "A",
 		scope: {
-			daImgSize      : '=?',
-			daImgPosition  : '=?',
-			daImgRepeat    : '=?',
-			daImgType      : '=?'
+			daImgSize      : '@',
+			daImgPosition  : '@',
+			daImgRepeat    : '@',
+			daImgType      : '@'
 		},
 		link: function postLink(scope, element, attrs) {
 			var img_url
@@ -28,10 +28,10 @@ angular.module('dateaWebApp')
 			switch (img_type) {
 				case 'campaign':
 					default_img_url = config.defaultImgCampaign;
-					img_size = 'auto';
 					break;
 				case 'campaign-lg':
 					default_img_url = config.defaultImgCampaignLarge;
+					img_size = 'auto';
 					break;
 				case 'user':
 					default_img_url = config.defaultImgProfile;

@@ -56,6 +56,10 @@
 
 						<tab heading="iniciativas" ng-show="targetUser.campaigns.length">
 							<div class="campaigns-holder tab-body" da-loading="targetUser.campaignLoading">
+								<div class="btn-create-holder hidden-xs clearfix">
+									<a href="#!/crear-iniciativa" class="pull-right btn btn-xs datea-gray-btn">Crear iniciativa</a> 
+								</div>
+								<div class="no-results" ng-show="!targetUser.campaigns.length && !targetUser.campaignLoading">no has creado iniciativas <i class="fa fa-meh-o"></i></div>
 								<div class="campaign-list row">
 									<div class="col-lg-4 col-md-3 col-sm-6 col-xs-12" ng-repeat="campaign in targetUser.campaigns">
 										<da-campaign-teaser></da-campaign-teaser>

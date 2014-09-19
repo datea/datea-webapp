@@ -19,6 +19,7 @@ angular.module('dateaWebApp')
   , '$compile'
   , 'shareMetaData'
   , 'Datear'
+  , '$document'
 , function (
     $scope
   , Api
@@ -37,6 +38,7 @@ angular.module('dateaWebApp')
   , $compile
   , shareMetaData
   , Datear
+  , $document
 ) {
 
 	var sessionMarkersIdx = 0
@@ -58,6 +60,10 @@ angular.module('dateaWebApp')
 	  , makeSVGClusterIcon
 	  , clusterSizeRange
 	  , serializeXmlNode
+	  , queryParamsToText
+	  , buildSearchParams
+	  , paramsToQuery
+	  , doSearch
 	;
 
 	$scope.tag                  = {};
@@ -70,6 +76,24 @@ angular.module('dateaWebApp')
 		  dateo : null
 		, show  : false 
 	};
+	$scope.flow.activeTab = { 
+		  map    : $location.search().tab ? $location.search().tab === 'map': true
+		, images : $location.search().tab ? $location.search().tab === 'images': false
+	}
+	$scope.$watch( 'query.limit', function () {
+		$scope.flow.limitLabel = ($scope.query.limit < 1000) ? 'máximo '+$scope.query.limit : 'todos los';
+	});
+	$scope.flow.orderByOptions = [
+			  { val: '-created', label: 'últimos'}
+			, { val: '-vote_count', label: 'más apoyados'}
+			, { val: '-comment_count', label: 'más comentados'}
+	];
+	$scope.query                = {
+		  limit    : $location.search().limit  || 100
+		, order_by : $location.search().order_by || '-created'
+	};
+	if ($location.search().since) $scope.query.since = Date.parse($location.search().since) || undefined;
+	if ($location.search().until) $scope.query.until = Date.parse($location.search().until) || undefined;
 
 	$scope.dateFormat = config.defaultDateFormat;
 	$scope.flow.leaflet.events = {enable: ['leafletDirectiveMarker.click']};
@@ -77,7 +101,7 @@ angular.module('dateaWebApp')
 	isMainTag = function () {
 		var dfd = $q.defer();
 		Api.campaign
-		.getCampaigns( { main_tag: $routeParams.tagName } )
+		.getCampaigns( { main_tag: $routeParams.tagName, order_by: '-dateo_count' } )
 		.then( function ( response ) {
 			dfd.resolve( { isMainTag: !!response.objects.length, tagObj: response.objects } );
 		}, function ( error ) {
@@ -93,8 +117,9 @@ angular.module('dateaWebApp')
 			var shareData;
 			if ( response.objects.length ) {
 				angular.extend($scope.tag, response.objects[0]);
-				buildDateos();
-				buildDateosWithImages();
+				//buildDateos();
+				//buildDateosWithImages();
+				doSearch();
 
 				shareData = {
 					  title       : 'Datea | dateos en #'+$scope.tag.tag
@@ -122,6 +147,100 @@ angular.module('dateaWebApp')
 			console.log(reason);
 		});
 	}
+
+	buildSearchParams = function () {
+		var query = {tags: $routeParams.tagName};
+		for (var p in $location.search()) {
+			if (p !== 'tab') query[p] = $location.search()[p];
+		}
+		return query;
+	}
+
+	queryParamsToText = function (numResults) {
+		var text    = []
+			, q       = $scope.query
+			, showing
+		;
+
+		showing = numResults > q.limit ? q.limit : numResults;
+
+		// order by
+		if (q.order_by === '-created') text.push('últimos '+showing);
+		if (q.order_by === '-vote_count') text.push(showing+' más apoyados');
+		if (q.order_by === '-comment_count') text.push(showing+' más comentados');
+		// date
+		if (q.since && q.until) {
+			text.push($filter('date')(q.since, 'd/M/yy') + ' > '+ $filter('date')(q.until, 'd/M/yy'));
+		}else{
+			if (q.since) text.push('desde &nbsp;'+$filter('date')(q.since, 'd/M/yy'));
+			if (q.until) text.push('hasta &nbsp;'+$filter('date')(q.until, 'd/M/yy'));
+		}
+
+		$scope.flow.queryTextRep = text;
+	}
+
+	paramsToQuery = function () {
+		var params = {}
+		for (var p in $scope.query) {
+			if ($scope.query[p]) {
+				if (p === 'since' || p === 'until') {
+					params[p] = $scope.query[p].toISOString();
+				}else{
+					params[p] = $scope.query[p]; 
+				}
+			}
+		}
+		$location.search(params);
+	}
+
+	doSearch = function ( givens ) {
+		var tab = $location.search().tab || 'map'
+			, params;
+
+		$scope.flow.showFilter = false;
+		$scope.flow.loading = true;
+
+		params = buildSearchParams();
+
+		if (tab === 'map') {
+			$scope.tag.dateos = [];
+			$scope.flow.leaflet.markers = {};
+		}else if (tab === 'images') {
+			$scope.tag.dateosWithImages = [];
+			params.has_images = 1;
+		}
+		Api.dateo
+		.getDateos( params )
+		.then( function ( response ) {
+			var dateos = [];
+			if (tab === 'map') {
+				angular.forEach( response.objects , function ( value, key ) {
+					if ( value.position ) {
+						dateos.push( value );
+					}
+				});
+				$scope.flow.dateoShowListNumResults = config.defaultdateoNumResults;
+				$scope.tag.dateos = dateos;
+				buildMarkers( { dateos: dateos } );
+			
+			}else if (tab === 'images') {
+				$scope.tag.dateosWithImages = response.objects;
+			}
+			queryParamsToText(response.objects.length);
+			$scope.flow.loading = false;
+		}, function ( reason ) {
+			console.log( reason );
+		} );
+	};
+
+	$scope.flow.doSearch = function () {
+		paramsToQuery();
+		doSearch();
+	};
+
+	$scope.flow.showMoreListResults = function (ev) {
+		$scope.flow.dateoShowListNumResults += config.defaultdateoNumResults;
+	};
 
 	buildDateos = function ( givens ) {
 		var dateoGivens = {}
@@ -156,6 +275,17 @@ angular.module('dateaWebApp')
 			} )
 		}
 	}
+
+	$scope.flow.openTab = function(tab) {
+		$scope.query.tab = tab;
+		$scope.flow.doSearch();
+		if (tab == 'map') {
+			leafletData.getMap("leafletSearch")
+			.then( function ( map ) {
+				map.invalidateSize();
+			});
+		}
+	};
 
 	buildDateosWithImages = function () {
 		var dateos = [];
@@ -271,7 +401,7 @@ angular.module('dateaWebApp')
 		return isUserFollowing();
 	}
 
-	Datear.setContext({ defaultTag : $scope.tag.tag });
+	Datear.setContext({ defaultTag : $routeParams.tagName });
 
 	$scope.$on('user:hasDateado', function (event, args){
 		if (args.created) {
@@ -336,6 +466,12 @@ angular.module('dateaWebApp')
 			buildDateos();
 		}
 		$scope.flow.loading = false;
+	}
+
+	$scope.flow.scrollToCampaigns = function (event) {
+		event.preventDefault();
+		event.stopPropagation();
+		$document.scrollToElement($('#campaigns'), 100, 400);
 	}
 
 	$scope.tag.onSelectFilterChange = function () {
@@ -429,16 +565,16 @@ angular.module('dateaWebApp')
 
 	if ( $routeParams.tagName ) {
 		isMainTag().then( function ( givens ) {
-			if ( givens.isMainTag && givens.tagObj.length === 1) {
+			/*if ( givens.isMainTag && givens.tagObj.length === 1) {
 				goToMainTag( { username: givens.tagObj[0].user.username
 				             , tagName : givens.tagObj[0].main_tag.tag
 				             } );
-			} else {
+			} else {*/
 				if (givens.tagObj.length > 0) {
 					$scope.campaignsInTag = givens.tagObj;
 				}
 				buildTag();
-			}
+			//}
 		}, function ( reason ) {
 			console.log( reason );
 		} );

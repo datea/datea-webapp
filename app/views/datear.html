@@ -181,11 +181,11 @@
 
 					<h5>buscar / agregar etiquetas</h5>
 					<div class="form-group">
-						<div class="input-group col-sm-6 tag-input-form autocomplete-group">
+						<div class="input-group col-sm-7 tag-input-form autocomplete-group">
 							<input type="text" ng-model="datear.nextTag" ng-model="asyncSelected" typeahead="tags for tags in datear.autocompleteTag($viewValue) | filter:$viewValue" typeahead-loading="loadingLocations" class="form-control">
 							<i ng-show="loadingLocations" class="autocomplete-loading fa fa-circle-o-notch fa-spin"></i>
 							<span class="input-group-btn">
-								<button class="btn btn-default" type="button" ng-click="datear.addTag( datear.nextTag )">+</button>
+								<button class="btn btn-default" type="button" ng-click="datear.addTag( datear.nextTag )">agregar <span class="glyphicon glyphicon-plus"></span></button>
 							</span>
 						</div>
 					</div>
@@ -198,7 +198,7 @@
 				</div>
 
 				<div class="actions">
-					<button class="btn btn-success pull-right btn-lg" ng-click="datear.doDatear()">Enviar</button>
+					<button class="btn btn-success pull-right btn-lg" ng-click="datear.doDatear()">Guardar</button>
 					<div class="checkbox published-field pull-right" ng-show="datear.mode === 'edit'">
 						<label><input type="checkbox" class="form-control" ng-model="dateo.published" /> publicado</label>
 					</div> 

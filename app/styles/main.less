@@ -380,6 +380,17 @@ body {
 		.user-ctrl.dropdown {
 			margin-left: 60px;
 			a.dropdown-toggle {padding: 0;}
+			.dropdown-menu {
+				li {
+					font-size: 15px;
+					i.fa {
+						font-size: 18px;
+						color: @color-10;
+						position: relative;
+						left: -5px;
+					}
+				}
+			}
 		}  
 	}
 	.datea-datear-btn {
@@ -593,6 +604,9 @@ body {
 			}
 			.register-btns {
 				margin-bottom: 15px;
+			}
+			.datea-datear-btn {
+				font-size: 14px;
 			}
 		}
 	}
@@ -1838,6 +1852,12 @@ body {
 			}
 
 			.tag-input-form {
+				.input-group-btn {
+					.btn.btn-default {
+						background-color: @color-18;
+						color: white;
+					}
+				}
 			}
 
 			.selected-tags {
@@ -2134,6 +2154,35 @@ body {
 				}
 			}
 		}
+	}
+}
+
+.open-datear-btn {
+	font-size: 20px;
+	line-height: 20px;
+	font-weight: 500;
+	padding-bottom: 8px;
+	padding-right: 7px;
+}
+
+.alert-datea {
+	background-color: @color-1;
+	border-radius: 12px;
+	position: relative;
+	.close {
+		position: relative;
+		top: -4px;
+	}
+	&:after {
+		content: ' ';
+		position: absolute;
+		width: 16px;
+		height: 20px;
+		border-right: 8px solid @color-1;
+		border-bottom: 10px solid transparent;
+		border-top: 10px solid transparent;
+		top: 20px;
+		left: -16px;
 	}
 }
 
@@ -2562,11 +2611,6 @@ body {
 					.ff1;
 					.datea-datear-btn {
 						margin: 0 0 0 12px;
-						font-size: 20px;
-						line-height: 20px;
-						font-weight: 500;
-						padding-bottom: 8px;
-						padding-right: 7px;
 					}
 
 					.user-menu {
@@ -3115,7 +3159,7 @@ body {
 		.campaign-info {
 			height: 272px;
 			.inner { 
-				padding-top: 30px;
+				padding-top: 15px;
 				.clearfix();
 				.main-info {
 
@@ -3165,6 +3209,7 @@ body {
 							.datea-datear-btn {
 								display: inline-block;
 								//vertical-align: top;
+								padding: 9px 9px 10px 12px;
 							}
 							.time-left {
 								display: inline-block;
@@ -3678,17 +3723,34 @@ ul.input-list {
 .tag-holder, .search-holder {
 	height: 100%;
 	.tag-card {
-		line-height: 70px;
-		min-height: 70px;
+		position: relative;
+		line-height: 60px;
+		min-height: 60px;
+		padding-top: 10px;
 		background-color: @color-9;
 		color: white;
-		.title { margin-right: 50px}
+		.title { margin-right: 50px; cursor: pointer; position: relative; top: 0px;}
+		.sub-title {
+			position: absolute;
+			line-height: 14px;
+			font-size: 12px;
+			top: 5px; 
+		}
 		.stats { 
 			margin-right: 50px;
 			font-size: 16px;
-			span {margin-right: 15px;}
+			span, a {margin-right: 15px;}
+			.campaign-count {
+				color: white;
+				&:hover {
+					text-decoration: underline;
+				}
+			}
 		}
 		.buttons { button { margin-right: 30px}}
+		.datea-datear-btn {
+			padding: 8px 9px 9px 12px;
+		}
 	}
 
 	.search-card {
@@ -4213,7 +4275,7 @@ ul.input-list {
 	}
 	.tag-holder {
 		.tag-card {
-			padding: 0 20px;
+			padding: 10px 20px 0;
 		}
 	}
 	.search-holder {
@@ -4238,7 +4300,7 @@ ul.input-list {
 	}
 	.tag-holder {
 		.tag-card {
-			padding: 0 40px;
+			padding: 10px 40px 0;
 		}
 	}
 	.search-holder {
@@ -4515,7 +4577,16 @@ ul.input-list {
 				font-weight: bold;
 				color: black;
 			}
-			.date { font-size: 12px; color: @color-9; }
+			.date { 
+				font-size: 12px; 
+				color: @color-9; 
+				a { 
+					color: @color-9;
+					&:hover {
+						color: darken(@color-9, 15%);
+					} 
+				}
+			}
 		}
 		.admin-info {
 			padding-top: 3px;
@@ -5225,7 +5296,7 @@ ul.input-list {
 				top: 0;
 				left: 0;
 				display: block;
-				z-index: 3;
+				z-index: 4;
 			}
 			.datea-glyph, .fa{		
 				background-color: @color-3;
@@ -5541,6 +5612,13 @@ ul.input-list {
 					&:last-child {
 						padding-bottom: 0;
 					}
+				}
+			}
+
+			.campaigns-holder {
+				.btn-create-holder {
+					position: relative;
+					top: -12px;
 				}
 			}
 

@@ -34,10 +34,11 @@ angular.module('dateaWebApp')
 
 	$scope.nav  = {};
 	$scope.user = {};
+	$scope.nav.isSignedIn = User.isSignedIn();
 	$scope.state = State.state;
 
 	$scope.nav.visible = User.isSignedIn();
-	console.log( $location.path() );
+	console.log("NAV", $scope.nav);
 
 	$scope.nav.isCollapsed = true;
 	$scope.alerts = [];
@@ -85,6 +86,8 @@ angular.module('dateaWebApp')
 			$scope.nav.visible = true;
 		}
 		$scope.user = User.data;
+		$scope.nav.isSignedIn = User.isSignedIn();
+		console.log("NAV2", $scope.nav);
 	
 		if ( !givens && User.data.status === 0) {
 			userStatusOnInit = User.data.status;
@@ -107,6 +110,8 @@ angular.module('dateaWebApp')
 
 	$rootScope.$on( 'user:signedOut', function ( event, error ) {
 		$scope.nav.visible = User.isSignedIn();
+		$scope.user = {};
+		$scope.nav.isSignedIn = false;
 	} );
 
 	$rootScope.$on( 'user:hasDateado', function ( event, args ) {

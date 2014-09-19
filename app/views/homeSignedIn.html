@@ -46,7 +46,7 @@
 								</a>
 							</div>
 						</div>
-						<alert class="follow-welcome" type="success" close="homeSI.showFollowHelp = false" ng-show="homeSI.followingTags.length === 0 && homeSI.showFollowHelp">
+						<alert class="follow-welcome" type="datea" close="homeSI.showFollowHelp = false" ng-show="homeSI.followingTags.length === 0 && homeSI.showFollowHelp">
 							<h4>¡Aún no sigues etiquetas!</h4>
 							<p>Sigue etiquetas para visualizar y participar de los temas que te interesan. 
 							Para ello, cliquea sobre ellas y activa el botón seguir.</p>
@@ -114,8 +114,8 @@
 								<!--<a class="btn datea-btn ff1" href="#!/iniciativas">VER TODAS</a>-->
 							</div>
 						</div>
-						<div class="campaign-block">
-							<h4 class="bubble-title">Iniciativas en lo que sigo</h4>
+						<div class="campaign-block" ng-show="homeSI.campaignsFollowed.length">
+							<h4 class="bubble-title">Iniciativas que sigo</h4>
 							<div class="campaign-list row">
 								<div class="col-lg-3 col-md-3 col-sm-4 col-xs-6 col-campaign-teaser" ng-repeat="campaign in homeSI.campaignsFollowed">
 									<da-campaign-teaser></da-campaign-teaser>

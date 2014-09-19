@@ -5,7 +5,7 @@
 			<div class="user-img img-circle" da-bg-from-api="{{dateo.user.image_small}}" da-img-size="cover" da-img-type="user"></div>
 			<div class="user-info">
 				<h4 class="username"><a href="/#!/{{dateo.user.username}}">{{dateo.user.username}}</a></h4>
-				<div class="date">{{dateo.created | date:dateFormat}}</div>
+				<div class="date"><a href="/#!/{{dateo.user.username}}/dateos/{{dateo.id}}">{{dateo.created | date:dateFormat}}</a></div>
 			</div>
 			<div class="admin-info">
 				<div class="label admin-status" ng-show="flow.status" ng-class="{'label-success': flow.status.type === 'solved', 'label-info': flow.status.type === 'reviewed'}">{{flow.status.msg}}</div>
