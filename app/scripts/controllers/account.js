@@ -29,7 +29,7 @@ angular.module('dateaWebApp')
 	  , oldUsername = User.data.username
 	  ;
 
-	//User.isSignedIn() || $location.path( '/' );
+	User.isSignedIn() || $location.path( '/signin' );
 
 	$scope.flow          = {};
 	$scope.account       = User.data;
@@ -127,7 +127,7 @@ angular.module('dateaWebApp')
 					                 , msg  : 'Por favor indique un correo válido.'
 					                 } );
 				} else {
-					$location.path("/"+data.username);
+					$location.url("/"+data.username);
 				}
 				$scope.loading = false;
 			}, function ( reason ) {

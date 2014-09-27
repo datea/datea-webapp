@@ -19,6 +19,7 @@ angular.module('dateaWebApp')
   , '$compile'
   , 'shareMetaData'
   , 'Datear'
+  , '$document'
 , function (
     $scope
   , Api
@@ -37,6 +38,7 @@ angular.module('dateaWebApp')
   , $compile
   , shareMetaData
   , Datear
+  , $document
 ) {
 
 	var buildMarkers
@@ -55,6 +57,7 @@ angular.module('dateaWebApp')
 	  , serializeXmlNode
 	  , sessionMarkersIdx
 	  , queryParamsToText
+	  , safariMapLayoutFix 
 	;
 
 	$scope.query  = {
@@ -169,17 +172,14 @@ angular.module('dateaWebApp')
 		Api.dateo
 		.getDateos( params )
 		.then( function ( response ) {
-			var dateos = [];
+			var geodateos = [];
 			if (tab === 'map') {
-				angular.forEach( response.objects , function ( value, key ) {
-					if ( value.position ) {
-						dateos.push( value );
-					}
-				});
+				safariMapLayoutFix();
 				$scope.flow.dateoShowListNumResults = config.defaultdateoNumResults;
-				$scope.result.dateos = dateos;
-				buildMarkers( { dateos: dateos } );
-			
+				$scope.result.dateos = response.objects;
+				geodateos = response.objects.filter(function (d) { return !!d.position; });
+				buildMarkers( { dateos: geodateos } );
+				$scope.result.totalDateos = response.meta.total_count;
 			}else if (tab === 'images') {
 				$scope.result.dateosWithImages = response.objects;
 			} 
@@ -188,6 +188,17 @@ angular.module('dateaWebApp')
 		}, function ( reason ) {
 			console.log( reason );
 		} );
+
+		$scope.result.campaigns = [];
+		if (params.q) {
+			Api.campaign
+			.getCampaigns( { q: params.q, order_by: '-dateo_count' } )
+			.then(function (response) {
+				$scope.result.campaigns = response.objects;
+			}, function (reason) {
+				console.log(reason);
+			});
+		}
 	};
 
 	$scope.flow.doSearch = function () {
@@ -317,10 +328,9 @@ angular.module('dateaWebApp')
 
 	$scope.$on('user:hasDateado', function (event, args){
 		if (args.created) {
-			$scope.tag.dateos.unshift(args.dateo);
+			$scope.result.dateos.unshift(args.dateo);
    		if (args.dateo.is_geolocated) addMarker(args.dateo);
-   		if (args.dateo.has_images) $scope.tag.dateosWithImages.unshift(args.dateo);
-   		updateTag();
+   		if (args.dateo.has_images) $scope.result.dateosWithImages.unshift(args.dateo);
    		$scope.flow.focusDateo(0); 
 		}
 	});
@@ -370,6 +380,12 @@ angular.module('dateaWebApp')
 		$scope.flow.leaflet.markers[args.markerName].focus = true;
 		createMarkerPopup(args.markerName);
 	});
+
+	$scope.flow.scrollToCampaigns = function (event) {
+		event.preventDefault();
+		event.stopPropagation();
+		$document.scrollToElement($('#campaigns'), 100, 400);
+	}
 
 	clusterSizeRange = d3.scale.linear()
 		.domain([0, 100])
@@ -457,11 +473,28 @@ angular.module('dateaWebApp')
 
 	doSearch();
 
+	$(window).resize(function (){
+		safariMapLayoutFix();
+	});
+
+	safariMapLayoutFix = function () {
+		if (Object.prototype.toString.call(window.HTMLElement).indexOf('Constructor') > 0) {
+			var $mh = $('.dateo-map-viz');
+			var h = $mh.height();
+	  	$('.leaflet-map-holder, .dateos-holder').css('height', h+'px');
+	  	leafletData.getMap("leafletSearch")
+			.then( function ( map ) {
+				map.invalidateSize();
+			});
+		};
+	}
+
 	$scope.$on('$destroy', function () {
 		//markersBounds   = [];
 		$scope.result = {};
 		leafletMarkersHelpers.resetCurrentGroups();
 		Datear.resetContext();
+		$(window).off('resize');
 	});
 
 } ] );

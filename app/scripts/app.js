@@ -17,6 +17,8 @@ angular.module( 'dateaWebApp'
   , 'angularCharts'
   , 'daPiecluster'
   , 'seo'
+  , 'angulartics'
+  , 'angulartics.google.analytics'
 ])
 .config(
 [ '$routeProvider'
@@ -35,7 +37,7 @@ angular.module( 'dateaWebApp'
 	$httpProvider.defaults.headers.patch = {
 	  'Content-Type': 'application/json;charset=utf-8'
 	}
-	OAuth.initialize('rT1wbk04eERCkSCMnA7vvdm5UcY');
+	OAuth.initialize('Cqxn7weY1lOMNwVKwOVNzlL_Bzc');
 	$locationProvider.hashPrefix('!');
 
 	$routeProvider
@@ -46,6 +48,9 @@ angular.module( 'dateaWebApp'
 	.when('/home2'
 	  , { templateUrl : 'views/homeSignedIn-bckp.html'
 	    , controller  : 'MainBckpCtrl'
+	    } )
+	.when('/acerca'
+	  , { templateUrl : 'views/about.html'
 	    } )
 	.when( '/registrate'
 	  , { templateUrl : 'views/signup.html'
@@ -132,6 +137,12 @@ angular.module( 'dateaWebApp'
 			, controller : 'RedirectToCampaignCtrl' 
 		} )
 
+	.when('/acerca/terminos'
+		, {templateUrl: 'views/terminos.html'}
+	)
+  .when('/acerca/privacidad'
+  	, {templateUrl: 'views/privacidad.html'}
+	)
 	.when( '/:username/:campaignName'
 	  , { templateUrl: 'views/campaign.html'
 	    , controller: 'CampaignCtrl'
@@ -177,11 +188,5 @@ angular.module( 'dateaWebApp'
 	}];
 
 	$httpProvider.responseInterceptors.push(interceptor);
-
-	var path = document.location.pathname;
-	if (path != '/' && path != '/index.html') {
-		console.log('redirect', path);
-		document.location.href = '/#!'+path;
-	}
 
 } ] );

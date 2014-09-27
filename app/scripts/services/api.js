@@ -70,8 +70,16 @@ angular.module('dateaWebApp')
 		           , headers : headers || ls.get('token') }
 		, 'patch' : { method  : 'PATCH'
 		           , headers : headers || ls.get('token') }
-		, 'put' : { method  : 'PUT'
-		           , headers : headers || ls.get('token') }
+		, 'put' : {  method  : 'PUT'
+		           , headers : headers || ls.get('token') 
+		           , url     : config.api.url + 'dateo/:id'
+           		 , params  : { id: '@id'} 
+		          }
+		, 'delete' : { method  : 'DELETE'
+           			 , headers : headers || ls.get('token') 
+           			 , url     : config.api.url + 'dateo/:id'
+           			 , params  : { id: '@id'}
+         				 }
 		} );
 		dateoStatus.rsrc   = $resource( config.api.url + 'dateo_status/'  , {},
 		{ 'query': { method  : 'GET' }
@@ -340,7 +348,6 @@ angular.module('dateaWebApp')
 	}
 
 	dateo.postDateo = function ( givens ) {
-		console.log("DATEO TOKEN", ls.get('token'));
 		var dfd = $q.defer();
 		dateo.rsrc.post( givens, function ( response ) {
 			dfd.resolve( response );
@@ -350,7 +357,7 @@ angular.module('dateaWebApp')
 		return dfd.promise;
 	}
 
-	dateo.patchList = function ( givens ) {
+	dateo.patch = function ( givens ) {
 		var dfd = $q.defer();
 		dateo.rsrc.patch( givens, function ( response ) {
 			dfd.resolve( response );
@@ -360,9 +367,19 @@ angular.module('dateaWebApp')
 		return dfd.promise;
 	}
 
-	dateo.putList = function ( givens ) {
+	dateo.put = function ( givens ) {
 		var dfd = $q.defer();
 		dateo.rsrc.put( givens, function ( response ) {
+			dfd.resolve( response );
+		}, function ( error ) {
+			dfd.reject( error );
+		} );
+		return dfd.promise;
+	}
+
+	dateo.delete = function ( givens ) {
+		var dfd = $q.defer();
+		dateo.rsrc.delete( givens, function ( response ) {
 			dfd.resolve( response );
 		}, function ( error ) {
 			dfd.reject( error );

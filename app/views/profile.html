@@ -6,27 +6,25 @@
 			<div class="card-bg" ng-class="{'blur-bg': targetUser.bg_image}"></div>
 			<div class="part user-img img-circle" da-bg-from-api="{{ targetUser.image_large }}" da-img-size="cover" da-img-type="user"></div>
 			<div class="part ff1 user-extra">
-				<h2>{{targetUser.username}}</h2>
-				<p class="message" ng-if="targetUser.message">{{targetUser.message}}</p>
-				<p ng-if="targetUser.dateo_count > 0 || targetUser.cote_count > 0">
-					<span class="dateo-count" ng-if="targetUser.dateo_count > 0">{{targetUser.dateo_count}} <ng-pluralize count="targetUser.dateo_count" when="{'one':'dateo','other':'dateos'}" /></span>
-					<span class="votes-count" ng-if="targetUser.vote_count > 0">{{targetUser.vote_count}} <ng-pluralize count="targetUser.vote_count" when="{'one':'apoyo','other':'apoyos'}" /></span>
-				</p>
-				<p class="url" ng-if="targetUser.url"><strong>url</strong>: {{targetUser.url}}</p>
-				<div class="social-share pull-right">
-					<div class="datea-glyph-holder hover-enabled" ng-click="targetUser.share()">
-						<i class="fa fa-share-alt"></i>
-					</div>
-					<!--
-					<div class="form-group">
-						<div class="input-group input-group-sm">
-							<input type="text" class="form-control" ng-model="targetUser.url">
-							<span class="input-group-btn">
-								<button class="btn btn-default" type="button" ng-click="targetUser.share()"><i class="fa fa-share-alt"></i></button>
-							</span>
+				<div class="extra-inner">
+					<h2>{{targetUser.username}}</h2>
+					<p class="message" ng-if="targetUser.message">{{targetUser.message}}</p>
+					<p ng-if="targetUser.dateo_count > 0 || targetUser.cote_count > 0">
+						<span class="dateo-count" ng-if="targetUser.dateo_count > 0">{{targetUser.dateo_count}} <ng-pluralize count="targetUser.dateo_count" when="{'one':'dateo','other':'dateos'}" /></ng-pluralize></span>
+						<span class="votes-count" ng-if="targetUser.vote_count > 0">{{targetUser.vote_count}} <ng-pluralize count="targetUser.vote_count" when="{'one':'apoyo','other':'apoyos'}" /></ng-pluralize></span>
+					</p>
+					<p class="url" ng-if="targetUser.url"><strong>url</strong>: <a href="{{targetUser.url}}">{{targetUser.url}}</a></p>
+					<div class="social-share pull-right">
+						<div class="datea-glyph-holder hover-enabled" ng-click="targetUser.share()" tooltip="Compartir!" tootltip-trigger="mouseenter" tooltip-placement="bottom" tooltip-popup-delay="500">
+							<i class="fa fa-share-alt"></i>
 						</div>
 					</div>
-					-->
+					<div class="social-links" ng-show="targetUser.url_facebook || targetUser.url_twitter || targetUser.url_youtube">
+						<span class="social-links-label">sigueme en</span>
+						<a class="social-link" ng-show="targetUser.url_facebook" href="{{targetUser.url_facebook}}"><i class="fa fa-facebook-square"></i></a>
+						<a class="social-link" ng-show="targetUser.url_twitter" href="{{targetUser.url_twitter}}"><i class="fa fa-twitter-square"></i></a>
+						<a class="social-link" ng-show="targetUser.url_youtube" href="{{targetUser.url_youtube}}"><i class="fa fa-youtube-square"></i></a>
+					</div>
 				</div>
 			</div>
 		</div>
@@ -90,6 +88,7 @@
 								<p>{{item.data.extract}}</p>
 							</li>
 						</ul>
+						<button class="btn btn-link btn-sm" ng-click="flow.showMoreHistory()" ng-show="flow.historyTotal > flow.historyResults">ver más</button>
 					</div>
 				</div>
 			</div>

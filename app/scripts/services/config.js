@@ -4,12 +4,12 @@ angular
 .module('dateaWebApp')
 .constant('config',
 	{ app     : { name : 'Datea.pe'
-	            , url  : 'http://test2.datea.pe'
+	            , url  : 'http://datea.pe'
 	            }
-	, api     : { url    : 'http://api.datea.pe/api/v2/'
-								//url    : 'http://127.0.0.1:8000/api/v2/'
-	            , imgUrl : 'http://api.datea.pe'
-	            //, imgUrl : 'http://127.0.0.1:8000'
+	, api     : { url    : 'https://api.datea.io/api/v2/'
+	          	, imgUrl : 'https://api.datea.io'
+	            /*	url    : 'http://127.0.0.1:8000/api/v2/'
+	            , imgUrl : 'http://127.0.0.1:8000' */
 	          	} 
 	, marker  : ['<div class="marker-holder">'
 	              ,'<img class="img-circle" src="{{user.markerImage}}" alt="user image">'
@@ -97,18 +97,19 @@ angular
 																		, emailExists    : 'La dirección ya está siendo utilizada. ¡Recupera tu contraseña!'
 	                                  , http400        : 'El nombre de usuario o correo ya está siendo usado.'} }
 	, accountMsgs : {
-			  userBannedMsg         : 'Tu usuario ha sido blockeado. Si piensas que esto es injusto, por favor comunicate con nosotros a traves de nuestro <a href="http://ayuda.datea.pe/contacto">formulario de contacto</a>.'
+			  userBannedMsg         : 'Tu usuario ha sido bloqueado. Si piensas que esto es injusto, por favor comunicate con nosotros a traves de nuestro <a href="http://ayuda.datea.pe/contacto">formulario de contacto</a>.'
 			, userWelcomeReadyMsg   : 'Tu cuenta ha sido activada y ya estás listo(a) para datear. Si quieres, antes puedes hacer ajustes a la configuración de tu usuario acá abajo.'
 			, userWelcomeConfirmMsg : 'Ya casi eres datero(a)! Falta que nos confirmes tu dirección de correo (Twitter no nos provee ese dato). Una vez confirmada tu cuenta estarás listo(a) para datear.'
 			, duplicateEmailMsg     : 'La dirección de correo ya existe. Por favor utiliza otra, o si no recuerdas tu usuario, puedes salir y recuperar tu clave. Si ingresaste con otro servico (Facebook), por favor vuelve a ingresar con ese servicio.'
 			, duplicateUsernameMsg  : 'El nombre de usuario ya existe. Por favor, elige otro.'
-			, checkEmailMsg         : '¡Gracias! Ahora revisa tu correo y sigue las instrucciones para activar tu cuenta. Si deseas, puedes cerrar esta ventana.'
+			, checkEmailMsg         : '¡Gracias! Ahora revisa tu correo y sigue las instrucciones para activar tu cuenta. Si deseas, puedes cerrar esta ventana o pestaña.'
 			, userConfirmEmailMsg   : 'Antes de poder datear, necesitamos verificar tu dirección de correo. Ingrésala aquí abajo. ¡Gracias!'
 			, userConfirmMissingMsg : 'Falta que nos confirmes tu correo para activar tu cuenta. Por favor, chequea tu correo y sigue las instrucciones que te enviamos. Si deseas recibir otro correo de activación, vuelve a cliquear en "Enviar". ¡Gracias!'
 			, userConfirmSuccessMsg : 'Tu cuenta ha sido plenamente activada y estas listo(a) para datear. Si deseas, puedes antes hacer ajustes a tu cuenta acá abajo.'
 			, registerActivationCompleteMsg : 'Tu cuenta ha sido activada. Ahora puedes ingresar con tu usuario y contraseña.'
 			, PasswdResetEmailMsg   : 'Por favor revisa tu correo y sigue las instrucciones para recuperar tu contraseña.'
-			, PasswdResetNotFoundMsg: 'No existen dateros con esa dirección ;)'  
+			, PasswdResetNotFoundMsg: 'No existen dateros con esa dirección ;)'
+			, wrongUserOrPassword   : 'Tu usuario y/o contraseña no son válidos. Vuélvelo a intentar.'  
 	}
 	, unknownErrorMsg : 'Hubo un error. Por favor revisa tus datos e intenta de nuevo. Si no funciona, <a href="http://ayuda.datea.pe/contacto">contáctanos</a>.'
 	, regex : { email: /^([a-zA-Z0-9_\.\-])+\@(([a-zA-Z0-9\-])+\.)+([a-zA-Z0-9]{2,4})+$/
@@ -148,6 +149,32 @@ angular
 						, minHeight     : 400
 						, maxHeight     : 800
 						}
+	, allowedMimetypes : [ 'application/msword', 
+		                     'application/vnd.openxmlformats-officedocument.wordprocessingml.document',
+		                     'application/vnd.ms-excel',
+		                     'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
+		                     'application/vnd.ms-powerpoint',
+		                     'application/vnd.openxmlformats-officedocument.presentationml.presentation',
+		                     'application/vnd.openxmlformats-officedocument.presentationml.slideshow',
+		                     'application/vnd.oasis.opendocument.text',
+		                     'application/vnd.oasis.opendocument.spreadsheet',
+		                     'application/vnd.oasis.opendocument.presentation',
+		                     'application/vnd.oasis.opendocument.graphics',
+		                     'application/json',
+		                     'application/xml',
+		                     'text/csv',
+		                     'text/plain',
+		                     'text/rtf',
+		                     'text/xml',
+		                     'application/pdf',
+		                     'application/postscript',
+		                     'application/rdf+xml',
+		                     'application/zip',
+		                     'application/gzip',
+		                     'audio/mpeg',
+		                     'audio/mp4',
+		                     'audio/ogg'
+		                   ]
 	}
 );
 

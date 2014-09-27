@@ -83,26 +83,26 @@
 }
 
 @font-face {
-	font-family: 'HelveticaLTSTD-Cond';
-	src: url('fonts/helveticaltstd-cond/HelveticaLTStd-Cond.eot');
-	src: local('☺'),url('fonts/helveticaltstd-cond/HelveticaLTStd-Cond.woff') format('woff'),
-	url('fonts/helveticaltstd-cond/HelveticaLTStd-Cond.ttf') format('truetype'),
-	url('fonts/helveticaltstd-cond/HelveticaLTStd-Cond.svg') format('svg');
+	font-family: "HelveticaLTSTD-Cond";
+	src: url("fonts/helveticaltstd-cond/HelveticaLTStd-Cond.eot"),
+	url("fonts/helveticaltstd-cond/HelveticaLTStd-Cond.woff") format("woff"),
+	url("fonts/helveticaltstd-cond/HelveticaLTStd-Cond.ttf") format("truetype"),
+	url("fonts/helveticaltstd-cond/HelveticaLTStd-Cond.svg") format("svg");
 	font-weight: normal;
 	font-style: normal;
 }
 
 @font-face {
-	font-family: 'OldSansBlack';
-	src: url('fonts/oldsansblack/OldSansBlack.eot');
-	src: local('☺'),url('fonts/oldsansblack/OldSansBlack.woff') format('woff'),
-	url('fonts/oldsansblack/OldSansBlack.ttf') format('truetype'),
-	url('fonts/oldsansblack/OldSansBlack.svg') format('svg');
+	font-family: "OldSansBlack";
+	src: url("fonts/oldsansblack/OldSansBlack.eot"),
+	url("fonts/oldsansblack/OldSansBlack.woff") format("woff"),
+	url("fonts/oldsansblack/OldSansBlack.ttf") format("truetype"),
+	url("fonts/oldsansblack/OldSansBlack.svg") format("svg");
 	font-weight: normal;
 	font-style: normal;
 }
 
-@ff1 : 'HelveticaLTSTD-Cond', sans-serif;
+@ff1 : "HelveticaLTSTD-Cond", sans-serif;
 .ff1 {
 	font-family: @ff1;
 	font-weight: normal;
@@ -110,7 +110,7 @@
 }
 
 .ff2 {
-	font-family: 'OldSansBlack', sans-serif;
+	font-family: "OldSansBlack", sans-serif;
 	font-weight: normal;
 	font-style: normal;
 }
@@ -254,18 +254,40 @@ textarea { resize: vertical; }
 }
 
 .title-fix {
+	display: none;
 	position: fixed !important;
 	top: 0;
-	left: 80px;
+	left: 50px;
 	color: black !important;
 	font-size: 30px !important;
 	font-weight: normal !important;
 	background-color: @color-1 !important;
 	height: 40px !important;
 	line-height: 40px !important;
-	z-index: 20000;
+	z-index: 1002;
 	margin: 0 !important;
-	padding: 10px 0 0 15px !important; 
+	padding: 10px 0 0 10px !important; 
+}
+
+@media (min-width: @screen-sm-min) {
+	.title-fix {
+		display: block;
+		left: 50px;
+	}
+}
+
+@media (min-width: @screen-md-min) {
+	.title-fix {
+		display: block;
+		left: 50px;
+	}
+}
+
+@media (min-width: @screen-lg-min) {
+	.title-fix {
+		display: block;
+		left: ~"calc(4% + 42px)";
+	}
 }
 
 //
@@ -392,6 +414,21 @@ body {
 					}
 				}
 			}
+		}
+		.user-login {
+			padding-top: 2px;
+			margin-left: 20px;
+			.btn.btn-nav-login {
+				padding-top: 10px;
+				padding-bottom: 6px;
+				background-color: @color-1;
+				color: black;
+				&:hover {
+					text-decoration: none;
+					background-color: darken(@color-1, 5%);
+					color: black;
+				}
+			}
 		}  
 	}
 	.datea-datear-btn {
@@ -445,6 +482,10 @@ body {
 						}
 					}
 				}
+			}
+			.user-login {
+				padding: 12px 0;
+				margin-left: 0;
 			}
 		}
 	}
@@ -522,7 +563,32 @@ body {
 	position: relative;
 	z-index: 2;
 
+	.footer-menu {
+		float: left;
+		list-style: none;
+		line-height: 14px;
+		margin-top: 15px;
+		li { 
+			list-style: none;
+			float: left;
+			margin-right: 10px;
+			padding-right: 10px;
+			border-right: 1px solid white;
+			&:last-child {
+				border-right: 0;
+			}
+			a {
+				color: white;
+				&:hover {
+					text-decoration: underline;
+				}
+			}
+		}
+	}
+
 	.datea-rights {
+		float: right;
+		display: block;
 		padding-top: 10px;
 		text-align: right;
 		font-size: 13px;
@@ -530,6 +596,9 @@ body {
 			.footer-logo {
 				height: 24px;
 				margin-right: 10px;
+			}
+			.cite {
+
 			}
 		}
 		a {
@@ -1720,6 +1789,12 @@ body {
 			.actions { 
 				padding-top: 20px;
 				.btn { min-width: 120px}
+				.btn-delete {
+					color: @btn-danger-bg;
+					padding-left: 15px;
+					min-width: 0;
+					//font-size: 16px;
+				}
 
 				.published-field {
 					margin: 0 20px;
@@ -2019,7 +2094,7 @@ body {
 					margin-top: 0;
 					//color: @color-9;
 					color: white;
-					margin-bottom: 0px;
+					margin-bottom: 5px;
 					font-size: 35px;
 					.ff1;
 				}
@@ -2033,7 +2108,7 @@ body {
 				margin-right: -15px;
 
 				.search-holder {
-					font-size: 19px;
+					font-size: 17px;
 					text-align: center;
 					max-width: 400px;
 					margin-left: auto;
@@ -2111,7 +2186,9 @@ body {
 							}
 						}
 						.separator {
-							margin: 0 15px;
+							margin: 0 12px 0 15px;
+							line-height: 14px;
+							border-right: 1px solid @text-color;
 						}
 					}
 				}
@@ -3143,7 +3220,7 @@ body {
 		//height: 75vh;
 		.viz-viewer .dateo-map-viz {
 			min-height: 450px; 
-			height: 75vh;
+			height: 85vh;
 		}
 		.dateo-img-viz {
 			height: auto;
@@ -3152,26 +3229,68 @@ body {
 
 	.campaign-card {
 		background-color: @color-9;
+
+		.row {
+			display: table;
+			width: 100%;
+		}
+		
 		//background-size: 35% 100%!important;
 		//background-position: 100% 0!important;
 		color: white;
 		//padding: 35px 0 40px 38px;
-
 		.campaign-info {
-			height: 272px;
+			min-height: 272px;
+			display: table-cell;
+			float: none;
 			.inner { 
 				padding-top: 15px;
 				.clearfix();
+
+				.user-head {
+					.clearfix;
+					.user-img { height: 32px; width: 32px; float: left;}
+					.user-info {
+						margin-left: 10px;
+						float: left;
+						h4.username { 
+							margin-bottom: 2px;
+							a {color: white}
+							margin-top: 0;
+							font-size: @font-size-base;
+							font-weight: normal;
+							color: white;
+						}
+						.date { 
+							font-size: 12px; 
+							color: darken(white, 10%); 
+						}
+					}
+				}
+
 				.main-info {
 
-					h1 {
-						margin-bottom: 5px;
-						font-size: 32px;
-						font-weight: bold;
-						line-height: 35px;
+					.title-holder {
+						.clearfix();
+						h1 {
+							margin-bottom: 5px;
+							margin-top: 18px;
+							font-size: 32px;
+							font-weight: bold;
+							line-height: 35px;
+							//display: block;
+							float: left;
+							max-width: ~"calc(100% - 100px)";
+						}
+						.mbtn {
+							display: block;
+							float: left;
+							margin-left: 30px;
+							margin-top: 16px;
+						}
 					}
 					h2 {
-						margin: 5px 0 20px 0;
+						margin: 5px 0 18px 0;
 						font-size: 18px;
 						font-weight: bold;
 						a {
@@ -3183,12 +3302,12 @@ body {
 						}
 					}
 
-					.shortdesc { font-size: 17px;}
+					.shortdesc { font-size: 16px; margin-bottom: 0}
 
 					.main-btns {
-						float: right;
-						width: 65%;
-						.inner {
+						float: left;
+						padding-bottom: 10px;
+						.main-btns-inner {
 							margin-left: auto;
 							margin-right: auto;
 							padding-top: 15px;
@@ -3210,7 +3329,7 @@ body {
 							.datea-datear-btn {
 								display: inline-block;
 								//vertical-align: top;
-								padding: 9px 9px 10px 12px;
+								padding: 8px 9px 10px 12px;
 							}
 							.time-left {
 								display: inline-block;
@@ -3228,13 +3347,26 @@ body {
 								}
 							}
 						}
-						.share-btn {
+					}
+
+					.stats {
+						float: left;
+						width: 35%;
+						.clearfix;
+						padding-top: 15px;
+						.stat {margin-right: 25px; font-size: 16px; float: left; line-height: 36px}
+						.share-btn, .follow-btn { float: left;}
+
+						.share-btn { margin-left: 25px; padding-top: 1px;}
+						.follow-btn { margin-left: 0px}
+					}
+					.share-btn {
 							.btn {
 								background-color: @color-10;
 								color: white;
 								border-color: @color-18;
 								i.fa {
-									font-size: 17px;
+									font-size: 20px;
 									color: white;
 								}
 							}
@@ -3250,25 +3382,25 @@ body {
 								}
 							}	
 						}
-					}
-
-					.stats {
-						.clearfix;
-						padding-top: 15px;
-						.stat {margin-right: 25px; font-size: 16px; float: left; line-height: 36px}
-						.share-btn, .follow-btn { float: left;}
-
-						.share-btn { margin-left: 25px; padding-top: 1px;}
-						.follow-btn { margin-left: 0px}
-					}
 				}
 			}
 		}
 
 		.campaign-img {
-			height: 272px;
+			display: table-cell;
+			height: 100%;
+			float: none;
 			//background-color: @color-16;
 			background-color: @color-9;
+			overflow: hidden;
+			text-align: center;
+			.campaign-img-inner {
+				text-align: center;
+				height: 272px;
+				width: 100%;
+				min-width: 500px;
+				display: inline-block;
+			}
 		}
 
 		.unpublished-msg {
@@ -3728,7 +3860,7 @@ ul.input-list {
 		position: relative;
 		line-height: 60px;
 		min-height: 60px;
-		padding-top: 10px;
+		padding-top: 2px;
 		background-color: @color-9;
 		color: white;
 		.title { margin-right: 50px; cursor: pointer; position: relative; top: 0px;}
@@ -3736,7 +3868,7 @@ ul.input-list {
 			position: absolute;
 			line-height: 14px;
 			font-size: 12px;
-			top: 5px; 
+			top: 8px; 
 		}
 		.stats { 
 			margin-right: 50px;
@@ -3757,11 +3889,31 @@ ul.input-list {
 
 	.search-card {
 		background-color: @color-9;
+		.clearfix;
 		h2 {
 			margin: 0;
 			font-size: 30px;
 			padding: 20px 0 10px;
 			color: white;
+			float: left;
+			margin-right: 15px;
+		}
+		.result-stats {
+			float: left;
+			color: white;
+			padding-top: 20px;
+			line-height: 30px;
+			font-size: 15px;
+			.stat {
+				margin-left: 15px;
+			}
+			a {
+				color: white;
+				&:hover {
+					color: darken(white, 15%);
+					text-decoration: underline;
+				}
+			}
 		}
 	}
 
@@ -4191,7 +4343,6 @@ ul.input-list {
 			}
 		}
 
-
 		.leaflet-map-holder {
 			padding: 0 !important;
 			position: relative;
@@ -4614,9 +4765,11 @@ ul.input-list {
 
 	.content { margin-top: 0 !important}
 
-	.image {
-		display: block;
-		margin-bottom: 20px;
+	.images {
+		.image {
+			display: inline-block;
+			margin-bottom: 20px;
+		}
 	}
 
 	.files {
@@ -4718,10 +4871,14 @@ ul.input-list {
 			margin-right: 10px;
 		}
 
-		.image {
-			img {
+		.images {
+			.image {
+				display: inline-block;
 				max-width: 33%;
-				max-height: 160px;
+				img {
+					max-width: 100%;
+					max-height: 160px;
+				}
 			}
 		}
 
@@ -4785,10 +4942,14 @@ ul.input-list {
 			}
 		}
 
-		.image {
-			img {
+		.images {
+			.image {
+				display: inline-block;
 				max-width: 50%;
-				max-height: 220px;
+				img {
+					max-width: 100%;
+					max-height: 220px;
+				}
 			}
 		}
 
@@ -5059,6 +5220,7 @@ ul.input-list {
 			right: 35px;
 			top: -30px;
 			.unpublished-msg {
+				margin-right: 15px;
 			}
 			.dateo-edit-btn.btn-link {
 				color: @color-18;
@@ -5089,13 +5251,17 @@ ul.input-list {
 			padding: 7px 0 20px 0;
 		}
 
-		.image {
-			display: block;
-			img {
+		.images {
+			.clearfix;
+			.image {
+				float: left;
 				max-width: 50%;
-				max-height: 220px;
+				img {
+					max-width: 100%;
+					max-height: 220px;
+				}
+				margin-bottom: 20px;
 			}
-			margin-bottom: 20px;
 		}
 
 		.part-1 {
@@ -5508,20 +5674,27 @@ ul.input-list {
 	}
 	.profile-card {
 		//padding: 30px 30% 30px;
-		padding-left: 34%;
-		padding-top: 30px;
+		//padding-left: 34%;
+		//margin-top: 15px;
+		display: block;
 		height: 234px;
 		position: relative;
 		margin-bottom: 0;
+		.clearfix;
 
 		.card-content {
 			//box-shadow: 0px 0px -75px #000000 inset;
-			display: inline-block;
+			display: table;
 			border-radius: 40px;
 			position: relative;
+			margin-left: auto;
+			margin-right: auto;
+			max-width: 456px;
+			padding-top: 15px;
+			margin-top: 10px;
 			.card-bg {
 				position: absolute;
-				top: -15px;
+				top: 0px;
 				bottom: -15px;
 				left: -20px;
 				right: -20px;
@@ -5542,25 +5715,39 @@ ul.input-list {
 				margin: 0 20px 0 0;
 				width: 182px;
 				border: 3px solid white;
+				display: table-cell;
 			}
 
 			.user-extra {
 				color: white;
-				width: 250px;
 				font-size: 16px;
 				text-shadow: 0px 0px 2px rgba(0, 0, 0, 0.5);
 				font-weight: 500;
 				position: relative;
 				z-index: 2;
 				min-height: 182px;
+				display: table-cell;
+				vertical-align: middle;
+				width: 250px;
+				padding-left: 20px;
+
+				.extra-inner {
+					min-height: 100px;
+				}
+
 				h2 {
 					font-size: 24px;
 					font-weight: bold;
-					margin-top: 38px;
+					margin-top: 15px;
 					margin-bottom: 5px;
 				}
 				p {
 					margin-bottom: 5px;
+				}
+				.url {
+					a { color: white; 
+						&:hover {color: darken(white, 10%)}
+					}
 				}
 				.dateo-count {
 					margin-right: 20px;
@@ -5568,7 +5755,7 @@ ul.input-list {
 
 				.social-share {
 					position: absolute;
-					bottom: 15px;
+					bottom: 5px;
 					right: 5px;
 					//width: 150px;
 					.datea-glyph-holder {
@@ -5579,6 +5766,38 @@ ul.input-list {
 								color: white;
 							}
 						}
+					}
+				}
+				.social-links {
+					line-height: 26px;
+					.social-links-label {
+						font-size: 12px;
+						position: relative;
+						top: -5px;
+					}
+					.social-link {
+						color: @color-15;
+						//border-radius: 50%;
+						//background-color: @color-15;
+						//width: 24px;
+						//height: 24px;
+						//display: inline-block;
+						//text-align: center;
+						//padding: 4px;
+						margin-left: 8px;
+						i.fa {
+							font-size: 24px;
+							color: darken(@color-15, 10%);
+							//border-radius: 50%;
+							//background-color: white;
+							//padding: 4px;
+						}
+						&:hover {
+							i.fa {
+								color: white;
+							}
+						}
+						
 					}
 				}
 			}
@@ -5601,9 +5820,9 @@ ul.input-list {
 		}
 
 		.main-content {
-			padding: 0 20px;
+			//padding: 0 20px;
 			position: relative;
-			margin: 25px 0 80px;
+			padding: 25px 20px 80px;
 			z-index:2 ;
 
 			.dateos-holder {
@@ -5659,6 +5878,56 @@ ul.input-list {
 				p { color: @color-18}
 			}
 		}
+	}
+}
+
+.static-info-holder {
+	background-color: @color-15;
+	.content-holder {
+
+		.main-col {
+			position: relative;
+			padding-top: 50px;
+			h1 {
+				margin-top: 0;
+				margin-bottom: 20px;
+			}
+			&:after {
+				content: " ";
+				position: absolute;
+				z-index: 0;
+				background-color: white;
+				left: -1500px;
+				right: 0;
+				top: 0;
+				bottom: -1000px;
+			}
+		}
+
+		.main-content {
+			padding: 0 20px;
+			position: relative;
+			margin: 25px 0 80px;
+			z-index:2;
+		}
+		.sidebar-content {
+			margin: 75px 0 80px;
+			h4 {
+				text-transform: uppercase;
+				font-size: 14px;
+				font-weight: bold;
+				line-height: 18px;
+			}
+		}
+	}
+}
+
+.about-holder {
+	.about-teaser-image {
+		background: url('@{imgUrl}globals/hombrecitos.png') no-repeat left center;
+		height: 128px;
+	}
+	.logos {
 	}
 }
 
@@ -5771,6 +6040,7 @@ ul.input-list {
 	.stats { 
 		line-height: 22px;
 		position: relative;
+		margin-right: 80px;
 		top: 3px;
 		.stat {
 			color: @color-10;
@@ -5792,6 +6062,7 @@ ul.input-list {
 		top: 2px;
 		color: white;
 		display: block;
+		z-index: 2;
 	}
 }
 

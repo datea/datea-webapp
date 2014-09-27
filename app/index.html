@@ -75,25 +75,43 @@
 	</div>
 
 	<div class="footer-holder container-fluid" ng-cloak>
-			<div class="datea-rights" ng-include="'views/footer.html'"></div>
+		<ul class="footer-menu ff1">
+			<li><a href="http://ayuda.datea.pe/contacto">Contacto</a></li>
+			<li><a href="#!/acerca/terminos">Terminos y condiciones de uso</a></li>
+			<li><a href="#!/acerca/privacidad">Politica de privacidad</a></li>
+		</ul>
+		<div class="datea-rights">
+			<div class="limiter ff1">
+				<img class="footer-logo" src="static/images/datea-logo-white.png" /> datea, todos somos dateros &copy; 2014<br>un proyecto de <a href="http://www.lafactura.com/">La Factura</a>.
+			</div>
+		</div>
 	</div>
+
+	<script>
+	/* redirect to hashbang */
+	var path = document.location.pathname;
+	if (path != '/' && path != '/index.html') {
+		console.log('redirect', path);
+		document.location.href = '/#!'+path;
+	}
+	</script>
 
 	<!-- Google Analytics: change UA-XXXXX-X to be your site's ID -->
 	<script>
-	(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
-	(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
-	m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
-	})(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
 
-	ga('create', 'UA-XXXXX-X');
-	ga('send', 'pageview');
+  ga('create', 'UA-55009268-1', 'auto');
 	</script>
+	
 	<!-- <script src="bower_components/angular/angular.js"></script> -->
 	<script src="bower_components/jquery/dist/jquery.js"></script>
 	<!--<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.2.20/angular.js"></script>-->
 	<script src="bower_components/angular/angular.js"></script>
 	<script src="bower_components/leaflet-dist/leaflet.js"></script>
-	<script src="http://api.datea.pe:6284/download/latest/oauth.js"></script>
+	<script src="https://api.datea.io:6284/download/latest/oauth.js"></script>
 	<!--<script src="//cdnjs.cloudflare.com/ajax/libs/d3/3.4.8/d3.min.js"></script>-->
 	<script src="bower_components/d3/d3.js"></script>
 
@@ -133,6 +151,8 @@
 	<script src="bower_components/jcarousel/dist/jquery.jcarousel.min.js"></script>
 	<script src="bower_components/FileApi/dist/FileAPI.html5.min.js"></script>
 	<script src="bower_components/FileApi/plugins/FileAPI.exif.js"></script>
+	<script src="bower_components/angulartics/dist/angulartics.min.js"></script>
+	<script src="bower_components/angulartics/dist/angulartics-ga.min.js"></script>
 	<!-- endbuild -->
 
 	<!-- build:js({.tmp,app}) scripts/scripts.js -->
@@ -209,6 +229,53 @@
   </svg>
 
   <script type="text/ng-template" src="views/dateo-map-popup.html" id="dateo-map-popup"></script>
+
+  <script>
+// Include the UserVoice JavaScript SDK (only needed once on a page)
+UserVoice=window.UserVoice||[];(function(){var uv=document.createElement('script');uv.type='text/javascript';uv.async=true;uv.src='//widget.uservoice.com/N4QH28rKhSJUTgzN18qdOw.js';var s=document.getElementsByTagName('script')[0];s.parentNode.insertBefore(uv,s)})();
+
+//
+// UserVoice Javascript SDK developer documentation:
+// https://www.uservoice.com/o/javascript-sdk
+//
+
+// Set colors
+UserVoice.push(['set', {
+  accent_color: '#808283',
+  trigger_color: 'white',
+  trigger_background_color: 'rgba(46, 49, 51, 0.6)',
+  contact_title: 'Envíanos un mensaje',
+  trigger_style: 'tab',
+  trigger_background_color : '#28BC45'
+}]);
+
+// Identify the user and pass traits
+// To enable, replace sample data with actual user traits and uncomment the line
+UserVoice.push(['identify', {
+  //email:      'john.doe@example.com', // User’s email address
+  //name:       'John Doe', // User’s real name
+  //created_at: 1364406966, // Unix timestamp for the date the user signed up
+  //id:         123, // Optional: Unique id of the user (if set, this should not change)
+  //type:       'Owner', // Optional: segment your users by type
+  //account: {
+  //  id:           123, // Optional: associate multiple users with a single account
+  //  name:         'Acme, Co.', // Account name
+  //  created_at:   1364406966, // Unix timestamp for the date the account was created
+  //  monthly_rate: 9.99, // Decimal; monthly rate of the account
+  //  ltv:          1495.00, // Decimal; lifetime value of the account
+  //  plan:         'Enhanced' // Plan name for the account
+  //}
+}]);
+
+// Add default trigger to the bottom-right corner of the window:
+UserVoice.push(['addTrigger', { mode: 'contact', trigger_position: 'right' }]);
+
+// Or, use your own custom trigger:
+//UserVoice.push(['addTrigger', '#id', { mode: 'contact' }]);
+
+// Autoprompt for Satisfaction and SmartVote (only displayed under certain conditions)
+UserVoice.push(['autoprompt', {}]);
+</script>
  
 </body>
 </html>

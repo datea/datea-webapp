@@ -84,6 +84,7 @@ angular.module('dateaWebApp')
 	  , buildQueryParams
 	  , queryParamsToText
 	  , renderPopupContent
+	  , safariMapLayoutFix
 	;
 
 	$scope.campaign          = {};
@@ -114,7 +115,6 @@ angular.module('dateaWebApp')
 
 	buildRelatedCampaigns = function () {
 		var tags = getTagsString( $scope.campaign );
-		console.log( 'buildRelatedCampaigns tags', tags );
 		Api.campaign
 		.getCampaigns( {tags : tags} )
 		.then( function ( response ) {
@@ -144,11 +144,13 @@ angular.module('dateaWebApp')
 		//center.zoom = config.campaign.mapZoomFocus;
 		//angular.extend( $scope.campaign.leaflet.markers, markers );
 		//angular.extend( $scope.campaign.leaflet.center, center );
-		leafletData.getMap("leafletCampaign")
-		.then( function ( map ) {
-			var bounds = L.latLngBounds(markersBounds);
-			map.fitBounds( bounds );
-		} );
+		if (dateos.length) {
+			leafletData.getMap("leafletCampaign")
+			.then( function ( map ) {
+				var bounds = L.latLngBounds(markersBounds);
+				map.fitBounds( bounds );
+			} );
+		}
 		// $scope.campaign.leaflet.markers.marker0.focus = true;
 	}
 
@@ -429,7 +431,7 @@ angular.module('dateaWebApp')
 		// tag
 		if (q.tag) text.push('en #'+q.tag);
 		// owner
-		if (q.owner) text.push('aprobados por '+$scope.campaign.user.username);
+		if (q.owner) text.push('por '+$scope.campaign.user.username);
 		// date
 		if (q.since && q.until) {
 			text.push($filter('date')(q.since, 'd/M/yy') + ' > '+ $filter('date')(q.until, 'd/M/yy'));
@@ -446,7 +448,7 @@ angular.module('dateaWebApp')
 
 		var givens    = buildQueryParams()
 			, activeTab = $scope.flow.activeTab
-			, dateos    = []
+			, geodateos    = []
 			, paramStr
 		; 
 
@@ -477,11 +479,10 @@ angular.module('dateaWebApp')
 			if (response.objects.length) {
 				switch (activeTab) {
 					case 'map':
-						angular.forEach( response.objects, function ( value, key ){
-							if ( value.position ) dateos.push( value );
-						});
-						$scope.campaign.dateos = dateos;
-						buildMarkers( { dateos : dateos } );
+						safariMapLayoutFix();
+						$scope.campaign.dateos = response.objects;
+						geodateos = response.objects.filter( function (d) { return !!d.position; });	
+						buildMarkers( { dateos : geodateos } );
 						break;
 					
 					case 'images':
@@ -529,7 +530,6 @@ angular.module('dateaWebApp')
 				setChartForBar();
 			}
 			$scope.statsVisible = true;
-			console.log("CHART", $scope.chart);
 		}, function ( error ) {
 			console.log( error );
 		} );
@@ -652,6 +652,12 @@ angular.module('dateaWebApp')
 		}
 	});
 
+	$scope.$on('user:dateoDelete', function (event, args) {
+		$scope.flow.closeDateoDetail();
+		$scope.flow.getDateos();
+		updateCampaign();
+	});
+
 	buildLayerFiles = function () {
 		if ($scope.campaign.layer_files && $scope.campaign.layer_files.length > 0) {
 			leafletData.getMap("leafletCampaign")
@@ -677,6 +683,7 @@ angular.module('dateaWebApp')
 	}
 
 	$scope.campaign.share = function () {
+		var img = $scope.campaign.image ? config.api.imgUrl + $scope.campaign.image.image : config.app.url + config.defaultImgCampaignLarge;
 		$modal.open( { templateUrl : 'views/share.html'
 		             , controller  : 'ShareCtrl'
 		             , resolve     : {
@@ -684,10 +691,19 @@ angular.module('dateaWebApp')
 		                  return { url         : $scope.campaign.shareableUrl
 		                         , title       : $scope.campaign.name
 		                         , description : $scope.campaign.short_description
-		                         , image       : $filter('daImgFromApi')($scope.campaign.image.image) }
+		                         , image       : img}
 		                 }
 		             } } );
 	}
+
+	$scope.$on('user:follow', function (ev, args) {
+		if (args.op === 'follow') {
+			$scope.campaign.follow_count++;
+		}else{
+			$scope.campaign.follow_count--;
+		}
+		buildFollowersList();
+	});
 
 	if ( $routeParams.username && $routeParams.campaignName ) {
 		buildCampaign();
@@ -848,14 +864,32 @@ angular.module('dateaWebApp')
 		             } );
 	};
 
+	$(window).resize(function (){
+		safariMapLayoutFix();
+	});
 
+	safariMapLayoutFix = function () {
+		if (Object.prototype.toString.call(window.HTMLElement).indexOf('Constructor') > 0) {
+			var $mh = $('.dateo-map-viz');
+			var h = $mh.height();
+			$('.dateos-holder').css('height', h+'px');
+			if ($scope.flow.hasLegend) {
+				h -= 32;
+			}
+	  	$('.leaflet-map-holder').css('height', h+'px');
+	  	leafletData.getMap("leafletCampaign")
+			.then( function ( map ) {
+				map.invalidateSize();
+			});
+		};
+	}
+ 
 	$scope.$on('$destroy', function () {
 		markersBounds   = [];
 		$scope.campaign = {};
 		leafletMarkersHelpers.resetCurrentGroups();
 		Datear.resetContext();
+		$(window).off('resize');
 	});
-
-
 
 } ] );

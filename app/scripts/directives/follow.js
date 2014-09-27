@@ -1,14 +1,14 @@
 angular.module("dateaWebApp")
-	.directive("daFollow", ['Api', 'User', '$location', 'localStorageService', function(Api, User, $location, localStorageService) {
+	.directive("daFollow", ['Api', 'User', '$location', 'localStorageService', '$rootScope', function(Api, User, $location, localStorageService, $rootScope) {
 		return {
     	 restrict    : "E"
     	,templateUrl : "/views/follow-button.html"
     	,replace		 : true
     	,scope: {
-    		btnClass 				: '@'
-    		,followObj    	: '='
-    		,followId				: '@'
-    		,followLabel    : '@'
+    		  btnClass 			 : '@'
+    		, followObj    	 : '='
+    		, followId			 : '@'
+    		, followLabel    : '@'
     	}
 
     	, controller: function ($scope, $element, $attrs) {
@@ -63,6 +63,7 @@ angular.module("dateaWebApp")
 							$scope.flow.loading = false;
 							$scope.flow.isFollowing = true;
 							$scope.flow.followingChanged = true;
+							$rootScope.$broadcast('user:follow', {followKey: followKey, op: 'follow'});
 						}, function ( reason ) {
 							$scope.flow.loading = false;
 							console.log( reason );
@@ -83,6 +84,7 @@ angular.module("dateaWebApp")
 							User.updateUserDataFromApi();
 							$scope.flow.loading = $scope.flow.isFollowing = $scope.flow.removing = false;
 							$scope.flow.followingChanged = true;
+							$rootScope.$broadcast('user:follow', {followKey: followKey, op: 'unfollow'});
 						}, function ( reason ) {
 							$scope.flow.loading = true;
 							console.log( reason );

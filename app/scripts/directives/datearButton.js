@@ -14,20 +14,11 @@ angular.module("dateaWebApp")
 		  restrict    : "E"
 		, templateUrl : "/views/datear-button.html"
 		, replace		 : true
-		, scope: {
-			  btnClass : '@'
-			, btnText  : '@'
-			, context  : '='
-		}
 
 		, controller: function ($scope, $element, $attrs) {
 
-			$attrs.$observe('context', function (context) {
-				console.log("DATEAR CONTEXT", $scope.context);
-				console.log($scope);
-			});
-
 			$scope.btnLabel = $attrs.btnText !== undefined ? $attrs.btnText : 'datea ';
+			$scope.btnClass = $attrs.btnClass !== undefined ? $attrs.btnClass : '';
 
 			$scope.datear = function () {
 				if (User.isSignedIn()) {

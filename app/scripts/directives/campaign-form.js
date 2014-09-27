@@ -37,6 +37,8 @@ angular.module("dateaWebApp")
 					  , onGeolocationError
 					  , b64_to_utf8
 					  , validateCampaign
+					  , followTag
+					  , hashtagify
 					;
 
 					User.isSignedIn() || $location.path( '/' );
@@ -157,9 +159,12 @@ angular.module("dateaWebApp")
 										}, 300);
 									}
 								}
-								// image
+								// images
 								if ($scope.campaign.image) {
 									$scope.flow.img = config.api.imgUrl + $scope.campaign.image.image;
+								}
+								if ($scope.campaign.image2) {
+									$scope.flow.img2 = config.api.imgUrl + $scope.campaign.image2.image;
 								}
 								// layer files
 								if ($scope.campaign.layer_files && $scope.campaign.layer_files.length > 0) {
@@ -261,7 +266,7 @@ angular.module("dateaWebApp")
 					}
 
 					$scope.flow.checkMainTag = function () {
-						$scope.campaign.main_tag.tag = $scope.flow.hashtagify($scope.campaign.main_tag.tag);
+						$scope.campaign.main_tag.tag = hashtagify($scope.campaign.main_tag.tag);
 						$scope.flow.messages.mainTagExists = '';
 						if ( $scope.campaign.main_tag.tag ) {
 							Api.campaign
@@ -322,16 +327,17 @@ angular.module("dateaWebApp")
 						}
 					}
 
-					$scope.flow.hashtagify = function ( name ) {
-						name = name.replace(/[^a-z0-9]/gi,'');
-						var hashtag = [];
-						name.split(' ').map( function (v) { hashtag.push( v.charAt(0).toUpperCase() + v.slice(1) ) } );
-						if (hashtag.length > 1) return hashtag.join('');
-						return name;
+					hashtagify = function ( name ) {
+						var hashtag = name.split(' ');
+						hashtag = hashtag.map( function (w) {
+							w = w.replace(/[^a-z0-9]/gi,'');
+							return w.charAt(0).toUpperCase() + w.slice(1); 
+						});
+						return hashtag.join('');
 					}
 
 					$scope.flow.addTag = function () {
-						$scope.flow.nextTag && $scope.campaign.secondary_tags.push( { title: $scope.flow.nextTag, tag: $scope.flow.hashtagify( $scope.flow.nextTag ) } );
+						$scope.flow.nextTag && $scope.campaign.secondary_tags.push( { title: $scope.flow.nextTag, tag: hashtagify( $scope.flow.nextTag ) } );
 						$scope.flow.nextTag = '';
 					}
 
@@ -434,7 +440,7 @@ angular.module("dateaWebApp")
 	          		Api.campaign
 								.patchCampaign( {objects: [$scope.campaign]} )
 								.then( function ( response ) {
-									$location.path( '/'+User.data.username+'/'+response.objects[0].slug );
+									$location.url( '/'+User.data.username+'/'+response.objects[0].slug );
 								}, function ( reason ) {
 									console.log( 'patchCampaign reason: ', reason );
 									$scope.flow.loading = false;
@@ -443,7 +449,8 @@ angular.module("dateaWebApp")
 								Api.campaign
 								.postCampaign( $scope.campaign )
 								.then( function ( response ) {
-									$location.path( '/'+User.data.username+'/'+response.slug );
+									followTag(response.main_tag.id);
+									$location.url( '/'+User.data.username+'/'+response.slug );
 								}, function ( reason ) {
 									console.log( 'postCampaign reason: ', reason );
 									$scope.flow.loading = false;
@@ -476,11 +483,11 @@ angular.module("dateaWebApp")
 						}
 
 						return isValid;
-					}
+					};
 
 					$scope.flow.closeAlert = function (index) {
 						$scope.flow.alerts.splice(index, 1);
-					}
+					};
 
 					$scope.flow.autocompleteTag = function ( val ) {
 						return Api.tag.getAutocompleteByKeyword( { q: val.replace('#', '') } )
@@ -491,7 +498,12 @@ angular.module("dateaWebApp")
 							});
 							return tags;
 						} );
-					}
+					};
+
+					followTag =  function (tagid) {
+						Api.follow
+						.doFollow( { follow_key: 'tag.'+tagid} );
+					};
 
 					// HELP FOR INDIVIDUAL FIELDS/SECTIONS
 					$scope.help = {
@@ -570,7 +582,6 @@ angular.module("dateaWebApp")
 					buildCategories();
 					buildBoundariesMap();
 	    	}
-
 
 	  	, link: function ($scope, element, attrs) {
 

@@ -23,7 +23,6 @@ angular.module('dateaWebApp')
 				}
 			}
 
-			console.log("datearContext", datearContext);
 			$modal.open( { templateUrl : 'views/datear.html'
 		             , controller  : 'DatearCtrl'
 		             , windowClass : 'datear-modal'

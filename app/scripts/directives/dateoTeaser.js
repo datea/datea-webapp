@@ -42,6 +42,7 @@ angular.module("dateaWebApp")
 					if ($scope.detailInline) {
 						$rootScope.$broadcast('open-dateo-detail', {index: $scope.$index});
 					}else {
+						console.log($scope.dateo.user.username+'/dateos/'+$scope.dateo.id);
 						$location.path($scope.dateo.user.username+'/dateos/'+$scope.dateo.id);
 					}
 				}

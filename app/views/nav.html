@@ -17,7 +17,7 @@
 				<li ng-show="nav.isCampaign"><a href="" ng-click="nav.loadEmbedBuilder()">Embed</a></li>
 				<li ng-show="nav.visible"><a href="http://blog.datea.pe">Blog</a></li>
 				<li ng-show="nav.visible"><a href="#!/acerca">Acerca</a></li>
-				<li ng-show="nav.visible"><a href="#!/ayuda">Ayuda</a></li>
+				<li ng-show="nav.visible"><a href="http://ayuda.datea.pe">Ayuda</a></li>
 <!-- 				<li ng-show="nav.visible"><button type="button" class="btn datea-datear-btn navbar-btn" ng-click="nav.datear()">Datea<i class="glyphicon glyphicon-map-marker"></i></button></li> -->
 <!-- 				<li ng-show="!nav.visible"><button type="button" class="btn btn-success navbar-btn" ng-click="nav.signIn()">Ingresa</button></li> --> 
 				<li ng-show="nav.isSignedIn" class="dropdown user-ctrl">
@@ -31,8 +31,11 @@
 						<li class="divider"></li>
 						<li><a href="#!/crear-iniciativa">Crear iniciativa</a></li>
 						<li class="divider"></li>
-						<li><a href="#!" ng-click="nav.signOut()"><i class="fa fa-sign-out"></i> Salir</a></li>
+						<li><a href="#!" ng-click="nav.signOut()" analytics-on="click" analytics-event="Logout"><i class="fa fa-sign-out"></i> Salir</a></li>
 					</ul>
+				</li>
+				<li ng-show="!nav.isSignedIn" class="user-login">
+					<a class="btn btn-default btn-nav-login" href="#!/signin"><i class="fa fa-sign-in"></i> INGRESA</a>
 				</li>
 			</ul>
 		</div>

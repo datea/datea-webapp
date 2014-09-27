@@ -42,6 +42,10 @@ angular.module('dateaWebApp')
 		$rootScope.$broadcast( 'user:updated' );
 	}
 
+	user.writeDataToStorage = function () {
+		ls.set('user', user.data);
+	}
+
 	user.updateTokenOnTwitterSignup = function () {
 		Api.user.getToken( { fromTwitter: true } );
 	}
@@ -212,6 +216,8 @@ angular.module('dateaWebApp')
 			// 	dfd.resolve( response );
 			// } );
 
+		}, function (error) {
+			dfd.reject(error);
 		} );
 
 		return dfd.promise;

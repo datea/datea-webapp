@@ -51,6 +51,7 @@ angular.module('dateaWebApp')
 	  , reverseGeocode
 	  , mapToAddress
 	  , positionChanged  = false
+	  , hashtagify 
 	;
 
 // Object to be sent
@@ -69,6 +70,7 @@ $scope.datear.onFinished    = false;
 $scope.datear.isScrolling   = false;
 $scope.datear.modalTitle    = $scope.dateo.id ? 'Editar dateo' : '¡Datea!';
 $scope.datear.mode          = $scope.dateo.id ? 'edit' : 'new';
+$scope.flow.datearBtnLabel  = $scope.dateo.id ? 'Guardar': 'Datear';
 $scope.alerts               = [];
 $scope.datear.step				  = 1;
 
@@ -456,17 +458,18 @@ $scope.datear.doDatear = function () {
 				$rootScope.$broadcast( 'user:hasDateado' , {dateo: response, created: true});
 				$scope.datear.loading = false;
 				followNewDateo();
+				User.data.dateo_count++;
+				User.writeDataToStorage();
 			} , function ( reason ) {
 				console.log( reason );
 			} );
 		}else {
-			Api.dateo.patchList( {objects: [$scope.dateo]} )
+			Api.dateo.patch( $scope.dateo )
 			.then( function ( response ) {
-
 				$scope.datear.errorMessage = null;
 				//$scope.datear.onFinished  = true;
-				angular.extend($scope.dateo, response.objects[0]);
-				$rootScope.$broadcast( 'user:hasDateado' , {dateo: response.objects[0], created: false});
+				angular.extend($scope.dateo, response);
+				$rootScope.$broadcast( 'user:hasDateado' , {dateo: response, created: false});
 				$scope.datear.loading = false;
 				$modalInstance.dismiss('cancel');
 			} , function ( reason ) {
@@ -487,6 +490,24 @@ $scope.datear.doDatear = function () {
 };
 
 
+$scope.datear.delete = function () {
+	var amSure = window.confirm("¿Estás seguro(a) de que quieres borrar este dateo?");
+	if (amSure) {
+		$scope.datear.loading = true;
+		Api.dateo.delete({id: $scope.dateo.id})
+		.then(function (response) {
+				$scope.datear.loading = false;
+				$modalInstance.dismiss('cancel');
+				$rootScope.$broadcast( 'user:dateoDelete', {id: $scope.dateo.id});
+				User.data.dateo_count--;
+				User.writeDataToStorage();
+		}, function (reason) {
+			console.log(reason);
+		});
+	}
+};
+
+
 followNewDateo = function () {
 	Api.follow
 	.doFollow( { follow_key: 'dateo.'+$scope.dateo.id} )
@@ -494,11 +515,11 @@ followNewDateo = function () {
 	}, function ( reason ) {
 		console.log( reason );
 	} );
-}
+};
 
 $scope.datear.cancel = function () {
 	$modalInstance.dismiss('cancel');
-}
+};
 
 $scope.datear.autocompleteTag = function ( val ) {
 	return Api.tag.getAutocompleteByKeyword( { q: val.replace('#', '') } )
@@ -509,7 +530,16 @@ $scope.datear.autocompleteTag = function ( val ) {
 		});
 		return tags;
 	} );
-}
+};
+
+hashtagify = function ( name ) {
+	var hashtag = name.split(' ');
+	hashtag = hashtag.map( function (w) {
+		w = w.replace(/[^a-z0-9]/gi,'');
+		return w.charAt(0).toUpperCase() + w.slice(1); 
+	});
+	return hashtag.join('');
+};
 
 $scope.datear.addTag = function ( tag ) {
 	var dtag, moreTags;
@@ -517,7 +547,7 @@ $scope.datear.addTag = function ( tag ) {
 	$scope.datear.nextTag = null;
 	if ( !~$scope.datear.selectedTags.indexOf( tag )
 	&& $scope.datear.selectedTags.length < config.dateo.tagsMax ) {
-		tag = tag.replace('#','');
+		tag = hashtagify(tag);
 		$scope.datear.selectedTags.push( tag );
 	}
 	// drill down to secondary tags contained in campaigns (if tag has campaigns)

@@ -18,10 +18,10 @@
 							<div class="row" ng-hide="flow.hideSocial || auth.showResetPassword">
 								<div class="register-btns">
 									<div class=" col-xs-12 col-sm-9 col-md-9 col-lg-9">
-										<button class="btn btn-social btn-facebook btn-block btn-lg" ng-click="auth.withFacebook()"><i class="fa fa-facebook"></i>Ingresa con Facebook</button>
+										<button class="btn btn-social btn-facebook btn-block btn-lg" ng-click="auth.withFacebook()" analytics-on="click" analytics-event="LoginFB"><i class="fa fa-facebook"></i>Ingresa con Facebook</button>
 									</div>
 									<div class="col-xs-12 col-sm-9 col-md-9 col-lg-9">
-										<button class="btn btn-social btn-twitter btn-block btn-lg" ng-click="auth.withTwitter()"><i class="fa fa-twitter"></i>Ingresa con Twitter</button>
+										<button class="btn btn-social btn-twitter btn-block btn-lg" ng-click="auth.withTwitter()" analytics-on="click" analytics-event="LoginTW"><i class="fa fa-twitter"></i>Ingresa con Twitter</button>
 									</div>
 								</div>
 							</div>
@@ -40,7 +40,7 @@
 										</div>
 										<button type="button" class="btn btn-sm btn-link pull-right btn-datea-link" ng-click="flow.toggleResetPassword()">recuperar contraseña</button>
 										<input type="submit" class="btn datea-datear-btn" value="Ingresar" ng-show="form.$valid">
-										<button class="btn datea-datear-btn" ng-disabled="true">Ingresar</button>
+										<button class="btn datea-datear-btn" ng-disabled="true" analytics-on="click" analytics-event="LoginDatea">Ingresar</button>
 										<span ng-bind="auth.message"></span>
 									</form>
 									<form role="form" name="forgotMail" ng-submit="auth.resetPassword()" ng-show="auth.showResetPassword">

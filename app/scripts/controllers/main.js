@@ -76,6 +76,7 @@ angular.module( 'dateaWebApp' )
 	$scope.query.orderByLabel       = 'últimos';
 	$scope.query.followFilter       = 'all';
 	$scope.query.followFilterLabel  = 'todos';
+	$scope.flow.historyResults      = 5;
 
 	$scope.dateFormat = config.defaultDateFormat;
 
@@ -130,17 +131,16 @@ angular.module( 'dateaWebApp' )
 	}
 
 	buildActivityLog = function () {
-		var activityLog = [];
 		Api.activityLog
 		.getActivityOfUserByUserId(
-		{ user : User.data.id
-		, mode : 'all'
+		{ user  : User.data.id
+		, mode  : 'all'
+		, limit : $scope.flow.historyResults
 		} )
 		.then( function ( response ) {
-			//console.log( 'buildActivityLog response', response );
-			//activityLog = response.objects.filter( function ( value ) {
-			//	return !!~config.homeSI.activityVerbs.indexOf( value.verb );
-			//} );
+			console.log(response.objects.length);
+			$scope.homeSI.history = [];
+			$scope.flow.historyTotal = response.meta.total_count;
 			angular.forEach( response.objects, function ( value, key ){
 				value._url = ActivityUrl.parse( value );
 				value._message = ActivityTitle.createTitle( value );
@@ -148,6 +148,11 @@ angular.module( 'dateaWebApp' )
 			});
 		} )
 	}
+
+	$scope.flow.showMoreHistory = function () {
+		$scope.flow.historyResults += 5;
+		buildActivityLog();
+	} 
 
 	buildCampaigns = function ( givens ) {
 		var totalCount
@@ -158,7 +163,7 @@ angular.module( 'dateaWebApp' )
 
 		index = givens && givens.index * config.homeSI.campaignsOffset;
 		defaultQuery = { order_by   : '-featured,-created'
-									 , ias_active : true
+									 , is_active : true
 		               , limit      : config.homeSI.campaignsOffset
 		               , offset     : index || 0
 		               }

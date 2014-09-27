@@ -47,11 +47,12 @@ angular.module('dateaWebApp')
 	$scope.paginationCampaigns = {};
 	$scope.paginationDateos = {};
 	$scope.flow = {};
+	$scope.flow.historyResults = 5;
 	$scope.map_is_present = false;
 
 	buildUserFollows = function () {
 		Api.tag
-		.getTags( { followed: User.data.id } )
+		.getTags( { followed: $scope.targetUser.id } )
 		.then( function ( response ) {
 			$scope.targetUser.follows = response.objects;
 		}, function ( reason ) {
@@ -60,19 +61,26 @@ angular.module('dateaWebApp')
 	}
 
 	buildActivityLog = function () {
-		var activityLog = [];
+		$scope.targetUser.history = [];
 		Api.activityLog
 		.getActivityOfUserByUserId(
-		{ user : User.data.id
-		, mode : 'actor'
+		{ user  : $scope.targetUser.id
+		, mode  : 'actor'
+		, limit : $scope.flow.historyResults
 		} )
 		.then( function ( response ) {
+			$scope.flow.historyTotal = response.meta.total_count;
 			angular.forEach( response.objects , function ( value, key ){
 				value._url = ActivityUrl.parse( value );
 				value._message = ActivityTitle.createTitle( value );
 				$scope.targetUser.history.push( value );
 			});
 		} )
+	}
+
+	$scope.flow.showMoreHistory = function () {
+		$scope.flow.historyResults += 5;
+		buildActivityLog();
 	}
 
 	buildUserDateos = function ( givens ) {
@@ -183,19 +191,19 @@ angular.module('dateaWebApp')
 
 	$scope.pageChanged = function () {
 		buildUserDateos( { index : $scope.paginationDateos.currentPage - 1 } );
-	}
+	};
 
 	$scope.$on('user:hasDateado', function (event, args){
 		if (args.created) {
 			$scope.targetUser.dateos.unshift(args.dateo);
 			$scope.targetUser.dateo_count++;
-			//if (args.dateo.is_geolocated) addMarker(args.dateo);
-			//if (args.dateo.has_images) $scope.campaign.dateosWithImages.unshift(args.dateo);
-			//updateCampaign();
-			//$scope.dateamap.focusDateo(0);
 		}
 	});
 
+	$scope.$on('user:dateoDelete', function (event, args) {
+		$scope.targetUser.dateo_count--;
+		buildUserDateos();
+	});
 
 	if ( $routeParams.username ) {
 		buildUserInfo();

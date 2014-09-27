@@ -64,6 +64,7 @@ angular.module('dateaWebApp')
 	  , buildSearchParams
 	  , paramsToQuery
 	  , doSearch
+	  , safariMapLayoutFix
 	;
 
 	$scope.tag                  = {};
@@ -212,16 +213,13 @@ angular.module('dateaWebApp')
 		Api.dateo
 		.getDateos( params )
 		.then( function ( response ) {
-			var dateos = [];
+			var geodateos = [];
 			if (tab === 'map') {
-				angular.forEach( response.objects , function ( value, key ) {
-					if ( value.position ) {
-						dateos.push( value );
-					}
-				});
+				safariMapLayoutFix();
 				$scope.flow.dateoShowListNumResults = config.defaultdateoNumResults;
-				$scope.tag.dateos = dateos;
-				buildMarkers( { dateos: dateos } );
+				$scope.tag.dateos = response.objects;
+				geodateos = response.objects.filter(function (d) { return !!d.position; });
+				buildMarkers( { dateos: geodateos } );
 			
 			}else if (tab === 'images') {
 				$scope.tag.dateosWithImages = response.objects;
@@ -242,40 +240,6 @@ angular.module('dateaWebApp')
 		$scope.flow.dateoShowListNumResults += config.defaultdateoNumResults;
 	};
 
-	buildDateos = function ( givens ) {
-		var dateoGivens = {}
-		  , dateos      = []
-		  , q           = givens && givens.q
-		  ;
-		dateoGivens.tags = $scope.tag.tag;
-		dateoGivens.q    = q;
-		if( $scope.tag.selectedMarker !== 'last' ) {
-			dateoGivens.order_by = config.selectFilter[ $scope.tag.selectedMarker ];
-		}
-		if ( dateoGivens.tags ) {
-
-			$scope.tag.dateos = [];
-			Api.dateo
-			.getDateos( dateoGivens )
-			.then( function ( response ) {
-				if ( response.objects.length ) {
-					angular.forEach( response.objects , function ( value, key ) {
-						if ( value.position ) {
-							dateos.push( value );
-						}
-					});
-					$scope.tag.dateos = dateos;
-					buildMarkers( { dateos: dateos } );
-				} else {
-					$scope.flow.leaflet.markers = {};
-				}
-				$scope.flow.loading = false;
-			}, function ( reason ) {
-				console.log( reason );
-			} )
-		}
-	}
-
 	$scope.flow.openTab = function(tab) {
 		$scope.query.tab = tab;
 		$scope.flow.doSearch();
@@ -286,23 +250,6 @@ angular.module('dateaWebApp')
 			});
 		}
 	};
-
-	buildDateosWithImages = function () {
-		var dateos = [];
-		Api.dateo
-		.getDateos( { has_images: 1, tags: $scope.tag.tag } )
-		.then( function ( response ) {
-			angular.forEach( response.objects, function ( value, key ) {
-				if ( value.position ) {
-					dateos.push( value );
-				}
-			} );
-			$scope.tag.dateosWithImages = dateos;
-			//$scope.tag.dateosWithImagesHolderHeight = { height : ( Math.ceil( $scope.tag.dateosWithImages.length / 6 ) * 200 ) + 'px' };
-		}, function ( reason ) {
-			console.log( reason );
-		} )
-	}
 
 	buildMarkers = function ( givens ) {
 		var dateos  = givens && givens.dateos
@@ -323,10 +270,12 @@ angular.module('dateaWebApp')
 		//center.zoom = config.campaign.mapZoomFocus;
 		//angular.extend( $scope.flow.leaflet.markers, markers );
 		//angular.extend( $scope.flow.leaflet.center, center );
-		leafletData.getMap("leafletTag")
-		.then( function ( map ) {
-			map.fitBounds( markersBounds );
-		} );
+		if (dateos.length) {
+			leafletData.getMap("leafletTag")
+			.then( function ( map ) {
+				map.fitBounds( markersBounds );
+			} );
+		}
 	}
 
 	buildMarker = function(dateo) {
@@ -411,6 +360,12 @@ angular.module('dateaWebApp')
    		updateTag();
    		$scope.flow.focusDateo(0); 
 		}
+	});
+
+	$scope.$on('user:dateoDelete', function (event, args) {
+		$scope.flow.closeDateoDetail();
+		$scope.flow.doSearch();
+		updateTag();
 	});
 
 	$scope.flow.focusDateo = function ( idx ) {
@@ -581,11 +536,28 @@ angular.module('dateaWebApp')
 		angular.extend( $scope.flow.leaflet, config.defaultMap );
 	}
 
+	$(window).resize(function (){
+		safariMapLayoutFix();
+	});
+
+	safariMapLayoutFix = function () {
+		if (Object.prototype.toString.call(window.HTMLElement).indexOf('Constructor') > 0) {
+			var $mh = $('.dateo-map-viz');
+			var h = $mh.height();
+	  	$('.leaflet-map-holder, .dateos-holder').css('height', h+'px');
+	  	leafletData.getMap("leafletTag")
+			.then( function ( map ) {
+				map.invalidateSize();
+			});
+		};
+	}
+
 	$scope.$on('$destroy', function () {
 		markersBounds   = [];
 		$scope.tag = {};
 		leafletMarkersHelpers.resetCurrentGroups();
 		Datear.resetContext();
+		$(window).off('resize');
 	});
 
 } ] );

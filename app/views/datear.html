@@ -198,11 +198,12 @@
 				</div>
 
 				<div class="actions">
-					<button class="btn btn-success pull-right btn-lg" ng-click="datear.doDatear()">Guardar</button>
+					<button class="btn btn-success pull-right btn-lg" ng-click="datear.doDatear()">{{flow.datearBtnLabel}}</button>
 					<div class="checkbox published-field pull-right" ng-show="datear.mode === 'edit'">
 						<label><input type="checkbox" class="form-control" ng-model="dateo.published" /> publicado</label>
 					</div> 
-					<button class="btn btn-default btn-lg" ng-click="datear.cancel()">Cancelar</button>
+					<button class="btn btn-default btn-lg pull-left" ng-click="datear.cancel()">Cancelar</button>
+					<button class="btn-delete btn btn-danger btn-link pull-left" ng-click="datear.delete()" ng-show="datear.mode === 'edit'">borrar</button>
 				</div>
 
 			</form>

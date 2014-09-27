@@ -32,9 +32,11 @@
 						
 						<p class="dateo-content newline2br" ng-bind-html="dateo.content | linky:'_blank'"></p>
 						
-						<a href ng-repeat="img in dateo.images" ng-click="flow.imgDetail(img.image)" class="image">
-							<img class="part" ng-src="{{img.image | imgFromApi}}" alt="sorry">
-						</a>
+						<div class="images" ng-show="dateo.images.length">
+							<a href ng-repeat="img in dateo.images" ng-click="flow.imgDetail(img.image)" class="image">
+								<img class="part" ng-src="{{img.image | imgFromApi}}" alt="sorry">
+							</a>
+						</div>
 
 						<div class="link" ng-show="dateo.link">
 							<i class="fa fa-chain licon"></i>

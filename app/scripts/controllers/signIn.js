@@ -64,6 +64,8 @@ angular.module( 'dateaWebApp' )
 		  ;
 		isValid = $scope.form.$valid;
 
+		console.log($scope.form);
+
 		data = { username : $scope.auth.username
 		       , password : $scope.auth.password }
 
@@ -75,6 +77,9 @@ angular.module( 'dateaWebApp' )
 				$location.path('/');
 				$scope.flow.loading = false;
 			}, function (reason) {
+				if (reason.status == 401) {
+					$scope.addAlert({type: 'danger', msg: config.accountMsgs.wrongUserOrPassword});
+				}
 				$scope.flow.loading = false;
 			} );
 		}

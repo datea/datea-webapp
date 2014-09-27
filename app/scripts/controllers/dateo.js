@@ -39,6 +39,7 @@ angular.module('dateaWebApp')
 	  , hasUserVoted
 	  , buildRelatedCampaigns
 	  , setLeaflet
+	  , params
 	  ;
 
 	$scope.dateo              = {};
@@ -232,10 +233,19 @@ angular.module('dateaWebApp')
 		setLeaflet();
 	});
 
+	$scope.$on('user:dateoDelete', function (event, args) {
+		if (args.id === $scope.dateo.id) {
+			$location.url('/'+User.data.username);
+		}
+	});
+
 	if ( $routeParams.username && $routeParams.dateoId ) {
+			params = { id   : +$routeParams.dateoId };
+			if (User.isSignedIn() && $routeParams.username === User.data.username) {
+				params.published = 'all';
+			}
 			Api.dateo
-			.getDateos(
-			{ id   : +$routeParams.dateoId } )
+			.getDateos(params)
 			.then( buildDateo, function ( reason ) {
 				if ( reason.status === 404 ) {
 					$location.path('/404').replace();

@@ -33,7 +33,7 @@ angular.module('dateaWebApp')
 						scope.$apply(function () {
 							scope.filedata = file;
 							mime = (file.type == 'image/jpeg' || file.type == 'image/png') ? file.type : 'image/png';
-							scope.fileread = canvas.toDataURL(mime, 0.85);
+							scope.fileread = canvas.toDataURL(mime, 1);
 							args = { data: file, file: scope.fileread };
 							$rootScope.$broadcast( 'datea:fileLoaded', args);
 						});

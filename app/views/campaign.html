@@ -4,30 +4,33 @@
 			<div class="col-sm-7 campaign-info">
 				<div class="inner">
 					<div class="main-info">
-						<div class="sub-title">Iniciativa datera</div>
-						<h1 ng-class="{'title-fix' : flow.titleFix}">{{campaign.name}}</h1>
+						<div class="user-head">
+							<div class="user-img img-circle" da-bg-from-api="{{campaign.user.image.image}}" da-img-size="cover" da-img-type="user"></div>
+							<div class="user-info">
+								<div class="date">Una iniciativa de</div>
+								<h4 class="username"><a href="/#!/{{campaign.user.username}}">{{campaign.user.username}}</a></h4>
+							</div>
+						</div>
+						<div class="title-holder">
+							<h1 ng-class="{'title-fix' : flow.titleFix}">{{campaign.name}}</h1>
+							<div class="mbtn share-btn">
+								<div class="datea-glyph-holder hover-enabled" ng-click="campaign.share()">
+									<i class="fa fa-share-alt"></i>
+								</div>
+							</div>
+						</div>
 						<h2><a href="#!/tag/{{campaign.main_tag.tag}}">#{{campaign.main_tag.tag}}</a></h2>
 						<p class="shortdesc">{{campaign.short_description}}</p>
+						<div class="stats" ng-show="campaign.dateo_count > 0 || campaign.follow_count > 0">
+							<div class="count-stats">
+								<div class="dateo-count stat" ng-if="campaign.dateo_count > 0">{{campaign.dateo_count}} <ng-pluralize count="campaign.dateo_count" when="{'one':'dateo','other':'dateos'}"></ng-pluralize></div>
+								<div class="follow-count stat" ng-if="campaign.follow_count > 0">{{campaign.follow_count}} <ng-pluralize count="campaign.follow_count" when="{'one':'seguidor','other':'seguidores'}"></ng-pluralize></div>
+							</div>
+						</div>
 						<div class="main-btns">
-							<div class="inner">
-								<div class="mbtn share-btn">
-									<div class="datea-glyph-holder hover-enabled" ng-click="campaign.share()">
-										<i class="fa fa-share-alt"></i>
-									</div>
-									<!--
-									<button class="btn btn-default" ng-click="campaign.share()">
-										<i class="fa fa-share-alt"></i> compartir
-									</button>-->
-									<!--
-									<div class="input-group">
-										<input type="text" class="form-control" ng-model="campaign.shareableUrl">
-										<span class="input-group-btn">
-											<button class="btn btn-default" type="button" ng-click="campaign.share()"><i class="fa fa-share-alt"></i></button>
-										</span>
-									</div>-->
-								</div>
+							<div class="main-btns-inner">
 								<div class="mbtn follow-camp-btn">
-									<da-follow follow-obj="tag" follow-id="{{campaign.main_tag.id}}" btn-class="follow-campaign" follow-label="seguir etiqueta"></da-follow>
+									<da-follow follow-obj="tag" follow-id="{{campaign.main_tag.id}}" btn-class="follow-campaign" follow-label="seguir" follow-callback="flow.hey($value)"></da-follow>
 								</div>
 								<div class="mbtn datear-btn">
 									<datear-btn></datear-btn>
@@ -35,17 +38,11 @@
 								</div>
 							</div>
 						</div>
-						<div class="stats">
-							<div class="count-stats" ng-if="campaign.dateo_count > 0 || campaign.follow_count > 0">
-								<div class="dateo-count stat" ng-if="campaign.dateo_count > 0">{{campaign.dateo_count}} <ng-pluralize count="campaign.dateo_count" when="{'one':'dateo','other':'dateos'}"></ng-pluralize></div>
-								<div class="follow-count stat" ng-if="campaign.follow_count > 0">{{campaign.follow_count}} <ng-pluralize count="campaign.follow_count" when="{'one':'seguidor','other':'seguidores'}"></ng-pluralize></div>
-							</div>
-						</div>
 					</div>
 					<div class="unpublished-msg" ng-show="campaign.id && !campaign.published">Iniciativa sin publicar</div>
 				</div>
 			</div>
-			<div class="col-sm-5 hidden-xs campaign-img" da-bg-from-api="{{campaign.image.image}}" da-img-size="contain" da-img-type="campaign-lg"></div>
+			<div class="col-sm-5 hidden-xs campaign-img" da-bg-from-api="{{campaign.image2.image || campaign.image.image}}" da-img-size="auto 100%" da-img-type="campaign-lg"></div>
 		</div>
 	</div>
 
@@ -61,9 +58,9 @@
 		      <ul class="dropdown-menu dropdown-menu-right" role="menu">
 		        <li ng-if="flow.userIsOwner"><a href="#!/iniciativas/{{campaign.id}}/edit">Configuración</a></li>
 		        <li ng-if="flow.userIsOwner"><a href="#!/iniciativas/{{campaign.id}}/admin">Administrar dateos</a></li>
-		        <li><a ng-click="flow.loadEmbedBuilder()">Insertar (embed)</a></li>
+		        <!--<li><a ng-click="flow.loadEmbedBuilder()">Insertar (embed)</a></li>-->
 		        <!--<li><a href="#" target="_blank">Imprimir reporte</a></li>-->
-		        <li><a href="http://api.datea.pe/csv-export/dateos/tag/{{campaign.main_tag.id}}/" target="_blank">Descargar dateos en CSV</a></li>
+		        <li><a href="https://api.datea.io/csv-export/dateos/tag/{{campaign.main_tag.id}}/" target="_blank">Descargar dateos en CSV</a></li>
 		      </ul>
 		    </div>
 			</div>
@@ -168,7 +165,7 @@
 										<p class="dateos-more-results" ng-show="campaign.dateos.length > flow.dateoShowListNumResults">
 											<button class="btn btn-default btn-lg" ng-click="flow.showMoreListResults()">Ver más resultados</button>
 										</p>
-										<div class="no-results" ng-show="campaign.dateos.length == 0 && flow.query.done">
+										<div class="no-results" ng-show="!campaign.dateos.length && !flow.loading">
 										Aún no hay dateos en esta iniciativa. ¡Datea!
 										</div>
 								</div>

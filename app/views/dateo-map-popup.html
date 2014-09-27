@@ -8,7 +8,7 @@
   	<a class="tag" href="#!/tag/{{tag.tag}}" ng-repeat="tag in tags">#{{tag.tag}}</a>
   	<span class="elippsis" ng-show="tags.length > 2">...</span>
   </div>
-  <p>{{dateo.extract}}</p>
+  <p ng-bind-html="dateo.extract | linky:'_blank'"></p>
   <button class="popup-detail-btn btn datea-gray-btn btn-xs pull-right" ng-show="openDetail" ng-click="openDetail()">ver detalle</button>
   <a ng-show="!openDetail" class="popup-detail-btn btn datea-gray-btn btn-xs pull-right" data-index="{{index}}" href="#!/{{dateo.user.usernmame}}/dateos/{{dateo.id}}">ver detalle</a>
   <div class="stats">

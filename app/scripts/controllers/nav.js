@@ -38,7 +38,6 @@ angular.module('dateaWebApp')
 	$scope.state = State.state;
 
 	$scope.nav.visible = User.isSignedIn();
-	console.log("NAV", $scope.nav);
 
 	$scope.nav.isCollapsed = true;
 	$scope.alerts = [];
@@ -87,11 +86,14 @@ angular.module('dateaWebApp')
 		}
 		$scope.user = User.data;
 		$scope.nav.isSignedIn = User.isSignedIn();
-		console.log("NAV2", $scope.nav);
 	
 		if ( !givens && User.data.status === 0) {
 			userStatusOnInit = User.data.status;
 			updateUserDataFromApi();
+		}
+
+		if ($location.path() !== '/configuracion' && User.data.status ===0 ) {
+			$location.path('/configuracion');
 		}
 	}
 

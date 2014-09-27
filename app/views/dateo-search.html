@@ -1,6 +1,10 @@
 <div class="search-holder ff1">
 	<div class="search-card">
 		<h2 class="ff1">Buscar dateos</h2>
+		<div class="result-stats">
+			<span class="stat results" ng-show="!flow.loading">{{result.totalDateos}} <ng-pluralize count="result.dateos.length" when="{'one':'resultado','other':'resultados'}"></ng-pluralize></span>
+			<a class="stat campaigns" href="#" ng-click="flow.scrollToCampaigns($event)" ng-show="result.campaigns.length">{{result.campaigns.length}} <ng-pluralize count="result.campaigns.length" when="{'one':'iniciativa','other':'iniciativas'}"></ng-pluralize></a>
+		</div>
 	</div>
 	<div class="viz-holder">
 		<div class="viz-nav">
@@ -77,12 +81,12 @@
 								</div>
 								<div class="dateo-description-holder" ng-hide="flow.dateoDetail.show">
 									<div class="teaser-list">
-										<da-dateo-teaser ng-repeat="dateo in tag.dateos | limitTo:flow.dateoShowListNumResults"></da-dateo-teaser>
+										<da-dateo-teaser ng-repeat="dateo in result.dateos | limitTo:flow.dateoShowListNumResults"></da-dateo-teaser>
 									</div>
-									<p class="dateos-more-results" ng-show="tag.dateos.length > flow.dateoShowListNumResults">
+									<p class="dateos-more-results" ng-show="result.dateos.length > flow.dateoShowListNumResults">
 										<button class="btn btn-default btn-lg" ng-click="flow.showMoreListResults()">Ver más resultados</button>
 									</p>
-									<div class="no-results" ng-show="!tag.dateos.length && !flow.loading">No hay resultados <i class="fa fa-meh-o"></i></div>
+									<div class="no-results" ng-show="!result.dateos.length && !flow.loading">No hay resultados <i class="fa fa-meh-o"></i></div>
 								</div>
 							</div>
 							<div class="col-xs-12 col-sm-75 col-md-75 leaflet-map-holder">
@@ -95,16 +99,16 @@
 					<div class="dateo-thumbs-holder" ng-show="result.dateosWithImages.length">
 						<da-dateo-thumb ng-repeat="dateo in result.dateosWithImages"></da-dateo-thumb>
 					</div>
-					<div class="no-results" ng-show="!tag.dateosWithImages.length && !flow.loading">No hay resultados <i class="fa fa-meh-o"></i></div>
+					<div class="no-results" ng-show="!result.dateosWithImages.length && !flow.loading">No hay resultados <i class="fa fa-meh-o"></i></div>
 				</tab>
 			</tabset>
 		</div>
 	</div>
-	<div class="campaign-teasers" ng-show="campaignsInTag">
+	<div id="campaigns" class="campaign-teasers" ng-show="result.campaigns.length">
 		<div class="container-fluid">
 			<h3>Iniciativas en esta busqueda</h3>
 			<div class="campaign-list row">
-				<div class="col-lg-2 col-md-3 col-sm-4 col-xs-12" ng-repeat="campaign in campaignsInTag">
+				<div class="col-lg-2 col-md-3 col-sm-4 col-xs-12" ng-repeat="campaign in result.campaigns">
 					<da-campaign-teaser></da-campaign-teaser>
 				</div>
 			</div>
