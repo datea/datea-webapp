@@ -40,6 +40,7 @@ angular.module('dateaWebApp')
 	$scope.flow.activeTab = $location.search().tab || 'user';
 
 	shareMetaData.setData({ title : 'Datea | configuración de cuenta'});
+  $scope.htmlReady();
 
 	$scope.flow.openTab = function (tab) {
 		$location.search({tab: tab});

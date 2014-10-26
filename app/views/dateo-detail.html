@@ -1,6 +1,10 @@
  <div class="dateo-detail-holder">
 
 	<div class="graylight-bg"></div>
+
+	<a class="next-dateo dateos-nav" ng-show="dateo.next_by_user" href="#!/{{dateo.user.username}}/dateos/{{dateo.next_by_user}}"></a>
+	<a class="prev-dateo dateos-nav" ng-show="dateo.previous_by_user" href="#!/{{dateo.user.username}}/dateos/{{dateo.previous_by_user}}"></a>
+
 	<div class="container z2">
 			<div class="user-holder">
 				<div class="part part-1 img-holder">
@@ -13,9 +17,6 @@
 					</a>
 					<p class="ff1">el {{dateo.created | date:dateFormat}}</p>
 				</div>
-				<div class="next-holder pull-right no-print" ng-show="dateo.next_by_user">
-					<a href ng-click="dateo.nextDateo()">ver {{ dateo.messageNext }} dateo de {{dateo.user.username}} <i class="glyphicon glyphicon-play"></i></a>
-				</div>
 			</div>
 			<div class="content-holder" ng-show="!dateo.message">
 				<div class="esquina"></div>
@@ -27,14 +28,14 @@
 							<button class="btn btn-link dateo-edit-btn" ng-show="flow.showEditBtn" ng-click="flow.editDateo()"><i class="fa fa-pencil-square-o"></i></button>
 						</div>
 						<div class="tag-row">
-							<a class="tag" href="#!/tag/{{tag.tag}}" ng-repeat="tag in dateo.tags">#{{tag.tag}}</a>
+							<a class="tag" href="#!/tag/{{tag}}" ng-repeat="tag in dateo.tags">#{{tag}}</a>
 						</div>
 						
 						<p class="dateo-content newline2br" ng-bind-html="dateo.content | linky:'_blank'"></p>
 						
-						<div class="images" ng-show="dateo.images.length">
-							<a href ng-repeat="img in dateo.images" ng-click="flow.imgDetail(img.image)" class="image">
-								<img class="part" ng-src="{{img.image | imgFromApi}}" alt="sorry">
+						<div class="images" ng-show="dateo.images.length" image-gallery>
+							<a href="{{img.image | imgFromApi}}" ng-repeat="img in dateo.images" class="image slide">
+								<div class="img" da-bg-from-api="{{img.image}}" da-img-size="cover" ></div>
 							</a>
 						</div>
 
@@ -133,7 +134,7 @@
 					<div class="side-block related-campaigns" ng-show="flow.campaigns.length > 0">
 						<h3>Iniciativas relacionadas</h3>
 						<div class="tag-row">
-							<a class="tag" href="#!/{{camp.username}}/{{camp.tag}}" ng-repeat="camp in flow.campaigns">{{camp.name}}</a>
+							<a class="tag" href="#!/{{camp.user.username}}/{{camp.slug}}" ng-repeat="camp in flow.campaigns">{{camp.name}}</a>
 						</div>
 					</div>
 				</div>

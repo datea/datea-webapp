@@ -1,7 +1,9 @@
 angular.module('dateaWebApp')
 .controller('HeadCtrl', [
 	'$scope'
-, 'shareMetaData' 
-, function ($scope, shareMetaData){
+, 'shareMetaData'
+, '$timeout'
+, '$rootScope' 
+, function ($scope, shareMetaData, $timeout, $rootScope){
 	$scope.share = shareMetaData.data;
 } ] );

@@ -42,6 +42,8 @@ angular.module('dateaWebApp')
 	$scope.nav.isCollapsed = true;
 	$scope.alerts = [];
 
+	$scope.hey = function () {console.log("HEY");}
+
 	updateUserDataFromApi = function () {
 		var ls = localStorageService
 		  , updatedData

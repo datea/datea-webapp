@@ -1637,7 +1637,7 @@ body {
 					width: 100%;
 					background-color: @color-15;
 					border-radius: 6px;
-					padding: 15px;
+					padding: 10px;
 					line-height: 18px;
 					position: relative;
 					margin-bottom: 15px;
@@ -1662,6 +1662,7 @@ body {
 						margin-left: 25px;
 						margin-top: 0;
 						display: block;
+						font-size: 13px;
 					}
 					.i-help {
 						font-size: 13px;
@@ -1672,8 +1673,8 @@ body {
 						//display: none;
 						z-index: 3;
 						position: absolute;
-						top: 12px;
-						left: 15px;
+						top: 10px;
+						left: 10px;
 						i {
 							color: @color-18;
 							font-size: 22px;
@@ -1681,20 +1682,40 @@ body {
 					}
 
 					.item-image {
+						.clearfix;
 						.i-icon-holder {
 							left: 10px;
 							top: 10px;
 						}
+						.i-title {
+							margin-top: 2px;
+						}
 						.uploaded-img {
+							float: left;
+							margin-right: 10px;
+							margin-left: 30px;
 							margin-top: 5px;
-							max-width: 220px;
+							max-width: 120px;
+							max-height: 120px;
 						}
 					}
 
 					.item-file {
+						.i-icon-holder {
+							left: 10px;
+							top: 8px;
+						}
+						.i-title { 
+							float: left;
+							margin-right: 8px;
+						}
 						.form-group {
-							margin-top: 10px;
+							margin-top: 15px;
 							margin-bottom: 5px;
+							label { float: left; padding-top: 5px;}
+							.input-wrap {
+								margin-left: 45px;
+							}
 						}
 						.uploaded-filename {
 							font-size: 13px;
@@ -2007,6 +2028,54 @@ body {
 	}
 }
 
+.pin-icon-not-set {
+	-webkit-animation: pin-icon-anim 0.5s infinite;
+  -moz-animation: pin-icon-anim 0.5s infinite;
+  -o-animation: pin-icon-anim 0.5s infinite;
+  animation: pin-icon-anim 0.5s infinite;
+  -webkit-animation-direction: alternate;
+  -moz-animation-direction: alternate;
+  -o-animation-direction: alternate;
+  animation-direction: alternate;
+}
+
+@-webkit-keyframes pin-icon-anim {
+  0%   { opacity: 0.5; }
+  100% { opacity: 1; }
+}
+@-moz-keyframes pin-icon-anim {
+  0%   { opacity: 0.5; }
+  100% { opacity: 1; }
+}
+@-o-keyframes pin-icon-anim {
+  0%   { opacity: 0.5; }
+  100% { opacity: 1; }
+}
+@keyframes pin-icon-anim {
+  0%   { opacity: 0.5; }
+  100% { opacity: 1; }
+}
+
+
+.file-input-widget {
+	position: relative;
+	text-align: center;
+	width: 100%;
+	padding: 45px 0;
+	border: 3px dashed lighten(@color-18, 10%);
+	margin-bottom: 15px;
+	#inputFileElement { position: fixed; top: -1000px }
+	.drag-message {
+		font-size: 16px;
+	}
+	&.dropit {
+		background-color: @color-15;
+	}
+	&.datea-loading .datea-loading-icon .icon-loading {
+		top: 0px;
+	}
+}
+
 .flag-btn.btn-link {
 	padding: 0;
 	outline: none !important;
@@ -2131,17 +2200,21 @@ body {
 					font-size: 18px;
 					margin-top: 10px;
 					//a { color: white}
-					h4, h5 { 
+					h4.bubble-title, h5.bubble-title { 
 						font-size: 16px; 
 						color: @text-color; 
 						margin-bottom: 10px; 
 						margin-top: 0px; 
 						position: absolute;
 						top: -35px;
-						left: 3%;
+						left: -10px;
 					}
 					.tag-buttons {
-						text-align: center;
+						//text-align: center;
+						position: relative;
+						display: table;
+						margin-right: auto;
+						margin-left: auto;
 						padding: 10px 10px 0;
 						.datea-tag-btn {
 							padding: 5px 7px 1px;
@@ -4766,9 +4839,23 @@ ul.input-list {
 	.content { margin-top: 0 !important}
 
 	.images {
+		margin-bottom: 15px;
+		.clearfix;
 		.image {
-			display: inline-block;
-			margin-bottom: 20px;
+			float: left;
+			display: block;
+			border-right: 3px solid white;
+			border-bottom: 3px solid white;
+			width: 25%;
+			padding-top: 20%;
+			position: relative;
+			.img {
+				position: absolute;
+				top: 0;
+				bottom: 0;
+				left: 0;
+				right: 0;
+			}
 		}
 	}
 
@@ -4872,14 +4959,7 @@ ul.input-list {
 		}
 
 		.images {
-			.image {
-				display: inline-block;
-				max-width: 33%;
-				img {
-					max-width: 100%;
-					max-height: 160px;
-				}
-			}
+			
 		}
 
 		.link {
@@ -4944,12 +5024,8 @@ ul.input-list {
 
 		.images {
 			.image {
-				display: inline-block;
-				max-width: 50%;
-				img {
-					max-width: 100%;
-					max-height: 220px;
-				}
+				width: 33%;
+				padding-top: 27%;
 			}
 		}
 
@@ -5141,6 +5217,31 @@ ul.input-list {
 
 	margin-bottom: 30px;
 
+	.dateos-nav {
+		height: 70px;
+		//width: 20px;
+		z-index: 3;
+		border-top: 35px solid transparent;
+		border-bottom: 35px solid transparent;
+		display: block;
+		position: fixed;
+		top: ~"calc(30% - 20px)";
+		&.prev-dateo {
+			left: 1%;
+			border-right: 25px solid lighten(@color-18, 15%);
+			&:hover {
+				border-right: 25px solid @color-10;
+			}
+		}
+		&.next-dateo {
+			right: 1%;
+			border-left: 25px solid lighten(@color-18, 15%);
+			&:hover {
+				border-left: 25px solid @color-10;
+			}
+		}
+	}
+
 	.user-holder {
 		height: 80px;
 		padding: 16px 0 0 31px;
@@ -5251,18 +5352,7 @@ ul.input-list {
 			padding: 7px 0 20px 0;
 		}
 
-		.images {
-			.clearfix;
-			.image {
-				float: left;
-				max-width: 50%;
-				img {
-					max-width: 100%;
-					max-height: 220px;
-				}
-				margin-bottom: 20px;
-			}
-		}
+		.images {}
 
 		.part-1 {
 			padding: 10px;
@@ -6068,6 +6158,15 @@ ul.input-list {
 
 .leaflet-control-attribution {
 	font-size: 8px !important;
+}
+
+.leaflet-control-container {
+	.leaflet-draw-actions a {
+		color: white;
+		&:hover {
+			color: white;
+		}
+	}
 }
 
 .general-alerts {

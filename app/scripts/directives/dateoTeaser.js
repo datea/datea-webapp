@@ -35,12 +35,12 @@ angular.module("dateaWebApp")
 				}
 
 				$scope.focusDateo = function () {
-					$rootScope.$broadcast('focus-dateo', {index: $scope.$index});
+					$rootScope.$broadcast('focus-dateo', {id: $scope.dateo.id});
 				}
 
 				$scope.openDetail = function () {
 					if ($scope.detailInline) {
-						$rootScope.$broadcast('open-dateo-detail', {index: $scope.$index});
+						$rootScope.$broadcast('open-dateo-detail', {id: $scope.dateo.id});
 					}else {
 						console.log($scope.dateo.user.username+'/dateos/'+$scope.dateo.id);
 						$location.path($scope.dateo.user.username+'/dateos/'+$scope.dateo.id);

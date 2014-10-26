@@ -68,6 +68,8 @@ angular.module('dateaWebApp')
 			
 			$scope.flow.messageNext = hasNext() ? 'siguiente' : 'primer';
 			angular.extend( $scope.dateo, dateo );
+			$scope.dateo.comments = [];
+			updateComments();
 			setLeaflet();
 			$scope.flow.shareableUrl = config.app.url + '/#!' + $location.path();
 			buildRelatedCampaigns();
@@ -75,7 +77,7 @@ angular.module('dateaWebApp')
 			if (User.isSignedIn() && User.data.id === dateo.user.id) $scope.flow.showEditBtn = true;
 				
 			// SEO AND SOCIAL TAGS
-				dataTags = dateo.tags.map(function(t) { return t.tag}).slice(0,2);
+				dataTags = dateo.tags.slice(0,2);
 				shareData = {
 					  title       : 'Datea | '+dateo.user.username+' dateó en '+ dataTags.join(", ")
 					, description : dateo.extract
@@ -111,22 +113,18 @@ angular.module('dateaWebApp')
 	}
 
 	buildRelatedCampaigns = function () {
-		var campaigns = [];
-		angular.forEach($scope.dateo.tags, function (tag) {
-			if (tag.campaigns && tag.campaigns.length) {
-				angular.forEach(tag.campaigns, function (camp) {
-					camp.tag = tag.tag;
-					campaigns.push(camp);
-				});
-			}
+		Api.campaign
+		.getCampaigns( {tags : $scope.dateo.tags.join(',')} )
+		.then(function (response) {
+			$scope.flow.campaigns = response.objects;
 		});
-		$scope.flow.campaigns = campaigns;
 	}
 
 	updateComments = function ( response ) {
 		var oldIds = $scope.dateo.comments.map(function (c) {return c.id;});
 		Api.comment.getList({content_type__model: 'dateo', object_id: $scope.dateo.id, order_by: 'created'})
 		.then(function (response) {
+			console.log('update comments', response);
 			$scope.dateo.comment_count = response.meta.total_count;
 			$scope.dateo.comments = response.objects.map( function (c) {
 				c.new = oldIds.indexOf(c.id) === -1;

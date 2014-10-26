@@ -40,6 +40,8 @@ angular.module("dateaWebApp")
     			if ($scope.dateo && $scope.dateo.id) {
     				$scope.flow.showEditBtn = User.data.id === $scope.dateo.user.id;
     				checkStatus();
+    				$scope.dateo.comments = [];
+    				updateComments();
     			}
     		});
 
@@ -48,7 +50,7 @@ angular.module("dateaWebApp")
     		} );
 
 				$scope.focusDateo = function (index) {
-					$rootScope.$broadcast('focus-dateo', {index: $scope.markerIndex});
+					$rootScope.$broadcast('focus-dateo', {id: $scope.dateo.id});
 				}
 
 				$scope.closeDetail = function () {
@@ -59,6 +61,7 @@ angular.module("dateaWebApp")
 					var oldIds = $scope.dateo.comments.map(function (c) {return c.id;});
 					Api.comment.getList({content_type__model: 'dateo', object_id: $scope.dateo.id})
 					.then(function (response) {
+						console.log(response);
 						$scope.dateo.comment_count = response.meta.total_count;
 						$scope.dateo.comments = response.objects.map( function (c) {
 							c.new = oldIds.indexOf(c.id) === -1;
@@ -179,7 +182,6 @@ angular.module("dateaWebApp")
 						               }
 						             } );
 				}
-
 							
 		}
 	}

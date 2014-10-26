@@ -44,6 +44,8 @@ angular.module("dateaWebApp")
 					User.isSignedIn() || $location.path( '/' );
 	    		mode = $attrs.mode;
 
+	    		
+
 	    		$scope.campaign = { 
 	    			  main_tag: {}
 	    			, secondary_tags: []
@@ -431,7 +433,7 @@ angular.module("dateaWebApp")
 
 	          // clean main tag of other model data if changed
 	          if (mainTagInApi && mainTagInApi !== $scope.campaign.main_tag.tag) {
-	          	$
+	          	$scope.campaign.main_tag = {tag: $scope.campaign.main_tag.tag};
 	          }
 
 	          if (validateCampaign()) {
@@ -449,8 +451,11 @@ angular.module("dateaWebApp")
 								Api.campaign
 								.postCampaign( $scope.campaign )
 								.then( function ( response ) {
-									followTag(response.main_tag.id);
-									$location.url( '/'+User.data.username+'/'+response.slug );
+									Api.follow
+									.doFollow( { follow_key: 'tag.'+response.main_tag.id} )
+									.then(function (fresp) {
+										$location.url( '/'+User.data.username+'/'+response.slug );
+									});
 								}, function ( reason ) {
 									console.log( 'postCampaign reason: ', reason );
 									$scope.flow.loading = false;

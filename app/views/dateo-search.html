@@ -9,10 +9,10 @@
 	<div class="viz-holder">
 		<div class="viz-nav">
 			<div class="search">
-				<form class="form search-form" ng-submit="flow.doSearch()">
+				<form class="form search-form">
 					<!--<div class="form-group">-->
 						<div class="input-group">
-							<input type="text" class="form-control" ng-model="query.q" placeholder="buscar" typeahead="tags for tags in flow.autocompleteSearch($viewValue) | filter:$viewValue" typeahead-loading="loadingSearchSuggestions">
+							<input type="text" class="form-control" ng-model="query.q" placeholder="buscar" typeahead="tags for tags in flow.autocompleteSearch($viewValue) | filter:$viewValue" typeahead-loading="loadingSearchSuggestions" select-first="false" ng-enter="flow.doSearch()">
 							<span class="input-group-btn">
 								<button class="btn btn-default" type="button" ng-click="flow.doSearch()"><i class="fa fa-search"></i></button>
 							</span>

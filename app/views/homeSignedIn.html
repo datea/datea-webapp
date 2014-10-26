@@ -83,19 +83,19 @@
 								<div class="search-holder">
 									<p class="ff1">Busca temas en los que quieras participar</p>
 									<div class="input-group input-group-lg">
-										<input type="text" class="form-control" ng-model="query.search" placeholder="buscar" typeahead="tags for tags in homeSI.autocompleteSearch($viewValue) | filter:$viewValue" typeahead-loading="loadingSearchSuggestions" ng-enter="flow.searchDateos()">
+										<input type="text" class="form-control" ng-model="query.search" placeholder="buscar" typeahead="tags for tags in homeSI.autocompleteSearch($viewValue) | filter:$viewValue" typeahead-loading="loadingSearchSuggestions" select-first="false" ng-enter="flow.searchDateos()">
 										<span class="input-group-btn">
 											<button class="btn btn-default" type="button" ng-click="flow.searchDateos()"><i class="fa fa-search"></i></button>
 										</span>
 									</div>
-									<p class="ff1">o simplemente datea con una nueva etiqueta para crear un mapa.</p>
+									<p class="ff1">o datea con una nueva etiqueta para crear un mapa.</p>
 								</div>
 							</div>
 
 							<div class="col-xs-12">
 								<div class="trending-tags-holder ff1" ng-show="homeSI.trendingTags.length > 0">
-									<h4 class="bubble-title">Tendencias</h4>
 									<div class="tag-buttons">
+										<h4 class="bubble-title">Tendencias</h4>
 										<a class="datea-tag-btn trending-tag" ng-href="#!/tag/{{tag.tag}}" ng-class="{followable: tag._followable}" ng-repeat="tag in homeSI.trendingTags">
 											#{{tag.tag}}
 										</a>

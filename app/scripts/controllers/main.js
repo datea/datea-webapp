@@ -138,7 +138,6 @@ angular.module( 'dateaWebApp' )
 		, limit : $scope.flow.historyResults
 		} )
 		.then( function ( response ) {
-			console.log(response.objects.length);
 			$scope.homeSI.history = [];
 			$scope.flow.historyTotal = response.meta.total_count;
 			angular.forEach( response.objects, function ( value, key ){
@@ -219,7 +218,7 @@ angular.module( 'dateaWebApp' )
 			console.log('/tag/'+$scope.query.search.replace('#', ''));
 			$location.path('/tag/'+$scope.query.search.replace('#', ''));
 		}else{
-			$location.path('/buscar/'+escape($scope.query.search));
+			$location.path('/buscar/'+$scope.query.search);
 		}
 	}
 

@@ -58,43 +58,41 @@
 							<div class="form-group">
 								<label>Sube una imagen o archivo (opcional)</label>
 								<div>
-									<div class="ul-btn img-ul-btn" ng-class="{selected: datear.imgData}">
-										<label for="image">
-											<div class="ul-icon-holder"><i class="ul-icon glyphicon glyphicon-camera"></i></div>
-											<input class="file-input" type="file" id="image" fileread="datear.img" filedata="datear.imgData" accept="image/*" ng-disabled="datear.imgData" max-img-size="1200" />
-										</label>
+									<div class="ul-btn img-ul-btn" ng-class="{selected: datear.imgData}" ng-click="datear.toggleFileInput('image')">
+										<div class="ul-icon-holder"><i class="ul-icon glyphicon glyphicon-camera"></i></div>
 									</div>
 
-									<div class="ul-btn file-ul-btn" ng-class="{selected: datear.fileData}">
-										<label for="file">
-											<div class="ul-icon-holder"><i class="ul-icon glyphicon glyphicon-file"></i></div>
-											<input class="file-input" type="file" id="file" fileread="datear.file" filedata="datear.fileData" ng-disabled="datear.fileData" />
-										</label>
+									<div class="ul-btn file-ul-btn" ng-class="{selected: datear.fileData}" ng-click="datear.toggleFileInput('file')">
+										<div class="ul-icon-holder"><i class="ul-icon glyphicon glyphicon-file"></i></div>
 									</div>
 
 									<div class="ul-btn link-ul-btn" ng-class="{selected: dateo.link}" ng-click="datear.link.add()">
 										<div class="ul-icon-holder"><i class="ul-icon fa fa-chain"></i></div>
 									</div>
 								</div>
-
 							</div>
+							<file-input-widget file-type="{{datear.activeFileInputType}}" callback="datear.fileInputCallback(files)" ng-show="datear.showFileInput"></file-input-widget>
 							<div class="selected-media">
 								<div class="selected-media-item" ng-repeat="item in datear.selectedMedia">
 
 									<div class="media-item-inner item-image" ng-if="item.type == 'image'">
+										<img class="uploaded-img" ng-src="{{item.img}}" alt="{{item.imgData.name}}" />
 										<div class="i-icon-holder"><i class="glyphicon glyphicon-camera"></i></div>
 										<p class="i-title">Imagen</p>
-										<img class="uploaded-img" ng-show="datear.img" ng-src="{{datear.img}}" alt="{{datear.imgData.name}}" />
+										<p class="filename">{{item.imgData.name}}</p>
 									</div>
 
 									<div class="media-item-inner item-file" ng-if="item.type == 'file'">
 										<div class="i-icon-holder"><i class="ul-icon glyphicon glyphicon-file"></i></div>
-										<p class="i-title">Archivo</p>
+										<div class="clearfix">
+											<p class="i-title">Archivo:</p><div class="uploaded-filename">{{item.fileData.name}}</div>
+										</div>
 										<div class="form-group file-title-field">
 											<label for="dateo-file-title">Título</label>
-											<input id="dateo-file-title" type="text" class="form-control input-sm" ng-model="datear.fileTitle" placeholder="Ingresa el título del archivo"/>
+											<div class="input-wrap">
+												<input id="dateo-file-title" type="text" class="form-control input-sm" ng-model="item.fileTitle" placeholder="Ingresa el título del archivo"/>
+											</div>
 										</div>
-										<div class="uploaded-filename">{{datear.fileData.name}}</div>
 									</div>
 
 									<div class="media-item-inner item-link" ng-if="item.type === 'link'">

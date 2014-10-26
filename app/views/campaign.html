@@ -46,31 +46,29 @@
 		</div>
 	</div>
 
-
-
 	<div class="viz-holder">
 		<div class="viz-nav">
 			<div class="menu-right" ng-hide="flow.showFilter">
 				<div class="btn-group main-menu-btn" dropdown is-open="status.isopen">
-		      <button type="button" class="btn btn-link dropdown-toggle" ng-disabled="disabled">
+		      <button type="button" class="btn btn-link dropdown-toggle" ng-disabled="disabled" dropdown-toggle>
 		  			<span class="glyphicon glyphicon-cog"></span>
 		      </button>
 		      <ul class="dropdown-menu dropdown-menu-right" role="menu">
 		        <li ng-if="flow.userIsOwner"><a href="#!/iniciativas/{{campaign.id}}/edit">Configuración</a></li>
 		        <li ng-if="flow.userIsOwner"><a href="#!/iniciativas/{{campaign.id}}/admin">Administrar dateos</a></li>
-		        <!--<li><a ng-click="flow.loadEmbedBuilder()">Insertar (embed)</a></li>-->
+		        <li><a ng-click="flow.loadEmbedBuilder()" href>Insertar (embed)</a></li>
 		        <!--<li><a href="#" target="_blank">Imprimir reporte</a></li>-->
 		        <li><a href="https://api.datea.io/csv-export/dateos/tag/{{campaign.main_tag.id}}/" target="_blank">Descargar dateos en CSV</a></li>
 		      </ul>
 		    </div>
 			</div>
 			<div class="search">
-				<form class="form search-form" ng-submit="flow.getDateos()">
+				<form class="form search-form" ng-submit="flow.getSearch($event)">
 					<!--<div class="form-group">-->
 						<div class="input-group">
-							<input type="text" class="form-control" ng-model="query.search">
+							<input type="text" class="form-control" ng-model="query.q">
 							<span class="input-group-btn">
-								<button class="btn btn-default" type="button" ng-click="flow.getDateos()"><i class="fa fa-search"></i></button>
+								<button class="btn btn-default" type="button" ng-click="flow.getSearch($event)"><i class="fa fa-search"></i></button>
 							</span>
 						</div>
 					<!--</div>-->
@@ -88,7 +86,7 @@
 			  <div class="filter-control" ng-click="flow.showFilter = !flow.showFilter">
 			  	<div class="filter-toggle-link" ng-class="{active: flow.showFilter}"><i class="fa fa-filter"></i></div>
 			  	<div class="query-text" ng-hide="flow.showFilter">
-			  		viendo: <span class="query-text-item" ng-repeat="text in query.textRep" ng-bind-html="text"></span>
+			  		viendo: <span class="query-text-item" ng-repeat="text in flow.queryTextRep" ng-bind-html="text"></span>
 			  	</div>
 			  </div>
 			</div>
@@ -120,7 +118,7 @@
 							<div class="category-filter query-item" ng-show="campaign.secondary_tags.length > 0">
 								<div class="form-group">
 									<label>filtrar etiqueta</label>
-									<select class="form-control" ng-model="query.tag" ng-options="item.value as item.label for item in query.tagFilterOptions"></select>
+									<select class="form-control" ng-model="query.tag" ng-options="item.value as item.label for item in flow.tagFilterOptions"></select>
 								</div>
 							</div>
 						</div>
@@ -129,7 +127,7 @@
 							<div class="apply">
 								<div class="limit-slider query-item">
 									<div class="form-group">
-										<label>Cargar {{query.limitLabel}} dateos</label>
+										<label>Cargar {{flow.queryLimitLabel}} dateos</label>
 										<div class="slider">
 											<input type="range" name="points" min="50" max="500" step="50" ng-model="query.limit"> 
 										</div>
@@ -138,10 +136,10 @@
 								<div class="orderby-control query-item">
 									<div class="form-group">
 										<label>Ordenar por</label>
-										<select class="form-control" ng-model="query.orderBy" ng-options="opt.val as opt.label for opt in query.orderByOptions"></select>
+										<select class="form-control" ng-model="query.order_by" ng-options="opt.val as opt.label for opt in query.orderByOptions"></select>
 									</div>
 								</div>
-								<button class="btn btn-lg btn-success pull-left apply-btn" ng-click="query.apply()">APLICAR</button> 
+								<button class="btn btn-lg btn-success pull-left apply-btn" ng-click="flow.getSearch($event)">APLICAR</button> 
 							</div>
 						</div>
 					</div>
@@ -165,7 +163,8 @@
 										<p class="dateos-more-results" ng-show="campaign.dateos.length > flow.dateoShowListNumResults">
 											<button class="btn btn-default btn-lg" ng-click="flow.showMoreListResults()">Ver más resultados</button>
 										</p>
-										<div class="no-results" ng-show="!campaign.dateos.length && !flow.loading">
+										<div class="no-results" ng-show="campaign.main_tag.dateo_count > 0 && !campaign.dateos.length && !flow.loading">No hay resultados <i class="fa fa-meh-o"></i></div>
+										<div class="no-results" ng-show="campaign.main_tag.dateo_count == 0 && !campaign.dateos.length && !flow.loading">
 										Aún no hay dateos en esta iniciativa. ¡Datea!
 										</div>
 								</div>

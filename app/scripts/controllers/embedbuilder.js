@@ -33,7 +33,6 @@ angular.module('dateaWebApp')
 	$scope.embed.width = $scope.embed.widthResult = config.embed.defaultWidth;
 	$scope.embed.height = config.embed.defaultHeight;
 	$scope.embed.widthResult = config.embed.width;
-	console.log($scope.embed);
 
 	// setting the range inputs again!
 	$timeout(function () {

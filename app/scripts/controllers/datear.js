@@ -51,7 +51,9 @@ angular.module('dateaWebApp')
 	  , reverseGeocode
 	  , mapToAddress
 	  , positionChanged  = false
-	  , hashtagify 
+	  , hashtagify
+	  , markerAnimInterval
+	  , markerIcon = config.visualization.defaultMarkerIcon 
 	;
 
 // Object to be sent
@@ -70,35 +72,17 @@ $scope.datear.onFinished    = false;
 $scope.datear.isScrolling   = false;
 $scope.datear.modalTitle    = $scope.dateo.id ? 'Editar dateo' : '¡Datea!';
 $scope.datear.mode          = $scope.dateo.id ? 'edit' : 'new';
+$scope.datear.showFileInput = false;
 $scope.flow.datearBtnLabel  = $scope.dateo.id ? 'Guardar': 'Datear';
 $scope.alerts               = [];
 $scope.datear.step				  = 1;
 
+if ($scope.datear.mode == 'new' || !$scope.dateo.position) {
+	markerIcon.className = 'datea-pin-icon pin-icon-not-set';
+}
+
 var $modal_body = $('#modal-body');
 if ($modal_body.size() && $modal_body.scrollTop() != 0 ) $modal_body.scrollTo(0,0);
-
-$scope.$on( 'leafletDirectiveMarker.dragend', function ( event ) {
-	positionChanged = true;
-	if ( $scope.datear.leaflet.center.zoom <= 16 ) {
-		$scope.datear.leaflet.center.lat  = $scope.datear.leaflet.markers.draggy.lat;
-		$scope.datear.leaflet.center.lng  = $scope.datear.leaflet.markers.draggy.lng;
-		$scope.datear.leaflet.center.zoom = $scope.datear.leaflet.center.zoom + 1;
-	}
-	if (boundary) {
-		var ll = L.latLng([$scope.datear.leaflet.markers.draggy.lat, $scope.datear.leaflet.markers.draggy.lng]);
-		if (leafletPip.pointInLayer(ll, boundary).length === 0) {
-			leafletData.getMap("leafletDatear")
-			.then( function ( map ) {
-				L.popup({
-					offset: L.point(0, -30)
-				})
-				.setLatLng([$scope.datear.leaflet.markers.draggy.lat, $scope.datear.leaflet.markers.draggy.lng])
-				.setContent('Fuera de la zona de esta iniciativa')
-				.openOn(map);
-			} );
-		}
-	}
-} );
 
 onGeolocation = function ( data ) {
 	var leaflet, pipResult, boundaryBounds;
@@ -110,7 +94,7 @@ onGeolocation = function ( data ) {
 		          , markers : { draggy : { lat : data.coords.latitude
 		                                 , lng : data.coords.longitude
 		                                 , draggable : true
-		                                 , icon      : config.visualization.defaultMarkerIcon
+		                                 , icon      : markerIcon
 		                                 }
 		                      }
 		          , events : 'dragend'
@@ -135,7 +119,7 @@ onGeolocation = function ( data ) {
 						  markers : {	draggy : { lat : mcenter.lat
 		                               , lng : mcenter.lng
 		                               , draggable : true
-		                               , icon      : config.visualization.defaultMarkerIcon
+		                               , icon      : markerIcon
 		                               }
 						  }
 						, events : 'dragend'	
@@ -170,7 +154,7 @@ onGeolocationError = function ( reason ) {
                                  		 , icon      : config.visualization.defaultMarkerIcon
                                  		 }
                       		}
-          		, events : 'dragend'
+          		//, events : 'dragend'
           		}
 		if (!boundary) {
 	  	angular.extend( $scope.datear.leaflet, leaflet );
@@ -191,7 +175,7 @@ onGeolocationError = function ( reason ) {
 			                               , icon      : config.visualization.defaultMarkerIcon
 			                               }
 							  }
-							, events : 'dragend'	
+							//, events : 'dragend'	
 						}
 						angular.extend( $scope.datear.leaflet, leaflet );
 				} );
@@ -213,7 +197,7 @@ onGeolocationError = function ( reason ) {
 		                                 , icon      : config.visualization.defaultMarkerIcon
 		                                 }
 		                      }
-		          , events : 'dragend'
+		          //, events : 'dragend'
 		          }
 		  angular.extend( $scope.datear.leaflet, leaflet );
 		}else{
@@ -229,7 +213,7 @@ onGeolocationError = function ( reason ) {
 		                               , icon      : config.visualization.defaultMarkerIcon
 		                               }
 						  }
-						, events : 'dragend'	
+						//, events : 'dragend'	
 					}
 			});
 		}
@@ -241,7 +225,9 @@ $scope.$on( 'leafletDirectiveMap.click', function ( event, args ) {
 	  , newDraggy = {}
 	  ;
 
+	$('.pin-icon-not-set').removeClass('pin-icon-not-set');
 	positionChanged = true;
+
 	newDraggy = { lat : leafEvent.latlng.lat
 	            , lng : leafEvent.latlng.lng
 	            , draggable : true
@@ -283,6 +269,32 @@ $scope.$on( 'leafletDirectiveMap.click', function ( event, args ) {
 
 	//reverseGeocode(leafEvent.latlng.lat, leafEvent.latlng.lng);
 
+} );
+
+$scope.$on( 'leafletDirectiveMarker.dragstart', function ( event, args ) {
+	$('.pin-icon-not-set').removeClass('pin-icon-not-set');
+});
+
+$scope.$on( 'leafletDirectiveMarker.dragend', function ( event, args ) {
+	var center = args.leafletEvent.target.getLatLng();
+	positionChanged = true;
+	$scope.datear.leaflet.center.lat  = $scope.datear.leaflet.markers.draggy.lat = center.lat;
+	$scope.datear.leaflet.center.lng  = $scope.datear.leaflet.markers.draggy.lng = center.lng;
+	if ($scope.datear.leaflet.center.zoom <= 16 ) $scope.datear.leaflet.center.zoom++;
+	if (boundary) {
+		var ll = L.latLng([$scope.datear.leaflet.markers.draggy.lat, $scope.datear.leaflet.markers.draggy.lng]);
+		if (leafletPip.pointInLayer(ll, boundary).length === 0) {
+			leafletData.getMap("leafletDatear")
+			.then( function ( map ) {
+				L.popup({
+					offset: L.point(0, -30)
+				})
+				.setLatLng([$scope.datear.leaflet.markers.draggy.lat, $scope.datear.leaflet.markers.draggy.lng])
+				.setContent('Fuera de la zona de esta iniciativa')
+				.openOn(map);
+			} );
+		}
+	}
 } );
 
 
@@ -397,13 +409,8 @@ $scope.$watch( 'flow.dp.dateoDate', function () {
 
 $scope.datear.doDatear = function () {
 	
-
-	var tags = [];
 	// Tags
-	angular.forEach( $scope.datear.selectedTags, function ( value, key ){
-		tags.push( { 'tag' : value } );
-	});
-	$scope.dateo.tags = tags;
+	$scope.dateo.tags = $scope.datear.selectedTags;
 
 	// Position
 	if (positionChanged) {
@@ -412,40 +419,44 @@ $scope.datear.doDatear = function () {
 	    	                    }
 	}
 
-	// Images
-	if ( $scope.datear.imgData ) {
-		if ($scope.datear.imgData.id) {
-			$scope.dateo.images = [$scope.datear.imgData];
-		} else {
-			$scope.dateo.images = [ { image : { name     : $scope.datear.imgData.name
-			                                  , data_uri : $scope.datear.img
-			                                  }
-			                        , order : 0
-			                        }
-			                      ];
-		}
-	}
+	// Media (except link)
+	$scope.dateo.images = [];
+	$scope.dateo.files  = [];
+	angular.forEach($scope.datear.selectedMedia, function (item) {
+		var media;
+		switch (item.type) {
+			case 'image':
+				if (item.imgData.id) {
+					media = item.imgData;
+				}else{
+					media = { image : { name     : item.imgData.name
+						  							, data_uri : item.img }
+									, order : item.order 
+								  };
+				}
+				$scope.dateo.images.push(media);
+				break;
 
-	// Files
-	if ( $scope.datear.fileData) {
-		if ($scope.datear.fileData.id) {
-			$scope.datear.fileData.title = $scope.datear.fileTitle;
-			$scope.dateo.files = [$scope.datear.fileData];
-		}else{
-			$scope.dateo.files = [ { file   : { name     : $scope.datear.fileData.name
-			                                  , data_uri : $scope.datear.file
-			                                  }
-			                        , title : $scope.datear.fileTitle || $scope.datear.fileData.name
-			                        , order : 0
-			                        }
-			                      ];
+			case 'file':
+				if (item.fileData.id) {
+					item.fileData.title = item.fileTitle;
+					media = item.fileData;
+				}else{
+					media = { file  : { name     : item.fileData.name
+						  						  , data_uri : item.file }
+						  		, title : item.fileTitle || item.fileData.name
+									, order : item.order 
+								  };
+				}
+				$scope.dateo.files.push(media);
+				break;
 		}
-	}
+	});
 
 	// Link 
-	//if ($scope.dateo.link === null) {
-	//	$scope.dateo.link = undefined;
-	//}
+	if ($scope.dateo.link === null) {
+		$scope.dateo.link = undefined;
+	}
 
 	if ( $scope.dateo.content && $scope.dateo.tags.length ) {
 		$scope.datear.loading = true;
@@ -462,6 +473,8 @@ $scope.datear.doDatear = function () {
 				User.writeDataToStorage();
 			} , function ( reason ) {
 				console.log( reason );
+				$scope.addAlert({type: 'danger', 'msg': 'Hubo un error al datear :( - Intentalo de nuevo'});
+				$scope.datear.loading = false;
 			} );
 		}else {
 			Api.dateo.patch( $scope.dateo )
@@ -474,6 +487,8 @@ $scope.datear.doDatear = function () {
 				$modalInstance.dismiss('cancel');
 			} , function ( reason ) {
 				console.log( reason );
+				$scope.addAlert({type: 'danger', 'msg': 'Hubo un error al datear :( - Intentalo de nuevo'});
+				$scope.datear.loading = false;
 			} );
 		}
 	} else {
@@ -678,58 +693,80 @@ $scope.flow.closeSelectAddress = function () {
 initMedia = function () {
 	if ($scope.dateo.id) {
 		if ($scope.dateo.link && $scope.dateo.link.url) {
-			$scope.datear.selectedMedia.unshift({type: 'link', order: 0});
+			$scope.datear.selectedMedia.push({type: 'link', order: 0});
 		}
 		if ($scope.dateo.images && $scope.dateo.images.length) {
-			$scope.datear.img = config.api.imgUrl+$scope.dateo.images[0].image;
-			$scope.datear.imgData = $scope.dateo.images[0];
-			//$scope.datear.selectedMedia.unshift({type: 'image', order: 0});			
+			angular.forEach($scope.dateo.images, function (img) {
+				var path = img.image.split('/')
+				img.name = path[path.length -1];
+				$scope.datear.selectedMedia.push({
+					  type    : 'image'
+					, img     :  config.api.imgUrl+img.image
+					, imgData : img
+					, order   : img.order
+				});
+			});		
 		}
 		if ($scope.dateo.files && $scope.dateo.files.length) {
-			$scope.datear.file = $scope.dateo.files[0].image;
-			$scope.datear.fileData = $scope.dateo.files[0];
-			$scope.datear.fileTitle = $scope.dateo.files[0].title;
-			//$scope.datear.selectedMedia.unshift({type: 'file', order: 0});
+			angular.forEach($scope.dateo.files, function (file) {
+				var path = file.file.split('/')
+				file.name = path[path.length -1];
+				$scope.datear.selectedMedia.push({
+					  type      : 'file'
+					, file      : file.file
+					, fileData  : file
+					, fileTitle : file.title
+					, order     : file.order
+				});
+			});
 		}
 	}
+}
+
+$scope.datear.toggleFileInput = function(fileType) {
+	if (!$scope.datear.showFileInput || !$scope.datear.activeFileInputType || $scope.datear.activeFileInputType === fileType) {
+		$scope.datear.showFileInput = !$scope.datear.showFileInput;
+	}
+	$scope.datear.activeFileInputType = fileType;
+}
+
+$scope.datear.fileInputCallback = function (files) {
+	$scope.$apply(function () {
+		$scope.datear.showFileInput = false;
+		for (var f in files) {
+			if ($scope.datear.selectedMedia.length < 10) {
+				var file = files[f];
+				if (file.type === 'image') {
+					var orderIdx = $scope.datear.selectedMedia.filter(function(m){return m.type === 'image'}).length;
+					$scope.datear.selectedMedia.push({
+						  type    : 'image'
+						, img     : file.file
+						, imgData : file.data
+						, order   : orderIdx
+					});
+				}else if (file.type === 'file') {
+					var orderIdx = $scope.datear.selectedMedia.filter(function(m){return m.type === 'file'}).length;
+					$scope.datear.selectedMedia.push({
+						  type     : 'file'
+						, file     : file.file
+						, fileData : file.data
+						, order    : orderIdx
+					});
+				}
+			}
+		}
+	});
 }
 
 $scope.datear.removeMedia = function (idx) {
 
 	var mediaType = $scope.datear.selectedMedia[idx].type;
 	$scope.datear.selectedMedia.splice(idx, 1);
-	switch (mediaType) {
-		case 'image':
-			$scope.datear.img = null;
-			$scope.datear.imgData = null;
-			if ($scope.dateo.images && $scope.dateo.images.length) {
-				$scope.dateo.images = [];
-			}
-			break;
-		case 'file':
-			$scope.datear.file = null;
-			$scope.datear.fileData = null;
-			if ($scope.dateo.files && $scope.dateo.files.length) {
-				$scope.dateo.files = [];
-			}
-			break;
-		case 'link':
-			$scope.dateo.link = null;
-			break;
+
+	if (mediaType === 'link') {
+		$scope.dateo.link = null;
 	}
 }
-
-$scope.$watch('datear.imgData', function () {
-	if (!!$scope.datear.imgData) {
-		$scope.datear.selectedMedia.unshift({type: 'image', order: 0});
-	}
-});
-
-$scope.$watch('datear.fileData', function () {
-	if (!!$scope.datear.fileData) {
-		$scope.datear.selectedMedia.unshift({type: 'file', order: 0});
-	}
-});
 
 $scope.datear.link.add = function () {
 	if (!$scope.dateo.link) {
@@ -840,7 +877,10 @@ if ( datearModalGivens.defaultTag ) {
 	$scope.datear.selectedTags.push( datearModalGivens.defaultTag );
 }
 if ($scope.dateo.tags && $scope.dateo.tags.length) {
-	$scope.datear.selectedTags = $scope.dateo.tags.map(function(t){return t.tag;});
+	$scope.datear.selectedTags = $scope.dateo.tags.map(function(t){
+		if (typeof(t) == 'string') return t;
+		return t.tag;
+	});
 }
 
 if ( datearModalGivens.suggestedTags ) {

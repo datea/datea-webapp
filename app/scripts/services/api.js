@@ -69,11 +69,14 @@ angular.module('dateaWebApp')
 		, 'post' : { method  : 'POST'
 		           , headers : headers || ls.get('token') }
 		, 'patch' : { method  : 'PATCH'
-		           , headers : headers || ls.get('token') }
-		, 'put' : {  method  : 'PUT'
-		           , headers : headers || ls.get('token') 
-		           , url     : config.api.url + 'dateo/:id'
-           		 , params  : { id: '@id'} 
+		            , headers : headers || ls.get('token') 
+		            , url     : config.api.url + 'dateo/:id'
+           		  , params  : { id: '@id'} 
+		            }
+		, 'put' : { method  : 'PUT'
+		          , headers : headers || ls.get('token') 
+		          , url     : config.api.url + 'dateo/:id'
+           		, params  : { id: '@id'} 
 		          }
 		, 'delete' : { method  : 'DELETE'
            			 , headers : headers || ls.get('token') 

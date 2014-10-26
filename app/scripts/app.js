@@ -6,13 +6,14 @@ angular.module( 'dateaWebApp'
   , 'ngSanitize'
   , 'ngRoute'
   , 'LocalStorageModule'
-  , 'ui.bootstrap'
   , 'leaflet-directive'
   , 'geolocation'
   , 'FSAngular'
   , 'monospaced.elastic'
   , 'ngSocial'
   , 'angular-bootstrap-select'
+  , 'ui.bootstrap'
+  , 'ui.bootstrap.dropdown'
   , 'duScroll'
   , 'angularCharts'
   , 'daPiecluster'
@@ -100,6 +101,7 @@ angular.module( 'dateaWebApp'
 	.when( '/tag/:tagName'
 	  , { templateUrl: 'views/tag.html'
 	    , controller: 'TagCtrl'
+	    , reloadOnSearch: false
 	    } )
 	.when( '/iniciativas/:campaignId/edit'
 		, { templateUrl: 'views/campaign-dashboard.html'
@@ -126,11 +128,15 @@ angular.module( 'dateaWebApp'
 		/* COMPATIBILITY WITH OLD URLS */
 	.when( '/dateos/:dateoId'
 		, { templateUrl: 'views/redirect.html'
-			, controller : 'redirectToDateoCtrl' 
+			, controller : 'RedirectToDateoCtrl' 
 		} )
 	.when( '/mapeo/:campaignId/dateos/:dateoId'
 		, { templateUrl: 'views/redirect.html'
 			, controller : 'RedirectToDateoCtrl' 
+		} )
+	.when( '/mapeo/:campaignId/dateos'
+		, { templateUrl: 'views/redirect.html'
+			, controller : 'RedirectToCampaignCtrl' 
 		} )
 	.when( '/mapeo/:campaignId'
 		, { templateUrl: 'views/redirect.html'
@@ -146,6 +152,7 @@ angular.module( 'dateaWebApp'
 	.when( '/:username/:campaignName'
 	  , { templateUrl: 'views/campaign.html'
 	    , controller: 'CampaignCtrl'
+	    , reloadOnSearch: false
 	    } )
 	.when( '/:username/dateos/:dateoId'
 	  , { templateUrl: 'views/dateo-detail.html'
@@ -159,6 +166,7 @@ angular.module( 'dateaWebApp'
 
 	localStorageServiceProvider.prefix = 'datea';
 
+	/*
 	var $http,
 	interceptor = ['$q', '$injector', function ($q, $injector) {
 		var error;
@@ -187,6 +195,6 @@ angular.module( 'dateaWebApp'
 		}
 	}];
 
-	$httpProvider.responseInterceptors.push(interceptor);
+	$httpProvider.responseInterceptors.push(interceptor);*/
 
 } ] );

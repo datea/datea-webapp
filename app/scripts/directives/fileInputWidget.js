@@ -4,44 +4,111 @@ angular.module('dateaWebApp')
 .directive('fileInputWidget', [
   '$rootScope'
 , 'config'
+, '$timeout'
 , function (
   $rootScope
 , config
+, $timeout
 ) {
 	return {
-		scope: { 
-			, callBack   : '&'
-			, uploadType : '@'
-			, maxImgSize : '@'
-		}
+			restrict: "E"
 		, templateUrl: "views/file-input-widget.html"
+		, scope: { 
+			  callback   : '&'
+			, fileType   : '@'
+			, maxImgSize : '@'
+			, maxNumber  : '@'
+		}
 		, link: function (scope, element, attrs) {
 
 			var maxImgSize = attrs.maxImgSize ? parseInt(attrs.maxImgSize) : config.maxImgSize;
-			var inputType = attrs.inputType ? parseInt(attrs.inputType) : 'image';
+			scope.maxNumber = attrs.maxNumber ? parseInt(attrs.maxNumber) : 20;
 			var processFiles;
+			scope.flow = {};
 
-			FileAPI.event.on(element[0], 'change', function (ev) {
-				var files = FileAPI.getFiles(ev);
+			attrs.$observe('maxNumber', function(num) {
+				scope.maxNumber = num ? parseInt(num) : 20;
 			});
 
-			FileAPI.event.on(document, 'drop', function (evt){
-			  evt.preventDefault();
-			  FileAPI.getDropFiles(evt, processFiles);
+			attrs.$observe('fileType', function (ftype) {
+				scope.fileType = ftype ? ftype : 'image';
+				if (scope.fileType === 'image') {
+					scope.flow.accept = 'image/*';
+					if (!scope.maxNumber || scope.maxNumber > 1) {
+						scope.flow.dragMessage = 'suelta <strong>imágenes</strong> aquí';
+						scope.flow.btnMessage = 'Elige imágenes para subir';
+					}else{
+						scope.flow.dragMessage = 'suelta una <strong>imagen</strong> aquí';
+						scope.flow.btnMessage = 'Elige una imagen para subir';
+					}
+				}else{
+					scope.flow.accept = config.allowedMimetypes.join(',');
+					if (!scope.maxNumber || scope.maxNumber > 1) {
+						scope.flow.dragMessage = 'suelta <strong>archivos</strong> aquí';
+						scope.flow.btnMessage = 'Elige archivos para subir';
+					}else{
+						scope.flow.dragMessage = 'suelta un <strong>archivo</strong> aquí';
+						scope.flow.btnMessage = 'Elige un archivo para subir';
+					}
+				}
+			});
+
+			$timeout(function () {
+				FileAPI.event.on(element.find('#inputFileElement')[0], 'change', function (ev) {
+					var files = FileAPI.getFiles(ev);
+					processFiles(files);
+				});
+			}, 100);
+			/*
+			$(document).dnd(function (over){
+				scope.$apply(function() {
+					scope.flow.isOver = over;
+				});
+				}, function (files){
+					processFiles(files);
+			});*/
+
+			
+			$(document).on('dragenter', function (ev) {
+				ev.preventDefault();
+				ev.stopPropagation();
+				scope.$apply(function () {
+					scope.flow.isOver = true;
+				});
+			});
+
+			$(document).on('dragover', function (ev) {
+				ev.preventDefault();
+				ev.stopPropagation();
+			});
+
+			$(document).on('drop', function (ev) {
+				scope.$apply(function () {
+					scope.flow.isOver = false;
+					scope.flow.loading = true;
+				});
+				var files    = []
+					, fileList = ev.originalEvent.dataTransfer.files
+					;
+				ev.preventDefault();
+				ev.stopPropagation();
+				
+				for (var i=0; i < fileList.length; i++) {
+					files.push(fileList[i]);
+				}
+				processFiles(files);
 			});
 
 			processFiles = function (files) {
-
 				FileAPI.filterFiles(files, function(file, info) {
-					if (file.type.split('/')[0] === 'image') {
+					if (scope.fileType === 'image' && file.type.split('/')[0] === 'image') {
 						return true;
-					} else if (config.allowedMimetypes.indexOf(file.type) !== -1) {
+					} else if (scope.fileType === 'file' && config.allowedMimetypes.indexOf(file.type) !== -1) {
 						return true;
 					}else{
 						return false;
 					}
 				}, function (files, rejected) {
-
 						if (files.length) {
 							var results = [];
 					
@@ -52,38 +119,51 @@ angular.module('dateaWebApp')
 								;
 								var dataUri;
 								if (file.type.split('/')[0] == 'image') {
-									FileAPI.getInfo(file, function (err, info) { console.log(info)});
 									FileAPI.Image(file)
 									.rotate('auto')
 									.resize(maxImgSize, maxImgSize, 'max')
 									.get(function (err, canvas) {
-										scope.$apply(function () {
+										// no gifs
+										if (canvas) {
 											mime = (file.type == 'image/jpeg' || file.type == 'image/png') ? file.type : 'image/png';
 											dataUri = canvas.toDataURL(mime, 1);
-											results.push({ data: file, file: dataUri });
-											//$rootScope.$broadcast( 'datea:fileLoaded', args);
-										});
+											results.push({ data: file, file: dataUri, type: 'image' });
+											if (results.length === files.length) {
+												scope.callback({files: results});
+												$timeout(function () {
+													scope.flow.loading = false;
+												}, 0, true);
+											}
+										}
 									});
 								}else{
 									FileAPI.readAsDataURL(file, function (ev) {
 										if (ev.type == 'load') {
-											scope.$apply(function () {
-												dataUri = ev.result;
-												results.push({ data: file, file: dataUri });
-												//$rootScope.$broadcast( 'datea:fileLoaded', args);
-											});
+											dataUri = ev.result;
+											results.push({ data: file, file: dataUri, type: 'file' });
+											if (results.length === files.length) {
+												scope.callback({files: results});
+												$timeout(function () {
+													scope.flow.loading = false;
+												}, 0, true);
+											}
 										}
 									});
 								}
 							}
-							$rootScope.$broadcast( 'datea:filesLoaded', results);
+						}else{
+							$timeout(function () {
+								scope.flow.loading = false;
+							}, 0, true);
 						}
 				});
 			}
 
 			scope.$on('$destroy', function() {
         FileAPI.event.off(element, 'change');
-        FileAPI.event.off(document, 'drop');
+        $(document).off('drop');
+        $(document).off('dragover');
+        $(document).off('dragenter');
       });
 		}
 	}

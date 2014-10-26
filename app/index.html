@@ -32,7 +32,6 @@
 	<!-- Place favicon.ico and apple-touch-icon.png in the root directory -->
 
 	<!-- build:css({app,.tmp}) styles/main.css -->
-	<link rel="stylesheet" href="bower_components/leaflet-dist/leaflet.css">
 	<link rel="stylesheet" href="bower_components/bootstrap-social/bootstrap-social.css">
 	<link rel="stylesheet" href="bower_components/Leaflet.label/dist/leaflet.label.css">
 	<link rel="stylesheet" href="bower_components/leaflet.markerclusterer/dist/MarkerCluster.css">
@@ -42,9 +41,11 @@
 	<link rel="Stylesheet" href="bower_components/bootstrap-select/dist/css/bootstrap-select.min.css">
 	<link rel="stylesheet" href="styles/main.css">
 	<link rel="stylesheet" href="styles/fontcustom.css">
+	<link rel="stylesheet" href="bower_components/magnific-popup/dist/magnific-popup.css">
 	<!-- endbuild -->
 
 	<!-- CDN -->
+	<link rel="stylesheet" href="http://cdn.leafletjs.com/leaflet-0.7.3/leaflet.css" />
 	<link href="//netdna.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.min.css" rel="stylesheet">
 
 	<style>
@@ -88,11 +89,20 @@
 	</div>
 
 	<script>
-	/* redirect to hashbang */
+	/* redirect to hashbang, before errors popup up */
 	var path = document.location.pathname;
 	if (path != '/' && path != '/index.html') {
-		console.log('redirect', path);
 		document.location.href = '/#!'+path;
+	}else{
+		var hash = document.location.hash;
+		if (hash.length > 1 && hash.charAt(1) !== '!') {
+			if (hash.charAt(1) == '/') {
+				hash = hash.replace('#/', '#!/');
+			}else{
+				hash = hash.replace('#', '#!/');
+			}
+			document.location.hash = hash;
+		}
 	}
 	</script>
 
@@ -106,14 +116,16 @@
   ga('create', 'UA-55009268-1', 'auto');
 	</script>
 	
-	<!-- <script src="bower_components/angular/angular.js"></script> -->
-	<script src="bower_components/jquery/dist/jquery.js"></script>
-	<!--<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.2.20/angular.js"></script>-->
-	<script src="bower_components/angular/angular.js"></script>
-	<script src="bower_components/leaflet-dist/leaflet.js"></script>
-	<script src="https://api.datea.io:6284/download/latest/oauth.js"></script>
+	<!--<script src="bower_components/jquery/dist/jquery.js"></script>-->
+	<!--<script src="https://code.jquery.com/jquery-2.1.1.min.js"></script>-->
+	<!--<script src="//cdnjs.cloudflare.com/ajax/libs/angular.js/1.2.20/angular.min.js"></script>-->
+	<!--<script src="bower_components/angular/angular.js"></script>-->
+	<!--<script src="bower_components/leaflet-dist/leaflet.js"></script>-->
+	<!--<script src="http://cdn.leafletjs.com/leaflet-0.7.3/leaflet.js"></script>-->
 	<!--<script src="//cdnjs.cloudflare.com/ajax/libs/d3/3.4.8/d3.min.js"></script>-->
-	<script src="bower_components/d3/d3.js"></script>
+	<!--<script src="bower_components/d3/d3.js"></script>-->
+
+	<!--<script src="https://api.datea.io/oauth/download/latest/oauth.js"></script>-->
 
 <!--
 	<script src="bower_components/birdangular/sha1.js"></script>
@@ -123,11 +135,16 @@
  -->
 
 	<!-- build:js scripts/modules.js -->
+	<script src="scripts/extra/oauth.js"></script>
+	<script src="bower_components/jquery/dist/jquery.js"></script>
+	<script src="bower_components/angular/angular.js"></script>
+	<script src="bower_components/leaflet-dist/leaflet.js"></script>
+	<script src="bower_components/d3/d3.js"></script>
 	<script src="bower_components/leaflet-pip/leaflet-pip.min.js"></script>
 	<script src="bower_components/datejs/build/production/date.min.js"></script>
 	<script src="bower_components/angular-local-storage/angular-local-storage.js"></script>
-	<script src="bower_components/angular-ui-bootstrap-bower/ui-bootstrap.js"></script>
-	<script src="bower_components/angular-ui-bootstrap-bower/ui-bootstrap-tpls.js"></script>
+	<script src="bower_components/angular-ui-bootstrap-bower/dist/ui-bootstrap-0.12.0-SNAPSHOT.js"></script>
+	<script src="bower_components/angular-ui-bootstrap-bower/dist/ui-bootstrap-tpls-0.12.0-SNAPSHOT.min.js"></script>
 	<script src="bower_components/angular-leaflet-directive/dist/angular-leaflet-directive.js"></script>
 	<script src="bower_components/leaflet.markerclusterer/dist/leaflet.markercluster.js"></script>
 	<script src="bower_components/Leaflet.label/dist/leaflet.label.js"></script>
@@ -149,10 +166,11 @@
 	<script src="bower_components/da-piecluster/da-piecluster.js"></script>
 	<script src="bower_components/da-angular-seo/angular-seo.js"></script>
 	<script src="bower_components/jcarousel/dist/jquery.jcarousel.min.js"></script>
-	<script src="bower_components/FileApi/dist/FileAPI.html5.min.js"></script>
+	<script src="bower_components/FileApi/dist/FileAPI.html5.js"></script>
 	<script src="bower_components/FileApi/plugins/FileAPI.exif.js"></script>
 	<script src="bower_components/angulartics/dist/angulartics.min.js"></script>
 	<script src="bower_components/angulartics/dist/angulartics-ga.min.js"></script>
+	<script src="bower_components/magnific-popup/dist/jquery.magnific-popup.min.js"></script>
 	<!-- endbuild -->
 
 	<!-- build:js({.tmp,app}) scripts/scripts.js -->
@@ -214,6 +232,9 @@
 	<script src="scripts/controllers/main-bckp.js"></script>
 	<script src="scripts/controllers/dateo-search.js"></script>
 	<script src="scripts/controllers/embedbuilder.js"></script>
+	<script src="scripts/directives/fileInputWidget.js"></script>
+	<script src="scripts/directives/magnificPopup.js"></script>
+	<script src="scripts/extra/leaflet-draw-es.js"></script>
 	<!-- endbuild -->
 
 	<!-- clip path for individual markers -->

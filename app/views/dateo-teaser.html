@@ -12,12 +12,12 @@
 			</div>
 		</div>
 
-		<p class="tags"><a class="tag" ng-repeat="tag in dateo.tags" href="/#!/tag/{{tag.tag}}">#{{tag.tag}}</a></p>
+		<p class="tags"><a class="tag" ng-repeat="tag in dateo.tags" href="/#!/tag/{{tag}}">#{{tag}}</a></p>
 		<p class="content" ng-bind-html="dateo.extract | linky:'_blank'"></p>
 
-		<div class="images" ng-show="dateo.images.length">
-			<a class="image" href ng-repeat="img in dateo.images" ng-click="flow.imgDetail(img.image)">
-				<img class="part" ng-src="{{img.thumb | imgFromApi}}" alt="sorry">
+		<div class="images" ng-show="dateo.images.length" image-gallery>
+			<a class="image slide" href="{{img.image | imgFromApi}}" ng-repeat="img in dateo.images">
+				<div class="img" da-bg-from-api="{{img.thumb}}" da-img-size="cover"></div>
 			</a>
 		</div>
 

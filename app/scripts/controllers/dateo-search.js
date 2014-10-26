@@ -57,7 +57,8 @@ angular.module('dateaWebApp')
 	  , serializeXmlNode
 	  , sessionMarkersIdx
 	  , queryParamsToText
-	  , safariMapLayoutFix 
+	  , safariMapLayoutFix
+	  , idxToDateoId
 	;
 
 	$scope.query  = {
@@ -113,6 +114,10 @@ angular.module('dateaWebApp')
 		}
 	}
 
+	$scope.flow.goToHashtag = function(){
+		$location.path('/tag/'+$scope.query.q.replace('#', ''));
+	}
+
 	paramsToQuery = function () {
 		var params = {}
 			, q;
@@ -136,12 +141,19 @@ angular.module('dateaWebApp')
 			, q    = $scope.query
 			, showing
 		;
-
-		showing = numResults > q.limit ? q.limit : numResults;
+		if (numResults !== undefined) {
+			showing = numResults > q.limit ? q.limit : numResults;
+		}else{
+			showing = q.limit;
+		}
 		// order by
-		if (q.order_by === '-created') text.push('últimos '+showing);
-		if (q.order_by === '-vote_count') text.push(showing+' más apoyados');
-		if (q.order_by === '-comment_count') text.push(showing+' más comentados');
+		if (showing > 0) {
+			if (q.order_by === '-created') text.push('últimos '+showing);
+			if (q.order_by === '-vote_count') text.push(showing+' más apoyados');
+			if (q.order_by === '-comment_count') text.push(showing+' más comentados');
+		}else{
+			text.push('sin resultados');
+		}
 		// date
 		if (q.since && q.until) {
 			text.push($filter('date')(q.since, 'd/M/yy') + ' > '+ $filter('date')(q.until, 'd/M/yy'));
@@ -177,11 +189,12 @@ angular.module('dateaWebApp')
 				safariMapLayoutFix();
 				$scope.flow.dateoShowListNumResults = config.defaultdateoNumResults;
 				$scope.result.dateos = response.objects;
-				geodateos = response.objects.filter(function (d) { return !!d.position; });
-				buildMarkers( { dateos: geodateos } );
+				idxToDateoId = response.objects.map(function (d) {return d.id});
+				buildMarkers( { dateos: response.objects } );
 				$scope.result.totalDateos = response.meta.total_count;
 			}else if (tab === 'images') {
 				$scope.result.dateosWithImages = response.objects;
+				$scope.result.totalDateos = response.meta.total_count;
 			} 
 			$scope.flow.loading = false;
 			queryParamsToText(response.objects.length);
@@ -242,23 +255,27 @@ angular.module('dateaWebApp')
 
 		angular.forEach( dateos, function ( value, key ) {
 			// default image for markers
-			addMarker(value);
-			markersBounds.push( [ value.position.coordinates[1], value.position.coordinates[0] ] );
+			if (!!value.position) {
+				addMarker(value);
+				markersBounds.push( [ value.position.coordinates[1], value.position.coordinates[0] ] );
+			}
 		} );
 		//center.lat  = markers.marker0.lat;
 		//center.lng  = markers.marker0.lng;
 		//center.zoom = config.campaign.mapZoomFocus;
 		//angular.extend( $scope.flow.leaflet.markers, markers );
 		//angular.extend( $scope.flow.leaflet.center, center );
-		leafletData.getMap("leafletSearch")
-		.then( function ( map ) {
-			map.fitBounds( markersBounds );
-		} );
+		if (Object.keys($scope.flow.leaflet.markers).length) {
+			leafletData.getMap("leafletSearch")
+			.then( function ( map ) {
+				map.fitBounds( markersBounds );
+			} );
+		}	
 	}
 
 	buildMarker = function(dateo) {
 		var label;
-		label = '#'+dateo.tags.slice(0,2).map(function(t){ return t.tag; }).join(', #');
+		label = '#'+dateo.tags.slice(0,2).join(', #');
 		if (dateo.tags.length > 2) label = label+'...';
 
 		return {
@@ -277,29 +294,26 @@ angular.module('dateaWebApp')
 
 	addMarker = function (dateo) {
 		var marker = buildMarker(dateo);
-		$scope.flow.leaflet.markers['marker'+sessionMarkersIdx] = marker;
+		$scope.flow.leaflet.markers['marker'+dateo.id] = marker;
 		sessionMarkersIdx ++; 
 	}
 
-	createMarkerPopup = function (markerName, latLng) {
+	createMarkerPopup = function (marker) {
 		$http.get('views/dateo-map-popup.html')
  		.success(function(html) {
- 			var compiled, pscope, pelem, idx;
- 			idx = parseInt(markerName.replace('marker',''));
+ 			var compiled, pscope, pelem, idx, latLng;
+ 			idx = idxToDateoId.indexOf(marker.options._id);
  			pscope = $scope.$new(true);
  			pscope.dateo = $scope.result.dateos[idx];
  			pscope.dateFormat = config.defaultDateFormat;
- 			pscope.index = idx;
  			pscope.openDetail = function () {
- 				$scope.flow.openDateoDetail(idx);
+ 				$scope.flow.openDateoDetail(pscope.dateo.id);
  			}
  			pscope.tags = pscope.dateo.tags.slice(0, 2);
  			compiled = $compile(angular.element(html));
  			pelem = compiled(pscope);
 
- 			if (!latLng) {
- 				latLng = L.latLng(pscope.dateo.position.coordinates[1], pscope.dateo.position.coordinates[0]);
- 			}
+ 			latLng = marker.getLatLng();
 
  			leafletData.getMap("leafletSearch")
 			.then( function ( map ) {
@@ -329,34 +343,38 @@ angular.module('dateaWebApp')
 	$scope.$on('user:hasDateado', function (event, args){
 		if (args.created) {
 			$scope.result.dateos.unshift(args.dateo);
+			idxToDateoId.unshift(args.dateo.id);
    		if (args.dateo.is_geolocated) addMarker(args.dateo);
    		if (args.dateo.has_images) $scope.result.dateosWithImages.unshift(args.dateo);
-   		$scope.flow.focusDateo(0); 
+   		if (!!args.dateo.position) $scope.flow.focusDateo(args.dateo.id); 
 		}
 	});
 
-	$scope.flow.focusDateo = function ( idx ) {
+	$scope.flow.focusDateo = function ( id ) {
 		var markerName;
-		markerName  = "marker"+idx;
+		markerName  = "marker"+id;
 
 		leafletData.getMarkers('leafletSearch')
 		.then(function (markers) {
 			var cluster = leafletMarkersHelpers.getCurrentGroups().search;
 			var marker = markers[markerName];
-			if (cluster) {
+			if (cluster && marker) {
 				cluster.zoomToShowLayer(marker, function () {
 					$scope.flow.leaflet.markers[markerName].focus;
-					createMarkerPopup(markerName, marker.getLatLng());
+					createMarkerPopup(marker);
 				});
 			} 
 		});
 	}
 
-	$scope.flow.openDateoDetail = function (index) {
-		$scope.flow.dateoDetail.dateo       = $scope.result.dateos[index];
+	$scope.flow.openDateoDetail = function (id) {
+		var index = idxToDateoId.indexOf(id)
+			, dateo = $scope.result.dateos[index]
+		;
+		$scope.flow.dateoDetail.dateo       = dateo;
 		$scope.flow.dateoDetail.markerIndex = index;
 		$scope.flow.dateoDetail.show        = true;
-		$scope.flow.focusDateo(index);
+		if (!!dateo.position) $scope.flow.focusDateo(id);
 	}
 
 	$scope.flow.closeDateoDetail = function (index) {
@@ -365,11 +383,11 @@ angular.module('dateaWebApp')
 	}
 
 	$scope.$on('focus-dateo', function (event, args) {
-		$scope.flow.focusDateo(args.index);
+		$scope.flow.focusDateo(args.id);
 	} );
 
 	$scope.$on('open-dateo-detail', function (event, args) {
-		$scope.flow.openDateoDetail(args.index);
+		$scope.flow.openDateoDetail(args.id);
 	} );
 
 	$scope.$on('close-dateo-detail', function () {
@@ -378,7 +396,7 @@ angular.module('dateaWebApp')
 
 	$scope.$on('leafletDirectiveMarker.click', function(event, args) {
 		$scope.flow.leaflet.markers[args.markerName].focus = true;
-		createMarkerPopup(args.markerName);
+		createMarkerPopup(args.leafletEvent.target);
 	});
 
 	$scope.flow.scrollToCampaigns = function (event) {

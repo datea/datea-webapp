@@ -13,6 +13,8 @@ angular.module('dateaWebApp')
   , '$modal'
   , '$location'
   , 'shareMetaData'
+  , '$timeout'
+  , '$rootScope'
 , function (
     $scope
   , User
@@ -25,6 +27,8 @@ angular.module('dateaWebApp')
   , $modal
   , $location
   , shareMetaData
+  , $timeout
+  , $rootScope
 ) {
 
 	var sup
@@ -156,6 +160,7 @@ angular.module('dateaWebApp')
 				, imageUrl    : ($scope.targetUser.image_large) ? config.api.imgUrl + $scope.targetUser.image_large : config.app.url + config.defaultImgProfile
 			};
 			shareMetaData.setData(shareData);
+			$rootScope.htmlReady();
 
 		}, function ( reason ) {
 			console.log( 'user error reason:', reason );

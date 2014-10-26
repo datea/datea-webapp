@@ -13,9 +13,11 @@ angular.module('dateaWebApp')
 
 	return {
 		  data : angular.copy(defaultShareData)
+		, init : true
 
 		, resetToDefault : function () {
 				this.data = angular.copy(defaultShareData);
+				this.init = false;
 			}
 
 		,	setData : function (givens) {
@@ -31,6 +33,7 @@ angular.module('dateaWebApp')
 				}else{
 					this.data.url = config.app.url + '/#!' + $location.path();
 				}
+				this.init = false;
 			}
 	}  
 } ] );
