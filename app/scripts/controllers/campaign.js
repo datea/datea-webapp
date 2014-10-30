@@ -192,8 +192,8 @@ angular.module('dateaWebApp')
 		  , catWidth
 		;
 		angular.forEach(dateo.tags, function(tag){
-			if (tag.tag != $scope.campaign.main_tag.tag && angular.isDefined($scope.subTags[tag.tag])) {
-				colors.push($scope.subTags[tag.tag].color);
+			if (tag != $scope.campaign.main_tag.tag && !!$scope.subTags[tag]) {
+				colors.push($scope.subTags[tag].color);
 			}
 		});
 		if (colors.length == 0) colors.push(config.visualization.default_color);
@@ -291,6 +291,7 @@ angular.module('dateaWebApp')
 					, imageUrl    : $scope.campaign.image ? $scope.campaign.image.image : config.defaultImgCampaignLarge 
 				}
 				shareMetaData.setData(shareData);
+				$scope.flow.shareableUrl = config.app.url+'/#!/'+$scope.campaign.user.username+'/'+$scope.campaign.slug;
 
 				// build everything
 				buildSubTags();
@@ -789,7 +790,7 @@ angular.module('dateaWebApp')
 		             , controller  : 'ShareCtrl'
 		             , resolve     : {
 		                shareModalGivens : function () {
-		                  return { url         : $scope.campaign.shareableUrl
+		                  return { url         : $scope.flow.shareableUrl
 		                         , title       : $scope.campaign.name
 		                         , description : $scope.campaign.short_description
 		                         , image       : img}

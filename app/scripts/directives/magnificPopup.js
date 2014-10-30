@@ -5,12 +5,13 @@ angular.module('dateaWebApp')
 { return {
 	  restrict: 'A'
 	, link: function (scope, element, attrs) {
-
-			element.magnificPopup({
-					type     : 'image'
-				, delegate : '.slide'
-				, gallery  : { enabled : true, preload: [0,2] }
-			});
+			if (element.magnificPopup) {
+				element.magnificPopup({
+						type     : 'image'
+					, delegate : '.slide'
+					, gallery  : { enabled : true, preload: [0,2] }
+				});
+			}
 		}
 	}
 } );

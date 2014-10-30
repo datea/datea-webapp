@@ -3954,7 +3954,34 @@ ul.input-list {
 				}
 			}
 		}
-		.buttons { button { margin-right: 30px}}
+		.buttons { 
+			button { margin-right: 30px}
+			.share-btn {
+				display: inline-block;
+				position: relative;
+				top: 5px;
+				.btn {
+					background-color: @color-10;
+					color: white;
+					border-color: @color-18;
+					i.fa {
+						font-size: 20px;
+						color: white;
+					}
+				}
+				.datea-glyph-holder {
+					position: relative;
+					top: -3px;
+					margin: 0;
+					i.fa {
+						background-color: @color-10;
+						&:hover {
+							background-color: @color-12;
+						}
+					}
+				}	
+			}
+		}
 		.datea-datear-btn {
 			padding: 8px 9px 9px 12px;
 		}

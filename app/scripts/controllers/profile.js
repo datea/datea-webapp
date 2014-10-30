@@ -160,7 +160,7 @@ angular.module('dateaWebApp')
 				, imageUrl    : ($scope.targetUser.image_large) ? config.api.imgUrl + $scope.targetUser.image_large : config.app.url + config.defaultImgProfile
 			};
 			shareMetaData.setData(shareData);
-			$rootScope.htmlReady();
+			$timeout($scope.htmlReady, 1000);
 
 		}, function ( reason ) {
 			console.log( 'user error reason:', reason );
@@ -189,7 +189,7 @@ angular.module('dateaWebApp')
 		             , controller  : 'ShareCtrl'
 		             , resolve     : {
 		                 shareModalGivens : function () {
-		                   return { url : $scope.targetUser.url }
+		                   return { url : config.app.url+'/#!/'+$scope.targetUser.username }
 		                 }
 		             } } );
 	}

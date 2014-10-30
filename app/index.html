@@ -55,6 +55,14 @@
 	</style>
 </head>
 <body ng-controller="LayoutCtrl">
+	<div id="fb-root"></div>
+	<script>(function(d, s, id) {
+	  var js, fjs = d.getElementsByTagName(s)[0];
+	  if (d.getElementById(id)) return;
+	  js = d.createElement(s); js.id = id;
+	  js.src = "//connect.facebook.net/es_LA/sdk.js#xfbml=1&appId=222271061161837&version=v2.0";
+	  fjs.parentNode.insertBefore(js, fjs);
+	}(document, 'script', 'facebook-jssdk'));</script>
 	<!--[if lt IE 7]>
 	<p class="browsehappy">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> to improve your experience.</p>
 	<![endif]-->
@@ -171,6 +179,7 @@
 	<script src="bower_components/angulartics/dist/angulartics.min.js"></script>
 	<script src="bower_components/angulartics/dist/angulartics-ga.min.js"></script>
 	<script src="bower_components/magnific-popup/dist/jquery.magnific-popup.min.js"></script>
+	<script src="bower_components/angular-socialshare/angular-socialshare.js"></script>
 	<!-- endbuild -->
 
 	<!-- build:js({.tmp,app}) scripts/scripts.js -->

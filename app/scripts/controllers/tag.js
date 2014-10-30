@@ -126,9 +126,10 @@ angular.module('dateaWebApp')
 
 				shareData = {
 					  title       : 'Datea | dateos en #'+$scope.tag.tag
-					, description : "Chequea los dateos con el hashtag "+$scope.tag.tag+" en Datea." 
+					, description : "Chequea los dateos con el hashtag #"+$scope.tag.tag+" en Datea." 
 				}
 				shareMetaData.setData(shareData);
+				$scope.flow.shareableUrl = config.app.url+'/#!/tag/'+$scope.tag.tag;
 
 			} else {
 				$location.path('/404').replace();
@@ -262,6 +263,20 @@ angular.module('dateaWebApp')
 			});
 		}
 	};
+
+	$scope.flow.share = function () {
+		var img = config.app.url + '/static/images/logo-large.png';
+		$modal.open( { templateUrl : 'views/share.html'
+		             , controller  : 'ShareCtrl'
+		             , resolve     : {
+		                shareModalGivens : function () {
+		                  return { url         : $scope.flow.shareableUrl
+		                         , title       : 'Datea | dateos en #'+$scope.tag.tag
+		                         , description : "Chequea los dateos con el hashtag #"+$scope.tag.tag+" en Datea." 
+		                         , image       : img}
+		                 }
+		             } } );
+	}
 
 	buildMarkers = function ( givens ) {
 		var dateos  = givens && givens.dateos

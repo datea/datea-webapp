@@ -438,6 +438,7 @@ angular.module("dateaWebApp")
 
 	          if (validateCampaign()) {
 	          	$scope.flow.loading = true;
+
 	          	if ($scope.campaign.id) {
 	          		Api.campaign
 								.patchCampaign( {objects: [$scope.campaign]} )

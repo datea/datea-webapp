@@ -6,10 +6,10 @@ angular
 	{ app     : { name : 'Datea.pe'
 	            , url  : 'http://datea.pe'
 	            }
-	, api     : { url    : 'https://api.datea.io/api/v2/'
-	          	, imgUrl : 'https://api.datea.io'
-	            //  url    : 'http://127.0.0.1:8000/api/v2/'
-	            //, imgUrl : 'http://127.0.0.1:8000'
+	, api     : { //url    : 'https://api.datea.io/api/v2/'
+	          	//, imgUrl : 'https://api.datea.io'
+	              url    : 'http://127.0.0.1:8000/api/v2/'
+	            , imgUrl : 'http://127.0.0.1:8000'
 	          	} 
 	, marker  : ['<div class="marker-holder">'
 	              ,'<img class="img-circle" src="{{user.markerImage}}" alt="user image">'

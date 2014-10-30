@@ -194,11 +194,15 @@ angular.module('dateaWebApp')
 	}
 
 	$scope.flow.share = function () {
-		$modal.open( { templateUrl: 'views/share.html'
-		             , controller : 'ShareCtrl'
-		             , resolve    : {
-		                 shareModalGivens : function () {
-		                 	return { url : $scope.flow.shareableUrl }
+		var img = $scope.dateo.images.length ? config.api.imgUrl + $scope.dateo.images[0].image : config.app.url + '/static/images/logo-large.png';
+		$modal.open( { templateUrl : 'views/share.html'
+		             , controller  : 'ShareCtrl'
+		             , resolve     : {
+		                shareModalGivens : function () {
+		                  return { url         : $scope.flow.shareableUrl
+		                         , title       : 'Datea | '+$scope.dateo.user.username+' dateó en '+ $scope.dateo.tags.slice(0,2).join(", ")
+		                         , description : $scope.dateo.extract
+		                         , image       : img}
 		                 }
 		             } } );
 	}

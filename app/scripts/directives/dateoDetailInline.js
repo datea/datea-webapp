@@ -39,6 +39,7 @@ angular.module("dateaWebApp")
     		$scope.$watch('dateo.id', function () {
     			if ($scope.dateo && $scope.dateo.id) {
     				$scope.flow.showEditBtn = User.data.id === $scope.dateo.user.id;
+    				$scope.flow.shareableUrl = config.app.url + '/#!/'+$scope.dateo.user.username+'/dateos/'+$scope.dateo.id;
     				checkStatus();
     				$scope.dateo.comments = [];
     				updateComments();
@@ -131,13 +132,17 @@ angular.module("dateaWebApp")
 				}
 
 				$scope.flow.share = function () {
-					$modal.open( { templateUrl: 'views/share.html'
-					             , controller : 'ShareCtrl'
-					             , resolve    : {
-					                 shareModalGivens : function () {
-					                 	return { url : $scope.dateo.shareableUrl }
-					                 }
-					             } } );
+					var img = $scope.dateo.images.length ? config.api.imgUrl + $scope.dateo.images[0].image : config.app.url + '/static/images/logo-large.png';
+					$modal.open( { templateUrl : 'views/share.html'
+		             , controller  : 'ShareCtrl'
+		             , resolve     : {
+		                shareModalGivens : function () {
+		                  return { url         : $scope.flow.shareableUrl
+		                         , title       : 'Datea | '+$scope.dateo.user.username+' dateó en '+ $scope.dateo.tags.slice(0,2).join(", ")
+		                         , description : $scope.dateo.extract
+		                         , image       : img}
+		                 }
+		             } } );
 				}
 
 				$scope.flow.denounce = function ( type, ev ) {
