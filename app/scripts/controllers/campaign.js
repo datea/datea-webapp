@@ -190,6 +190,7 @@ angular.module('dateaWebApp')
 		var colors = [] 
 		  , html
 		  , catWidth
+		  , clipPath
 		;
 		angular.forEach(dateo.tags, function(tag){
 			if (tag != $scope.campaign.main_tag.tag && !!$scope.subTags[tag]) {
@@ -198,8 +199,10 @@ angular.module('dateaWebApp')
 		});
 		if (colors.length == 0) colors.push(config.visualization.default_color);
 		catWidth = (config.visualization.markerWidth / colors.length)
+
+		clipPath = $location.absUrl() + '#pinpath';
 		
-		html = '<svg width="'+config.visualization.markerWidth+'" height="'+config.visualization.markerHeight+'"><g style="clip-path: url(#pinpath);">';
+		html = '<svg width="'+config.visualization.markerWidth+'" height="'+config.visualization.markerHeight+'"><g style="clip-path: url('+clipPath+');">';
 		angular.forEach(colors, function (color, i) {
 			html = html + '<rect height="'+config.visualization.markerHeight+'" width="'+parseInt(Math.ceil(catWidth))+'" fill="'+color+'" x="'+parseInt(Math.ceil(i*catWidth))+'" />';
 		});
@@ -274,6 +277,9 @@ angular.module('dateaWebApp')
 			, shareData      = {};
 		campaignGivens.user = $routeParams.username;
 		campaignGivens.slug = $routeParams.campaignName;
+		if (User.isSignedIn() && $routeParams.username === User.data.username) {
+			campaignGivens.published = 'all';
+		}
 
 		Api.campaign
 		.getCampaigns( campaignGivens )
@@ -286,12 +292,12 @@ angular.module('dateaWebApp')
 
 				// SEO AND SOCIAL TAGS
 				shareData = {
-					  title       : 'Datea | '+ $scope.campaign.name
+					  title       : '#'+$scope.campaign.main_tag.tag+', '+$scope.campaign.name+' | Datea'
 					, description : $scope.campaign.short_description
 					, imageUrl    : $scope.campaign.image ? $scope.campaign.image.image : config.defaultImgCampaignLarge 
 				}
 				shareMetaData.setData(shareData);
-				$scope.flow.shareableUrl = config.app.url+'/#!/'+$scope.campaign.user.username+'/'+$scope.campaign.slug;
+				$scope.flow.shareableUrl = config.app.url+'/'+$scope.campaign.user.username+'/'+$scope.campaign.slug;
 
 				// build everything
 				buildSubTags();

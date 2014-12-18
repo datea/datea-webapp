@@ -17,10 +17,8 @@ angular.module( 'dateaWebApp'
   , 'duScroll'
   , 'angularCharts'
   , 'daPiecluster'
-  , 'seo'
   , 'angulartics'
   , 'angulartics.google.analytics'
-  , 'djds4rce.angular-socialshare'
 ])
 .config(
 [ '$routeProvider'
@@ -166,5 +164,7 @@ angular.module( 'dateaWebApp'
 	.otherwise( { redirectTo: '/404' } );
 
 	localStorageServiceProvider.prefix = 'datea';
+
+	$locationProvider.html5Mode(true);
 
 } ] );

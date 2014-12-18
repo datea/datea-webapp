@@ -4,15 +4,20 @@ angular.module('dateaWebApp')
 		var path
 			, basepath
 		;
+		$scope.flow = {};
 		$rootScope.$on("$locationChangeStart", function(event, next, current) {
-            	path = $location.path();
-            	if (path == '/') {
-            		$scope.autoheight = true;
-            		$scope.with_nav = User.isSignedIn();
-            	} else {
-            		basepath = path.split('/')[1];
-            		$scope.autoheight = config.layout_100.indexOf(basepath) == -1 ? true : false;
-            		$scope.with_nav = true;
-            	}
-      			});
+      	path = $location.path();
+      	if (path == '/') {
+      		$scope.flow.autoheight = true;
+      		$scope.flow.withNav = User.isSignedIn();
+      	} else {
+      		basepath = path.split('/')[1];
+      		$scope.flow.autoheight = config.layout_100.indexOf(basepath) == -1 ? true : false;
+      		$scope.flow.withNav = true;
+      	}
+			});
+
+		$rootScope.$on( 'user:signedOut', function (ev) {
+			$scope.flow.withNav = false;
+		});
 } ] );

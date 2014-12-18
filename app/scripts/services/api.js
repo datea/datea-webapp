@@ -53,33 +53,32 @@ angular.module('dateaWebApp')
 	reconfigUserRsrc = function () {
 		user.rsrc = $resource( config.api.url + 'user/:id', {},
 		{ 'get'  : { method : 'GET'
-		           , headers: headers || ls.get('token') }
+		           , headers: ls.get('token') }
 		, 'patch': { method : 'PATCH'
 		           , params : { id: '@id' }
-		           , headers: headers || ls.get('token')
+		           , headers: ls.get('token')
 		           } }
 		);
 	};
 
 	configureResources = function () { 
-		headers = ls.get('token');
 
 		dateo.rsrc   = $resource( config.api.url + 'dateo/'  , {},
 		{ 'query': { method: 'GET' }
 		, 'post' : { method  : 'POST'
-		           , headers : headers || ls.get('token') }
+		           , headers : ls.get('token') }
 		, 'patch' : { method  : 'PATCH'
-		            , headers : headers || ls.get('token') 
+		            , headers : ls.get('token') 
 		            , url     : config.api.url + 'dateo/:id'
            		  , params  : { id: '@id'} 
 		            }
 		, 'put' : { method  : 'PUT'
-		          , headers : headers || ls.get('token') 
+		          , headers : ls.get('token') 
 		          , url     : config.api.url + 'dateo/:id'
            		, params  : { id: '@id'} 
 		          }
 		, 'delete' : { method  : 'DELETE'
-           			 , headers : headers || ls.get('token') 
+           			 , headers : ls.get('token') 
            			 , url     : config.api.url + 'dateo/:id'
            			 , params  : { id: '@id'}
          				 }
@@ -87,20 +86,20 @@ angular.module('dateaWebApp')
 		dateoStatus.rsrc   = $resource( config.api.url + 'dateo_status/'  , {},
 		{ 'query': { method  : 'GET' }
 		, 'post' : { method  : 'POST'
-		           , headers : headers || ls.get('token') }
+		           , headers : ls.get('token') }
 		, 'patch': { method  : 'PATCH'
 		           , params  : { id: '@id' }
-		           , headers : headers || ls.get('token') }
+		           , headers : ls.get('token') }
 		, 'put'  : { method  : 'PUT'
 		           , params  : { id: '@id' }
-		           , headers : headers || ls.get('token') }
+		           , headers : ls.get('token') }
 		, 'delete' : { method : 'DELETE'
-		             , headers : headers || ls.get('token') }
+		             , headers : ls.get('token') }
 		} );
 		comment.rsrc = $resource( config.api.url + 'comment/', {},
 		{ 'query': { method : 'GET' }
 		, 'post' : { method  : 'POST'
-		           , headers : headers || ls.get('token')
+		           , headers : ls.get('token')
 		           }
 		} );
 		account.social.twitter.rsrc = $resource( config.api.url + 'account/socialauth/twitter/', {},
@@ -130,12 +129,12 @@ angular.module('dateaWebApp')
 		user.rsrc = $resource( config.api.url + 'user/:id', {},
 		{ 'get'  : { method  : 'GET'
 		           , params  : { id: '@id' }
-		           , headers : headers || ls.get('token') }
+		           , headers : ls.get('token') }
 		// , 'query': { method : 'GET'
 		//            , params : {} }
 		, 'patch': { method : 'PATCH'
 		           , params : { id: '@id' }
-		           , headers: headers || ls.get('token')
+		           , headers: ls.get('token')
 		           } }
 		);
 		userFollow.rsrc = $resource( config.api.url + 'user/', {},
@@ -153,9 +152,9 @@ angular.module('dateaWebApp')
 		campaign.rsrc = $resource( config.api.url + 'campaign/', {},
 		{ 'query': { method : 'GET' }
 		, 'post' : { method : 'POST'
-		           , headers : headers || ls.get('token') }
+		           , headers : ls.get('token') }
 		, 'patch': { method : 'PATCH'
-							 , headers : headers || ls.get('token') }
+							 , headers : ls.get('token') }
 		} );
 		activityLog.rsrc = $resource( config.api.url + 'activity_log/', {},
 		{ 'query': { method : 'GET' } }
@@ -166,20 +165,20 @@ angular.module('dateaWebApp')
 		follow.rsrc = $resource( config.api.url + 'follow/', {},
 		{ 'query'  : { method : 'GET' }
 		, 'post'   : { method : 'POST'
-		             , headers : headers || ls.get('token') }
+		             , headers : ls.get('token') }
 		, 'delete' : { method : 'DELETE'
-		             , headers : headers || ls.get('token') }
+		             , headers : ls.get('token') }
 		} );
 		vote.rsrc = $resource( config.api.url + 'vote/', {},
 		{ 'query' : { method : 'GET' }
 		, 'post'  : { method : 'POST'
-		            , headers : headers || ls.get('token') }
+		            , headers : ls.get('token') }
 		, 'delete' : { method : 'DELETE'
-		             , headers : headers || ls.get('token') }
+		             , headers : ls.get('token') }
 		} );
 		flag.rsrc = $resource( config.api.url + 'flag/', {},
 		{ 'post' : { method : 'POST'
-		           , headers : headers || ls.get('token') }
+		           , headers : ls.get('token') }
 		} );
 		stats.rsrc = $resource( config.api.url + 'dateo/stats/', {},
 		{ 'query' : { method : 'GET' } }
@@ -187,9 +186,9 @@ angular.module('dateaWebApp')
 		redateo.rsrc   = $resource( config.api.url + 'redateo/'  , {},
 		{ 'query': { method  : 'GET' }
 		, 'post' : { method  : 'POST'
-		           , headers : headers || ls.get('token') }
+		           , headers : ls.get('token') }
 		, 'delete' : { method : 'DELETE'
-		             , headers : headers || ls.get('token') }
+		             , headers : ls.get('token') }
 		} );
 		ipLocation.rsrc = $resource( config.api.url + 'ip_location', {},
 		{ 'query' : { method : 'GET'} }

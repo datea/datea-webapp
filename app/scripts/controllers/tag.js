@@ -44,6 +44,7 @@ angular.module('dateaWebApp')
 	var sessionMarkersIdx = 0
 	  , markersBounds     = []
 	  , idxToDateoId
+	  , markerIcon
 	// fn declarations
 	  , isMainTag
 	  , isUserFollowing
@@ -101,6 +102,9 @@ angular.module('dateaWebApp')
 	$scope.dateFormat = config.defaultDateFormat;
 	$scope.flow.leaflet.events = {enable: ['leafletDirectiveMarker.click']};
 
+	markerIcon = config.visualization.defaultMarkerIcon;
+	markerIcon.html = config.visualization.defaultMarkerIcon.htmlGen($location.absUrl());
+
 	isMainTag = function () {
 		var dfd = $q.defer();
 		Api.campaign
@@ -129,7 +133,7 @@ angular.module('dateaWebApp')
 					, description : "Chequea los dateos con el hashtag #"+$scope.tag.tag+" en Datea." 
 				}
 				shareMetaData.setData(shareData);
-				$scope.flow.shareableUrl = config.app.url+'/#!/tag/'+$scope.tag.tag;
+				$scope.flow.shareableUrl = config.app.url+'/tag/'+$scope.tag.tag;
 
 			} else {
 				$location.path('/404').replace();
@@ -317,7 +321,7 @@ angular.module('dateaWebApp')
 			, draggable   : false
 			, focus       : false
 			, _id         : dateo.id
-			, icon 			  : config.visualization.defaultMarkerIcon
+			, icon 			  : markerIcon
 			, riseOnHover : true
 			};
 	}

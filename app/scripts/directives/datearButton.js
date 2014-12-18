@@ -17,7 +17,7 @@ angular.module("dateaWebApp")
 
 		, controller: function ($scope, $element, $attrs) {
 
-			$scope.btnLabel = $attrs.btnText !== undefined ? $attrs.btnText : 'datea ';
+			$scope.btnLabel = $attrs.btnText !== undefined ? $attrs.btnText : 'datear ';
 			$scope.btnClass = $attrs.btnClass !== undefined ? $attrs.btnClass : '';
 
 			$scope.datear = function () {

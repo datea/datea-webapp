@@ -54,7 +54,7 @@ angular.module('dateaWebApp')
 	$scope.flow.isUserSignedIn = User.isSignedIn();
 	$scope.dateFormat = config.defaultDateFormat;
 
-	hasNext = function () {
+	hasNext = function (dateo) {
 		return dateo.id < dateo.next_by_user;
 	}
 
@@ -64,14 +64,13 @@ angular.module('dateaWebApp')
 			, dataTags
 		;
 		if( response.objects[0] ) {
-			dateo   = response.objects[0];
-			
-			$scope.flow.messageNext = hasNext() ? 'siguiente' : 'primer';
+			var dateo  = response.objects[0];
+			$scope.flow.messageNext = hasNext(dateo) ? 'siguiente' : 'primer';
 			angular.extend( $scope.dateo, dateo );
 			$scope.dateo.comments = [];
 			updateComments();
 			setLeaflet();
-			$scope.flow.shareableUrl = config.app.url + '/#!' + $location.path();
+			$scope.flow.shareableUrl = config.app.url + $location.path();
 			buildRelatedCampaigns();
 
 			if (User.isSignedIn() && User.data.id === dateo.user.id) $scope.flow.showEditBtn = true;
@@ -97,10 +96,14 @@ angular.module('dateaWebApp')
 				                 , lng  : $scope.dateo.position.coordinates[0]
 				                 , zoom : 16
 				                 }
+
+			var iconHtml = config.visualization.defaultMarkerIcon.htmlGen($location.absUrl());
+		  var icon = config.visualization.defaultMarkerIcon;
+		  icon.html = iconHtml;
 			leaflet.markers = { staticy : { lat       : $scope.dateo.position.coordinates[1]
 			                              , lng       : $scope.dateo.position.coordinates[0]
 			                              , draggable : false
-			                              , icon      : config.visualization.defaultMarkerIcon
+			                              , icon      : icon
 			                              } }
 
 			leafletData.getMap('leafletDateo').then( function ( map ) {
@@ -124,12 +127,11 @@ angular.module('dateaWebApp')
 		var oldIds = $scope.dateo.comments.map(function (c) {return c.id;});
 		Api.comment.getList({content_type__model: 'dateo', object_id: $scope.dateo.id, order_by: 'created'})
 		.then(function (response) {
-			console.log('update comments', response);
 			$scope.dateo.comment_count = response.meta.total_count;
 			$scope.dateo.comments = response.objects.map( function (c) {
 				c.new = oldIds.indexOf(c.id) === -1;
 				return c;
-			})
+			});
 			$scope.flow.form.loading = false;
 			$scope.flow.form.comment = null;
 		}, function (reason) {
@@ -200,7 +202,7 @@ angular.module('dateaWebApp')
 		             , resolve     : {
 		                shareModalGivens : function () {
 		                  return { url         : $scope.flow.shareableUrl
-		                         , title       : 'Datea | '+$scope.dateo.user.username+' dateó en '+ $scope.dateo.tags.slice(0,2).join(", ")
+		                         , title       : 'Datea | '+$scope.dateo.user.username+' dateó en #'+ $scope.dateo.tags.slice(0,2).join(", #")
 		                         , description : $scope.dateo.extract
 		                         , image       : img}
 		                 }

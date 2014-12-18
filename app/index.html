@@ -8,6 +8,7 @@
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
 	<meta name="viewport" content="width=device-width">
 	<meta name="fragment" content="!" />
+	<base href="/">
 
 	<!-- META TAGS -->
 	<title ng-bind="share.title || 'Datea - Todos somos dateros'"></title>
@@ -74,7 +75,7 @@
 	<!-- Add your site or application content here -->
 	<div ng-controller="NavCtrl" ng-include="'views/nav.html'"></div>
 
-	<div id="#page-wrap" class="page-wrap" ng-class="{'autoheight': autoheight, 'with-nav': with_nav}">
+	<div id="#page-wrap" class="page-wrap" ng-class="{'autoheight': flow.autoheight, 'with-nav': flow.withNav}">
 
 		<div class="messagesList z2" app-messages></div>
 
@@ -86,8 +87,8 @@
 	<div class="footer-holder container-fluid" ng-cloak>
 		<ul class="footer-menu ff1">
 			<li><a href="http://ayuda.datea.pe/contacto">Contacto</a></li>
-			<li><a href="#!/acerca/terminos">Terminos y condiciones de uso</a></li>
-			<li><a href="#!/acerca/privacidad">Politica de privacidad</a></li>
+			<li><a href="/acerca/terminos">Terminos y condiciones de uso</a></li>
+			<li><a href="/acerca/privacidad">Politica de privacidad</a></li>
 		</ul>
 		<div class="datea-rights">
 			<div class="limiter ff1">
@@ -98,6 +99,7 @@
 
 	<script>
 	/* redirect to hashbang, before errors popup up */
+	/*
 	var path = document.location.pathname;
 	if (path != '/' && path != '/index.html') {
 		document.location.href = '/#!'+path;
@@ -111,7 +113,7 @@
 			}
 			document.location.hash = hash;
 		}
-	}
+	}*/
 	</script>
 
 	<!-- Google Analytics: change UA-XXXXX-X to be your site's ID -->
@@ -172,14 +174,12 @@
 	<script src="bower_components/angular-charts/dist/angular-charts.js"></script>
 	<script src="bower_components/togeojson/togeojson.js"></script>
 	<script src="bower_components/da-piecluster/da-piecluster.js"></script>
-	<script src="bower_components/da-angular-seo/angular-seo.js"></script>
 	<script src="bower_components/jcarousel/dist/jquery.jcarousel.min.js"></script>
 	<script src="bower_components/FileApi/dist/FileAPI.html5.js"></script>
 	<script src="bower_components/FileApi/plugins/FileAPI.exif.js"></script>
 	<script src="bower_components/angulartics/dist/angulartics.min.js"></script>
 	<script src="bower_components/angulartics/dist/angulartics-ga.min.js"></script>
 	<script src="bower_components/magnific-popup/dist/jquery.magnific-popup.min.js"></script>
-	<script src="bower_components/angular-socialshare/angular-socialshare.js"></script>
 	<!-- endbuild -->
 
 	<!-- build:js({.tmp,app}) scripts/scripts.js -->
@@ -243,6 +243,7 @@
 	<script src="scripts/controllers/embedbuilder.js"></script>
 	<script src="scripts/directives/fileInputWidget.js"></script>
 	<script src="scripts/directives/magnificPopup.js"></script>
+	<script src="scripts/controllers/flag-form.js"></script>
 	<script src="scripts/extra/leaflet-draw-es.js"></script>
 	<!-- endbuild -->
 

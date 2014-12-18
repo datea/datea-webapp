@@ -8,8 +8,9 @@
 							<div class="user-img img-circle" da-bg-from-api="{{campaign.user.image.image}}" da-img-size="cover" da-img-type="user"></div>
 							<div class="user-info">
 								<div class="date">Una iniciativa de</div>
-								<h4 class="username"><a href="/#!/{{campaign.user.username}}">{{campaign.user.username}}</a></h4>
+								<h4 class="username"><a href="/{{campaign.user.username}}">{{campaign.user.username}}</a></h4>
 							</div>
+							<div class="unpublished-msg" ng-show="campaign.id && !campaign.published">Iniciativa sin publicar</div>
 						</div>
 						<div class="title-holder">
 							<h1 ng-class="{'title-fix' : flow.titleFix}">{{campaign.name}}</h1>
@@ -19,7 +20,7 @@
 								</div>
 							</div>
 						</div>
-						<h2><a href="#!/tag/{{campaign.main_tag.tag}}">#{{campaign.main_tag.tag}}</a></h2>
+						<h2><a href="/tag/{{campaign.main_tag.tag}}">#{{campaign.main_tag.tag}}</a></h2>
 						<p class="shortdesc">{{campaign.short_description}}</p>
 						<div class="stats" ng-show="campaign.dateo_count > 0 || campaign.follow_count > 0">
 							<div class="count-stats">
@@ -39,7 +40,6 @@
 							</div>
 						</div>
 					</div>
-					<div class="unpublished-msg" ng-show="campaign.id && !campaign.published">Iniciativa sin publicar</div>
 				</div>
 			</div>
 			<div class="col-sm-5 hidden-xs campaign-img" da-bg-from-api="{{campaign.image2.image || campaign.image.image}}" da-img-size="auto 100%" da-img-type="campaign-lg"></div>
@@ -54,8 +54,8 @@
 		  			<span class="glyphicon glyphicon-cog"></span>
 		      </button>
 		      <ul class="dropdown-menu dropdown-menu-right" role="menu">
-		        <li ng-if="flow.userIsOwner"><a href="#!/iniciativas/{{campaign.id}}/edit">Configuración</a></li>
-		        <li ng-if="flow.userIsOwner"><a href="#!/iniciativas/{{campaign.id}}/admin">Administrar dateos</a></li>
+		        <li ng-if="flow.userIsOwner"><a href="/iniciativas/{{campaign.id}}/edit">Configuración</a></li>
+		        <li ng-if="flow.userIsOwner"><a href="/iniciativas/{{campaign.id}}/admin">Administrar dateos</a></li>
 		        <li><a ng-click="flow.loadEmbedBuilder()" href>Insertar (embed)</a></li>
 		        <!--<li><a href="#" target="_blank">Imprimir reporte</a></li>-->
 		        <li><a href="https://api.datea.io/csv-export/dateos/tag/{{campaign.main_tag.id}}/" target="_blank">Descargar dateos en CSV</a></li>
@@ -154,11 +154,11 @@
 						<div class="row">
 							<div class="hidden-xs col-sm-45 dateos-holder">
 								<div class="dateo-detail-content-holder" ng-show="flow.dateoDetail.show">
-									<da-dateo-detail-inline dateo="flow.dateoDetail.dateo" marker-index="flow.dateoDetail.markerIndex" campaign-id="campaign.id"></da-dateo-detail-inline>
+									<da-dateo-detail-inline dateo="flow.dateoDetail.dateo" marker-index="flow.dateoDetail.markerIndex" campaign-id="campaign.id" main-tag="campaign.main_tag.tag"></da-dateo-detail-inline>
 								</div>
 								<div class="dateo-description-holder" ng-hide="flow.dateoDetail.show">
 										<div class="teaser-list">
-											<da-dateo-teaser ng-repeat="dateo in campaign.dateos | limitTo:flow.dateoShowListNumResults" campaign-id="campaign.id"></da-dateo-teaser>
+											<da-dateo-teaser ng-repeat="dateo in campaign.dateos | limitTo:flow.dateoShowListNumResults" campaign-id="campaign.id" main-tag="campaign.main_tag.tag"></da-dateo-teaser>
 										</div>
 										<p class="dateos-more-results" ng-show="campaign.dateos.length > flow.dateoShowListNumResults">
 											<button class="btn btn-default btn-lg" ng-click="flow.showMoreListResults()">Ver más resultados</button>
@@ -220,11 +220,11 @@
 					<div class="user-info">
 						<div class="parts-holder">
 							<div class="part part-1">
-								<a href="#!/{{campaign.user.username}}" class="user-img img-circle" da-bg-from-api="{{campaign.user.image}}" da-img-size="cover" da-img-type="user"></a>
+								<a href="/{{campaign.user.username}}" class="user-img img-circle" da-bg-from-api="{{campaign.user.image}}" da-img-size="cover" da-img-type="user"></a>
 							</div>
 							<div class="part part-2">
 								<p>dater@</p>
-								<h3><a href="#!/{{campaign.user.username}}">{{campaign.user.username}}</a></h3>
+								<h3><a href="/{{campaign.user.username}}">{{campaign.user.username}}</a></h3>
 							</div>
 						</div>
 						<h4>#{{campaign.main_tag.tag}}</h4>
@@ -240,7 +240,7 @@
 					<h5 ng-show="campaign.follow_count > 0">{{campaign.follow_count}} <ng-pluralize count="campaign.follow_count" when="{'one':'seguidor','other':'seguidores'}"></ng-pluralize></h5>
 					<!--<button class="btn datea-btn">invita a tus amigos</button>-->
 					<div class="followers-holder">
-						<a class="follower-image" target="_blank" ng-href="#!/{{follower.username}}" ng-repeat="follower in campaign.followers" tooltip="{{follower.username}}" tooltip-trigger="mouseenter">
+						<a class="follower-image" target="_blank" ng-href="/{{follower.username}}" ng-repeat="follower in campaign.followers" tooltip="{{follower.username}}" tooltip-trigger="mouseenter">
 							<span class="" da-bg-from-api="{{follower.image}}" da-img-size="cover" da-img-type="user"></span>
 						</a>
 					</div>

@@ -20,6 +20,13 @@ angular.module("dateaWebApp")
 				$scope.mapPresent = ($attrs.mapPresent) ? $scope.$eval($attrs.mapPresent) : true;
 				$scope.detailInline = ($attrs.detailInline) ? $scope.$eval($attrs.detailInline) : true;
 				$scope.campaignId = ($attrs.campaignId) ? $scope.$eval($attrs.campaignId) : null;
+				$scope.mainTag = ($attrs.mainTag) ? $scope.$eval($attrs.mainTag) : null;
+
+				if ($scope.mainTag && $scope.dateo && $scope.dateo.tags.length && $scope.dateo.tags[0] != $scope.mainTag) {
+					var i = $scope.dateo.tags.indexOf($scope.mainTag);
+					$scope.dateo.tags.splice(i, 1);
+					$scope.dateo.tags.unshift($scope.mainTag); 					
+				}
 
 				checkStatus = function () {
 					var status;

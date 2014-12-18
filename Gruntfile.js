@@ -6,6 +6,7 @@
 // 'test/spec/{,*/}*.js'
 // use this if you want to recursively match all subfolders:
 // 'test/spec/**/*.js'
+var modRewrite = require('connect-modrewrite');
 
 module.exports = function (grunt) {
 	require('load-grunt-tasks')(grunt);
@@ -35,8 +36,30 @@ module.exports = function (grunt) {
 			//   tasks: ['copy:styles', 'autoprefixer']
 			// },
 			livereload: {
-				options: {
-					livereload: '<%= connect.options.livereload %>'
+				//options: {
+				//	livereload: '<%= connect.options.livereload %>'
+				//},
+				open: true,
+      	base: [
+        				'.tmp',
+        				'<%= yeoman.app %>'
+     		],
+				middleware: function (connect, options) {
+					var middlewares = [];
+					middlewares.push(modRewrite(['^[^\\.]*$ /index.html [L]'])); //Matches everything that does not contain a '.' (period)
+        				options.base.forEach(function (base) {
+          					middlewares.push(connect.static(base));
+        				});
+
+        				middlewares.push(
+          					connect.static('.tmp'),
+          					connect().use(
+            						'/bower_components',
+            						connect.static('./bower_components')
+          					)
+        				);
+
+        				return middlewares;
 				},
 				files: [
 					'<%= yeoman.app %>/{,*/}*.html',
@@ -71,7 +94,24 @@ module.exports = function (grunt) {
 					base: [
 						'.tmp',
 						'<%= yeoman.app %>'
-					]
+					],
+					middleware: function (connect, options) {
+					var middlewares = [];
+					middlewares.push(modRewrite(['^[^\\.]*$ /index.html [L]'])); //Matches everything that does not contain a '.' (period)
+        				options.base.forEach(function (base) {
+          					middlewares.push(connect.static(base));
+        				});
+
+        				middlewares.push(
+          					connect.static('.tmp'),
+          					connect().use(
+            						'/bower_components',
+            						connect.static('./bower_components')
+          					)
+        				);
+
+        				return middlewares;
+				},
 				}
 			},
 			test: {

@@ -10,7 +10,7 @@
 					<div class="msg">
 						<h3>Bienvenido a Datea!</h3>
 						<p class="pull-right">
-							<a class="btn btn-success" href="#!/">Seguir <span class="glyphicon glyphicon-chevron-right"></span></a>
+							<a class="btn btn-success" href="/">Seguir <span class="glyphicon glyphicon-chevron-right"></span></a>
 						</p>
 						<p>{{accountMsgs.userWelcomeReadyMsg}}</p>
 					</div>
@@ -35,7 +35,7 @@
 					<div class="msg">
 						<h3>¡Felicitaciones!</h3>
 						<p class="pull-right">
-							<a class="btn btn-success" href="#!/">Seguir <span class="glyphicon glyphicon-chevron-right"></span></a>
+							<a class="btn btn-success" href="/">Seguir <span class="glyphicon glyphicon-chevron-right"></span></a>
 						</p>
 						<p>{{accountMsgs.userConfirmSuccessMsg}}</p>
 					</div>
@@ -47,7 +47,7 @@
 
 				<div class="account-form-holder">
 					<div ng-hide="flow.userIsNew || flow.userStatus === 0 || flow.statusChanged">
-						<div class="pull-right"><a href="#!/{{account.username}}" class="btn btn-default">Ir a mi perfil</a></div>
+						<div class="pull-right"><a href="/{{account.username}}" class="btn btn-default">Ir a mi perfil</a></div>
 						<h2>Configuración de cuenta</h2>
 					</div>
 					<alert ng-repeat="alert in alerts" type="{{alert.type}}" close="closeAlert($index)">{{alert.msg}}</alert>

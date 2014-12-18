@@ -165,7 +165,6 @@ angular.module('dateaWebApp')
 			var headerGivens = {};
 			headerGivens.username = response.user.username;
 			headerGivens.token    = response.token;
-
 			header = buildAuthorizationHeader( headerGivens );
 			ls.set( 'token', header );
 			Api.resetRscs();
@@ -229,6 +228,7 @@ angular.module('dateaWebApp')
 		ls.remove( 'user' );
 		user.isSignedIn();
 		$rootScope.$broadcast( 'user:signedOut' );
+		$location.path('/');
 	}
 
 	user.resetPassword = function ( givens ) {

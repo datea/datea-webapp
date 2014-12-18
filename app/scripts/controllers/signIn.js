@@ -73,7 +73,8 @@ angular.module( 'dateaWebApp' )
 			$scope.flow.loading = true;
 			User.signIn( data )
 			.then( function ( response ) {
-				User.updateUserDataFromStorage();
+				//User.updateUserDataFromStorage();
+				Api.resetRscs();
 				$location.path('/');
 				$scope.flow.loading = false;
 			}, function (reason) {

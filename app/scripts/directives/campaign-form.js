@@ -75,10 +75,10 @@ angular.module("dateaWebApp")
 					$scope.flow.dp = {
 						  minDate     : null
 						, dateOptions : {
-														  'year-format': "'yy'"
+														  'year-format': 'yy'
 														, 'starting-day': 1
 														}
-						, format      : 'yyyy/MM/dd'
+						, format      : 'dd-MMMM-yyyy'
 						, opened      : false
 					}
 					$scope.flow.dp.openDatepicker = function($event) {
@@ -86,6 +86,7 @@ angular.module("dateaWebApp")
 						$event.preventDefault();
 						$scope.flow.dp.opened = true;
 					}
+
 					$scope.flow.dp.clear = function() {
 						$scope.flow.dp.endDate = null;
 					}
@@ -93,8 +94,7 @@ angular.module("dateaWebApp")
 					$scope.$watch( 'flow.dp.endDate', function () {
 						var notz;
 						if ($scope.flow.dp.endDate) {
-							notz = new Date( $scope.flow.dp.endDate.getTime() - ($scope.flow.dp.endDate.getTimezoneOffset() * 60000))
-							$scope.campaign.end_date = notz.toISOString();
+							$scope.campaign.end_date = $scope.flow.dp.endDate.toISOString();
 						}else {
 							$scope.campaign.end_date = null;
 						}
@@ -104,7 +104,8 @@ angular.module("dateaWebApp")
 	    		if (mode === 'edit') {
 	    			$scope.flow.loading = true;
 	    			campaignGivens = {
-	    				  id     : $scope.campaignId
+	    				  id        : $scope.campaignId
+	    				, published : 'all'
 	    			}
 	    			Api.campaign
 						.getCampaigns( campaignGivens )
@@ -300,7 +301,6 @@ angular.module("dateaWebApp")
 									}
 									if (!sameTagAndUser) $scope.campaign.slug = $scope.campaign.main_tag.tag;
 								}
-								console.log($scope.flow.validInput);
 							}, function ( reason ) {
 								console.log( reason	);
 							} );
@@ -363,6 +363,9 @@ angular.module("dateaWebApp")
 							}
 							layer = L.geoJson(gjson, geoJSONStyle).addTo($scope.flow.leaflet.map);	
 							$scope.flow.leaflet.fileLayers.push({layer: layer, name: givens.data.name});
+							leafletData.getMap("leafletNewCampaign").then( function ( map ) {
+								map.fitBounds(layer.getBounds());
+							});
 						}
 						$scope.flow.nextFile     = null;
 						$scope.flow.nextFileData = null;
@@ -406,8 +409,8 @@ angular.module("dateaWebApp")
 						var center;
 
 						$scope.campaign.category            = getCategory($scope.flow.selectedCategory);
-						//$scope.campaign.main_tag            = { tag: $scope.campaign.main_tag.replace('#', '') };
-						$scope.campaign.layer_files               = $scope.campaign.layer_files.length && $scope.campaign.layer_files;
+						//$scope.campaign.main_tag          = { tag: $scope.campaign.main_tag.replace('#', '') };
+						$scope.campaign.layer_files         = ($scope.campaign.layer_files && $scope.campaign.layer_files.length) ? $scope.campaign.layer_files : [];
 						$scope.campaign.center              = { type: 'Point', coordinates: [ -77.027772, -12.121937 ] };
 						$scope.campaign.zoom                = $scope.flow.leaflet.center.zoom;
 

@@ -21,6 +21,7 @@ angular.module("dateaWebApp")
 			, markerIndex	: '=?'
 			, mapPresent  : '@'
 			, campaignId  : '='
+			, mainTag     : '=?'
 		}
 		, controller  : function ($scope, $element, $attrs) {
 				
@@ -39,10 +40,15 @@ angular.module("dateaWebApp")
     		$scope.$watch('dateo.id', function () {
     			if ($scope.dateo && $scope.dateo.id) {
     				$scope.flow.showEditBtn = User.data.id === $scope.dateo.user.id;
-    				$scope.flow.shareableUrl = config.app.url + '/#!/'+$scope.dateo.user.username+'/dateos/'+$scope.dateo.id;
+    				$scope.flow.shareableUrl = config.app.url + '/'+$scope.dateo.user.username+'/dateos/'+$scope.dateo.id;
     				checkStatus();
     				$scope.dateo.comments = [];
     				updateComments();
+    				if ($scope.mainTag && $scope.dateo.tags[0] != $scope.mainTag) {
+							var i = $scope.dateo.tags.indexOf($scope.mainTag);
+							$scope.dateo.tags.splice(i, 1);
+							$scope.dateo.tags.unshift($scope.mainTag); 					
+						}
     			}
     		});
 
@@ -62,7 +68,6 @@ angular.module("dateaWebApp")
 					var oldIds = $scope.dateo.comments.map(function (c) {return c.id;});
 					Api.comment.getList({content_type__model: 'dateo', object_id: $scope.dateo.id})
 					.then(function (response) {
-						console.log(response);
 						$scope.dateo.comment_count = response.meta.total_count;
 						$scope.dateo.comments = response.objects.map( function (c) {
 							c.new = oldIds.indexOf(c.id) === -1;
@@ -138,7 +143,7 @@ angular.module("dateaWebApp")
 		             , resolve     : {
 		                shareModalGivens : function () {
 		                  return { url         : $scope.flow.shareableUrl
-		                         , title       : 'Datea | '+$scope.dateo.user.username+' dateó en '+ $scope.dateo.tags.slice(0,2).join(", ")
+		                         , title       : 'Datea | '+$scope.dateo.user.username+' dateó en #'+ $scope.dateo.tags.slice(0,2).join(", #")
 		                         , description : $scope.dateo.extract
 		                         , image       : img}
 		                 }

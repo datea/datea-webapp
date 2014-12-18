@@ -2,17 +2,17 @@
 
 	<div class="graylight-bg"></div>
 
-	<a class="next-dateo dateos-nav" ng-show="dateo.next_by_user" href="#!/{{dateo.user.username}}/dateos/{{dateo.next_by_user}}"></a>
-	<a class="prev-dateo dateos-nav" ng-show="dateo.previous_by_user" href="#!/{{dateo.user.username}}/dateos/{{dateo.previous_by_user}}"></a>
+	<a class="next-dateo dateos-nav" ng-show="dateo.next_by_user" href="/{{dateo.user.username}}/dateos/{{dateo.next_by_user}}"></a>
+	<a class="prev-dateo dateos-nav" ng-show="dateo.previous_by_user" href="/{{dateo.user.username}}/dateos/{{dateo.previous_by_user}}"></a>
 
 	<div class="container z2">
 			<div class="user-holder">
 				<div class="part part-1 img-holder">
-					<a href="#!/{{dateo.user.username}}">
+					<a href="/{{dateo.user.username}}">
 						<img ng-show="dateo.user" class="img-circle" ng-src="{{dateo.user.image_small | imgFromApi}}" alt="{{dateo.user.username}}">
 					</a>
 				</div><div class="part part-2 data-holder">
-					<a href="#!/{{dateo.user.username}}">
+					<a href="/{{dateo.user.username}}">
 						<h4>{{dateo.user.username}}</h4>
 					</a>
 					<p class="ff1">el {{dateo.created | date:dateFormat}}</p>
@@ -28,7 +28,7 @@
 							<button class="btn btn-link dateo-edit-btn" ng-show="flow.showEditBtn" ng-click="flow.editDateo()"><i class="fa fa-pencil-square-o"></i></button>
 						</div>
 						<div class="tag-row">
-							<a class="tag" href="#!/tag/{{tag}}" ng-repeat="tag in dateo.tags">#{{tag}}</a>
+							<a class="tag" href="/tag/{{tag}}" ng-repeat="tag in dateo.tags">#{{tag}}</a>
 						</div>
 						
 						<p class="dateo-content newline2br" ng-bind-html="dateo.content | linky:'_blank'"></p>
@@ -98,7 +98,7 @@
 								<div class="comment-holder" ng-repeat="comment in dateo.comments" ng-class="{'slidedown': comment.new}" da-on-last-repeat="slideDownComments()">
 									<div class="user">
 										<img class="img-circle" ng-src="{{comment.user.image_small | imgFromApi}}" alt="{{comment.user.username}}">
-										<a href="#!/{{comment.user.username}}"><span>{{comment.user.username}}</span></a>
+										<a href="/{{comment.user.username}}"><span>{{comment.user.username}}</span></a>
 										<span class="date">el {{comment.created | date:dateFormat}}</span>
 									</div>
 									
@@ -133,8 +133,8 @@
 					</div>
 					<div class="side-block related-campaigns" ng-show="flow.campaigns.length > 0">
 						<h3>Iniciativas relacionadas</h3>
-						<div class="tag-row">
-							<a class="tag" href="#!/{{camp.user.username}}/{{camp.slug}}" ng-repeat="camp in flow.campaigns">{{camp.name}}</a>
+						<div class="tag-row" ng-repeat="camp in flow.campaigns">
+							<a class="tag" href="/{{camp.user.username}}/{{camp.slug}}">{{camp.name}}</a>
 						</div>
 					</div>
 				</div>

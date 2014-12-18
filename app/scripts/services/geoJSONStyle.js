@@ -37,7 +37,7 @@ angular.module('dateaWebApp')
                 ((window.devicePixelRatio === 2) ? '@2x' : '') +
                 '.png';
 
-          marker = new L.Marker(latlon, {
+          marker = L.marker(latlon, {
               icon: new L.icon({
                     iconUrl: url
                   , iconSize: sizes[size]
@@ -46,7 +46,7 @@ angular.module('dateaWebApp')
               })
           });
       	}else{
-      		marker = L.Marker(latlon);
+      		marker = L.marker(latlon);
       	}
       	if (feature.properties.title || feature.properties.name) {
       		label = feature.properties.title || feature.properties.name;

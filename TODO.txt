@@ -1,0 +1,14 @@
+
+
+EDITAR DATEO:
+ - cuando dateo no tenia posicion y despues de editar si, no aparece en el mapa
+
+
+ INICIATVA:
+ - que pasa con dateos que no tienen hashtags de iniciativa
+ - cambiar texto de filtro
+ - subir maximo de dateos cargados a mapa
+ - poner opcion para cargar 
+ - sale atendido, a pesar de que no he hecho nada en mis propios dateos
+ - no funcionan bien los contadores (reemplazar?)
+

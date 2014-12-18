@@ -7,7 +7,7 @@
 			<li du-scrollspy="spy-step4" offset="200"><a href="#spy-step4" ng-click="scrollTo($event, 'spy-step4', 130)">opciones de visualización</a></li>
 		</ul>
 		<div class="navbar-right">
-			<a class="btn btn-link btn-default" ng-if="flow.mode == 'edit'" href="#!/{{campaign.user.username}}/{{campaign.slug}}">REGRESAR</a>
+			<a class="btn btn-link btn-default" ng-if="flow.mode == 'edit'" href="/{{campaign.user.username}}/{{campaign.slug}}">VER INICIATIVA</a>
 			<button class="btn btn-success btn-lg" ng-click="flow.save()">GUARDAR</button>
 		</div>
 	</div>
@@ -216,7 +216,7 @@
 						<label>Filtros</label>
 						<div class="checkbox">
 							<label>
-								<input type="checkbox" ng-model="campaign.default_filter" ng-true-value="owner"> Por defecto sólo ver dateos propios o redateados por mi
+								<input type="checkbox" ng-model="campaign.default_filter" ng-true-value="'owner'"> Por defecto sólo ver dateos propios o redateados por mi
 							</label>
 						</div>
 					</div>

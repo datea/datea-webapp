@@ -29,9 +29,9 @@ angular.module('dateaWebApp')
 					this.data.imageUrl = defaultShareData.image_url;
 				}
 				if (givens.url) {
-					this.data.url = (givens.url.indexOf('http') !== -1 ) ? givens.url : config.app.url + '/#!' + givens.url;
+					this.data.url = (givens.url.indexOf('http') !== -1 ) ? givens.url : config.app.url + givens.url;
 				}else{
-					this.data.url = config.app.url + '/#!' + $location.path();
+					this.data.url = config.app.url + $location.path();
 				}
 				this.init = false;
 			}

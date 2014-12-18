@@ -29,7 +29,7 @@
 			</div>
 		</div>
 	</div>
-	<a class="btn-edit datea-glyph-holder hover-enabled" href="#!/configuracion" ng-show="targetUser.isSameAsUser">
+	<a class="btn-edit datea-glyph-holder hover-enabled" href="/configuracion" ng-show="targetUser.isSameAsUser">
 		<i class="fa fa-pencil"></i>
 	</a>
 
@@ -55,7 +55,7 @@
 						<tab heading="iniciativas" ng-show="targetUser.campaigns.length">
 							<div class="campaigns-holder tab-body" da-loading="targetUser.campaignLoading">
 								<div class="btn-create-holder hidden-xs clearfix">
-									<a href="#!/crear-iniciativa" class="pull-right btn btn-xs datea-gray-btn">Crear iniciativa</a> 
+									<a href="/crear-iniciativa" class="pull-right btn btn-xs datea-gray-btn">Crear iniciativa</a> 
 								</div>
 								<div class="no-results" ng-show="!targetUser.campaigns.length && !targetUser.campaignLoading">no has creado iniciativas <i class="fa fa-meh-o"></i></div>
 								<div class="campaign-list row">
@@ -74,7 +74,7 @@
 						<h4 ng-show="!targetUser.isSameAsUser">{{targetUser.username}} sigue:</h4>
 						<h4 ng-show="targetUser.isSameAsUser">Etiquetas que sigo:</h4>
 						<div class="tag-buttons">
-							<a class="datea-tag-btn user-tag" ng-href="#!/tag/{{tag.tag}}" ng-repeat="tag in targetUser.follows">
+							<a class="datea-tag-btn user-tag" ng-href="/tag/{{tag.tag}}" ng-repeat="tag in targetUser.follows">
 								#{{tag.tag}}
 							</a>
 						</div>

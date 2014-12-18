@@ -15,6 +15,7 @@ angular.module('dateaWebApp')
 , 'User'
 , '$location'
 , 'geoJSONStyle'
+, 'localStorageService'
 // , 'leafletEvents'
 , function (
   $scope
@@ -30,6 +31,7 @@ angular.module('dateaWebApp')
 , User
 , $location
 , geoJSONStyle
+, localStorageService
 // , leafletEvents
 ) {
 	var headers
@@ -53,8 +55,13 @@ angular.module('dateaWebApp')
 	  , positionChanged  = false
 	  , hashtagify
 	  , markerAnimInterval
-	  , markerIcon = config.visualization.defaultMarkerIcon 
+	  , markerIcon
+	  , ipCountry = User.data.ip_country
 	;
+
+var iconHtml = config.visualization.defaultMarkerIcon.htmlGen($location.absUrl());
+markerIcon = angular.extend({}, config.visualization.defaultMarkerIcon);
+markerIcon.html = iconHtml;
 
 // Object to be sent
 $scope.dateo                = datearModalGivens.dateo || {};
@@ -84,13 +91,20 @@ if ($scope.datear.mode == 'new' || !$scope.dateo.position) {
 var $modal_body = $('#modal-body');
 if ($modal_body.size() && $modal_body.scrollTop() != 0 ) $modal_body.scrollTo(0,0);
 
+$http({
+	  method : 'GET'
+	, url    : config.api.url + 'ip_location'
+}).success(function (data, status){
+	ipCountry = data.ip_country;
+}); 
+
 onGeolocation = function ( data ) {
 	var leaflet, pipResult, boundaryBounds;
 
 	leaflet = { center : { lat  : data.coords.latitude
-		                     , lng  : data.coords.longitude
-		                     , zoom : 14
-		                     }
+	                     , lng  : data.coords.longitude
+	                     , zoom : 14
+	                     }
 		          , markers : { draggy : { lat : data.coords.latitude
 		                                 , lng : data.coords.longitude
 		                                 , draggable : true
@@ -225,13 +239,15 @@ $scope.$on( 'leafletDirectiveMap.click', function ( event, args ) {
 	  , newDraggy = {}
 	  ;
 
-	$('.pin-icon-not-set').removeClass('pin-icon-not-set');
+	//$('.pin-icon-not-set').removeClass('pin-icon-not-set');
 	positionChanged = true;
+
+	markerIcon.className = 'datea-pin-icon';
 
 	newDraggy = { lat : leafEvent.latlng.lat
 	            , lng : leafEvent.latlng.lng
 	            , draggable : true
-	            , icon      : config.visualization.defaultMarkerIcon
+	            , icon      : markerIcon
 	            }
 
 	/*
@@ -277,6 +293,7 @@ $scope.$on( 'leafletDirectiveMarker.dragstart', function ( event, args ) {
 
 $scope.$on( 'leafletDirectiveMarker.dragend', function ( event, args ) {
 	var center = args.leafletEvent.target.getLatLng();
+	markerIcon.className = 'datea-pin-icon';
 	positionChanged = true;
 	$scope.datear.leaflet.center.lat  = $scope.datear.leaflet.markers.draggy.lat = center.lat;
 	$scope.datear.leaflet.center.lng  = $scope.datear.leaflet.markers.draggy.lng = center.lng;
@@ -409,6 +426,8 @@ $scope.$watch( 'flow.dp.dateoDate', function () {
 
 $scope.datear.doDatear = function () {
 	
+	console.log("do datear token", localStorageService.get('token'));
+
 	// Tags
 	$scope.dateo.tags = $scope.datear.selectedTags;
 

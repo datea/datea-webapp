@@ -59,6 +59,7 @@ angular.module('dateaWebApp')
 	  , queryParamsToText
 	  , safariMapLayoutFix
 	  , idxToDateoId
+	  , markerIcon
 	;
 
 	$scope.query  = {
@@ -68,6 +69,9 @@ angular.module('dateaWebApp')
 	};
 	if ($location.search().since) $scope.query.since = Date.parse($location.search().since) || undefined;
 	if ($location.search().until) $scope.query.until = Date.parse($location.search().until) || undefined;
+
+	markerIcon = config.visualization.defaultMarkerIcon;
+	markerIcon.html = config.visualization.defaultMarkerIcon.htmlGen($location.absUrl());
 
 	$scope.result  = {};
 	$scope.flow              = {};
@@ -287,7 +291,7 @@ angular.module('dateaWebApp')
 		, draggable   : false
 		, focus       : false
 		, _id         : dateo.id
-		, icon 			  : config.visualization.defaultMarkerIcon
+		, icon 			  : markerIcon
 		, riseOnHover : true
 		};
 	}

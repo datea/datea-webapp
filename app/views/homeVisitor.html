@@ -7,10 +7,10 @@
 						Síguenos <a href="//facebook.com/somosdateros" target="_blank"><i class="fa fa-facebook-square fa-2x"></i></a> <a href="//twitter.com/somosdateros" target="_blank"><i class="fa fa-twitter-square fa-2x"></i></a>
 					</div>
 					<div class="main-menu-landing ff1">
-					  <a class="mml-link" href="#!/buscar">BUSCAR</a>
-						<a class="mml-link" href="#!/iniciativas">Iniciativas</a>
-						<a class="mml-link" href="#!/acerca">Acerca</a>
-						<a class="mml-link" href="#!/ayuda">Ayuda</a> 
+					  <a class="mml-link" href="/buscar">BUSCAR</a>
+						<a class="mml-link" href="/iniciativas">Iniciativas</a>
+						<a class="mml-link" href="/acerca">Acerca</a>
+						<a class="mml-link" href="/ayuda">Ayuda</a> 
 					</div>
 					<h1 class="main-heading ff2 hidden-xs"><img src="static/images/logo.png" alt="datea"> todos somos dateros</h1>
 					<h1 class="main-heading ff2 mobile visible-xs"><img src="static/images/logo.png" alt="datea">datea</h1>
@@ -27,7 +27,7 @@
 						<img src="static/images/landing/dateros-count.png" alt="dateros"> <span class="number">{{landing.user_count}}</span> dateros
 					</div>
 					<p class="question">¿Quieres datear?</p>
-					<div><a href="#!/registrate" class="btn datea-btn btn-lg btn-login-landing ff1">
+					<div><a href="/registrate" class="btn datea-btn btn-lg btn-login-landing ff1">
 						regístrate
 					</a></div>
 				</div>
@@ -36,7 +36,7 @@
 						<img src="static/images/landing/dateo-count.png" alt="dateos"> <span class="number">{{landing.dateo_count}}</span> dateos
 					</div>
 					<p class="question">¿Ya tienes cuenta?</p>
-					<div><a href="#!/signin" class="btn datea-btn btn-lg btn-login-landing ff1">
+					<div><a href="/signin" class="btn datea-btn btn-lg btn-login-landing ff1">
 						ingresa
 					</a></div>
 				</div>
@@ -101,7 +101,7 @@
 						<h4 class="ff1">Tendencias</h4>
 						<div class="btn datea-btn ff1">ir a mapa de dateos</div>
 						<div class="trending-tags-holder">
-							<a class="datea-tag-btn trending-tag" ng-href="#!/tag/{{tag.tag}}" ng-repeat="tag in landing.trendingTags">
+							<a class="datea-tag-btn trending-tag" ng-href="/tag/{{tag.tag}}" ng-repeat="tag in landing.trendingTags">
 								#{{tag.tag}}
 							</a>
 						</div>
@@ -124,7 +124,7 @@
 					<da-campaign-teaser></da-campaign-teaser>
 				</div>
 			</div>
-			<a class="btn btn-lg datea-btn ff1 more-campaigns-btn" href="#!/iniciativas">ver iniciatvias</a>
+			<a class="btn btn-lg datea-btn ff1 more-campaigns-btn" href="/iniciativas">ver iniciativas</a>
 		</div>
 	</div>
 	<div class="section-holder section-holder-6 ff1 ng-hide">
