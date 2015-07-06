@@ -79,10 +79,6 @@ angular.module('dateaWebApp')
 		  dateo : null
 		, show  : false 
 	};
-	$scope.flow.activeTab = { 
-		  map    : $location.search().tab ? $location.search().tab === 'map': true
-		, images : $location.search().tab ? $location.search().tab === 'images': false
-	}
 	$scope.$watch( 'query.limit', function () {
 		$scope.flow.limitLabel = ($scope.query.limit < 1000) ? 'máximo '+$scope.query.limit : 'todos los';
 	});
@@ -94,6 +90,7 @@ angular.module('dateaWebApp')
 	$scope.query                = {
 		  limit    : $location.search().limit  || 100
 		, order_by : $location.search().order_by || '-created'
+		, tab      : $location.search().tab || 'map'
 	};
 	if ($location.search().since) $scope.query.since = Date.parse($location.search().since) || undefined;
 	if ($location.search().until) $scope.query.until = Date.parse($location.search().until) || undefined;
@@ -239,7 +236,14 @@ angular.module('dateaWebApp')
 				buildMarkers( { dateos: response.objects } );
 			
 			}else if (tab === 'images') {
-				$scope.tag.dateosWithImages = response.objects;
+				var images = [];
+				_.each(response.objects, function (dateo) {
+					_.each(dateo.images, function (img) {
+						img.dateo = dateo;
+						images.push(img);
+					})
+				});
+				$scope.tag.dateoImages = images;
 			}
 			queryParamsToText(response.objects.length);
 			$scope.flow.loading = false;
@@ -258,14 +262,9 @@ angular.module('dateaWebApp')
 	};
 
 	$scope.flow.openTab = function(tab) {
+		$location.search('tab', tab);
 		$scope.query.tab = tab;
 		$scope.flow.doSearch();
-		if (tab == 'map') {
-			leafletData.getMap("leafletSearch")
-			.then( function ( map ) {
-				map.invalidateSize();
-			});
-		}
 	};
 
 	$scope.flow.share = function () {

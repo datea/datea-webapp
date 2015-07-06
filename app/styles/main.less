@@ -379,7 +379,7 @@ body {
 // Navbar
 //
 .datea-navbar {
-	background: @color-1;
+	background: @color-1; // #bfc8c4;
 	margin: 0;
 	z-index: 1001;
 
@@ -4194,7 +4194,8 @@ ul.input-list {
 			position: relative;
 			background-color: @color-17;
 			height: @viz-nav-height;
-			width: 140px;
+			//width: 140px;
+
 			.main-menu-btn {
 				position: relative;
 				float: right;
@@ -4213,6 +4214,76 @@ ul.input-list {
 					z-index: 10003;
 				}
 			}
+
+			.viz-view-nav {
+				border: none;
+				margin-right: 80px;
+				line-height: @viz-nav-height;
+				height: @viz-nav-height;
+				background-color: @color-17;
+
+				a {
+					position: relative;
+					width: 50px;
+					text-align: center;
+					font-size: 32px;
+					color: lighten(@color-9, 10%);
+					display: block;
+					float: left;
+					padding-top: 8px;
+					line-height: @viz-nav-height - 8px;
+					height: @viz-nav-height;
+					cursor: pointer;
+					&:hover {
+						color: @color-9;
+						border: 0;
+						text-decoration: none;
+					}
+					&.active {
+						color: white;
+						background-color: @color-18;
+						a { background-color: transparent !important; border: 0 !important }
+					}
+				}
+			}
+
+			.viz-nav-contract() {
+				padding-top: @viz-nav-height;
+				width: 50px;
+				&:hover, &.showTabs {
+					a {
+						display: block !important; 
+						background-color: white;
+						&.active {
+							background-color: white;
+						}
+					}
+				}
+				a {
+					display:none;
+					float: none !important;
+					&.active {
+						position: absolute;
+						top: 0;
+						left: 0;
+						display: block;
+						background-color: transparent;
+						color: @color-10;
+						&:after {
+							content: ' ';
+							border-top: 5px solid @color-10;
+							border-left: 5px solid transparent;
+							border-right: 5px solid transparent;
+							position: absolute;
+							right: 3px;
+							top: 36px;
+							width: 5px;
+							height: 5px;
+						}
+					}
+				}
+			}
+
 		}
 		.filter-holder {
 			border-top: 1px solid white;
@@ -4288,93 +4359,7 @@ ul.input-list {
 		}
 	}
 
-	.nav-tabs-contract() {
-		padding-top: @viz-nav-height;
-		width: 50px;
-		&:hover, &.showTabs {
-			li {
-				display: block !important; 
-				background-color: white;
-				&.active {
-					background-color: white;
-				}
-			}
-		}
-		li {
-			display:none;
-			float: none !important;
-			&.active {
-				position: absolute;
-				top: 0;
-				left: 0;
-				display: block;
-				background-color: transparent;
-				color: @color-10;
-				&:after {
-					content: ' ';
-					border-top: 5px solid @color-10;
-					border-left: 5px solid transparent;
-					border-right: 5px solid transparent;
-					position: absolute;
-					right: 3px;
-					top: 36px;
-					width: 5px;
-					height: 5px;
-				}
-			}
-		}
-	}
-
-	.nav-tabs {
-		border: none;
-		right: 80px;
-		position: absolute;
-		top: -@viz-nav-height;
-		line-height: @viz-nav-height;
-		height: @viz-nav-height;
-		//width: 100px;
-		z-index: 999;
-		background-color: @color-17;
-		li {
-			margin-bottom: 0;
-			position: relative;
-			top: 0;
-			//background-color: transparent;
-			width: 50px;
-			text-align: center;
-			font-size: 32px;
-			color: lighten(@color-9, 10%);
-			float: left;
-			padding-top: 8px;
-			line-height: @viz-nav-height - 8px;
-			height: @viz-nav-height;
-			//background-color: white;
-			&:hover {
-				color: @color-9;
-				border: 0;
-			}
-			&.active {
-				//background-color: @color-17;
-				color: white;
-				background-color: @color-18;
-				a { background-color: transparent !important; border: 0 !important }
-			}
-			a {
-				display: block;
-				line-height: inherit;
-				position: absolute;
-				top: 0;
-				bottom: 0;
-				left: 0;
-				right: 0;
-				background-color: transparent;
-				margin: 0;
-				border: 0;
-				padding: 0;
-			}	
-		}
-	}
-	.tab-content {
+	.viz-view-map {
 		position: relative;
 
 		.no-results {
@@ -4430,34 +4415,40 @@ ul.input-list {
 				}
 			}
 		}
+	}
 
-		.dateos-more-results {
-			padding: 20px 0;
-			text-align: center;
+	.dateos-more-results {
+		padding: 20px 0;
+		text-align: center;
+	}
+
+	.dateo-stats-holder {
+		//text-align: center;
+		.inner {
+			padding: 15px 20px;
+			.viz-simple-chart { height: 500px;}
 		}
+	}
 
-		.dateo-stats-holder {
-			//text-align: center;
-			.inner {
-				padding: 15px 20px;
-				.viz-simple-chart { height: 500px;}
-			}
+	.leaflet-map-holder {
+		padding: 0 !important;
+		position: relative;
+		height: 100%;
+		#leafletCampaign { height: 100%;}
+		&.has-legend {
+			height: ~"calc(100% - 32px)";
 		}
-
-		.leaflet-map-holder {
-			padding: 0 !important;
+	}
+	.legend-holder {
+		position: absolute;
+		left: 0;
+		right: 0;
+		bottom: -32px;
+		&.timeline-legend-holder {
+			bottom: 0;
 			position: relative;
-			height: 100%;
-			#leafletCampaign { height: 100%;}
-			&.has-legend {
-				height: ~"calc(100% - 32px)";
-			}
-		}
-		.legend-holder {
-			position: absolute;
-			left: 0;
-			right: 0;
-			bottom: -32px;
+			padding: 12px 12px;
+			background-color: @color-16;
 		}
 	}
 }
@@ -4497,7 +4488,7 @@ ul.input-list {
 }
 
 .cpie-label { font-size: 11px;}
-.datea-pin-icon { border: 0 !important; background-color: transparent !important}
+.datea-pin-icon { border: 0 b!important; background-color: transparent !important}
 
 .campaign-holder {
 	.campaign-info .inner { padding-left: 0}
@@ -4510,14 +4501,11 @@ ul.input-list {
 		.dateo-detail-content-holder,
 		.dateo-description-holder  { padding-left: 0; padding-right: 25px;}
 	}
-	.nav-tabs { 
-		right: 80px; 
-	}
 }
 /* NOT MOBILE FIRST: less than medium */
 @media (max-width: 1000px) {
-	.viz-holder .nav-tabs {
-		.viz-holder > .nav-tabs-contract();
+	.viz-holder .viz-nav .menu-right .viz-view-nav {
+		.viz-holder .viz-nav .menu-right > .viz-nav-contract();
 	}
 }
 
@@ -4547,6 +4535,7 @@ ul.input-list {
 		}
 	}
 }
+
 @media (min-width: @screen-lg-min) {
 	.campaign-holder {
 		.campaign-info .inner { padding-left: 25px}
@@ -4670,25 +4659,226 @@ ul.input-list {
 
 // RESPONSIVE DATEOS WITH IMAGES
 @media (max-width: 664px) {
-	.viz-holder .tab-content .dateo-thumbs-holder .dateo-thumb { width: 50%;}
+	.viz-holder .viz-view-images .dateo-thumbs-holder .dateo-thumb { width: 50%;}
 }
 @media (min-width: 665px) {
-	.viz-holder .tab-content .dateo-thumbs-holder .dateo-thumb { width: 33.33%;}
+	.viz-holder .tviz-view-images .dateo-thumbs-holder .dateo-thumb { width: 33.33%;}
 }
 @media (min-width: 885px) {
-	.viz-holder .tab-content .dateo-thumbs-holder .dateo-thumb { width: 25%;}
+	.viz-holder .viz-view-images .dateo-thumbs-holder .dateo-thumb { width: 25%;}
 }
 @media (min-width: 1110px) {
-	.viz-holder .tab-content .dateo-thumbs-holder .dateo-thumb { width: 20%;}
+	.viz-holder .viz-view-images .dateo-thumbs-holder .dateo-thumb { width: 20%;}
 }
 @media (min-width: 1340px) {
-	.viz-holder .tab-content .dateo-thumbs-holder .dateo-thumb { width: 16.66%;}
+	.viz-holder .viz-view-images .dateo-thumbs-holder .dateo-thumb { width: 16.66%;}
 }
 @media (min-width: 1570px) {
-	.viz-holder .tab-content .dateo-thumbs-holder .dateo-thumb { width: 14.285%;}
+	.viz-holder .viz-view-images .dateo-thumbs-holder .dateo-thumb { width: 14.285%;}
 }
 @media (min-width: 1800px) {
-	.viz-holder .tab-content .dateo-thumbs-holder .dateo-thumb { width: 12.5%;}
+	.viz-holder .viz-view-images .dateo-thumbs-holder .dateo-thumb { width: 12.5%;}
+}
+
+// 
+//	TIMELINE HOLDER
+// 
+.timeline-holder {
+	.timeline-bar {
+		.cpie-label { 
+			font-size: 9px;
+			line-height: 15px;
+			color: #777;
+		}
+		background-color: #f9f9f9;
+		//border-bottom: 1px solid #ccc;
+		//padding-bottom: 25px;
+		position: relative;
+		cursor: -webkit-grab;
+		cursor: grab;
+
+		&.animate-zoom {
+			-webkit-transition: left 0.5s ease, width 0.5s ease, transform 0.5s ease;
+			transition: left 0.5s ease, width 0.5s ease, transform 0.5s ease;
+		}
+
+		.time-notches-first {
+			height: 20px;
+			position: relative;
+			.time-notch {
+				text-align: center;
+				font-size: 13px;
+				height: 18px;
+				line-height: 15px;
+				padding-top: 5px;
+				overflow: hidden;
+
+				.nlabel {
+					margin: 0 10px;
+					display: inline-block;
+					height: 15px;
+					overflow: hidden;
+				}
+			}
+		}
+
+		.time-notches-second {
+			height: 15px;
+			line-height: 15px;
+			position: relative;
+			.time-notch {
+				height: 15px;
+				line-height: 15px;
+			}
+		}
+
+		.time-notch {
+			position: absolute;
+			top: 0px;
+			border-left: 1px solid #777;
+			height: 15px;
+			line-height: 15px;
+			font-size: 11px;
+		}
+
+		.dateo-notch {
+			position: absolute;
+			top: 24px;
+			width: 4px;
+			height: 20px;
+			cursor: pointer;
+		}
+
+		.dateo-clusters {
+			position: relative;
+			margin-top: 15px;
+			//margin-bottom: 20px;
+			border-top: 1px solid transparent;
+			height: 20px;
+			.dateo-cluster {
+				position: absolute;
+				cursor: pointer;
+				border-radius: 50%;
+				&.active {
+					box-shadow: 0px 0px 10px #333;
+				}
+			}
+		}
+	}
+
+	.timeline-content {
+		position: relative;
+		min-height: 350px;
+		background-color: @color-16;
+		padding: 20px 0;
+		
+		.controls {
+			position: absolute;
+			top: 3%;
+			left: 10px;
+			width: 50px;
+			z-index: 4;
+			.btn {
+				padding: 0;
+				font-size: 1.8em;
+				border-radius: 50%;
+				height: 40px;
+				width: 40px;
+				line-height: 40px;
+				color: white;
+				margin-bottom: 5px;
+				&:focus {
+					outline: 0;
+				}
+				&:active {
+					background-color: @color-18;
+				}
+				&:disabled {
+					opacity: 0.4;
+				}
+				.glyphicon {
+					line-height: 36px;
+				}
+			}
+		}
+
+		.prev-btn, .next-btn {
+			position: absolute;
+			top: 0;
+			bottom: 0;
+			width: 10%;
+			max-width: 150px;
+			min-width: 80px; 
+			font-size: 50px;
+			color: @color-17;
+			z-index: 2;
+			cursor: pointer;
+			//padding-top: 25%;
+
+			.icon {
+				position: absolute;
+				top: 45%;
+			}
+
+			&:hover {
+				color: @color-18;
+			}
+			&.disabled {
+				display: none;
+			}
+		}
+
+		.prev-btn {
+			left: 0;
+			.icon {
+				right: 5px;
+			}
+		}
+
+		.next-btn {
+			right: 0;
+			.icon {
+				left: 5px;
+			}
+		}
+
+		.dateo-slides-wrap {
+			position: relative;
+			z-index: 1;
+			transition: height 0.5s ease;
+
+			.dateo-slides {
+
+				position: absolute;
+				overflow: hidden;
+				width: 300%;
+				transform: translate3d(-33.3334%,0,0);
+
+				.slide-container {
+					width: 33.3333333%;
+					float: left;
+					padding: 0px 0px;
+					.dateo-teaser {
+						margin: 0 auto 0 auto;
+						max-width: 600px;
+						background-color: white;
+						padding: 15px;
+					}
+				}
+
+				&.slide-next {
+					transition: transform 0.4s ease;
+					transform: translate3d(-66.6667%,0,0);
+				}
+
+				&.slide-prev {
+					transition: transform 0.4s ease;
+					transform: translate3d(0,0,0);
+				}
+
+			}
+		}
+	}
 }
 
 //

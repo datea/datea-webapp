@@ -65,6 +65,12 @@ angular.module('dateaWebApp')
 		;
 		if( response.objects[0] ) {
 			var dateo  = response.objects[0];
+			
+			if (!dateo.published && (!User.isSignedIn() || User.data.id !== dateo.user.id)) {
+				$location.path('/404').replace();
+				return;
+			}
+
 			$scope.flow.messageNext = hasNext(dateo) ? 'siguiente' : 'primer';
 			angular.extend( $scope.dateo, dateo );
 			$scope.dateo.comments = [];
@@ -76,13 +82,13 @@ angular.module('dateaWebApp')
 			if (User.isSignedIn() && User.data.id === dateo.user.id) $scope.flow.showEditBtn = true;
 				
 			// SEO AND SOCIAL TAGS
-				dataTags = dateo.tags.slice(0,2);
-				shareData = {
-					  title       : 'Datea | '+dateo.user.username+' dateó en '+ dataTags.join(", ")
-					, description : dateo.extract
-					, imageUrl    : dateo.images.length ? config.api.imgUrl + dateo.images[0].image : null
-				}
-				shareMetaData.setData(shareData);
+			dataTags = dateo.tags.slice(0,2);
+			shareData = {
+				  title       : 'Datea | '+dateo.user.username+' dateó en '+ dataTags.join(", ")
+				, description : dateo.extract
+				, imageUrl    : dateo.images.length ? config.api.imgUrl + dateo.images[0].image : null
+			}
+			shareMetaData.setData(shareData);
 
 		} else {
 			$location.path('/404').replace();

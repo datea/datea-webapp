@@ -19,6 +19,7 @@ angular.module( 'dateaWebApp'
   , 'daPiecluster'
   , 'angulartics'
   , 'angulartics.google.analytics'
+  , 'monospaced.mousewheel'
 ])
 .config(
 [ '$routeProvider'
@@ -37,7 +38,7 @@ angular.module( 'dateaWebApp'
 	$httpProvider.defaults.headers.patch = {
 	  'Content-Type': 'application/json;charset=utf-8'
 	}
-	OAuth.initialize('Cqxn7weY1lOMNwVKwOVNzlL_Bzc');
+	OAuth.initialize('du8nXdQmkjgR3nrfsjHxO07INhk');
 	$locationProvider.hashPrefix('!');
 
 	$routeProvider

@@ -99,7 +99,7 @@ angular.module('dateaWebApp')
 	$scope.flow              = {};
 	$scope.flow.notFound     = false;
 	$scope.flow.userIsOwner  = false;
-	$scope.flow.activeTab    = 'map';
+	$scope.flow.activeTab    = $location.search()['tab'] || 'map';
 	$scope.flow.loading      = false;
 	$scope.flow.mapIsPresent = true;
 	$scope.flow.colorRange   =  d3.scale.category10().range();
@@ -126,7 +126,7 @@ angular.module('dateaWebApp')
 			$scope.campaign.relatedCampaigns = response.objects[0];
 		}, function ( reason ) {
 			console.log( reason );
-		} );
+		});
 	}
 
 	buildMarkers = function ( givens ) {
@@ -192,18 +192,12 @@ angular.module('dateaWebApp')
 		  , catWidth
 		  , clipPath
 		;
-		angular.forEach(dateo.tags, function(tag){
-			if (tag != $scope.campaign.main_tag.tag && !!$scope.subTags[tag]) {
-				colors.push($scope.subTags[tag].color);
-			}
-		});
-		if (colors.length == 0) colors.push(config.visualization.default_color);
-		catWidth = (config.visualization.markerWidth / colors.length)
+		catWidth = (config.visualization.markerWidth / dateo.colors.length)
 
 		clipPath = $location.absUrl() + '#pinpath';
 		
 		html = '<svg width="'+config.visualization.markerWidth+'" height="'+config.visualization.markerHeight+'"><g style="clip-path: url('+clipPath+');">';
-		angular.forEach(colors, function (color, i) {
+		_.each(dateo.colors, function (color, i) {
 			html = html + '<rect height="'+config.visualization.markerHeight+'" width="'+parseInt(Math.ceil(catWidth))+'" fill="'+color+'" x="'+parseInt(Math.ceil(i*catWidth))+'" />';
 		});
 		html = html 
@@ -513,33 +507,6 @@ angular.module('dateaWebApp')
 
 		checkDateoDisplayOptions();
 		queryDateos(givens);
-		/*
-		Api.dateo
-		.getDateos( givens )
-		.then( function ( response ) {
-			if (response.objects.length) {
-				switch (activeTab) {
-					case 'map':
-						safariMapLayoutFix();
-						$scope.campaign.dateos = response.objects;
-						queryParamsToText(response.objects.length);
-						idxToDateoId = response.objects.map(function(d) {return d.id;});
-						//geodateos = response.objects.filter( function (d) { return !!d.position; });	
-						buildMarkers( { dateos : response.objects } );
-						break;
-					
-					case 'images':
-						$scope.campaign.dateosWithImages = response.objects;
-						queryParamsToText(response.objects.length);
-						break;
-				}
-			}
-			$scope.flow.loading = false;
-			$scope.flow.queryDone   = true;
-			$scope.flow.dateoShowListNumResults = config.defaultdateoNumResults;
-		}, function ( reason ) {
-			console.log( reason );
-		} );*/
 	}
 
 	queryDateos = function (givens) {
@@ -561,6 +528,9 @@ angular.module('dateaWebApp')
 			case 'images':
 				$scope.campaign.dateosWithImages = [];
 				break;
+			case 'timeline': 
+				$scope.campaign.dateos = [];
+				break;
 		}
 	
 		givens.offset = 0;
@@ -569,7 +539,17 @@ angular.module('dateaWebApp')
 			Api.dateo
 			.getDateos( givens )
 			.then( function ( response ) {
-					dateos = dateos.concat(response.objects);
+					dateos = dateos.concat(response.objects.map(function (d) {
+						d.timestamp = Date.parse(d.date || d.created).getTime();
+						d.colors = [];
+						_.each(d.tags, function(tag){
+							if (tag != $scope.campaign.main_tag.tag && !!$scope.subTags[tag]) {
+								d.colors.push($scope.subTags[tag].color);
+							}
+						});
+						if (d.colors.length == 0) d.colors.push(config.visualization.default_color);
+						return d;
+					}));
 					dateoIds = dateoIds.concat(response.objects.map(function(d) {return d.id;}));
 					timesDone++;
 					/* are we done? */
@@ -582,13 +562,24 @@ angular.module('dateaWebApp')
 								safariMapLayoutFix();
 								break;
 							case 'images':
-								$scope.campaign.dateosWithImages = response.objects;
+								var images = [];
+								_.each(response.objects, function (dateo) {
+									_.each(dateo.images, function (img) {
+										img.dateo = dateo;
+										images.push(img);
+									})
+								});
+								$scope.campaign.dateoImages = images;
+								break;
+							case 'timeline':
+								$scope.campaign.dateos = dateos;
 								break;
 						}
 						$scope.flow.loading = false;
 						$scope.flow.queryDone   = true;
 						$scope.flow.dateoShowListNumResults = config.defaultdateoNumResults;
 						queryParamsToText(dateos.length);
+						$rootScope.$broadcast('dateoQuery:done');
 					
 					/* reciprocate further */
 					}else{
@@ -604,6 +595,8 @@ angular.module('dateaWebApp')
 
 	$scope.$watch( 'flow.activeTab', function () {
 		$scope.flow.getDateos();
+		$location.search('tab', $scope.flow.activeTab);
+		if ($scope.flow.activeTab == 'stats') $scope.chart.buildCharts();
 	});
 
 	$scope.flow.getSearch = function (ev) {
@@ -635,7 +628,7 @@ angular.module('dateaWebApp')
 			} else if ($scope.chart.type == 'bar') {
 				setChartForBar();
 			}
-			$scope.statsVisible = true;
+			$timeout(function () {$scope.chart.visible = true;}, 10);
 		}, function ( error ) {
 			console.log( error );
 		} );
@@ -829,48 +822,46 @@ angular.module('dateaWebApp')
 		  , d        = Piecluster.clusterSizeRange(children.length)
 		  , di       = d + 1
 		  , r        = d / 2
-			,	dataObj  = {}
-			, data     = []
-			, html
-			, clusterIcon
-			;
+		  ,	dataObj  = {}
+		  , data     = []
+		  , html
+		  , clusterIcon
+		;
 
-			angular.forEach(children, function (marker) {
-				angular.forEach(marker.options.tags, function(tag) {
-					// taking out the "other color" for tags not in secondar_tags
-					//if (tag != $scope.campaign.main_tag.tag) {
-					if (tag != $scope.campaign.main_tag.tag && !!$scope.subTags[tag]) {
-						//tag = angular.isDefined($scope.subTags[tag]) ? tag : "Otros";
-						if (!!dataObj[tag]) {
-							dataObj[tag].value ++;
-							dataObj[ tag ].ids.push( marker.options._id );
-						}else{
-							dataObj[tag] = { label: '#'+tag, value : 1, tag: tag, ids: [ marker.options._id ]};
-						}
+		angular.forEach(children, function (marker) {
+			angular.forEach(marker.options.tags, function(tag) {
+				// taking out the "other color" for tags not in secondar_tags
+				//if (tag != $scope.campaign.main_tag.tag) {
+				if (tag != $scope.campaign.main_tag.tag && !!$scope.subTags[tag]) {
+					//tag = angular.isDefined($scope.subTags[tag]) ? tag : "Otros";
+					if (!!dataObj[tag]) {
+						dataObj[tag].value ++;
+						dataObj[ tag ].ids.push( marker.options._id );
+					}else{
+						dataObj[tag] = { label: '#'+tag, value : 1, tag: tag, ids: [ marker.options._id ]};
 					}
-				});
+				}
 			});
+		});
 
-			for (var j in dataObj) {
-				data.push(dataObj[j]);
-			}
+		data = _.values(dataObj);
 
-			html = Piecluster.makeSVGPie({
-				  n             : n
-				, r             : r
-				, d             : d
-				, data          : data
-				, tags          : $scope.subTags
-				, secondaryTags : $scope.subTags
-			});
+		html = Piecluster.makeSVGPie({
+			  n             : n
+			, r             : r
+			, d             : d
+			, data          : data
+			, tags          : $scope.subTags
+			, secondaryTags : $scope.subTags
+		});
 
-			clusterIcon = new L.DivIcon({
-				  html: html
-				, className: Piecluster.pieclusterConfig.clusterIconClassName
-				, iconSize: new L.Point(di,di)
-			});
+		clusterIcon = new L.DivIcon({
+			  html: html
+			, className: Piecluster.pieclusterConfig.clusterIconClassName
+			, iconSize: new L.Point(di,di)
+		});
 
-			return clusterIcon;
+		return clusterIcon;
 	}
 
 	// clusterSizeRange = d3.scale.linear()

@@ -17,6 +17,10 @@ angular.module("dateaWebApp")
 		, controller  : function ($scope, $element, $attrs) {
 				var checkStatus;
 
+				$scope.teaser = {};
+
+				if ($scope.timeline && $scope.timeline.activeDateo) $scope.dateo = $scope.timeline.activeDateo; 
+
 				$scope.mapPresent = ($attrs.mapPresent) ? $scope.$eval($attrs.mapPresent) : true;
 				$scope.detailInline = ($attrs.detailInline) ? $scope.$eval($attrs.detailInline) : true;
 				$scope.campaignId = ($attrs.campaignId) ? $scope.$eval($attrs.campaignId) : null;
@@ -54,7 +58,7 @@ angular.module("dateaWebApp")
 					}
 				}
 
-				$scope.flow.imgDetail = function ( img ) {
+				$scope.teaser.imgDetail = function ( img ) {
 					var givens;
 
 					givens = { templateUrl : 'views/dateo-detail-img.html'

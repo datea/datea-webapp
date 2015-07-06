@@ -8,10 +8,10 @@ angular
 	            }
 	, api     : { url    : 'https://api.datea.io/api/v2/'
 	          	, imgUrl : 'http://api.datea.io'
-	             	url    : 'http://127.0.0.1:8000/api/v2/'
-	            , imgUrl : 'http://127.0.0.1:8000'
+	            // 	url    : 'http://127.0.0.1:8000/api/v2/'
+	            //, imgUrl : 'http://127.0.0.1:8000'
 	          	} 
-	, marker  : ['<div class="marker-holder">'
+	, marker  : ['<div class="marker-holderet">'
 	              ,'<img class="img-circle" src="{{user.markerImage}}" alt="user image">'
 	              ,'<div class="part">'
 	                ,'<h5>{{user.username}}</h5>'
