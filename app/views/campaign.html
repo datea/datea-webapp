@@ -1,13 +1,13 @@
-<div class="campaign-holder ff1">
+<div class="campaign-holder ff1" msd-wheel="bar.mousewheel($event, $delta, $deltaX, $deltaY)">
 	<div class="campaign-card container-fluid">
 		<div class="row">
 			<div class="col-sm-7 campaign-info">
 				<div class="inner">
 					<div class="main-info">
 						<div class="user-head">
-							<div class="user-img img-circle" da-bg-from-api="{{campaign.user.image.image}}" da-img-size="cover" da-img-type="user"></div>
+							<div class="user-img img-circle" da-bg-from-api="{{campaign.user.image}}" da-img-size="cover" da-img-type="user"></div>
 							<div class="user-info">
-								<div class="date">Una iniciativa de</div>
+								<div class="created">Una iniciativa de</div>
 								<h4 class="username"><a href="/{{campaign.user.username}}">{{campaign.user.username}}</a></h4>
 							</div>
 							<div class="unpublished-msg" ng-show="campaign.id && !campaign.published">Iniciativa sin publicar</div>
@@ -191,9 +191,9 @@
 								<div class="expand" ng-click="flow.expandLegend()" ng-show="flow.showLegendExpandLink">ver todas</div>
 								<div class="contract" ng-click="flow.contractLegend()" ng-show="flow.showLegendContractLink">cerrar</div>
 								<div class="tag-list">
-									<div class="tag-legend" ng-repeat="tag in campaign.secondary_tags" da-on-last-repeat="flow.onLegendRender()">
-										<span class="color-sample" style="background-color: {{flow.colorRange[$index]}}"></span>
-										<span class="tag">#{{tag.tag}}</span>
+									<div class="tag-legend" ng-repeat="tag in subTags" da-on-last-repeat="flow.onLegendRender()">
+										<span class="color-sample" style="background-color: {{tag.color}}"></span>
+										<span class="tag">#{{tag.obj.tag}}</span>
 									</div>
 								</div>
 							</div>
@@ -229,7 +229,7 @@
 			</div>
 
 			<div class="viz-view viz-view-timeline" ng-if="flow.activeTab == 'timeline'">
-				<da-timeline dateos="campaign.dateos" tags="subTags" campaign="campaign"></da-timeline>
+				<da-timeline dateos="campaign.dateos" tags="subTags" campaign="campaign" loading="flow.loading"></da-timeline>
 				<div class="legend-holder timeline-legend-holder" ng-show="campaign.secondary_tags.length > 0">
 					<div class="expand" ng-click="flow.expandLegend()" ng-show="flow.showLegendExpandLink">ver todas</div>
 					<div class="contract" ng-click="flow.contractLegend()" ng-show="flow.showLegendContractLink">cerrar</div>

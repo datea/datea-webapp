@@ -52,7 +52,8 @@ angular.module('dateaWebApp')
 	$scope.flow.messageNext   = ''; 
 
 	$scope.flow.isUserSignedIn = User.isSignedIn();
-	$scope.dateFormat = config.defaultDateFormat;
+	$scope.createdFormat = config.defaultDateFormat;
+	$scope.dateFormat    = config.dateFieldFormat;
 
 	hasNext = function (dateo) {
 		return dateo.id < dateo.next_by_user;

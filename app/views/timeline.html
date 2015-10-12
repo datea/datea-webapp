@@ -26,6 +26,8 @@
 			</div>
 		</div>
 
+		<div class="active-pos-sign" ng-show="bar.activePosStyle" ng-style="bar.activePosStyle"></div>
+
 	</div>
 
 	<div class="timeline-content">
@@ -46,12 +48,12 @@
 		<div class="dateo-slides-wrap" ng-style="slider.wrapStyle" ng-hide="timeline.noResults">
 			<div class="dateo-slides" ng-class="{'slide-next': slider.slideNext, 'slide-prev': slider.slidePrev}">
 				<div ng-repeat="dateo in activeDateos track by $index" class="slide-container slide-container-{{$index}}">
-					<da-dateo-teaser map-present="false" detail-inline="false"></da-dateo-teaser>
+					<da-dateo-teaser map-present="false" detail-inline="false" force-date="true"></da-dateo-teaser>
 				</div>
 			</div>
 		</div>
 
-		<div class="no-results" ng-show="timeline.noResults">
+		<div class="no-results ng-hide" ng-show="timeline.noResults && !loading">
 			No hay resultados <i class="fa fa-meh-o"></i>
 		</div>
 

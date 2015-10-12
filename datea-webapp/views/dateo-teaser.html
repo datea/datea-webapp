@@ -1,0 +1,58 @@
+<div class="dateo dateo-teaser" ng-class="{unpublished: !dateo.published}">
+	<div class="teaser-inner">
+
+		<div class="user-head">
+			<div class="user-img img-circle" da-bg-from-api="{{dateo.user.image_small}}" da-img-size="cover" da-img-type="user"></div>
+			<div class="user-info">
+				<h4 class="username"><a href="/{{dateo.user.username}}">{{dateo.user.username}}</a></h4>
+				<div class="created"><a href="/{{dateo.user.username}}/dateos/{{dateo.id}}">el {{dateo.created | date:createdFormat}}</a></div>
+			</div>
+			<div class="admin-info">
+				<div class="label admin-status" ng-show="flow.status" ng-class="{'label-success': flow.status.type === 'solved', 'label-info': flow.status.type === 'reviewed'}">{{flow.status.msg}}</div>
+			</div>
+		</div>
+
+		<p class="tags"><a class="tag" ng-repeat="tag in dateo.tags" href="/tag/{{tag}}">#{{tag}}</a></p>
+
+		<div class="date" ng-show="dateo.date || forceDate">{{dateo.date || dateo.created | date:dateFormat}}</div>
+
+		<p class="content" ng-bind-html="dateo.extract | linky:'_blank'"></p>
+
+		<div class="images" ng-show="dateo.images.length" image-gallery="">
+			<a class="image slide" href="{{img.image | imgFromApi}}" ng-repeat="img in dateo.images">
+				<div class="img" da-bg-from-api="{{img.thumb}}" da-img-size="cover"></div>
+			</a>
+		</div>
+
+		<div class="link" ng-show="dateo.link">
+			<i class="fa fa-chain licon"></i>
+			<a href="{{dateo.link.url}}" class="limage" ng-show="dateo.link.img_url">
+				<img ng-src="{{dateo.link.img_url}}" alt="">
+			</a>
+			<div class="lcontent">
+				<h4 class="ltitle"><a href="{{dateo.link.url}}">{{dateo.link.title}}</a></h4>
+				<!--<p class="ldesc">{{dateo.link.description}}</p>-->
+			</div>
+		</div>
+
+		<div class="files" ng-show="dateo.files.length">
+			<a class="file" ng-repeat="file in dateo.files" href="{{file.file | imgFromApi}}">
+				<i class="ul-icon glyphicon glyphicon-file"></i>
+				<span class="file-title">{{file.title}}</span>
+			</a>
+		</div>
+
+		<div class="social-holder">
+			<!--<a class="btn datea-gray-btn btn-sm pull-right" href="/{{dateo.user.username}}/dateos/{{dateo.id}}" >ver detalle</a>-->
+			<button class="btn datea-gray-btn btn-sm pull-right" ng-click="openDetail()">ver detalle</button>
+			<div ng-show="mapPresent && dateo.position" class="pin pull-right" ng-click="focusDateo()" tooltip="ver en mapa" tooltip-trigger="mouseenter" tooltip-placement="left" tooltip-popup-delay="800">
+				<span class="glyphicon glyphicon-map-marker"></span>
+			</div>
+			<div class="unpublished-msg pull-right" ng-show="!dateo.published">dateo sin publicar</div>
+			<span class="stat" ng-show="dateo.vote_count > 0"><span class="glyphicon glyphicon-thumbs-up"></span> {{dateo.vote_count}}</span>
+			<span class="stat" ng-show="dateo.comment_count > 0"><span class="glyphicon glyphicon-comment"></span> {{dateo.comment_count}}</span>
+			<span class="stat" ng-show="dateo.redateo_count > 0"><span class="glyphicon glyphicon-retweet"></span> {{dateo.redateo_count}}</span>
+		</div>
+		<div class="redateo-msg" ng-show="flow.showRedateoAuthor && dateo.user.username != flow.showRedateoAuthor">re-dateado por <a href="/{{flow.showRedateoAuthor}}">{{flow.showRedateoAuthor}}</a></div>
+	</div>
+</div>

@@ -100,7 +100,7 @@ angular.module('dateaWebApp')
 	$scope.flow.notFound     = false;
 	$scope.flow.userIsOwner  = false;
 	$scope.flow.activeTab    = $location.search()['tab'] || 'map';
-	$scope.flow.loading      = false;
+	$scope.flow.loading      = true;
 	$scope.flow.mapIsPresent = true;
 	$scope.flow.colorRange   =  d3.scale.category10().range();
 	$scope.flow.hasLegend    = false;
@@ -302,6 +302,8 @@ angular.module('dateaWebApp')
 				buildRelatedCampaigns();
 				buildLayerFiles();
 				checkTimeLeft();
+				if ($scope.flow.activeTab == 'stats') $scope.chart.buildCharts();
+				
 				if (User.isSignedIn() && User.data.id == $scope.campaign.user.id) {
 					$scope.flow.userIsOwner = true;
 				}
@@ -596,7 +598,7 @@ angular.module('dateaWebApp')
 	$scope.$watch( 'flow.activeTab', function () {
 		$scope.flow.getDateos();
 		$location.search('tab', $scope.flow.activeTab);
-		if ($scope.flow.activeTab == 'stats') $scope.chart.buildCharts();
+		if ($scope.flow.activeTab == 'stats' && $scope.campaign.id) $scope.chart.buildCharts();
 	});
 
 	$scope.flow.getSearch = function (ev) {
@@ -614,15 +616,18 @@ angular.module('dateaWebApp')
 		var subTags = {};
 		if ($scope.campaign.secondary_tags.length > 0) $scope.flow.hasLegend = true;
 		angular.forEach($scope.campaign.secondary_tags, function (tag, key) {
-			subTags[tag.tag] = {obj: tag, color: $scope.flow.colorRange[key]}
+			subTags[tag.tag] = {obj: tag, color: $scope.flow.colorRange[key%20]}
 		});
 		$scope.subTags = subTags;
 	};
 
 	$scope.chart.buildCharts = function () {
+		console.log('buildCharts');
 		Api.stats.getStats({campaign: $scope.campaign.id})
 		.then( function ( response ) {
 			$scope.chart.rawData = response;
+			console.log('chart raw data', $scope.chart.rawData);
+
 			if ($scope.chart.type == 'pie') {
 				setChartForPie();
 			} else if ($scope.chart.type == 'bar') {
@@ -644,49 +649,60 @@ angular.module('dateaWebApp')
 	};
 
 	setChartForPie = function () {
+		
 		$scope.chart.data = {
-			series : [],
-			data: []
+			  series : []
+			, data   : []
 		};
+
 		$scope.chart.config = {
-	    title: 'Estadísticas',
-	    tooltips: true,
-	    labels: true,
-	    legend: {
-	      display: true,
-	      position: 'right'
-	    },
-	    innerRadius: 0
-	  };
-	  angular.forEach($scope.chart.rawData.tags, function (val) {
-				$scope.chart.data.data.push({
-					x: '#'+val.tag,
-					y: [val.count],
-					//tooltip: $scope.subTags[val.tag].title
-				});
-				$scope.chart.data.series.push('#'+val.tag);
-				$scope.statsVsisible = true;
+    		  title    : 'Estadísticas'
+    		, tooltips : true
+    		, labels   : true
+    		, legend   : {
+      			  display  : true
+      			, position : 'right'
+    		}
+    		, innerRadius : 0
+    		, colors      : []
+	  	};
+
+	  	_.each($scope.chart.rawData.tags, function (val) {
+			$scope.chart.data.data.push({
+				  x: '#'+val.tag
+				, y: [val.count]
+				//tooltip: $scope.subTags[val.tag].title
+			});
+			$scope.chart.data.series.push('#'+val.tag);
+			//$scope.statsVisible = true;
+			$scope.chart.config.colors.push($scope.subTags[val.tag].color);
 		});
+		console.log('scope.chart', $scope.chart);
 	};
 
 	setChartForBar = function () {
+		
 		$scope.chart.data = {
-			series : [],
-			data: [{x: 'por etiquetas', y: []}]
+			  series : []
+			, data   : [{x: 'por etiquetas', y: []}]
 		};
+
 		$scope.chart.config = {
-	    title: 'Estadísticas',
-	    tooltips: true,
-	    labels: false,
-	    legend: {
-	      display: true,
-	      position: 'right'
-	    },
-	  };
-	  angular.forEach($scope.chart.rawData.tags, function (val) {
+    		  title    : 'Estadísticas'
+    		, tooltips : true
+    		, labels   : false
+    		, legend   : {
+      			  display  : true
+      			, position : 'right'
+      		}
+      		, colors : []
+	  	};
+
+	  	_.each($scope.chart.rawData.tags, function (val) {
 				$scope.chart.data.data[0].y.push(val.count);
 				$scope.chart.data.series.push('#'+val.tag);
-				$scope.statsVsisible = true;
+				//$scope.statsVsisible = true;
+				$scope.chart.config.colors.push('#'+$scope.subTags[val.tag].color);
 		});
 	};
 

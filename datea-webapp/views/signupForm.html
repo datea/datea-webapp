@@ -1,0 +1,59 @@
+<div class="graydark-bg"></div>
+<div class="signup-form-holder">
+	<div class="container">
+		<div class="row">
+			<div class="col-xs-12 col-md-10 col-md-offset-1 col-lg-8 col-lg-offset-2">
+				<div class="row signup-form wbox" ng-show="!flow.registerSuccess">
+					<div class="inner" da-loading="flow.loading">
+						<div class="col-xs-12 col-sm-10 col-md-8 col-lg-7">
+							<h3>Crea una cuenta en Datea</h3>
+							<form role="form" name="form" ng-submit="auth.save()">
+								<div class="form-group" ng-class="{null: '',true: 'has-success has-feedback',false: 'has-warning has-feedback'}[flow.validInput.username]">
+									<label class="control-label" for="bio">Nombre de usuario</label>
+									<input type="text" class="form-control" id="bio" wx-validate="username" pattern="^[A-Za-z0-9-]{1,32}$" formtext="" ng-model="auth.bio" ng-blur="auth.checkUsername()">
+									<span class="glyphicon form-control-feedback" ng-class="{null: '',true: 'glyphicon-ok',false: 'glyphicon-warning-sign'}[flow.validInput.username]" ng-show="flow.validInput.username !== null"></span>
+									<p class="help-block" ng-show="auth.messages.usernameExists">{{ auth.messages.usernameExists }}</p>
+									<p class="help-block" ng-hide="auth.messages.usernameExists">Sólo números, letras y guiones (sin espacios, tildes, etc).</p>
+								</div>
+								<div class="form-group" ng-class="{null: '',true: 'has-success has-feedback',false: 'has-error has-feedback'}[flow.validInput.email]">
+									<label class="control-label" for="email">Correo electrónico</label>
+									<input type="email" class="form-control" id="email" required="" ng-model="auth.email" ng-change="auth.checkEmail()">
+									<span class="glyphicon form-control-feedback" ng-class="{null: '',true: 'glyphicon-ok',false: 'glyphicon-remove'}[flow.validInput.email]"></span>
+									<p class="help-block" ng-show="auth.messages.emailExists">{{ auth.messages.emailExists }}</p>
+								</div>
+								<div class="form-group" ng-class="{null: '',true: 'has-success has-feedback',false: 'has-error has-feedback'}[flow.validInput.password]">
+									<label class="control-label" for="password">Contraseña</label>
+									<input type="password" class="form-control" id="password" wx-validate="password" required="" pattern="^(?=.*\d)(?=.*[a-z])(?!.*\s).{6,32}$" ng-model="auth.password" ng-change="auth.checkPassword()">
+									<span class="glyphicon form-control-feedback" ng-class="{null: '',true: 'glyphicon-ok',false: 'glyphicon-remove'}[flow.validInput.password]" ng-show="flow.validInput.password !== null"></span>
+									<p class="help-block">Mínimo 6 letras y mínimo 1 número</p>
+								</div>
+								<div class="form-group" ng-class="{null: '',true: 'has-success has-feedback',false: 'has-error has-feedback'}[flow.validInput.samePassword]">
+									<label class="control-label" for="samePassword">Repetir contraseña</label>
+									<input type="password" class="form-control" id="samePassword" wx-validate="password" required="" pattern="^(?=.*\d)(?=.*[a-z])(?!.*\s).{6,32}$" ng-model="auth.samePassword" wx-password-match="auth.password" ng-change="auth.checkSamePassword()">
+									<span class="glyphicon form-control-feedback" ng-class="{null: '',true: 'glyphicon-ok',false: 'glyphicon-remove'}[flow.validInput.samePassword]" ng-show="flow.validInput.samePassword !== null"></span>
+								</div>
+							<!-- 	<div class="checkbox">
+									<label>
+										<input type="checkbox" ng-checked="auth.newsletter"> Quiero recibir noticias dateras de vez en cuando
+									</label>
+								</div> -->
+								<input type="submit" class="btn datea-datear-btn datea-btn-nopad btn-lg" value="regístrate" analytics-on="submit" analytics-event="RegisterDatea">
+								<button type="submit" class="btn datea-datear-btn datea-btn-nopad btn-lg" disabled="disabled">regístrate</button>
+							</form>
+						</div>
+					</div>
+			<!-- 		<hr>
+					<pre>Validation: {{form.$error|json}}</pre> -->
+				</div>
+				<div class="row register-success-msg wbox" ng-show="flow.registerSuccess">
+					<div class="col-xs-12">
+						<h3>¡Gracias! Ahora por favor revisa tu correo.</h3>
+						<p>Sólo falta completar un paso para poder datear. Debes validar tu dirección de correo para activar tu cuenta. Te hemos enviado un correo con instrucciones de cómo hacerlo.</p>
+						<p>Una vez que hayas completado la activación, puedes ingresar con tu usuario y contraseña.</p>
+						<!--<p><a class="btn btn-success btn-lg" href="/signin">Ingresar</a></p>-->    
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>

@@ -1,0 +1,12 @@
+{
+	"author": "Datea.pe",
+	"name": "da-piecluster",
+	"description": "Custom cluster marker for the datea.pe project",
+	"version": "0.0.7",
+	"homepage": "https://github.com/lafactura/da-piecluster",
+	"repository": {
+		"type": "git",
+		"url": "git://github.com/lafactura/da-piecluster"
+		},
+	"main": "./da-piecluster"
+}

@@ -1,0 +1,45 @@
+{
+  "name": "bootstrapless",
+  "version": "3.0.3",
+  "authors": [
+    "Caitlin Potter <snowball@defpixel.com>"
+  ],
+  "description": "Unadulterated Less stylesheet source files for Twitter Bootstrap (The sleek, intuitive,   and powerful front-end framework for faster and easier web development)",
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/caitp/bootstrapless.git"
+  },
+  "keywords": [
+    "twitter",
+    "bootstrap",
+    "bower",
+    "less",
+    "stylesheet",
+    "theme",
+    "customization",
+    "twbs",
+    "ui",
+    "ux",
+    "mobile",
+    "responsive"
+  ],
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests",
+    "**/*.js",
+    "package.json"
+  ],
+  "homepage": "https://github.com/caitp/bootstrapless",
+  "_release": "3.0.3",
+  "_resolution": {
+    "type": "version",
+    "tag": "v3.0.3",
+    "commit": "f52126740cbf2b6138ae715e8098675b24be0960"
+  },
+  "_source": "git://github.com/caitp/bootstrapless.git",
+  "_target": "~3.0.3",
+  "_originalSource": "bootstrapless"
+}

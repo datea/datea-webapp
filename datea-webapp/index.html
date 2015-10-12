@@ -1,0 +1,202 @@
+<!doctype html>
+<!--[if lt IE 7]>      <html class="no-js lt-ie9 lt-ie8 lt-ie7"> <![endif]-->
+<!--[if IE 7]>         <html class="no-js lt-ie9 lt-ie8"> <![endif]-->
+<!--[if IE 8]>         <html class="no-js lt-ie9"> <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" ng-app="dateaWebApp"> <!--<![endif]-->
+<head ng-controller="HeadCtrl">
+	<meta charset="utf-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<meta name="viewport" content="width=device-width">
+	<meta name="fragment" content="!">
+	<base href="/">
+
+	<!-- META TAGS -->
+	<title ng-bind="share.title || 'Datea - Todos somos dateros'"></title>
+	<meta name="description" content="{{share.description}}">
+
+	<!-- TWITTER CARD -->
+	<meta property="twitter:card" content="summary">
+	<meta property="twitter:site" content="@somosdateros">
+	<meta property="twitter:title" content="{{share.title}}">
+	<meta property="twitter:description" content="{{share.description}}">
+	<meta property="twitter:image" content="{{share.imageUrl}}">
+
+	<!-- OG TAGS -->
+	<meta property="og:type" content="website">
+	<meta property="og:title" content="{{share.title}}">
+	<meta property="og:description" content="{{share.description}}">
+	<meta property="og:url" content="{{share.url}}">
+	<meta property="og:image" content="{{share.imageUrl}}">
+	<meta property="og:locale" content="es_ES">
+	<meta property="og:site_name" content="Datea">
+
+	<!-- Place favicon.ico and apple-touch-icon.png in the root directory -->
+
+	<link rel="stylesheet" href="styles/e75b20e9.main.css"/>
+
+	<!-- CDN -->
+	<link rel="stylesheet" href="http://cdn.leafletjs.com/leaflet-0.7.3/leaflet.css">
+	<link href="//netdna.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.min.css" rel="stylesheet">
+
+	<style>
+		.colored-marker {
+				clip-path: url(#clipping);
+			}
+	</style>
+</head>
+<body ng-controller="LayoutCtrl">
+	<div id="fb-root"></div>
+	<script>(function(d, s, id) {
+	  var js, fjs = d.getElementsByTagName(s)[0];
+	  if (d.getElementById(id)) return;
+	  js = d.createElement(s); js.id = id;
+	  js.src = "//connect.facebook.net/es_LA/sdk.js#xfbml=1&appId=222271061161837&version=v2.0";
+	  fjs.parentNode.insertBefore(js, fjs);
+	}(document, 'script', 'facebook-jssdk'));</script>
+	<!--[if lt IE 7]>
+	<p class="browsehappy">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> to improve your experience.</p>
+	<![endif]-->
+
+	<!--[if lt IE 9]>
+	<script src="bower_components/es5-shim/es5-shim.js"></script>
+	<script src="bower_components/json3/lib/json3.min.js"></script>
+	<![endif]-->
+	<!-- Add your site or application content here -->
+	<div ng-controller="NavCtrl" ng-include="'views/nav.html'"></div>
+
+	<div id="#page-wrap" class="page-wrap" ng-class="{'autoheight': flow.autoheight, 'with-nav': flow.withNav}">
+
+		<div class="messagesList z2" app-messages=""></div>
+
+		<div class="page" ng-view=""></div>
+
+		<div class="footer-push"></div>
+	</div>
+
+	<div class="footer-holder container-fluid" ng-cloak="">
+		<ul class="footer-menu ff1">
+			<li><a href="http://ayuda.datea.pe/contacto">Contacto</a></li>
+			<li><a href="/acerca/terminos">Terminos y condiciones de uso</a></li>
+			<li><a href="/acerca/privacidad">Politica de privacidad</a></li>
+		</ul>
+		<div class="datea-rights">
+			<div class="limiter ff1">
+				<img class="footer-logo" src="static/images/datea-logo-white.png"> datea, todos somos dateros &copy; 2014<br>un proyecto de <a href="http://www.lafactura.com/">La Factura</a>.
+			</div>
+		</div>
+	</div>
+
+	<script>
+	/* redirect to hashbang, before errors popup up */
+	/*
+	var path = document.location.pathname;
+	if (path != '/' && path != '/index.html') {
+		document.location.href = '/#!'+path;
+	}else{
+		var hash = document.location.hash;
+		if (hash.length > 1 && hash.charAt(1) !== '!') {
+			if (hash.charAt(1) == '/') {
+				hash = hash.replace('#/', '#!/');
+			}else{
+				hash = hash.replace('#', '#!/');
+			}
+			document.location.hash = hash;
+		}
+	}*/
+	</script>
+
+	<!-- Google Analytics: change UA-XXXXX-X to be your site's ID -->
+	<script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+  ga('create', 'UA-55009268-1', 'auto');
+	</script>
+	
+	<!--<script src="bower_components/jquery/dist/jquery.js"></script>-->
+	<!--<script src="https://code.jquery.com/jquery-2.1.1.min.js"></script>-->
+	<!--<script src="//cdnjs.cloudflare.com/ajax/libs/angular.js/1.2.20/angular.min.js"></script>-->
+	<!--<script src="bower_components/angular/angular.js"></script>-->
+	<!--<script src="bower_components/leaflet-dist/leaflet.js"></script>-->
+	<!--<script src="http://cdn.leafletjs.com/leaflet-0.7.3/leaflet.js"></script>-->
+	<!--<script src="//cdnjs.cloudflare.com/ajax/libs/d3/3.4.8/d3.min.js"></script>-->
+	<!--<script src="bower_components/d3/d3.js"></script>-->
+
+	<!--<script src="https://api.datea.io/oauth/download/latest/oauth.js"></script>-->
+
+<!--
+	<script src="bower_components/birdangular/sha1.js"></script>
+	<script src="bower_components/birdangular/codebird.js"></script>
+	<script src="bower_components/birdangular/birdangular.js"></script>
+	<script src="bower_components/angular-facebook/lib/angular-facebook.js"></script>
+ -->
+  <script src="bower_components/oauth-js/dist/oauth.js"></script>
+	<script src="scripts/d5a546fb.modules.js"></script>
+
+	<script src="scripts/8d59899d.scripts.js"></script>
+
+	<!-- clip path for individual markers -->
+	<svg height="0" width="0" style="padding:0; margin: 0; position: absolute">
+    <defs>
+      <clippath id="pinpath">
+        <path d="M14.087,0.485c-7.566,0-13.694,6.133-13.698,13.695c0.027,3.938,2.02,8.328,4.637,10.878
+	c2.615,3.363,6.536,8.889,6.488,11.033v0.07c0,4.195,0.364,3.92,0.4,4.051c0.128,0.441,0.527,0.746,0.99,0.746h2.179
+	c0.464,0,0.858-0.309,0.983-0.74c0.04-0.137,0.407,0.139,0.411-4.057c0-0.039-0.004-0.059-0.004-0.068
+	c-0.038-2.047,3.399-7.35,6.109-10.877c2.875-2.498,5.175-6.814,5.196-11.035C27.779,6.618,21.65,0.485,14.087,0.485z">
+      </clippath>
+    </defs>
+  </svg>
+
+  <script type="text/ng-template" src="views/dateo-map-popup.html" id="dateo-map-popup"></script>
+
+  <script>
+// Include the UserVoice JavaScript SDK (only needed once on a page)
+UserVoice=window.UserVoice||[];(function(){var uv=document.createElement('script');uv.type='text/javascript';uv.async=true;uv.src='//widget.uservoice.com/N4QH28rKhSJUTgzN18qdOw.js';var s=document.getElementsByTagName('script')[0];s.parentNode.insertBefore(uv,s)})();
+
+//
+// UserVoice Javascript SDK developer documentation:
+// https://www.uservoice.com/o/javascript-sdk
+//
+
+// Set colors
+UserVoice.push(['set', {
+  accent_color: '#808283',
+  trigger_color: 'white',
+  trigger_background_color: 'rgba(46, 49, 51, 0.6)',
+  contact_title: 'Envíanos un mensaje',
+  trigger_style: 'tab',
+  trigger_background_color : '#28BC45'
+}]);
+
+// Identify the user and pass traits
+// To enable, replace sample data with actual user traits and uncomment the line
+UserVoice.push(['identify', {
+  //email:      'john.doe@example.com', // User’s email address
+  //name:       'John Doe', // User’s real name
+  //created_at: 1364406966, // Unix timestamp for the date the user signed up
+  //id:         123, // Optional: Unique id of the user (if set, this should not change)
+  //type:       'Owner', // Optional: segment your users by type
+  //account: {
+  //  id:           123, // Optional: associate multiple users with a single account
+  //  name:         'Acme, Co.', // Account name
+  //  created_at:   1364406966, // Unix timestamp for the date the account was created
+  //  monthly_rate: 9.99, // Decimal; monthly rate of the account
+  //  ltv:          1495.00, // Decimal; lifetime value of the account
+  //  plan:         'Enhanced' // Plan name for the account
+  //}
+}]);
+
+// Add default trigger to the bottom-right corner of the window:
+UserVoice.push(['addTrigger', { mode: 'contact', trigger_position: 'right' }]);
+
+// Or, use your own custom trigger:
+//UserVoice.push(['addTrigger', '#id', { mode: 'contact' }]);
+
+// Autoprompt for Satisfaction and SmartVote (only displayed under certain conditions)
+UserVoice.push(['autoprompt', {}]);
+</script>
+ 
+</body>
+</html>

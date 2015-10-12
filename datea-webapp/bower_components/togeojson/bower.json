@@ -1,0 +1,21 @@
+{
+  "name": "togeojson",
+  "version": "0.7.0",
+  "main": "togeojson.js",
+  "repository": {
+		"type": "git",
+		"url": "git://github.com/lafactura/togeojson"
+	},
+  "keywords": [
+    "kml",
+    "geojson",
+    "gpx",
+    "geo",
+    "parser",
+    "formatter",
+    "input",
+    "leaflet",
+    "maps"
+  ],
+  "description": "convert KML and GPX to GeoJSON"
+}

@@ -13,7 +13,7 @@
 						<span class="dateo-count" ng-if="targetUser.dateo_count > 0">{{targetUser.dateo_count}} <ng-pluralize count="targetUser.dateo_count" when="{'one':'dateo','other':'dateos'}" /></ng-pluralize></span>
 						<span class="votes-count" ng-if="targetUser.vote_count > 0">{{targetUser.vote_count}} <ng-pluralize count="targetUser.vote_count" when="{'one':'apoyo','other':'apoyos'}" /></ng-pluralize></span>
 					</p>
-					<p class="url" ng-if="targetUser.url"><strong>url</strong>: <a href="{{targetUser.url}}">{{targetUser.url}}</a></p>
+					<p class="url" ng-if="targetUser.url"><a href="{{targetUser.url}}">{{targetUser.url}}</a></p>
 					<div class="social-share pull-right">
 						<div class="datea-glyph-holder hover-enabled" ng-click="targetUser.share()" tooltip="Compartir!" tootltip-trigger="mouseenter" tooltip-placement="bottom" tooltip-popup-delay="500">
 							<i class="fa fa-share-alt"></i>

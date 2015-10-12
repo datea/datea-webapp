@@ -1,0 +1,126 @@
+<div class="dateo dateo-detail">
+	<div class="admin pull-right">
+		<button class="btn btn-link dateo-edit-btn" ng-show="flow.showEditBtn" ng-click="flow.editDateo()"><i class="fa fa-pencil-square-o"></i></button>
+		<div class="unpublished-msg" ng-show="dateo.id && !dateo.published">dateo sin publicar</div>
+	</div>
+
+	<div class="user-head">
+		<div class="user-img img-circle" da-bg-from-api="{{dateo.user.image_small}}" da-img-size="cover" da-img-type="user"></div>
+		<div class="user-info">
+			<h4 class="username"><a href="/{{dateo.user.username}}">{{dateo.user.username}}</a></h4>
+			<div class="created"><a href="/{{dateo.user.username}}/dateos/{{dateo.id}}">{{dateo.created | date:createdFormat}}</a></div>
+		</div>
+		<div class="admin-info">
+			<div class="label admin-status" ng-show="flow.status" ng-class="{'label-success': flow.status.type === 'solved', 'label-info': flow.status.type === 'reviewed'}">{{flow.status.msg}}</div>
+		</div>
+	</div>
+
+	<button ng-show="flow.mapPresent" type="button" class="close detail-close-btn" ng-click="closeDetail()"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+
+	<p class="tags"><a class="tag" ng-repeat="tag in dateo.tags" href="/tag/{{tag}}">#{{tag}}</a></p>
+	<div class="date" ng-show="dateo.date && (dateo.date != dateo.created)">{{dateo.date | date:dateFormat}}</div>
+	<p class="content newline2br" ng-bind-html="dateo.content | linky:'_blank'"></p>
+
+	<div class="images" ng-show="dateo.images.length" image-gallery="">
+		<a class="image slide" href="{{img.image | imgFromApi}}" ng-repeat="img in dateo.images">
+			<div class="img" da-bg-from-api="{{img.image}}" da-img-size="cover"></div>
+		</a>
+	</div>
+
+	<div class="link" ng-show="dateo.link">
+		<i class="fa fa-chain licon"></i>
+		<a href="{{dateo.link.url}}" class="limage" ng-show="dateo.link.img_url">
+			<img ng-src="{{dateo.link.img_url}}" alt="">
+		</a>
+		<div class="lcontent">
+			<h4 class="ltitle"><a href="{{dateo.link.url}}">{{dateo.link.title}}</a></h4>
+			<p class="ldesc">{{dateo.link.description}}</p>
+		</div> 
+	</div>
+
+	<div class="files" ng-show="dateo.files.length">
+		<a class="file" ng-repeat="file in dateo.files" href="{{file.file | imgFromApi}}">
+			<i class="ul-icon glyphicon glyphicon-file"></i>
+			<span class="file-title">{{file.title}}</span>
+		</a>
+	</div>
+
+	<div class="social-holder clearfix">
+
+		<div class="controls-left pull-left">
+
+			<div class="permalink">
+				<a href="/{{dateo.user.username}}/dateos/{{dateo.id}}" tooltip="ver en pantalla completa" tootltip-trigger="mouseenter" tooltip-placement="bottom" tooltip-popup-delay="500">permalink</a>
+			</div>
+			
+			<div class="denounce-holder">
+				<da-flag flag-id="dateo.id" flag-obj-type="dateo"></da-flag>
+			</div>
+
+			<div class="dateo-actions">
+				
+				<da-vote vote-obj="dateo" vote-obj-type="dateo"></da-vote>
+
+				<div class="datea-glyph-holder hover-enabled" ng-click="flow.focusCommentForm()">	
+					<span class="glyphicon glyphicon-comment datea-glyph" tooltip="comenta!" tootltip-trigger="mouseenter" tooltip-placement="bottom" tooltip-popup-delay="500"></span> <span class="datea-glyph-text" ng-show="dateo.comment_count > 0"><p>{{dateo.comments.length}}</p><p><ng-pluralize count="dateo.comments.length" when="{'one':
+					'comentario','other':'comentarios'}"></ng-pluralize></p></span>
+				</div>
+
+				<da-redateo dateo="dateo"></da-redateo>
+
+				<div class="datea-glyph-holder hover-enabled share-btn" ng-click="flow.share()" tooltip="comparte!" tootltip-trigger="mouseenter" tooltip-placement="bottom" tooltip-popup-delay="500">
+					<i class="fa fa-share-alt"></i>
+				</div>
+			</div>
+
+			<!--
+			<div class="form-group pull-right share">
+				<div class="input-group input-group-sm">
+					<input type="text" class="form-control" value="{{dateo.shareableUrl}}">
+					<span class="input-group-btn">
+						<button class="btn btn-default" type="button" ng-click="dateo.share()"><i class="fa fa-share-alt"></i></button>
+					</span>
+				</div>
+			</div>
+			-->
+
+		</div>
+
+		<div class="controls-right pull-right">
+			<div ng-show="flow.mapPresent" class="pin" ng-click="focusDateo($index)" tooltip="ver en mapa" tooltip-trigger="mouseenter" tooltip-placement="left" tooltip-popup-delay="800">
+				<span class="glyphicon glyphicon-map-marker"></span>
+			</div>
+		</div>
+
+	</div>
+
+	<div class="comments-holder">
+		<h3 ng-show="dateo.comments.length > 0">Comentarios</h3>
+
+		<div class="comments">
+			<div class="comment-holder" ng-repeat="comment in dateo.comments" da-on-last-repeat="slideDownNewComment()" ng-class="{slidedown: comment.new}">
+				<div class="user">
+					<img class="img-circle" ng-src="{{comment.user.image_small | imgFromApi}}" alt="{{comment.user.username}}">
+					<a href="/{{comment.user.username}}"><span>{{comment.user.username}}</span></a>
+					<span class="date">el {{comment.created | date:dateFormat}}</span>
+				</div>
+				
+				<p class="comment-content newline2br" ng-bind-html="comment.comment | linky:'_blank'"></p>
+
+				<div class="denounce-holder">
+					<da-flag flag-id="comment.id" flag-obj-type="comment"></da-flag>
+				</div>
+			</div>
+		</div>
+		<div class="comment-form-holder" ng-show="flow.isUserSignedIn">
+			<form role="form" name="form">
+				<div class="form-group">
+					<textarea id="comment-input" ng-disabled="comment.loading" class="form-control" msd-elastic="" rows="1" ng-model="comment.comment" placeholder="Tu comentario"></textarea>
+				</div>
+				<button type="submit" class="btn datea-gray-btn" ng-click="flow.postComment()">Comentar</button> &nbsp;<i ng-show="comment.loading" class="fa fa-circle-o-notch fa-spin"></i>
+
+				<da-follow follow-obj="dateo" follow-id="{{dateo.id}}" follow-label="seguir hilo" btn-class="follow-dateo btn-link pull-right"></da-follow>
+			</form>
+		</div>
+	</div>
+</div>

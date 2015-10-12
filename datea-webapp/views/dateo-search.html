@@ -1,0 +1,123 @@
+<div class="search-holder ff1">
+	<div class="search-card">
+		<h2 class="ff1">Buscar dateos</h2>
+		<div class="result-stats">
+			<span class="stat results" ng-show="!flow.loading">{{result.totalDateos}} <ng-pluralize count="result.dateos.length" when="{'one':'resultado','other':'resultados'}"></ng-pluralize></span>
+			<a class="stat campaigns" href="#" ng-click="flow.scrollToCampaigns($event)" ng-show="result.campaigns.length">{{result.campaigns.length}} <ng-pluralize count="result.campaigns.length" when="{'one':'iniciativa','other':'iniciativas'}"></ng-pluralize></a>
+		</div>
+	</div>
+	<div class="viz-holder">
+		<div class="viz-nav">
+			<div class="menu-right">
+
+				<div class="viz-view-nav" ng-class="{'nav-stacked': vertical, 'nav-justified': justified}" ng-hide="flow.showFilter">
+					<a ng-class="{active: query.tab == 'map'}" class="daicon icon-pin2 datea-glyphtab-fix ng-isolate-scope" ng-click="flow.openTab('map')"></a>
+					<a ng-class="{active: query.tab == 'images'}" class="daicon icon-camara datea-glyphtab-fix ng-isolate-scope" ng-click="flow.openTab('images')"></a>
+				</div>
+
+			</div>
+			<div class="search">
+				<form class="form search-form">
+					<!--<div class="form-group">-->
+						<div class="input-group">
+							<input type="text" class="form-control" ng-model="query.q" placeholder="buscar" typeahead="tags for tags in flow.autocompleteSearch($viewValue) | filter:$viewValue" typeahead-loading="loadingSearchSuggestions" select-first="false" ng-enter="flow.doSearch()">
+							<span class="input-group-btn">
+								<button class="btn btn-default" type="button" ng-click="flow.doSearch()"><i class="fa fa-search"></i></button>
+							</span>
+						</div>
+					<!--</div>-->
+				</form>
+				<div class="tag-link" ng-show="flow.isHashtag">
+					<button class="btn btn-link" ng-click="flow.goToHashtag()"><span class="glyphicon glyphicon-arrow-right"></span> ir a esta etiqueta</button>
+				</div>
+				<div class="filter-control" ng-click="flow.showFilter = !flow.showFilter">
+			  	<div class="filter-toggle-link" ng-class="{active: flow.showFilter}"><i class="fa fa-filter"></i></div>
+			  	<div class="query-text" ng-hide="flow.showFilter">
+			  		viendo: <span class="query-text-item" ng-repeat="text in flow.queryTextRep" ng-bind-html="text"></span>
+			  	</div>
+			  </div>
+			</div>
+			<div class="filter-holder" ng-show="flow.showFilter">
+				<div class="container-fluid">
+					<div class="row">
+						<div class="col-xs-4 col-sm-4 col-md-4 col-lg-3">
+							<div class="date-filter query-item">
+								<div class="form-group">
+									<label>filtrar fecha</label>
+									<div class="form-inline">
+										<label>del</label>
+										<input type="text" class="form-control since" ng-model="query.until" datepicker-popup="yyyy/MM/dd">
+										<label>al</label>
+										<input type="text" class="form-control until" ng-model="query.since" datepicker-popup="yyyy/MM/dd">
+									</div>
+								</div>
+							</div>
+						</div>
+						<div class="col-xs-4 col-sm-5 col-md-5 col-lg-5">
+							<!--<h4>Filtros:</h4>-->
+							<div class="apply">
+								<div class="limit-slider query-item">
+									<div class="form-group">
+										<label>Cargar {{flow.limitLabel}} dateos</label>
+										<div class="slider">
+											<input type="range" name="points" min="50" max="500" step="50" ng-model="query.limit"> 
+										</div>
+									</div>
+								</div>
+								<div class="orderby-control query-item">
+									<div class="form-group">
+										<label>Ordenar por</label>
+										<select class="form-control" ng-model="query.order_by" ng-options="opt.val as opt.label for opt in flow.orderByOptions"></select>
+									</div>
+								</div>
+								<button class="btn btn-lg btn-success pull-left apply-btn" ng-click="flow.doSearch()">APLICAR</button> 
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+		<div class="viz-viewer" da-loading="flow.loading">
+			<div class="protect-cover" ng-show="flow.showFilter" ng-click="flow.showFilter = false"></div>
+			<div class="viz-view viz-view-map" ng-if="query.tab == 'map'">
+				<div class="container-fluid dateo-map-viz">
+					<div class="row">
+						<div class="col-xs-12 col-sm-45 col-md-45 dateos-holder">
+							<div class="dateo-detail-content-holder" ng-show="flow.dateoDetail.show">
+								<da-dateo-detail-inline dateo="flow.dateoDetail.dateo" marker-index="flow.dateoDetail.markerIndex"></da-dateo-detail-inline>
+							</div>
+							<div class="dateo-description-holder" ng-hide="flow.dateoDetail.show">
+								<div class="teaser-list">
+									<da-dateo-teaser ng-repeat="dateo in result.dateos | limitTo:flow.dateoShowListNumResults"></da-dateo-teaser>
+								</div>
+								<p class="dateos-more-results" ng-show="result.dateos.length > flow.dateoShowListNumResults">
+									<button class="btn btn-default btn-lg" ng-click="flow.showMoreListResults()">Ver más resultados</button>
+								</p>
+								<div class="no-results" ng-show="!result.dateos.length && !flow.loading">No hay resultados <i class="fa fa-meh-o"></i></div>
+							</div>
+						</div>
+						<div class="col-xs-12 col-sm-75 col-md-75 leaflet-map-holder">
+							<leaflet id="leafletSearch" events="flow.leaflet.events" defaults="flow.leaflet.defaults" markers="flow.leaflet.markers" center="flow.leaflet.center" width="100%" cluster-options="flow.leaflet.clusterOptions" tiles="flow.leaflet.tiles"></leaflet>
+						</div>
+					</div>
+				</div>
+			</div>
+			<div class="viz-view viz-view-images" ng-if="query.tab == 'images'">
+				<div class="dateo-thumbs-holder" ng-show="result.dateoImages.length">
+					<da-dateo-thumb ng-repeat="image in result.dateoImages"></da-dateo-thumb>
+				</div>
+				<div class="no-results" ng-show="!result.dateoImages.length && !flow.loading">No hay resultados <i class="fa fa-meh-o"></i></div>
+			</div>
+		</div>
+	</div>
+	<div id="campaigns" class="campaign-teasers" ng-show="result.campaigns.length">
+		<div class="container-fluid">
+			<h3>Iniciativas en esta busqueda</h3>
+			<div class="campaign-list row">
+				<div class="col-lg-2 col-md-3 col-sm-4 col-xs-12" ng-repeat="campaign in result.campaigns">
+					<da-campaign-teaser></da-campaign-teaser>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>

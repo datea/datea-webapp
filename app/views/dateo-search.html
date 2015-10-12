@@ -8,6 +8,14 @@
 	</div>
 	<div class="viz-holder">
 		<div class="viz-nav">
+			<div class="menu-right">
+
+				<div class="viz-view-nav" ng-class="{'nav-stacked': vertical, 'nav-justified': justified}" ng-hide="flow.showFilter">
+					<a ng-class="{active: query.tab == 'map'}" class="daicon icon-pin2 datea-glyphtab-fix ng-isolate-scope" ng-click="flow.openTab('map')"></a>
+					<a ng-class="{active: query.tab == 'images'}" class="daicon icon-camara datea-glyphtab-fix ng-isolate-scope" ng-click="flow.openTab('images')"></a>
+				</div>
+
+			</div>
 			<div class="search">
 				<form class="form search-form">
 					<!--<div class="form-group">-->
@@ -71,37 +79,35 @@
 		</div>
 		<div class="viz-viewer" da-loading="flow.loading">
 			<div class="protect-cover" ng-show="flow.showFilter" ng-click="flow.showFilter = false"></div>
-			<tabset>
-				<tab heading="&nbsp;" class="daicon icon-pin2 datea-glyphtab-fix" active="flow.activeTab.map" ng-click="flow.openTab('map')">
-					<div class="container-fluid dateo-map-viz">
-						<div class="row">
-							<div class="col-xs-12 col-sm-45 col-md-45 dateos-holder">
-								<div class="dateo-detail-content-holder" ng-show="flow.dateoDetail.show">
-									<da-dateo-detail-inline dateo="flow.dateoDetail.dateo" marker-index="flow.dateoDetail.markerIndex"></da-dateo-detail-inline>
-								</div>
-								<div class="dateo-description-holder" ng-hide="flow.dateoDetail.show">
-									<div class="teaser-list">
-										<da-dateo-teaser ng-repeat="dateo in result.dateos | limitTo:flow.dateoShowListNumResults"></da-dateo-teaser>
-									</div>
-									<p class="dateos-more-results" ng-show="result.dateos.length > flow.dateoShowListNumResults">
-										<button class="btn btn-default btn-lg" ng-click="flow.showMoreListResults()">Ver más resultados</button>
-									</p>
-									<div class="no-results" ng-show="!result.dateos.length && !flow.loading">No hay resultados <i class="fa fa-meh-o"></i></div>
-								</div>
+			<div class="viz-view viz-view-map" ng-if="query.tab == 'map'">
+				<div class="container-fluid dateo-map-viz">
+					<div class="row">
+						<div class="col-xs-12 col-sm-45 col-md-45 dateos-holder">
+							<div class="dateo-detail-content-holder" ng-show="flow.dateoDetail.show">
+								<da-dateo-detail-inline dateo="flow.dateoDetail.dateo" marker-index="flow.dateoDetail.markerIndex"></da-dateo-detail-inline>
 							</div>
-							<div class="col-xs-12 col-sm-75 col-md-75 leaflet-map-holder">
-								<leaflet id="leafletSearch" events="flow.leaflet.events" defaults="flow.leaflet.defaults" markers="flow.leaflet.markers" center="flow.leaflet.center" width="100%" cluster-options="flow.leaflet.clusterOptions" tiles="flow.leaflet.tiles"></leaflet>
+							<div class="dateo-description-holder" ng-hide="flow.dateoDetail.show">
+								<div class="teaser-list">
+									<da-dateo-teaser ng-repeat="dateo in result.dateos | limitTo:flow.dateoShowListNumResults"></da-dateo-teaser>
+								</div>
+								<p class="dateos-more-results" ng-show="result.dateos.length > flow.dateoShowListNumResults">
+									<button class="btn btn-default btn-lg" ng-click="flow.showMoreListResults()">Ver más resultados</button>
+								</p>
+								<div class="no-results" ng-show="!result.dateos.length && !flow.loading">No hay resultados <i class="fa fa-meh-o"></i></div>
 							</div>
 						</div>
+						<div class="col-xs-12 col-sm-75 col-md-75 leaflet-map-holder">
+							<leaflet id="leafletSearch" events="flow.leaflet.events" defaults="flow.leaflet.defaults" markers="flow.leaflet.markers" center="flow.leaflet.center" width="100%" cluster-options="flow.leaflet.clusterOptions" tiles="flow.leaflet.tiles"></leaflet>
+						</div>
 					</div>
-				</tab>
-				<tab heading="&nbsp;" class="daicon icon-camara datea-glyphtab-fix" active="flow.activeTab.images" ng-click="flow.openTab('images')">
-					<div class="dateo-thumbs-holder" ng-show="result.dateosWithImages.length">
-						<da-dateo-thumb ng-repeat="dateo in result.dateosWithImages"></da-dateo-thumb>
-					</div>
-					<div class="no-results" ng-show="!result.dateosWithImages.length && !flow.loading">No hay resultados <i class="fa fa-meh-o"></i></div>
-				</tab>
-			</tabset>
+				</div>
+			</div>
+			<div class="viz-view viz-view-images" ng-if="query.tab == 'images'">
+				<div class="dateo-thumbs-holder" ng-show="result.dateoImages.length">
+					<da-dateo-thumb ng-repeat="image in result.dateoImages"></da-dateo-thumb>
+				</div>
+				<div class="no-results" ng-show="!result.dateoImages.length && !flow.loading">No hay resultados <i class="fa fa-meh-o"></i></div>
+			</div>
 		</div>
 	</div>
 	<div id="campaigns" class="campaign-teasers" ng-show="result.campaigns.length">

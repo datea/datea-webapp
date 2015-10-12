@@ -4,10 +4,12 @@ angular.module("dateaWebApp")
 	'$rootScope'
 ,	'$location'
 , '$modal'
+, 'config'
 ,	function (
 		$rootScope
 	, $location
 	, $modal
+	, config
 ) {
 	return {
 			restrict    : "E"
@@ -25,6 +27,10 @@ angular.module("dateaWebApp")
 				$scope.detailInline = ($attrs.detailInline) ? $scope.$eval($attrs.detailInline) : true;
 				$scope.campaignId = ($attrs.campaignId) ? $scope.$eval($attrs.campaignId) : null;
 				$scope.mainTag = ($attrs.mainTag) ? $scope.$eval($attrs.mainTag) : null;
+				$scope.createdFormat = config.defaultDateFormat;
+				$scope.dateFormat = config.dateFieldFormat;
+				//$scope.dateFormat  = $attrs.dateFormat ? $scope.$eval($attr.dateFormat) : config.dateFieldFormat;
+				$scope.forceDate = $attrs.forceDate ? $scope.$eval($attrs.forceDate) : false;
 
 				if ($scope.mainTag && $scope.dateo && $scope.dateo.tags.length && $scope.dateo.tags[0] != $scope.mainTag) {
 					var i = $scope.dateo.tags.indexOf($scope.mainTag);

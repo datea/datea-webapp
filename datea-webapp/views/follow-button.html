@@ -1,0 +1,6 @@
+<button class="follow-btn btn {{btnClass}}" ng-click="doFollowAction()" ng-mouseenter="flow.hover = true; flow.followingChanged = false" ng-mouseleave="flow.hover = false; flow.followingChanged = false" ng-init="flow.hover = false" ng-class="{'remove': (flow.hover && flow.isFollowing) || flow.removing, 'changed': flow.followingChanged, 'is-active': flow.isFollowing}">
+	<i ng-show="flow.loading" class="icon loading-icon fa fa-circle-o-notch fa-spin"></i>
+	<span ng-show="!flow.isFollowing"><span ng-hide="flow.loading" class="icon glyphicon glyphicon-plus"></span> {{flow.followLabel}}</span>
+	<span ng-show="flow.isFollowing && (flow.hover || flow.loading) && !flow.followingChanged"><span ng-hide="flow.loading" class="icon glyphicon glyphicon-remove"></span> {{flow.followLabel}}</span>
+	<span ng-show="flow.isFollowing && ((!flow.hover && !flow.loading) || flow.followingChanged)"><span ng-hide="flow.loading" class="icon glyphicon glyphicon-ok"></span> {{flow.followLabel}}</span>
+</button>

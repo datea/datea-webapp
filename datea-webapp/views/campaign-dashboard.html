@@ -1,0 +1,17 @@
+<div class="dashboard-holder">
+	<div class="container-fluid title-holder">
+		<h2>Administrador de Iniciativa</h2>
+	</div>
+
+	<ul class="nav nav-tabs dashboard-tabs">
+		<li ng-class="{'active': flow.dashboardMode === 'edit'}"><a href="#!/iniciativas/{{campaignId}}/edit">Configuración</a></li>
+		<li ng-class="{'active': flow.dashboardMode === 'admin'}"><a href="#!/iniciativas/{{campaignId}}/admin">Administrador de dateos</a></li>
+	</ul>
+
+	<div class="config-holder" ng-if="flow.dashboardMode === 'edit'">
+			<da-campaign-form mode="edit" campaign-id="campaignId"></da-campaign-form>
+	</div>
+	<div class="admin-holder" ng-if="flow.dashboardMode === 'admin'">
+			<ng-include src="'views/dateos-admin.html'"></ng-include>
+	</div>
+</div>

@@ -1,0 +1,53 @@
+<div class="campaign-list-holder">
+	<div class="search-bar">
+		<div class="container-fluid">
+			
+			<div class="btn-create-holder hidden-xs">
+				<a href="/crear-iniciativa" class="btn btn-success">Crear nueva iniciativa</a> 
+			</div>
+
+			<h1>Iniciativas dateras</h1>
+
+			<form id="campaign-list-form" class="form" role="form">
+
+				<div class="form-group search-field">
+					<label class="sr-only" for="campaign-search-input">Buscar Frase</label>
+					<div class="input-group search-input">
+						<input id="campaign-search-input" type="text" class="form-control" ng-model="query.search" placeholder="buscar frase">
+						<span class="input-group-btn">
+							<button class="btn" ng-click="flow.doQuery()">
+								<span class="glyphicon glyphicon-search"></span>
+							</button>
+						</span>
+					</div>
+				</div>
+
+				<div class="form-group category-field select-field">
+					<label for="category-select">Categoria: </label>
+					<select class="form-control" ng-model="query.category" ng-options="category.id as category.name for category in flow.categories"></select>
+				</div>
+
+				<div class="form-group orderby-field select-field">
+					<label for="orderby-select">Ordenar por: </label>
+					<select class="form-control" ng-model="query.orderBy" ng-options="opt.val as opt.label for opt in flow.orderByOptions"></select> 
+				</div>
+
+				<button class="btn btn-default btn-lg btn-search" ng-click="flow.doQuery()">BUSCAR</button>
+
+			</form>
+			<div class="num-results" ng-hide="flow.loading">{{query.totalCount}} resultados</div>
+		</div>
+	</div>
+
+	<div class="search-results" da-loading="flow.loading">
+		<div class="container-fluid">
+			<div class="campaign-list row">
+				<div class="col-lg-2 col-md-3 col-sm-3 col-xs-6" ng-repeat="campaign in flow.campaigns">
+					<da-campaign-teaser></da-campaign-teaser>
+				</div>
+			</div>
+
+			<pagination ng-show="query.totalCount > query.numResults && !flow.loading" boundary-links="true" items-per-page="query.numResults" total-items="query.totalCount" max-size="5" ng-model="query.page" class="pagination-lg" previous-text="&lsaquo;" next-text="&rsaquo;" first-text="&laquo;" last-text="&raquo;"></pagination>
+		</div>
+	</div>
+</div>

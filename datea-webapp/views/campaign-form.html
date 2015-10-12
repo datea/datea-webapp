@@ -1,0 +1,211 @@
+<nav class="navbar navbar-default campaign-form-nav" ng-class="{fix: flow.fixMenu}">
+	<div class="container-fluid">
+		<ul class="nav navbar-nav">
+			<li du-scrollspy="spy-step1" offset="200"><a href="#spy-step1" ng-click="scrollTo($event, 'spy-step1', 200)">Configuración general</a></li>
+			<li du-scrollspy="spy-step2" offset="200"><a href="#spy-step2" ng-click="scrollTo($event, 'spy-step2', 130)">etiquetas</a></li>
+			<li du-scrollspy="spy-step3" offset="200"><a href="#spy-step3" ng-click="scrollTo($event, 'spy-step3', 130)">opciones de ubicación</a></li>
+			<li du-scrollspy="spy-step4" offset="200"><a href="#spy-step4" ng-click="scrollTo($event, 'spy-step4', 130)">opciones de visualización</a></li>
+		</ul>
+		<div class="navbar-right">
+			<a class="btn btn-link btn-default" ng-if="flow.mode == 'edit'" href="/{{campaign.user.username}}/{{campaign.slug}}">VER INICIATIVA</a>
+			<button class="btn btn-success btn-lg" ng-click="flow.save()">GUARDAR</button>
+		</div>
+	</div>
+</nav>
+
+<div class="container campaign-form-container" ng-class="{fix: flow.fixMenu}">
+	<form class="form loading-fixed" da-loading="flow.loading">
+		<alert ng-repeat="alert in flow.alerts" type="danger" close="flow.closeAlert($index)" class="fix-alert form-alert">{{alert}}</alert>
+		<div class="row">
+			<div class="col-xs-8">
+				<div class="section" id="spy-step1">
+					<h4>Configuración de iniciativa</h4>
+					<div class="form-group" popover="{{help.name.content}}" popover-placement="right" popover-trigger="mouseenter" popover-popup-delay="600" ng-class="{null: '', false: 'has-error has-feedback'}[flow.validInput.name]">
+						<label for="title">Título</label>
+						<div class="row">
+							<div class="col-xs-9">
+								<input type="text" class="form-control" id="title" ng-model="campaign.name">
+							</div>
+						</div>
+					</div>
+					<div class="form-group maintag-field" ng-class="{null: '',true: 'has-success has-feedback','warning': 'has-warning has-feedback', false: 'has-error has-feedback'}[flow.validInput.mainTag]" popover="{{help.mainTag.content}}" popover-title="{{help.mainTag.title}}" popover-placement="right" popover-trigger="mouseenter" popover-popup-delay="600">
+						<label for="main-hashtag">Etiqueta (hashtag) principal</label>
+						<div class="input-group col-xs-5">
+							<span class="input-group-addon">#</span>
+							<span class="glyphicon form-control-feedback" ng-class="{null: '',true: 'glyphicon-ok',false: 'glyphicon-remove', 'warning': 'glyphicon-warning-sign'}[flow.validInput.mainTag]"></span>
+							<input type="text" class="form-control" id="main-hashtag" ng-model="campaign.main_tag.tag" ng-blur="flow.checkMainTag()" ng-enter="flow.checkMainTag()">
+						</div>
+						<p class="help-block" ng-show="flow.messages.mainTagExists">{{ flow.messages.mainTagExists }}</p>
+					</div>
+
+					<div class="form-group slug-field" ng-show="flow.showSlugField" ng-class="{null: '',true: 'has-success has-feedback', false: 'has-error has-feedback'}[flow.validInput.slug]" popover="{{help.slug.content}}" popover-title="{{help.slug.title}}" popover-placement="right" popover-trigger="mouseenter" popover-popup-delay="600">
+						<label for="main-hashtag">Componente de URL</label>
+						<div class="input-group col-xs-9">
+							<span class="input-group-addon">{{flow.urlBase}}</span>
+							<span class="glyphicon form-control-feedback" ng-class="{null: '',true: 'glyphicon-ok',false: 'glyphicon-remove'}[flow.validInput.slug]"></span>
+							<input type="text" class="form-control" id="slug" ng-model="campaign.slug" ng-blur="flow.checkSlug()" ng-enter="flow.checkSlug()">
+						</div>
+						<p class="help-block" ng-show="flow.messages.slugError">{{ flow.messages.slugError }}</p>
+					</div>
+
+					<div class="form-group" popover="{{help.published.content}}" popover-placement="right" popover-trigger="mouseenter" popover-popup-delay="600">
+						<div class="checkbox">
+							<label>
+								<input type="checkbox" ng-model="campaign.published"> Publicado
+		    			</label>
+		  			</div>
+		  		</div>
+
+					<div class="form-group" popover="{{help.image.content}}" popover-placement="right" popover-trigger="mouseenter" popover-popup-delay="600">
+						<label>Imágen para listado</label>
+						<div>
+							<label for="image" class="datea-custom-imgUL">
+								<input class="img-file-input" type="file" id="image" fileread="flow.img" filedata="flow.imgData" accept="image/*" ng-hide="flow.img" max-image-size="800">
+								<img class="uploaded-img" ng-show="flow.img" ng-src="{{flow.img}}" alt="{{flow.imgData.name}}" width="300px">
+							</label>
+						</div>
+						<p class="help-block">mínimo 400 por 600px (vertical o horizontal)</p>
+					</div>
+
+					<div class="form-group" popover="{{help.image2.content}}" popover-placement="right" popover-trigger="mouseenter" popover-popup-delay="600">
+						<label>Imágen para banner</label>
+						<div>
+							<label for="image2" class="datea-custom-imgUL">
+								<input class="img-file-input" type="file" id="image2" fileread="flow.img2" filedata="flow.imgData2" accept="image/*" ng-hide="flow.img2" max-image-size="800">
+								<img class="uploaded-img" ng-show="flow.img2" ng-src="{{flow.img2}}" alt="{{flow.imgData2.name}}" width="300px">
+							</label>
+						</div>
+						<p class="help-block">mínimo 600 por 800px (vertical o horizontal)</p>
+					</div>
+
+					<div class="form-group" popover="{{help.endDate.content}}" popover-placement="right" popover-trigger="mouseenter" popover-popup-delay="600">
+						<label for="datepicker">Fecha de finalización (opcional)</label>
+						<div class="form-inline">
+							<div class="form-group date-field-group">
+								<input type="text" class="form-control" id="datepicker" ng-model="flow.dp.endDate" is-open="flow.dp.opened" min="flow.dp.minDate" datepicker-options="flow.dp.dateOptions" date-disabled="flow.dp.disabled(date, mode)" close-text="Cerrar" ng-click="flow.dp.openDatepicker($event)" datepicker-popup="{{flow.dp.format}}">
+							</div>
+							<div class="form-group">
+								<button class="btn btn-default" ng-click="flow.dp.clear()" ng-show="flow.dp.endDate"><span class="glyphicon glyphicon-ban-circle"></span></button>
+							</div>
+						</div>
+					</div>
+					<div class="form-group" popover="{{help.category.content}}" popover-placement="right" popover-trigger="mouseenter" popover-popup-delay="600" ng-class="{null: '', false: 'has-error has-feedback'}[flow.validInput.category]">
+						<div class="row">
+							<div class="col-xs-5">
+								<label for="categories">Categoria General</label>
+								<select class="form-control" ng-model="flow.selectedCategory" ng-options="category.id as category.name for category in flow.categories">
+								</select>
+							</div>
+						</div>
+					</div>
+					<div class="form-group" popover="{{help.shortDescription.content}}" popover-placement="right" popover-trigger="mouseenter" popover-popup-delay="600" ng-class="{null: '', false: 'has-error has-feedback'}[flow.validInput.short_description]">
+						<label for="short-description">Descripción corta (max 140 caracteres)</label>
+						<textarea id="short-description" class="form-control" msd-elastic="\n" rows="1" ng-model="campaign.short_description" maxlength="140"></textarea>
+					</div>
+					<div class="form-group" popover="{{help.mission.content}}" popover-placement="right" popover-trigger="mouseenter" popover-popup-delay="600" ng-class="{null: '', false: 'has-error has-feedback'}[flow.validInput.mission]">
+						<label for="mission">Misión / Objetivos</label>
+						<textarea id="mission" class="form-control" msd-elastic="\n" rows="3" ng-model="campaign.mission" maxlength="500"></textarea>
+					</div>
+					<div class="form-group" popover="{{help.informationDestiny.content}}" popover-placement="right" popover-trigger="mouseenter" popover-popup-delay="600" ng-class="{null: '', false: 'has-error has-feedback'}[flow.validInput.information_destiny]">
+						<label for="information-destiny">¿Qué sucede con la información recibida?</label>
+						<textarea id="information-destiny" class="form-control" msd-elastic="\n" rows="3" ng-model="campaign.information_destiny" maxlength="500"></textarea>
+					</div>
+				</div>
+				<hr>
+				<div class="section" id="spy-step2" popover="{{help.secondaryTags.content}}" popover-title="{{help.secondaryTags.title}}" popover-placement="right" popover-trigger="mouseenter" popover-popup-delay="600">
+					<h4>Sub-etiquetas (hashtags)</h4>
+					<p>Para categorizar los dateos de la iniciativa.</p>
+					<div class="form-group">
+						<label for="new-tag">Introduce una etiqueta y agregalas una por una</label>
+						<div class="input-group col-xs-5 autocomplete-group">
+							<input type="text" ng-model="flow.nextTag" class="form-control" ng-enter="flow.addTag()" typeahead="tags for tags in flow.autocompleteTag($viewValue) | filter:$viewValue" typeahead-loading="loadingLocations">
+							<i ng-show="loadingLocations" class="autocomplete-loading fa fa-circle-o-notch fa-spin"></i>
+							<span class="input-group-btn">
+								<button class="btn btn-default" type="button" ng-click="flow.addTag()">agregar</button>
+							</span>
+						</div>
+					</div>
+					<div class="selected-tags-box">
+						<h5>Etiquetas seleccionadas</h5>
+						<ul class="tags-holder input-list">
+							<li class="tag-holder" ng-repeat="tag in campaign.secondary_tags">
+								<div class="arrows part part-1">
+									<div class="abtn up"><i class="fa fa-sort-up" ng-click="flow.arrowUp($index)"></i></div>
+									<div class="abtn down"><i class="fa fa-sort-down" ng-click="flow.arrowDown($index)"></i></div>
+								</div>
+								<!--<div class="title part part-2">
+									{{tag.title}}
+								</div>-->
+								<div class="tag part part-3 line-content">
+									#{{tag.tag}}
+								</div>
+								<div class="delete part part-4" ng-click="flow.removeTag($index)">
+									<i class="fa fa-times"></i>
+								</div>
+							</li>
+						</ul>
+					</div>
+				</div>
+				<hr>
+				<div class="section" id="spy-step3">
+					<h4>Opciones de ubicación</h4>
+
+					<div class="form-group" popover="{{help.map.content}}" popover-title="{{help.map.title}}" popover-placement="right" popover-trigger="mouseenter" popover-popup-delay="600">
+						<label>Configuración del mapa</label>
+						<leaflet id="leafletNewCampaign" defaults="flow.leaflet.defaults" tiles="flow.leaflet.tiles" center="flow.leaflet.center" controls="flow.leaflet.controls" height="500px" width="100%"></leaflet>
+					</div>
+		
+					<div popover="{{help.layerFiles.content}}" popover-title="{{help.layerFiles.title}}" popover-placement="right" popover-trigger="mouseenter" popover-popup-delay="600">
+						<div class="form-group part part-1 layerfiles-input">
+							<label for="newFile">Sube archivos kml o geoJSON (opcional)</label>
+							<input type="file" id="newFile" class="datea-custom-fileUL" fileread="flow.nextFile" filedata="flow.nextFileData" accept=".kml,.json">
+						</div>
+						<div class="layerfiles-holder">
+							<!-- <h6>{{newCampaign.nextFileData.name}}</h6> -->
+							<ul class="files-holder input-list">
+								<li class="file-holder" ng-repeat="layer in flow.leaflet.fileLayers">
+									<div class="title part part-2 line-content">
+										{{layer.name}}
+									</div>
+									<div class="delete part part-4" ng-click="flow.removeFile($index)">
+										<i class="fa fa-times"></i>
+									</div>
+								</li>
+							</ul>
+						</div>
+					</div>
+				</div>
+				<hr>
+				<div class="section" id="spy-step4">
+					<h4>Opciones de visualización</h4>
+					<div class="form-group viz-mode" popover="{{help.defaultVis.content}}" popover-placement="right" popover-trigger="mouseenter" popover-popup-delay="600">
+						<label>Visualización por defecto</label>
+						<div class="radio-options">
+							<label class="radio-inline">
+								<input type="radio" ng-model="campaign.default_vis" name="default_vis" value="map"> Mapa
+							</label>
+							<label class="radio-inline">
+								<input type="radio" ng-model="campaign.default_vis" name="default_vis" value="timeline"> Línea de tiempo
+							</label>
+							<label class="radio-inline">
+								<input type="radio" ng-model="campaign.default_vis" name="default_vis" value="images"> Imágenes
+							</label>
+							<label class="radio-inline">
+								<input type="radio" ng-model="campaign.default_vis" name="default_vis" value="files"> Archivos
+							</label>
+						</div>
+					</div>
+
+					<div class="form-group" popover="{{help.defaultFilter.content}}" popover-placement="right" popover-trigger="mouseenter" popover-popup-delay="600">
+						<label>Filtros</label>
+						<div class="checkbox">
+							<label>
+								<input type="checkbox" ng-model="campaign.default_filter" ng-true-value="'owner'"> Por defecto sólo ver dateos propios o redateados por mi
+							</label>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</form>
+</div>

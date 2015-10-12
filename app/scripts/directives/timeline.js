@@ -6,12 +6,14 @@ angular.module("dateaWebApp")
 , '$timeout'
 , 'Piecluster'
 , '$sce'
+, '$document'
 ,	function (
 	  $rootScope
 	, config
 	, $timeout
 	, Piecluster
 	, $sce
+	, $document
 ) {
 	return {
 	  restrict    : "E"
@@ -20,6 +22,7 @@ angular.module("dateaWebApp")
 		  dateos 			: '&'
 		, tags        : '&'
 		, campaign    : '&'
+		, loading     : '='
 	}
 
 	, link: function ($scope, $element, $attrs) {
@@ -31,11 +34,12 @@ angular.module("dateaWebApp")
 			, clusterSizeRange
 			, activeMinInterval = '1h'
 			, dateoList = []
+			, isScrolling = false
 		;
 
 		clusterSizeRange = d3.scale.linear()
 			  .domain( [0, 100] )
-			  .range( [22, 50] )
+			  .range( [30, 55] )
 			  .clamp( true );
 
 		$scope.timeline = {};
@@ -92,22 +96,42 @@ angular.module("dateaWebApp")
 		};
 
 		var wheelTimeout = false;
- 
+		
 		$scope.bar.mousewheel = function($ev, $delta, $deltaX, $deltaY) {
-			$ev.preventDefault();
-			$ev.stopPropagation();
 
-			var growth = ($deltaY + 2*(($delta/Math.abs($delta)) * ($scope.bar.width/ window.innerWidth))) * 12;
-			var center = $scope.bar.mouseX - $scope.bar.left;
+			if (isScrolling) {
+				if (scrollingTimeout) $timeout.cancel(scrollingTimeout);
+				scrollingTimeout = $timeout(function () {
+					isScrolling = false;
+				}, 500);
 
-			weightedZoom(growth, center);
-			updateIntervals();
+			}else{
 
-			if (wheelTimeout) $timeout.cancel(wheelTimeout);
-			wheelTimeout = $timeout(function () {
-				updateClusters();
-			}, 500);
+				$ev.preventDefault();
+				$ev.stopPropagation();
+
+				var growth = ($deltaY + 2*(($deltaY/Math.abs($deltaY)) * ($scope.bar.width/ window.innerWidth))) * 12;
+				var center = $scope.bar.mouseX - $scope.bar.left;
+
+				weightedZoom(growth, center);
+				updateIntervals();
+
+				if (wheelTimeout) $timeout.cancel(wheelTimeout);
+				wheelTimeout = $timeout(function () {
+					updateClusters();
+				}, 500);
+			}
 		};
+
+		var scrollingTimeout = false;
+
+		$document.on('scroll', function() {
+			isScrolling = true;
+			if (scrollingTimeout) $timeout.cancel(scrollingTimeout);
+			scrollingTimeout = $timeout(function () {
+				isScrolling = false;
+			}, 500);
+		});
 
 		var weightedZoom = function (growth, center) {
 			var balanceFactor;
@@ -168,7 +192,7 @@ angular.module("dateaWebApp")
 				});
 				
 				var data = _.values(dataObj)
-					, d    = Math.round(clusterSizeRange(cluster.dateos.length));
+					, d    = cluster.dateos.length > 1 ? Math.round(clusterSizeRange(cluster.dateos.length)) : 20;
 
 				if (!data.length) {
 					data = [{value: cluster.dateos.length, tag: 'Otros'}];
@@ -187,14 +211,19 @@ angular.module("dateaWebApp")
 				cluster.html = Piecluster.makeSVGPie(pieData);
 				cluster.html = $sce.trustAsHtml(cluster.html);
 
-				cluster.style = {};
 				if (cluster.dateos.length > 1) {
-					cluster.style.left = (gridNum * 50 + 25 - d/2)*100 / $scope.bar.width + '%';
+					var leftPx = gridNum * 50 + 25;
 				}else{
-					cluster.style.left = (Bounds.project(cluster.dateos[0].timestamp,1) * $scope.bar.width - d/2)*100 / $scope.bar.width + '%';
+					var leftPx = Bounds.project(cluster.dateos[0].timestamp, $scope.bar.width);
 				}
-				cluster.style.top = -pieData.r+'px';
-				cluster.style.height = d+'px';
+				cluster.style = {
+					  top    : -pieData.r + 'px'
+					, height :  pieData.d + 'px'
+					, left   : ((leftPx - pieData.r) / $scope.bar.width)*100 + '%'
+				}
+				if (cluster.isActive) {
+					$scope.bar.activePosStyle = {left: (leftPx / $scope.bar.width)*100 + '%'};
+				}
 			});
 			$scope.clusters = clusters;
 		};
@@ -680,6 +709,8 @@ angular.module("dateaWebApp")
   		var outsideScreen = $scope.bar.width - window.innerWidth;
   		var displaceFactor = Math.abs($scope.bar.left) / (outsideScreen > 0 ? outsideScreen : 1);
   		displaceFactor = displaceFactor > 0 ? displaceFactor : 0.5;
+
+  		console.log('displaceFactor', displaceFactor);
   		
   		if (nuWidth < window.innerWidth) {
   			nuWidth = window.innerWidth;
@@ -721,11 +752,13 @@ angular.module("dateaWebApp")
 	  			maxInterval = Bounds.timespan() > 900000 ? 900000 : Bounds.timespan();
 	  		}
 	  		var zoomFactor = window.innerWidth / ((1.5*maxInterval*$scope.bar.width)/Bounds.timespan());
+	  		console.log('maxInterval', maxInterval, 'zoomFactor', zoomFactor, 'nMode', nMode);
 	  		$scope.bar.width *= zoomFactor;
 	  		$scope.bar.left   = -Bounds.project(stamps[0] - (maxInterval*0.25), $scope.bar.width);
 
+	  		console.log('bar width - left', $scope.bar.width + $scope.bar.left > window.innerWidth);
 	  		$scope.timeline.showdateo(cluster.dateos[0]);
-	  		
+	  		$timeout(function () {setSlideHeight(1);});
 	  		setBarStyle();
 	  		//updateIntervals();
 
@@ -736,6 +769,7 @@ angular.module("dateaWebApp")
 		  	},500);
 	  	}else{
 	  		$scope.timeline.showdateo(cluster.dateos[0]);
+	  		updateClusters();
 	  	}
 	  };
 
@@ -745,7 +779,6 @@ angular.module("dateaWebApp")
 	  	$scope.activeDateos[1] = dateo;
 	  	$scope.activeDateos[2] = idx+1 < dateoList.length ? dateoList[idx+1] : {};
 	  	$timeout(function () {setSlideHeight(1);});
-	  	updateClusters();
  	  };
 
 	  $scope.timeline.nextDateo = function () {
@@ -823,6 +856,14 @@ angular.module("dateaWebApp")
 
 	  	}, 420); 
 	  };
+
+	  $document.on('keydown', function(e) {
+			if (e.which === 39) {
+				$scope.$apply($scope.timeline.nextDateo);
+			}else if (e.which == 37) {
+				$scope.$apply($scope.timeline.prevDateo);
+			}
+		});
 
 	  var setSlideHeight = function (snum) {
 	  	var h = $('.slide-container-'+snum).height();

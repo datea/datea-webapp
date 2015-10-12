@@ -1,0 +1,225 @@
+<div class="homeSI-holder container-fluid">
+	<div class="bg-inner">
+		<div class="row">
+
+			<div class="col-xs-12 col-sm-35 col-md-4 homeSI-meta-holder">
+				<div class="col-bg">
+					<div class="block block-1">
+						<div class="user-info ff1">
+							<div class="inner">
+								<div class="datero ff1">dater@</div>
+								<div class="info-head">
+									<div class="uimg-cell">
+										<div class="uimg-wrap">
+											<a class="uimg img-circle" href="#!/{{user.username}}" da-bg-from-api="{{user.image}}" da-img-size="cover" da-img-type="user">&nbsp;</a>
+										</div>
+										<!--<img src="{{user.image | imgFromApi}}" alt="{{user.username}}" class="img-circle">-->
+									</div>
+									<div class="udata-cell">
+										<h3><a href="#!/{{user.username}}">{{user.username}}</a></h3>
+										<div class="stats">
+											<span class="dateos-count" ng-if="user.dateo_count > 0">{{user.dateo_count}} <ng-pluralize count="user.dateo_count" when="{'one':
+											'dateo','other':'dateos'}"></ng-pluralize> </span>
+											<span class="votes-count" ng-if="user.votes.length > 0">{{user.votes.length}} <ng-pluralize count="user.votes.length" when="{'one':
+											'apoyo','other':'apoyos'}"></ng-pluralize></span>
+										</div>
+									</div>
+								</div>
+								<div class="clearfix actions">
+									<div class="pull-right">
+										<datear-btn></datear-btn>
+									</div>
+									<!--<a class="btn datea-btn ff1" href="#!/crear-niciativa">Crear iniciativa</a>-->
+									<div class="user-menu">
+										<a href="#!/{{user.username}}">Mi perfil</a>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+					<div class="block block-2" ng-init="homeSI.showFollowHelp = true">
+						<div class="user-follows ff1" ng-show="homeSI.followingTags.length > 0">
+							<h5>etiquetas que sigo:</h5>
+							<div class="tag-buttons">
+								<a class="datea-tag-btn user-tag" ng-href="#!/tag/{{tag.tag}}" ng-repeat="tag in homeSI.followingTags">
+									#{{tag.tag}}
+								</a>
+							</div>
+						</div>
+						<alert class="follow-welcome" type="success" close="homeSI.showFollowHelp = false" ng-show="homeSI.followingTags.length === 0 && homeSI.showFollowHelp">
+							<h4>¡Aún no sigues etiquetas!</h4>
+							<p>Sigue etiquetas para visualizar y participar de los temas que te interesan. 
+							Para ello, cliquea sobre ellas y activa el botón seguir.</p>
+						</alert>
+					</div>
+						
+					<div class="block block-3">
+						<div class="trending-tags-holder ff1" ng-show="homeSI.trendingTags.length > 0">
+							<h5>Tendencias:</h5>
+							<div class="tag-buttons">
+								<a class="datea-tag-btn trending-tag" ng-href="#!/tag/{{tag.tag}}" ng-class="{followable: tag._followable}" ng-repeat="tag in homeSI.trendingTags">
+									#{{tag.tag}}
+								</a>
+							</div>
+						</div>
+					</div>
+						
+					<div class="block block-4 hidden-xs" ng-show="homeSI.history.length > 0">
+						<div class="user-history-holder ff1">
+							<h5>historial:</h5>
+							<ul class="user-history">
+								<li class="user-history-item" ng-repeat="item in homeSI.history">
+									<div class="head">
+										<a class="uimg img-circle" href="#!/{{item.actor.username}}" da-bg-from-api="{{item.actor.image_small}}" da-img-size="cover" da-img-type="user">&nbsp;</a>
+										<a class="activity-link" href="#!{{item._url}}">{{item._message}}</a>
+									</div>
+									<p class="activity-extract">{{item.data.extract}}</p>
+								</li>
+							</ul>
+						</div>
+					</div>
+				</div>
+
+				<!--<hr>-->
+
+				<div class="weekly-dateo-holder" ng-hide="true">
+					<h4>dateo de la semana</h4>
+					<div class="weekly-dateo">
+						<div class="parts-holder">
+							<div class="part part-1">
+								<div class="user-img img-circle" da-bg-from-api="{{homeSI.weeklyDateo.user.image.image}}" da-img-type="user" da-img-size="cover"></div>
+							</div>
+							<div class="part part-2">
+								<h4>{{homeSI.weeklyDateo.user.username}}</h4>
+								<span class="date">el {{homeSI.weeklyDateo.created | date:'fullDate'}}</span>
+							</div>
+						</div>
+						<p>{{homeSI.weeklyDateo.extract}}</p>
+						<div class="weekly-dateo-img" bg-from-api="{{homeSI.weeklyDateo.images[$index].image}}" ng-repeat="img in homeSI.weeklyDateo.images"></div>
+						<div class="icon-holder part">
+							<span class="glyphicon glyphicon-thumbs-up"></span> {{homeSI.weeklyDateo.vote_count}}
+						</div>
+						<div class="icon-holder part">
+							<span class="glyphicon glyphicon-comment"></span> {{homeSI.weeklyDateo.comment_count}}
+						</div>
+						<a class="btn datea-btn pull-right ff1" href="#!/{{homeSI.weeklyDateo.user.username}}/dateos/{{homeSI.weeklyDateo.id}}">ver detalle</a>
+					</div>
+				</div>
+			</div>
+
+			<div class="col-xs-12 col-sm-85 col-md-8 main-col">
+				<div class="main-col-inner">
+
+					<div class="homeSI-dateos-holder" ng-class="{'fullscreen': homeSI.mapFullscreen }" id="homeSI-map-holder">
+						<div class="view-frame-top view-frame">
+							<ul class="nav-pills nav pull-right ff2" role="tablist">
+							<li ng-class="{active: homeSI.activeDateoView ==='map'}"><a ng-click="homeSI.openDateoView('map')"><i class="icon-pin2"></i>Mapa</a></li>
+							<li ng-class="{active: homeSI.activeDateoView ==='list'}"><a ng-click="homeSI.openDateoView('list')"><i class="icon-lista"></i>Lista</a></li>
+						</ul>
+							<div class="form-group search-box">
+								<form ng-submit="homeSI.searchDateos()">
+									<div class="input-group">
+										<input type="text" class="form-control" placeholder="buscar" ng-model="query.search" typeahead="tags for tags in homeSI.autocompleteSearch($viewValue) | filter:$viewValue" typeahead-loading="loadingSearchSuggestions">
+										<span class="input-group-btn">
+											<button class="btn btn-default" type="button" ng-click="homeSI.searchDateos()"><i class="glyphicon glyphicon-search"></i></button>
+										</span>
+									</div>
+								</form>
+							</div>
+
+							<div class="filters">
+								<span class="flabel hidden-xs hidden-sm">en</span>
+								<div class="form-group">
+									<div class="btn-group">
+										<select class="selectpicker" ng-model="query.followFilter" selectpicker="" data-style="btn-link">
+												<option value="follow">lo que sigo</option>
+												<option value="all">todos</option>
+										</select>
+									</div>
+								</div>
+								
+								<span class="flabel hidden-xs hidden-sm">ordenar por:</span>
+								<div class="form-group">
+									<div class="btn-group">
+										<select class="selectpicker" data-style="btn-link" ng-model="query.orderBy" selectpicker="">
+											<option value="-created">últimos</option>
+											<option value="-vote_count,-created">más apoyados</option>
+											<optioon value="-comment_count,-created">más comentados</optioon>
+										</select>
+									</div>
+								</div>
+							</div>
+							<!--
+							<div class="controls-right pull-right">
+								<button class="bar-btn bar-btn-map" type="button" ng-click="homeSI.openDateoView('map')" ng-class="{active: homeSI.activeDateoView == 'map'}"><i class="glyphicon glyphicon-map-marker"></i></button>
+								<button class="bar-btn bar-btn-list" type="button" ng-click="homeSI.openDateoView('list')" ng-class="{active: homeSI.activeDateoView == 'list'}"><i class="fa fa fa-list-ul"></i></button>
+							</div>-->
+						</div>
+						<div class="tab-content">
+							<div class="tab-pane" ng-class="{active: homeSI.activeDateoView === 'map'}">
+								<div class="dateos-map-view">
+									<div class="map-holder" da-loading="homeSI.loading.leaflet">
+										<div class="loading-more" ng-show="homeSI.loading.leafletMore && !homeSI.loading.leaflet"><i class="fa fa-circle-o-notch fa-spin"></i></div>
+										<div class="no-results" ng-show="flow.notResults && !homeSI.loading.leafletMore">{{flow.notResults}}</div>
+										<leaflet class="leaflet-map" id="leafletHomeSI" defaults="homeSI.leaflet.defaults" bounds="homeSI.leaflet.bounds" markers="homeSI.leaflet.markers" center="homeSI.leaflet.center" width="100%" cluster-options="homeSI.leaflet.clusterOptions" tiles="homeSI.leaflet.tiles"></leaflet>
+										<div class="view-frame-bottom view-frame">
+											<div class="play-btns">
+												<button class="bar-btn icon-only goto-first" type="button" ng-click="homeSI.focusNextMarker({ goTo: 'first'})"><i class="glyphicon glyphicon-step-backward"></i> 
+												<button class="bar-btn center-left" type="button" ng-click="homeSI.focusNextMarker( { direction : 0 } )"><i class="glyphicon glyphicon-chevron-left"></i>anterior</button>
+												<button class="bar-btn center-right" type="button" ng-click="homeSI.focusNextMarker( { direction : 1 } )">siguiente<i class="glyphicon glyphicon-chevron-right"></i></button>
+												<button class="bar-btn icon-only goto-last" type="button" ng-click="homeSI.focusNextMarker({ goTo: 'last'})"><i class="glyphicon glyphicon-step-forward"></i> 
+											</button></button></div>
+											<div class="btns-right">
+												<button class="bar-btn" type="button" ng-click="homeSI.fullscreen()"><i class="glyphicon glyphicon-fullscreen"></i></button>
+											</div>
+										</div>
+									</div>
+									<div class="legend-holder" ng-show="homeSI.followingTags.length > 0 && query.followFilter == 'follow'">
+										<div class="expand" ng-click="flow.expandLegend()" ng-show="flow.showLegendExpandLink">ver todas</div>
+										<div class="contract" ng-click="flow.contractLegend()" ng-show="flow.showLegendContractLink">cerrar</div>
+										<div class="tag-list">
+											<div class="tag-legend" ng-repeat="tag in homeSI.followingTags" da-on-last-repeat="flow.onLegendRender()">
+												<span class="color-sample" style="background-color: {{tag.color}}"></span>
+												<span class="tag">#{{tag.tag}}</span>
+											</div>
+										</div>
+									</div>
+								</div>
+
+								<div class="campaigns-holder" da-loading="homeSI.loading.campaigns">
+									<div class="campaign-title">
+										<div class="pull-right">
+											<a class="btn btn-link hidden-xs" href="#!/crear-iniciativa">crear iniciativa</a>&nbsp;
+											<a class="btn datea-btn ff1" href="#!/iniciativas">VER TODAS</a>
+										</div>
+										<h4>INICIATIVAS DESTACADAS</h4>
+									</div>
+
+									<div class="main-campaign-carousel campaign-list row" da-jcarousel="">
+										<div class="jcarousel">
+											<div class="carousel-container">
+												<div class="col-lg-1 col-md-1 col-sm-1 col-xs-1 carousel-item" ng-repeat="campaign in homeSI.campaigns" da-on-last-repeat="carousel.onLastCarouselItem()">
+													<da-campaign-teaser></da-campaign-teaser>
+												</div>
+											</div>
+										</div>
+										<div class="prev-btn carousel-prev" ng-show="!homeSI.loading.campaigns" ng-click="carousel.goToPrev()"></div>
+										<div class="next-btn carousel-next" ng-show="!homeSI.loading.campaigns" ng-click="carousel.goToNext()"></div>
+									</div>
+								</div>
+							</div>
+
+							<div class="tab-pane" ng-class="{active: homeSI.activeDateoView === 'list'}">
+								<div class="dateos-list-view" da-loading="homeSI.loading.dateosListView" ng-show="homeSI.activeDateoView == 'list'">
+									<da-dateo-teaser ng-repeat="dateo in homeSI.dateosListView.dateos" map-present="false" detail-inline="false"></da-dateo-teaser>
+									<div class="no-results" ng-show="homeSI.dateosListView.dateos.length === 0">No se encontraron resultados. Vuelvelo a intentar y chequea las opciones de busqueda arriba.</div>
+									<pagination ng-show="homeSI.dateosListView.totalCount > homeSI.dateosListView.limit" boundary-links="true" items-per-page="homeSI.dateosListView.limit" total-items="homeSI.dateosListView.totalCount" ng-model="query.page" class="pagination pagination-lg" previous-text="&lsaquo;" next-text="&rsaquo;" first-text="&laquo;" last-text="&raquo;" max-size="5"></pagination>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>

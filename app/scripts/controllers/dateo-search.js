@@ -66,6 +66,7 @@ angular.module('dateaWebApp')
 		  q        : $routeParams.search || ''
 		, limit    : $location.search().limit  || 100
 		, order_by : $location.search().order_by || '-created'
+		, tab      : $location.search().tab || 'map'
 	};
 	if ($location.search().since) $scope.query.since = Date.parse($location.search().since) || undefined;
 	if ($location.search().until) $scope.query.until = Date.parse($location.search().until) || undefined;
@@ -83,10 +84,7 @@ angular.module('dateaWebApp')
 		  dateo : null
 		, show  : false 
 	};
-	$scope.flow.activeTab = { 
-		  map    : $location.search().tab ? $location.search().tab === 'map': true
-		, images : $location.search().tab ? $location.search().tab === 'images': false
-	};
+
 	$scope.flow.orderByOptions = [
 			  { val: '-created', label: 'últimos'}
 			, { val: '-vote_count', label: 'más apoyados'}
@@ -167,7 +165,7 @@ angular.module('dateaWebApp')
 		}
 
 		$scope.flow.queryTextRep = text;
-	}
+	};
 
 	doSearch = function ( givens ) {
 		var tab = $location.search().tab || 'map'
@@ -197,7 +195,14 @@ angular.module('dateaWebApp')
 				buildMarkers( { dateos: response.objects } );
 				$scope.result.totalDateos = response.meta.total_count;
 			}else if (tab === 'images') {
-				$scope.result.dateosWithImages = response.objects;
+				var images = [];
+				_.each(response.objects, function (dateo) {
+					_.each(dateo.images, function (img) {
+						img.dateo = dateo;
+						images.push(img);
+					})
+				});
+				$scope.result.dateoImages = images;
 				$scope.result.totalDateos = response.meta.total_count;
 			} 
 			$scope.flow.loading = false;

@@ -1,0 +1,9 @@
+<div class="thumbnail">
+	<a class="campaign" ng-href="/{{campaign.user.username}}/{{campaign.slug}}" ng-class="{unpublished: !campaign.published && campaign.id}">
+		<div class="campaign-img" da-bg-from-api="{{campaign.image.image}}" da-img-size="cover"></div>
+		<h4>{{campaign.name}}</h4>
+		<span class="dateo-count" ng-hide="campaign.dateo_count === 0">{{campaign.dateo_count}} dateos</span>
+		<span class="status" ng-class="{'inactive': !campaign.is_active, 'active': campaign.is_active}">{{campaign.is_active && 'activo' || 'inactivo'}}</span>
+		<!--<span class="btn datea-btn btn-xs datea-btn-xs pull-right">ver más</span>-->
+	</a>
+</div>

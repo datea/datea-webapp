@@ -5,7 +5,7 @@
 			<div class="user-img img-circle" da-bg-from-api="{{dateo.user.image_small}}" da-img-size="cover" da-img-type="user"></div>
 			<div class="user-info">
 				<h4 class="username"><a href="/{{dateo.user.username}}">{{dateo.user.username}}</a></h4>
-				<div class="date"><a href="/{{dateo.user.username}}/dateos/{{dateo.id}}">{{dateo.created | date:dateFormat}}</a></div>
+				<div class="created"><a href="/{{dateo.user.username}}/dateos/{{dateo.id}}">dateado el {{dateo.created | date:createdFormat}}</a></div>
 			</div>
 			<div class="admin-info">
 				<div class="label admin-status" ng-show="flow.status" ng-class="{'label-success': flow.status.type === 'solved', 'label-info': flow.status.type === 'reviewed'}">{{flow.status.msg}}</div>
@@ -13,6 +13,9 @@
 		</div>
 
 		<p class="tags"><a class="tag" ng-repeat="tag in dateo.tags" href="/tag/{{tag}}">#{{tag}}</a></p>
+
+		<div class="date" ng-show="(!!dateo.date && dateo.date != dateo.created) || forceDate"><span class="glyphicon glyphicon-time" aria-hidden="true"></span> {{dateo.date || dateo.created | date:dateFormat}}</div>
+
 		<p class="content" ng-bind-html="dateo.extract | linky:'_blank'"></p>
 
 		<div class="images" ng-show="dateo.images.length" image-gallery>

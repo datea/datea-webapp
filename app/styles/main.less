@@ -2887,7 +2887,7 @@ body {
 					h4 {
 						margin: 10px 0 2px 0;
 					}
-					.date {
+					.created {
 						color: @color-6;
 					}
 				}
@@ -3334,7 +3334,7 @@ body {
 							font-weight: normal;
 							color: white;
 						}
-						.date { 
+						.created { 
 							font-size: 12px; 
 							color: darken(white, 10%); 
 						}
@@ -4447,8 +4447,8 @@ ul.input-list {
 		&.timeline-legend-holder {
 			bottom: 0;
 			position: relative;
-			padding: 12px 12px;
-			background-color: @color-16;
+			margin: 12px 12px;
+			background-color: white;
 		}
 	}
 }
@@ -4686,12 +4686,12 @@ ul.input-list {
 .timeline-holder {
 	.timeline-bar {
 		.cpie-label { 
-			font-size: 9px;
+			font-size: 10px;
 			line-height: 15px;
 			color: #777;
 		}
-		background-color: #f9f9f9;
-		//border-bottom: 1px solid #ccc;
+		background-color: #ccc; //#f9f9f9;
+		//border: 1px solid red;
 		//padding-bottom: 25px;
 		position: relative;
 		cursor: -webkit-grab;
@@ -4705,6 +4705,7 @@ ul.input-list {
 		.time-notches-first {
 			height: 20px;
 			position: relative;
+			z-index : 2;
 			.time-notch {
 				text-align: center;
 				font-size: 13px;
@@ -4723,6 +4724,7 @@ ul.input-list {
 		}
 
 		.time-notches-second {
+			z-index: 2;
 			height: 15px;
 			line-height: 15px;
 			position: relative;
@@ -4751,6 +4753,7 @@ ul.input-list {
 
 		.dateo-clusters {
 			position: relative;
+			z-index: 3;
 			margin-top: 15px;
 			//margin-bottom: 20px;
 			border-top: 1px solid transparent;
@@ -4762,6 +4765,36 @@ ul.input-list {
 				&.active {
 					box-shadow: 0px 0px 10px #333;
 				}
+			}
+		}
+
+		.active-pos-sign {
+			z-index: 1;
+			width: 28px;
+			position: absolute;
+			top: 0;
+			bottom: 0;
+			transition: left 0.5s ease;
+			
+			&:before {
+				content: ' ';
+				position: absolute;
+				top: 0;
+				height: 10px;
+				left: -10px;
+				border-top: 10px solid @text-color;
+				border-left: 10px solid transparent;
+				border-right: 10px solid transparent;
+				//box-shadow: 0px 4px 4px #333;
+			}
+			&:after {
+				position: absolute;
+				content: ' ';
+				border-left: 2px solid @text-color;
+				top: 0;
+				bottom: 0px;
+				left: -1px;
+				width: 2px;
 			}
 		}
 	}
@@ -4858,11 +4891,20 @@ ul.input-list {
 					width: 33.3333333%;
 					float: left;
 					padding: 0px 0px;
+
 					.dateo-teaser {
 						margin: 0 auto 0 auto;
 						max-width: 600px;
 						background-color: white;
-						padding: 15px;
+						padding: 50px 15px 15px;
+						.date {
+							position: absolute;
+							left: 0;
+							top: -37px;
+							font-weight: 600;
+							color: #768a80;
+							font-size: @font-size-base;
+						}
 					}
 				}
 
@@ -5014,15 +5056,15 @@ ul.input-list {
 			margin-left: 10px;
 			float: left;
 			h4.username { 
-				margin-bottom: 2px;
+				margin-bottom: 0px;
 				a {color: black}
 				margin-top: 6px;
 				font-size: @font-size-base;
 				font-weight: bold;
 				color: black;
 			}
-			.date { 
-				font-size: 12px; 
+			.created { 
+				font-size: 11px; 
 				color: @color-9; 
 				a { 
 					color: @color-9;
@@ -5051,6 +5093,17 @@ ul.input-list {
 		&:hover {
 			color: @color-10;
 			cursor: pointer;
+		}
+	}
+
+	.date {
+		margin-bottom: 5px;
+		.glyphicon {
+			font-size: 19px;
+			color: lighten(@text-color, 25%);
+			position: relative;
+			top: 4px;
+			margin-right: 2px;
 		}
 	}
 
@@ -5376,7 +5429,7 @@ ul.input-list {
 				font-size: 14px;
 				text-transform: lowercase;
 			}
-			.date {
+			.created {
 				color: @color-6;
 				font-size: 12px;
 			}
@@ -5691,7 +5744,7 @@ ul.input-list {
 				font-weight: normal;
 				margin: 0 5px 0 0;
 			}
-			.date {
+			.created {
 				color: @color-10;
 				font-size: 12px;
 			}
@@ -5997,7 +6050,7 @@ ul.input-list {
 			position: relative;
 			margin-left: auto;
 			margin-right: auto;
-			max-width: 456px;
+			max-width: 550px;
 			padding-top: 15px;
 			margin-top: 10px;
 			.card-bg {
@@ -6022,6 +6075,7 @@ ul.input-list {
 				height: 182px;
 				margin: 0 20px 0 0;
 				width: 182px;
+				height: 182px;
 				border: 3px solid white;
 				display: table-cell;
 			}
@@ -6051,8 +6105,10 @@ ul.input-list {
 				}
 				p {
 					margin-bottom: 5px;
+					font-size: 14px;
 				}
 				.url {
+					strong { display: none}
 					a { color: white; 
 						&:hover {color: darken(white, 10%)}
 					}
@@ -6318,7 +6374,7 @@ ul.input-list {
 			font-weight: normal;
 			color: black;
 		}
-		.date {color: lighten(@color-6, 15%);}
+		.created {color: lighten(@color-6, 15%);}
 	}
 
 	.tags {

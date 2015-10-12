@@ -15,7 +15,7 @@
 					<a href="/{{dateo.user.username}}">
 						<h4>{{dateo.user.username}}</h4>
 					</a>
-					<p class="ff1">el {{dateo.created | date:dateFormat}}</p>
+					<p class="ff1">dateado el {{dateo.created | date:createdFormat}}</p>
 				</div>
 			</div>
 			<div class="content-holder" ng-show="!dateo.message">
@@ -30,6 +30,8 @@
 						<div class="tag-row">
 							<a class="tag" href="/tag/{{tag}}" ng-repeat="tag in dateo.tags">#{{tag}}</a>
 						</div>
+
+						<div class="date" ng-show="(!!dateo.date && dateo.date != dateo.created) || forceDate"><span class="glyphicon glyphicon-time" aria-hidden="true"></span> {{dateo.date | date:dateFormat}}</div>
 						
 						<p class="dateo-content newline2br" ng-bind-html="dateo.content | linky:'_blank'"></p>
 						

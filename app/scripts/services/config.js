@@ -47,6 +47,7 @@ angular
 	               }
 	, defaultDateFormat : "d 'de' MMMM yyyy - H:mm"
 	, shortDateFormat : "d/MM/yyyy - H:mm" 
+	, dateFieldFormat : "d 'de' MMMM yyyy - H:mm"
 	, defaultBoundsRatio : +0.0075
 	, defaultImgProfile : '/static/images/globals/user-default.png'
 	, defaultImgBackground : '/static/images/globals/bg-gris.png'

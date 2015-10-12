@@ -1,0 +1,19 @@
+<div class="marker-holder">
+	<img class="img-circle" ng-src="{{dateo.user.image_small | imgFromApi }}" alt="user image">
+  <div class="part">
+  	<h5>{{dateo.user.username}}</h5>
+    <span class="date">{{dateo.created | date:dateFormat}}</span>
+  </div>
+  <div class="tags">
+  	<a class="tag" href="/tag/{{tag}}" ng-repeat="tag in tags">#{{tag}}</a>
+  	<span class="elippsis" ng-show="tags.length > 2">...</span>
+  </div>
+  <p ng-bind-html="dateo.extract | linky:'_blank'"></p>
+  <button class="popup-detail-btn btn datea-gray-btn btn-xs pull-right" ng-show="openDetail" ng-click="openDetail()">ver detalle</button>
+  <a ng-show="!openDetail" class="popup-detail-btn btn datea-gray-btn btn-xs pull-right" data-dateoid="{{dateo.id}}" href="/{{dateo.user.usernmame}}/dateos/{{dateo.id}}">ver detalle</a>
+  <div class="stats">
+  	<span class="stat" ng-show="dateo.vote_count"><span class="glyphicon glyphicon-thumbs-up"></span>{{dateo.vote_count}}</span>
+  	<span class="stat" ng-show="dateo.comment_count"><span class="glyphicon glyphicon-comment"></span>{{dateo.comment_count}}</span>
+  	<span class="stat" ng-show="dateo.redateo_count"><span class="glyphicon glyphicon-retweet"></span>{{dateo.redateo_count}}</span>
+	</div>
+</div>

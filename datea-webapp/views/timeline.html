@@ -1,0 +1,62 @@
+<div class="timeline-holder" ng-mousemove="bar.mouseMoving($event)" ng-mouseup="bar.stopDrag($event)" ng-mouseleave="bar.stopDrag($event)">
+
+	<div class="timeline-bar" ng-hide="timeline.noResults" ng-class="{'animate-zoom': bar.animate}" ng-mousedown="bar.startDrag($event)" ng-style="bar.style" msd-wheel="bar.mousewheel($event, $delta, $deltaX, $deltaY)">
+		<div class="time-notches">
+			<div class="time-notches-first">
+				<div class="time-notch" ng-hide="bar.animate" ng-repeat="ndate in bar.timeNotches.first.intervals" ng-style="bar.getTimeNotchStyle(ndate, bar.timeNotches.first.width)">
+					<span class="nlabel">{{ndate | date:bar.timeNotches.first.format}}</span>
+				</div>
+			</div>
+		</div>
+
+		<!--
+		<div class="dateo-notches">
+			<div class="dateo-notch" ng-repeat="dateo in dateos" style="background-color: dateo.colors[1]" ng-style="bar.getDateoNotchStyle(dateo)" ng-click="timeline.showDateo(dateo)"></div>
+		</div>-->
+
+		<div class="dateo-clusters">
+			<div class="dateo-cluster" ng-repeat="cluster in clusters" ng-click="timeline.clusterClick($event, cluster)" ng-style="cluster.style" ng-class="{active: cluster.isActive}" ng-bind-html="cluster.html"></div>
+		</div>
+
+		<div class="time-notches">
+			<div class="time-notches-second">
+				<div class="time-notch" ng-repeat="ndate in bar.timeNotches.second.intervals" ng-style="bar.getTimeNotchStyle(ndate)">
+					<span class="nlabel">&nbsp;{{ndate | date:bar.timeNotches.second.format}}</span>
+				</div>
+			</div>
+		</div>
+
+		<div class="active-pos-sign" ng-show="bar.activePosStyle" ng-style="bar.activePosStyle"></div>
+
+	</div>
+
+	<div class="timeline-content">
+
+		<div class="controls">
+			<button class="btn" ng-click="timeline.zoom($event, 2)"><span class="glyphicon glyphicon-zoom-in"></span></button>
+			<button class="btn" ng-click="timeline.zoom($event, 0.5)" ng-disabled="timeline.zoomOutDisabled"><span class="glyphicon glyphicon-zoom-out"></span></button>
+		</div>
+
+		<div class="prev-btn" ng-click="timeline.prevDateo()" ng-class="{disabled: !activeDateos[0].id}">
+			<span class="icon glyphicon glyphicon-chevron-left"></span>
+		</div>
+
+		<div class="next-btn" ng-click="timeline.nextDateo()" ng-class="{disabled: !activeDateos[2].id}">
+			<span class="icon glyphicon glyphicon-chevron-right"></span>
+		</div>
+
+		<div class="dateo-slides-wrap" ng-style="slider.wrapStyle" ng-hide="timeline.noResults">
+			<div class="dateo-slides" ng-class="{'slide-next': slider.slideNext, 'slide-prev': slider.slidePrev}">
+				<div ng-repeat="dateo in activeDateos track by $index" class="slide-container slide-container-{{$index}}">
+					<da-dateo-teaser map-present="false" detail-inline="false" force-date="true"></da-dateo-teaser>
+				</div>
+			</div>
+		</div>
+
+		<div class="no-results ng-hide" ng-show="timeline.noResults && !loading">
+			No hay resultados <i class="fa fa-meh-o"></i>
+		</div>
+
+	</div>
+
+</div>

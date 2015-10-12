@@ -1,0 +1,25 @@
+{
+  "name": "angular-seo",
+  "version": "0.0.2",
+  "description": "SEO for angular applications made easy",
+  "main": "angular-seo.js",
+  "scripts": {
+    "test": ""
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/BeOleg/angular-seo.git"
+  },
+  "keywords": [
+    "seo",
+    "angular",
+    "crawlers",
+    "open-graph",
+    "javascript",
+    "SPA"
+  ],
+  "author": "Oleg Belousov",
+  "license": "BSD",
+  "readmeFilename": "README.md",
+  "gitHead": "7dfb4a09701594e851e9f815343efa7415fe84cc"
+}

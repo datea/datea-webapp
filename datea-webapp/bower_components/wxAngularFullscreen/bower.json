@@ -1,0 +1,12 @@
+{
+	"author": "Juan La Jara",
+	"name": "angular-fullscreen",
+	"description": "fullscreen angularjs adapter from fabiobiondi until it is registered to bower",
+	"version": "0.0.1",
+	"homepage": "https://github.com/wixo/angular-fullscreen",
+	"repository": {
+		"type": "git",
+		"url": "git://github.com/wixo/angular-fullscreen"
+	},
+	"main": "./angular-fullscreen"
+}

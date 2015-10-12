@@ -1,0 +1,12 @@
+{
+	"author": "Juan La Jara",
+	"name": "birdangular",
+	"description": "Codebird angularjs wrapper",
+	"version": "0.0.1",
+	"homepage": "https://github.com/wixo/birdangular",
+	"repository": {
+		"type": "git",
+		"url": "git://github.com/wixo/birdangular"
+		},
+	"main": "./birdangular"
+}

@@ -1,0 +1,20 @@
+{
+  "author": "Juan La Jara",
+  "name": "birdangular",
+  "description": "Codebird angularjs wrapper",
+  "homepage": "https://github.com/wixo/birdangular",
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/wixo/birdangular"
+  },
+  "main": "./birdangular",
+  "_release": "a40de02066",
+  "_resolution": {
+    "type": "branch",
+    "branch": "master",
+    "commit": "a40de020665fe381366bab5564c93188274e92dc"
+  },
+  "_source": "git://github.com/wixo/birdangular.git",
+  "_target": "*",
+  "_originalSource": "birdangular"
+}

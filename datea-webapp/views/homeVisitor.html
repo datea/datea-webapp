@@ -1,0 +1,153 @@
+<div class="landing-holder" ng-controller="LandingCtrl">
+	<div class="section-holder section-holder-1">
+		<div class="container section section-1">
+			<div class="row">
+				<div class="col-xs-12 posrel col">
+					<div class="social-holder hidden-xs">
+						Síguenos <a href="//facebook.com/somosdateros" target="_blank"><i class="fa fa-facebook-square fa-2x"></i></a> <a href="//twitter.com/somosdateros" target="_blank"><i class="fa fa-twitter-square fa-2x"></i></a>
+					</div>
+					<div class="main-menu-landing ff1">
+					  <a class="mml-link" href="/buscar">BUSCAR</a>
+						<a class="mml-link" href="/iniciativas">Iniciativas</a>
+						<a class="mml-link" href="/acerca">Acerca</a>
+						<a class="mml-link" href="/ayuda">Ayuda</a> 
+					</div>
+					<h1 class="main-heading ff2 hidden-xs"><img src="static/images/logo.png" alt="datea"> todos somos dateros</h1>
+					<h1 class="main-heading ff2 mobile visible-xs"><img src="static/images/logo.png" alt="datea">datea</h1>
+					<div class="slogan ff1">Comparte datos útiles con tu comunidad</div>
+				</div>
+			</div>
+		</div>
+	</div>
+	<div class="section-holder section-holder-2">
+		<div class="container section section-2">
+			<div class="row">
+				<div class="col col-xs-6 col-md-4 col-md-offset-2 col-lg-offset-3 col-lg-3">
+					<div class="dateros ff1">
+						<img src="static/images/landing/dateros-count.png" alt="dateros"> <span class="number">{{landing.user_count}}</span> dateros
+					</div>
+					<p class="question">¿Quieres datear?</p>
+					<div><a href="/registrate" class="btn datea-btn btn-lg btn-login-landing ff1">
+						regístrate
+					</a></div>
+				</div>
+				<div class="col col-xs-6 col-md-4 col-lg-3">
+					<div class="dateos ff1">
+						<img src="static/images/landing/dateo-count.png" alt="dateos"> <span class="number">{{landing.dateo_count}}</span> dateos
+					</div>
+					<p class="question">¿Ya tienes cuenta?</p>
+					<div><a href="/signin" class="btn datea-btn btn-lg btn-login-landing ff1">
+						ingresa
+					</a></div>
+				</div>
+			</div>
+		</div>
+	</div>
+	<div class="section-holder section-holder-3 ff1">
+		<div class="container section section-3">
+			<div class="row">
+				<div class="col-lg-15 col-xs-12"><h3 style="padding-left: 0">DATEAR</h3></div>
+				<div class="col col-xs-4 col-lg-3">
+					<div class="icon icon-datear"></div>
+					Comparte datos útiles
+				</div>
+				<div class="col col-xs-4 col-lg-3">
+					<div class="arrow"></div>
+					<div class="icon icon-activar"></div>
+					Activa la participación de tu comunidad
+				</div>
+				<div class="col col-xs-4 col-lg-3">
+					<div class="arrow"></div>
+					<div class="icon icon-cambiar"></div>
+					Visualiza y usa los dateos para lograr cambios 
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<div class="section-holder section-holder-4 ff1">
+		<div class="container section section-4">
+			<h3 class="ff1 hidden-xs">cómo funciona</h3>
+			<div class="row howitworks-holder hidden-xs">
+				<div class="col col-xs-4 step-holder-1">
+					<div class="icon icon-1"></div>
+					<div class="step step-1">
+						<div class="step-number">1</div>
+						<div class="step-emphasis">si tienes un dato</div>
+						<div class="step-content">para mejorar la ciudad, ¡compártelo!</div>
+					</div>
+				</div>
+				<div class="col col-xs-4 step-holder-2">
+					<div class="step step-2">
+						<div class="step-number">2</div>
+						<div class="step-emphasis">crea iniciativas</div>
+						<div class="step-content">sobre temas que te importan</div>
+					</div>
+					<div class="icon icon-2"></div>
+				</div>
+				<div class="col col-xs-4 step-holder-3">
+					<div class="icon icon-3"></div>
+					<div class="step step-3">
+						<div class="step-number">3</div>
+						<div class="step-emphasis">navega y visualiza</div>
+						<div class="step-content">dateos en mapas y gráficas</div>
+						<div class="step-btn btn datea-btn btn-lg ff1">más información</div>
+					</div>
+				</div>
+			</div>
+			<div class="parts-holder meta-info-holder row">
+				<div class="col-xs-12 col-sm-6 col-lg-5 col-lg-offset-1 most-dateo">
+					<div class="inner">
+						<h4 class="ff1">Tendencias</h4>
+						<div class="btn datea-btn ff1">ir a mapa de dateos</div>
+						<div class="trending-tags-holder">
+							<a class="datea-tag-btn trending-tag" ng-href="/tag/{{tag.tag}}" ng-repeat="tag in landing.trendingTags">
+								#{{tag.tag}}
+							</a>
+						</div>
+					</div>
+				</div>
+				<div class="hidden-xs col-sm-6 col-lg-5 outstanding-dateo-holder">
+					<div class="inner">
+						<h4 class="ff1">dateo destacado</h4>
+						<da-dateo-outstanding ng-repeat="dateo in [landing.outstandingDateo]"></da-dateo-outstanding>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+	<div class="section-holder section-holder-5 ff1 hidden-xs">
+		<div class="container section section-5">
+			<h3 class="ff1">iniciativas destacadas</h3>
+			<div class="campaigns-holder row">
+				<div class="col-xs-6 col-sm-3 col-md-3" ng-repeat="campaign in landing.outstandingCampaigns">
+					<da-campaign-teaser></da-campaign-teaser>
+				</div>
+			</div>
+			<a class="btn btn-lg datea-btn ff1 more-campaigns-btn" href="/iniciativas">ver iniciativas</a>
+		</div>
+	</div>
+	<div class="section-holder section-holder-6 ff1 ng-hide">
+		<div class="container section section-6">
+			<h3 class="ff1">apps para iphone y android</h3>
+			<div class="row">
+				<div class="col col-xs-6 col-sm-3 pitch-1">
+					<div class="icon icon-1"></div>
+					<p>Datea al toque desde cualquier lugar</p>
+				</div>
+				<div class="col col-xs-6 col-sm-3 pitch-2">
+					<div class="icon icon-2"></div>
+					<p>Navega dateos mientras te mueves por la ciudad</p>
+				</div>
+				<div class="col col-xs-12 col-sm-6 store-btns">
+					<a href="apple.com/appstore">
+						<div class="icon appstore-icon"></div>
+					</a>
+					<a href="google.com/playstore">
+						<div class="icon playstore-icon"></div>
+					</a>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>

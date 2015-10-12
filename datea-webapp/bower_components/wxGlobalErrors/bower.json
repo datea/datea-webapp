@@ -1,0 +1,12 @@
+{
+	"author": "Juan La Jara",
+	"name": "wxGlobalErrors",
+	"description": "AngularJS http global errors module",
+	"version": "0.0.1",
+	"homepage": "https://github.com/wixo/wxGlobalErrors",
+	"repository": {
+		"type": "git",
+		"url": "git://github.com/wixo/wxGlobalErrors"
+		},
+	"main": "./wxGlobalErrors"
+}

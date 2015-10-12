@@ -1,0 +1,36 @@
+{
+  "name": "angular-seo",
+  "main": "angular-seo.js",
+  "homepage": "https://github.com/BeOleg/angular-seo",
+  "authors": [
+    "La factura <info@lafactura.com>"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/lafactura/angular-seo"
+  },
+  "description": "SEO for angular apps made easy",
+  "keywords": [
+    "SPA",
+    "SEO",
+    "Crawlers",
+    "Open-graph",
+    "Angular"
+  ],
+  "license": "BSD",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test"
+  ],
+  "_release": "64ff0380ea",
+  "_resolution": {
+    "type": "branch",
+    "branch": "master",
+    "commit": "64ff0380eafccf1bdda61cbd544a2663e7d3a587"
+  },
+  "_source": "git://github.com/lafactura/angular-seo.git",
+  "_target": "*",
+  "_originalSource": "da-angular-seo"
+}

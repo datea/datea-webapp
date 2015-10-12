@@ -1,0 +1,20 @@
+{
+  "author": "Juan La Jara",
+  "name": "angular-fullscreen",
+  "description": "fullscreen angularjs adapter from fabiobiondi until it is registered to bower",
+  "homepage": "https://github.com/wixo/angular-fullscreen",
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/wixo/angular-fullscreen"
+  },
+  "main": "./angular-fullscreen",
+  "_release": "abe80e516f",
+  "_resolution": {
+    "type": "branch",
+    "branch": "master",
+    "commit": "abe80e516f0849f4e6230370d81b1631a513046b"
+  },
+  "_source": "git://github.com/wixo/angular-fullscreen.git",
+  "_target": "*",
+  "_originalSource": "wxAngularFullscreen"
+}

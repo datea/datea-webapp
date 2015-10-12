@@ -1,0 +1,6 @@
+<div class="main-holder">
+
+	<div class="visitor-home-holder" ng-if="flow.isSignedIn" ng-include="'views/homeVisitor.html'" ng-show="flow.isSignedIn"></div>
+	<div class="signed-home-holder" ng-if="!flow.isSignedIn" ng-include="'views/homeSignedIn.html'" ng-show="!flow.isSignedIn"></div>
+
+</div>

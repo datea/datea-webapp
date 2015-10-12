@@ -29,7 +29,8 @@ angular.module("dateaWebApp")
 					, checkStatus
 					;
 
-				$scope.dateFormat           = config.defaultDateFormat;
+				$scope.createdFormat        = config.defaultDateFormat;
+				$scope.dateFormat           = config.dateFieldFormat;
 				$scope.dateo 								= {};
 				$scope.comment 							= {}
 				$scope.flow  								= {};
