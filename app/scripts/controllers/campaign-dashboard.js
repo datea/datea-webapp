@@ -178,7 +178,7 @@ $scope.newCampaign.save = function () {
 
 	campaign.name                = $scope.newCampaign.title;
 	campaign.published           = 1;
-	campaign.end_date            = $scope.flow.dt && $scope.flow.dt;
+	campaign.end_date            = $scope.flow.dt && moment.utc($scope.flow.dt).format();
 	campaign.short_description   = $scope.newCampaign.mission.substring(0,140) || 'no description';
 	campaign.mission             = $scope.newCampaign.mission.substring(0,500) || 'no mission';
 	campaign.information_destiny = $scope.newCampaign.information_destiny;

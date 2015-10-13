@@ -330,9 +330,9 @@ angular.module('dateaWebApp')
 	checkTimeLeft = function () {
 		var endDate, ts, now;
 		if ($scope.campaign.end_date) {
-			endDate = Date.parse($scope.campaign.end_date);
-			now = new Date();
-			ts = new TimeSpan( endDate - now );
+			endDate = moment($scope.campaign.end_date);
+			now = moment();
+			ts = endDate.diff(now, 'days');
 			if (ts.days < 0) {
 				$scope.flow.endDate = {type: 'warning', msg: 'Iniciativa ha expirado'};
 			}else if (ts.days === 0) {
@@ -542,7 +542,7 @@ angular.module('dateaWebApp')
 			.getDateos( givens )
 			.then( function ( response ) {
 					dateos = dateos.concat(response.objects.map(function (d) {
-						d.timestamp = Date.parse(d.date || d.created).getTime();
+						d.timestamp = moment(d.date || d.created).unix();
 						d.colors = [];
 						_.each(d.tags, function(tag){
 							if (tag != $scope.campaign.main_tag.tag && !!$scope.subTags[tag]) {

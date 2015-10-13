@@ -368,7 +368,7 @@ $rootScope.$on('duScrollspy:becameActive', function($event, $element){
 // DATE INPUT
 $scope.flow.dp = {
 	// Date picker
-	  dateoDate   : $scope.dateo.date ? Date.parse($scope.dateo.date) : null
+	  dateoDate   : $scope.dateo.date ? moment($scope.dateo.date).toDate() : null
 	, dateOptions : {
 			  'year-format': "'yy'"
 			, 'starting-day': 1
@@ -376,7 +376,7 @@ $scope.flow.dp = {
 	, format      : 'yyyy/MM/dd'
 	, opened      : false
 	// Time picker
-	, dateoTime   : $scope.dateo.date ? Date.parse($scope.dateo.date) : new Date()
+	, dateoTime   : $scope.dateo.date ? moment($scope.dateo.date).toDate() : new Date()
 	, hstep       : 1
 	, mstep       : 1
 }
@@ -387,26 +387,15 @@ $scope.flow.dp.openDatepicker = function($event) {
 	$scope.flow.dp.opened = true;
 }
 $scope.flow.dp.changed = function () {
-	var datetime = {}
-		, localDate;
+	var datetime 
+	  , localDate;
 	if ($scope.flow.dp.dateoDate) {
-		datetime.year     = $scope.flow.dp.dateoDate.getFullYear();
-		datetime.month    = $scope.flow.dp.dateoDate.getMonth();
-		datetime.day      = $scope.flow.dp.dateoDate.getDate();
-		if ($scope.flow.dp.dateoTime) {
-			datetime.hour     = $scope.flow.dp.dateoTime.getHours();
-			datetime.minutes  = $scope.flow.dp.dateoTime.getMinutes();
-		}else{
-			datetime.hour    = 0;
-			datetime.minutes = 0;
-		}
-		localDate = new Date( datetime.year
-		, datetime.month
-		, datetime.day
-		, datetime.hour
-		, datetime.minutes
-		, '00' );
-		$scope.dateo.date = new Date( localDate.getTime() - (localDate.getTimezoneOffset() * 60000));
+
+		datetime = moment($scope.flow.dp.dateoDate);
+		datetime.hour($scope.flow.dp.dateoTime ? $scope.flow.dp.dateoTime.getHours() : 0);
+		datetime.minutes($scope.flow.dp.dateoTime ? $scope.flow.dp.dateoTime.getMinutes() : 0);
+		datetime.utc();
+		$scope.dateo.date = datetime.format();
 	}else {
 		$scope.dateo.date = null;
 	}

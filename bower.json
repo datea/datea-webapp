@@ -46,7 +46,9 @@
     "lodash": "~3.10.1",
     "hamsterjs": "~1.1.0",
     "angular-mousewheel": "~1.0.4",
-    "angulartics": "~0.20.1"
+    "angulartics": "~0.20.1",
+    "angulartics-google-analytics": "~0.1.1",
+    "moment": "momentjs#~2.10.6"
   },
   "devDependencies": {
     "angular-mocks": "~1.2.0",
