@@ -20,7 +20,11 @@ angular.module( 'dateaWebApp'
   , 'angulartics'
   , 'angulartics.google.analytics'
   , 'monospaced.mousewheel'
+  , 'angularMoment'
 ])
+.run(['amMoment', function (amMoment) {
+	amMoment.changeLocale('es');
+}])
 .config(
 [ '$routeProvider'
 , '$httpProvider'

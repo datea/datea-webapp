@@ -542,7 +542,7 @@ angular.module('dateaWebApp')
 			.getDateos( givens )
 			.then( function ( response ) {
 					dateos = dateos.concat(response.objects.map(function (d) {
-						d.timestamp = moment(d.date || d.created).unix();
+						d.timestamp = moment(d.date || d.created).valueOf();
 						d.colors = [];
 						_.each(d.tags, function(tag){
 							if (tag != $scope.campaign.main_tag.tag && !!$scope.subTags[tag]) {

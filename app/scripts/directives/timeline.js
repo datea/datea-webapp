@@ -379,12 +379,14 @@ angular.module("dateaWebApp")
 	  		var dates = [];
 	  		var ival = 60000;
 	  		var numResults = Math.ceil((end - start) / ival);
-	  		var startDate = new Date(parseInt(start / ival)*ival);
-	  		startDate.setSeconds(0, 0);
-	  		dates.push(startDate);
+	  		var startDate = moment(parseInt(start / ival)*ival);
+	  		startDate.startOf('minute');
+	  		console.log('startDate', startDate);
+	  		dates.push(startDate.toDate());
 	  		for (var i = 0; i < numResults; i++) {
-	  			var nextDate = new Date(dates[i].getTime() + ival);
-	  			dates.push(nextDate);
+	  			var nextDate = moment(dates[i]);
+	  			nextDate.add(ival, 'ms');
+	  			dates.push(nextDate.toDate());
 	  		}
 	  		return dates;
 	  	},
@@ -393,12 +395,14 @@ angular.module("dateaWebApp")
 	  		var ival = 300000;
 	  		var start = parseInt(start / ival)*ival - tzoffset;
 	  		var numResults = Math.ceil((end - start) / ival);
-	  		var startDate = new Date(start);
-	  		startDate.setSeconds(0, 0);
-	  		dates.push(startDate);
+	  		var startDate = moment(start);
+	  		startDate.startOf('minute');
+	  		console.log('startDate', startDate);
+	  		dates.push(startDate.toDate());
 	  		for (var i = 0; i < numResults; i++) {
-	  			var nextDate = new Date(dates[i].getTime() + ival);
-	  			dates.push(nextDate);
+	  			var nextDate = moment(dates[i]);
+	  			nextDate.add(ival, 'ms');
+	  			dates.push(nextDate.toDate());
 	  		}
 	  		return dates;
 	  	},
@@ -407,12 +411,14 @@ angular.module("dateaWebApp")
 	  		var ival = 900000;
 	  		var start = parseInt(start / ival)*ival - tzoffset;
 	  		var numResults = Math.ceil((end - start) / ival);
-	  		var startDate = new Date(start);
-	  		startDate.setMinutes(0, 0, 0);
-	  		dates.push(startDate);
+	  		var startDate = moment(start);
+	  		startDate.startOf('hour');
+	  		console.log('startDate', startDate);
+	  		dates.push(startDate.toDate());
 	  		for (var i = 0; i < numResults; i++) {
-	  			var nextDate = new Date(dates[i].getTime() + ival);
-	  			dates.push(nextDate);
+	  			var nextDate = moment(dates[i]);
+	  			nextDate.add(ival, 'ms');
+	  			dates.push(nextDate.toDate());
 	  		}
 	  		return dates;
 	  	},
@@ -421,12 +427,14 @@ angular.module("dateaWebApp")
 	  		var ival = 3600000;
 	  		var start = parseInt(start / ival)*ival - tzoffset;
 	  		var numResults = Math.ceil((end - start) / ival);
-	  		var startDate = new Date(start);
-	  		startDate.setMinutes(0, 0, 0);
-	  		dates.push(startDate);
+	  		var startDate = moment(start);
+	  		startDate.startOf('hour');
+	  		console.log('startDate', startDate);
+	  		dates.push(startDate.toDate());
 	  		for (var i = 0; i < numResults; i++) {
-	  			var nextDate = new Date(dates[i].getTime() + ival);
-	  			dates.push(nextDate);
+	  			var nextDate = moment(dates[i]);
+	  			nextDate.add(ival, 'ms');
+	  			dates.push(nextDate.toDate());
 	  		}
 	  		return dates;
 	  	},
@@ -435,12 +443,14 @@ angular.module("dateaWebApp")
 	  		var ival = 21600000;
 	  		var start = parseInt(start / ival)*ival - tzoffset;
 	  		var numResults = Math.ceil((end - start) / ival);
-	  		var startDate = new Date(start);
-	  		startDate.setMinutes(0, 0, 0);
-	  		dates.push(startDate);
+	  		var startDate = moment(start);
+	  		startDate.startOf('hour');
+	  		console.log('startDate', startDate);
+	  		dates.push(startDate.toDate());
 	  		for (var i = 0; i < numResults; i++) {
-	  			var nextDate = new Date(dates[i].getTime() + ival);
-	  			dates.push(nextDate);
+	  			var nextDate = moment(dates[i]);
+	  			nextDate.add(ival, 'ms');
+	  			dates.push(nextDate.toDate());
 	  		}
 	  		return dates;
 	  	},
@@ -449,12 +459,14 @@ angular.module("dateaWebApp")
 	  		var ival = 43200000;
 	  		var start = parseInt(start / ival)*ival - tzoffset;
 	  		var numResults = Math.ceil((end - start) / ival);
-	  		var startDate = new Date(start);
-	  		startDate.setMinutes(0, 0, 0);
-	  		dates.push(startDate);
+	  		var startDate = moment(start);
+	  		startDate.startOf('hour');
+	  		console.log('startDate', startDate);
+	  		dates.push(startDate.toDate());
 	  		for (var i = 0; i < numResults; i++) {
-	  			var nextDate = new Date(dates[i].getTime() + ival);
-	  			dates.push(nextDate);
+	  			var nextDate = moment(dates[i]);
+	  			nextDate.add(ival, 'ms');
+	  			dates.push(nextDate.toDate());
 	  		}
 	  		return dates;
 	  	},
@@ -463,12 +475,14 @@ angular.module("dateaWebApp")
 	  		var ival = 86400000;
 	  		var start = parseInt(start / ival)*ival - tzoffset;
 	  		var numResults = Math.ceil((end - start) / ival);
-	  		var startDate = new Date(start);
-	  		startDate.setHours(0, 0, 0, 0);
-	  		dates.push(startDate);
+	  		var startDate = moment(start);
+	  		console.log('startDate', startDate);
+	  		startDate.startOf('day');
+	  		dates.push(startDate.toDate());
 	  		for (var i = 0; i < numResults; i++) {
-	  			var nextDate = new Date(dates[i].getTime() + ival);
-	  			dates.push(nextDate);
+	  			var nextDate = moment(dates[i]);
+	  			nextDate.add(ival, 'ms');
+	  			dates.push(nextDate.toDate());
 	  		}
 	  		return dates;
 	  	},
@@ -476,28 +490,30 @@ angular.module("dateaWebApp")
 	  		var dates = [];
 	  		var ival = 604800000;
 	  		var numResults = Math.ceil((end - start) / ival);
-	  		var startDate = new Date(parseInt(start / ival)*ival - tzoffset);
-	  		startDate.setHours(0, 0, 0, 0);
-	  		dates.push(startDate);
+	  		//var startDate = new Date(parseInt(start / ival)*ival - tzoffset);
+	  		var startDate = moment.utc(parseInt(start / ival)*ival);
+	  		startDate.startOf('day');
+	  		console.log('startDate', startDate);
+	  		dates.push(startDate.toDate());
 	  		for (var i = 0; i < numResults; i++) {
-	  			var nextDate = new Date(dates[i].getTime() + ival);
-	  			dates.push(nextDate);
+	  			var nextDate = moment(dates[i]);
+	  			nextDate.add(ival, 'ms');
+	  			dates.push(nextDate.toDate());
 	  		}
 	  		return dates;
 	  	},
 	  	'1M': function (start, end) {
 	  		var dates = [];
-	  		var startDate = new Date(start);
-	  		startDate.setDate(1);
-	  		startDate.setHours(0, 0, 0, 0);
-	  		dates.push(startDate);
-	  		var prevDate = startDate; 
+	  		var startDate = moment(start);
+	  		startDate.startOf('month');
+	  		console.log('startDate', startDate);
+	  		dates.push(startDate.toDate());
 	  		var run = true;
 	  		while (run) {
-	  			var nextDate = new Date(prevDate.getFullYear(), prevDate.getMonth()+1, 1, 0, 0, 0 ,0);
-	  			if (nextDate.getTime() <= end) {
-	  				dates.push(nextDate);
-	  				prevDate = nextDate;
+	  			var nextDate = moment(_.last(dates));
+	  			nextDate.add(1, 'month');
+	  			if (nextDate.valueOf() <= end) {
+	  				dates.push(nextDate.toDate());
 	  			}else{
 	  				run = false;
 	  			}
@@ -506,17 +522,16 @@ angular.module("dateaWebApp")
 	  	},
 	  	'1y': function (start, end) {
 	  		var dates = [];
-	  		var startDate = new Date(start);
-	  		startDate.setMonth(0, 1);
-	  		startDate.setHours(0, 0, 0, 0);
-	  		dates.push(startDate);
-	  		var prevDate = startDate; 
+	  		var startDate = moment(start);
+	  		startDate.startOf('year');
+	  		console.log('startDate', startDate);
+	  		dates.push(startDate.toDate());
 	  		var run = true;
 	  		while (run) {
-	  			var nextDate = new Date(prevDate.getFullYear()+1, 0, 1, 0, 0, 0 ,0);
-	  			if (nextDate.getTime() <= end) {
-	  				dates.push(nextDate);
-	  				prevDate = nextDate;
+	  			var nextDate = moment(_.last(dates));
+	  			nextDate.add(1 , 'years');
+	  			if (nextDate.valueOf() <= end) {
+	  				dates.push(nextDate.toDate());
 	  			}else{
 	  				run = false;
 	  			}
@@ -525,18 +540,17 @@ angular.module("dateaWebApp")
 	  	},
 	  	'10y': function (start, end) {
 	  		var dates = [];
-	  		var startDate = new Date(start);
-	  		startDate.setMonth(0, 1);
-	  		startDate.setHours(0, 0, 0, 0);
-	  		startDate.setFullYear(parseInt(startDate.getFullYear() / 10)*10);
-	  		dates.push(startDate);
-	  		var prevDate = startDate;
+	  		var startDate = moment(start);
+	  		startDate.startOf('year');
+	  		console.log('startDate', startDate);
+	  		startDate.year(parseInt(startDate.year() / 10)*10);
+	  		dates.push(startDate.toDate());
 	  		var run = true;
 	  		while (run) {
-	  			var nextDate = new Date(prevDate.getFullYear()+10, 0, 1, 0, 0, 0 ,0);
-	  			if (nextDate.getTime() <= end) {
-	  				dates.push(nextDate);
-	  				prevDate = nextDate;
+	  			var nextDate = moment(_.last(dates));
+	  			nextDate.add(10, 'years');
+	  			if (nextDate.valueOf() <= end) {
+	  				dates.push(nextDate.toDate());
 	  			}else{
 	  				run = false;
 	  			}
@@ -545,18 +559,17 @@ angular.module("dateaWebApp")
 	  	},
 	  	'100y': function (start, end) {
 	  		var dates = [];
-	  		var startDate = new Date(start);
-	  		startDate.setMonth(0, 1);
-	  		startDate.setHours(0, 0, 0, 0);
-	  		startDate.setFullYear(parseInt(startDate.getFullYear() / 100)*100);
-	  		dates.push(startDate);
-	  		var prevDate = startDate;
+	  		var startDate = moment(start);
+	  		startDate.startOf('year');
+	  		console.log('startDate', startDate);
+	  		startDate.year(parseInt(startDate.getFullYear() / 100)*100);
+	  		dates.push(startDate.toDate());
 	  		var run = true;
 	  		while (run) {
-	  			var nextDate = new Date(prevDate.getFullYear()+100, 0, 1, 0, 0, 0 ,0);
-	  			if (nextDate.getTime() <= end) {
-	  				dates.push(nextDate);
-	  				prevDate = nextDate;
+	  			var nextDate = moment(_.last(dates));
+	  			nextDate.add(100, 'years');
+	  			if (nextDate.valueOf() <= end) {
+	  				dates.push(nextDate.toDate());
 	  			}else{
 	  				run = false;
 	  			}
