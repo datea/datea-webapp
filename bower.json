@@ -48,7 +48,9 @@
     "angular-mousewheel": "~1.0.4",
     "angulartics": "~0.20.1",
     "angulartics-google-analytics": "~0.1.1",
-    "moment": "momentjs#~2.10.6"
+    "moment": "momentjs#~2.10.6",
+    "angular-translate": "~2.8.1",
+    "angular-translate-loader-static-files": "~2.8.1"
   },
   "devDependencies": {
     "angular-mocks": "~1.2.0",

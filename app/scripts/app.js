@@ -21,8 +21,9 @@ angular.module( 'dateaWebApp'
   , 'angulartics.google.analytics'
   , 'monospaced.mousewheel'
   , 'angularMoment'
+  , 'pascalprecht.translate'
 ])
-.run(['amMoment', function (amMoment) {
+.run([ 'amMoment', function (amMoment) {
 	amMoment.changeLocale('es');
 }])
 .config(
@@ -30,12 +31,22 @@ angular.module( 'dateaWebApp'
 , '$httpProvider'
 , '$locationProvider'
 , 'localStorageServiceProvider'
+, '$translateProvider'
 , function (
   $routeProvider
 , $httpProvider
 , $locationProvider
 , localStorageServiceProvider
+, $translateProvider
 ) {
+
+	$translateProvider.useStaticFilesLoader({
+	    prefix: 'locales/locale-',
+	    suffix: '.json'
+	});
+	$translateProvider.preferredLanguage('es');
+	
+	console.log('navigator', navigator);
 
 	$httpProvider.defaults.useXDomain = true;
 	delete $httpProvider.defaults.headers.common['X-Requested-With'];
