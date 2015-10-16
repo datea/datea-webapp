@@ -66,7 +66,6 @@
 		"PASS_LABEL" : "Contraseña",
 		"PASS_DESC" : "Mínimo 6 letras y mínimo 1 número",
 		"REPEAT_PASS" : "Repetir contraseña",
-		"EMAIL_EXISTS" : "La dirección ya está siendo utilizada. ¡Recupera tu contraseña!"
 	},
 	
 	"LANDING_PAGE" : {
@@ -108,7 +107,7 @@
 
 	"CAMPAIGN" : {
 		"CAMPAIGN" : "iniciativa",
-		"CAMPAIGNS" : "iniciativas"
+		"CAMPAIGNS" : "iniciativas",
 		"ACTIVE" : "activo",
 		"CAMPAIGN_BY" : "Una iniciativa de",
 		"FOLLOWERS" : "seguidores",
@@ -291,7 +290,7 @@
 
  		"SECTION_TITLE4" : "Opciones de visualización",
  		"VISUALIZATION" : {
- 			"Visualización por defecto",
+ 			"LABEL" : "Visualización por defecto",
  			"OPT1" : "Mapa",
  			"OPT2" : "Línea de tiempo",
  			"OPT3" : "Imágenes",
@@ -308,10 +307,31 @@
  			"HELP_TITLE" : "Componente de URL",
  			"HELP_MSG" : "La URLs de iniciativas normalmente se compone de tu usuario y el tag principal. Como ya tienes una iniciativa con ese tag, es necesario que indiques una alternativa. Se aceptan letras, números y giones. Sin tildes, espacios, diéresis etc."
  		},
- 		"SAVE" : "Guardar"
+ 		"SAVE" : "Guardar",
+ 		"DUPLICATE_MAINTAG" : "La etiqueta ya está siendo usada en alguna iniciativa. Al menos que quieras compartirla, usa otra.",
+ 		"DUPLICATE_USER_MAINTAG" : "Ya has utilizado esta etiqueta en otra iniciativa. Si quieres reutilizarla, debes llenar el campo \"Componente de URL\". De otro modo mejor cámbiala.",
+ 		"SLUG_ERROR" : "Esta url ya esta siendo utilizada. Por favor, elige otra.",
+ 		"REQUIRED_FIELD" : "Campo obligatorio"
 	},
 
 	"SEARCH_PAGE" : {
 		"TITLE" : "Buscar dateos"
-	}
+	},
+
+	"ACCOUNT_MSG" : {
+		"BLOCKED" :  "Tu usuario ha sido bloqueado. Si piensas que esto es injusto, por favor comunicate con nosotros a traves de nuestro <a href=\"http://ayuda.datea.pe/contacto\">formulario de contacto</a>.",
+		"WELCOME_READY" : "Tu cuenta ha sido activada y ya estás listo(a) para datear. Si quieres, antes puedes hacer ajustes a la configuración de tu usuario acá abajo.",
+		"WELCOME_CONFIRM" : "Ya casi eres datero(a)! Falta que nos confirmes tu dirección de correo (Twitter no nos provee ese dato). Una vez confirmada tu cuenta estarás listo(a) para datear.",
+		"DUPLICATE_EMAIL" : "La dirección de correo ya existe. Por favor utiliza otra, o si no recuerdas tu usuario, puedes salir y recuperar tu clave. Si ingresaste con otro servico (Facebook), por favor vuelve a ingresar con ese servicio.",
+		"EMAIL_EXISTS" : "La dirección ya está siendo utilizada. ¡Recupera tu contraseña!",
+		"DUPLICATE_USER" : "El nombre de usuario ya existe. Por favor, elige otro.",
+		"CHECK_EMAIL" : "¡Gracias! Ahora revisa tu correo y sigue las instrucciones para activar tu cuenta. Si deseas, puedes cerrar esta ventana o pestaña.",
+		"CONFIRM_EMAIL" : "Antes de poder datear, necesitamos verificar tu dirección de correo. Ingrésala aquí abajo. ¡Gracias!",
+		"CONFIRM_MISSING" : "Falta que nos confirmes tu correo para activar tu cuenta. Por favor, chequea tu correo y sigue las instrucciones que te enviamos. Si deseas recibir otro correo de activación, vuelve a cliquear en "Enviar". ¡Gracias!",
+		"CONFIRM_SUCCESS" : "Tu cuenta ha sido plenamente activada y estas listo(a) para datear. Si deseas, puedes antes hacer ajustes a tu cuenta acá abajo.",
+		"ACTIVATION_COMPLETE" : "Tu cuenta ha sido activada. Ahora puedes ingresar con tu usuario y contraseña.",
+		"PASS_RESET_SENT" : "Por favor revisa tu correo y sigue las instrucciones para recuperar tu contraseña.",
+		"RESET_NOT_FOUND" : "No existen dateros con esa dirección ;)",
+		"LOGIN_ERROR" : "Tu usuario y/o contraseña no son válidos. Vuélvelo a intentar."
+ 	}
 }
