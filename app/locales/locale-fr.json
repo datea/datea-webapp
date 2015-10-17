@@ -1,0 +1,567 @@
+{
+	"DATEROS" : "Utilisateurs",
+	"DATERO" : "Utilisateur",
+	"DATEOS" : "Marqueurs",
+	"DATEAR" : "Cartographier",
+	"GOTO_DETAIL" : "Voir en détail",
+	"USER" : "Utilisateur",
+	"PASSWORD" : "Mot de passe",
+	"LOGIN" : "Se connecter",
+	"REGISTER" : "S'inscrire",
+	"MORE" : "Plus",
+	"TRENDING" : "Tendances",
+	"DATERO_LABEL" : "Datea",
+	"OF" : "de",
+	"BACK" : "Retour",
+	"SUBMIT" : "Envoyer",
+	"CLOSE": "Fermer",
+	"VOTE" : "Soutien",
+	"VOTES" : "Soutiens",
+	"PROJECT_BY" : "Un projet de",
+	
+	"MENU_TOP" : {
+		"SEARCH" : "Rechercher",
+		"CAMPAIGNS" : "Initiatives",
+		"BLOG" : "Blog",
+		"ABOUT" : "À propos",
+		"HELP" : "Aide"
+	},
+
+	"MENU_FOOTER" : {
+		"CONTACT" : "Contact",
+		"TERMS" : "Conditions d'utilisation",
+		"PRIVACY" : "Confidentialité"
+	},
+
+	"USER_MENU" : {
+		"GOTO_PROFILE" : "Aller sur mon profil",
+		"CONFIG" : "Vérifier mes paramètres",
+		"CREATE_CAMPAIGN" : "Créer une initiative",
+		"LOGOUT" : "Déconnexion"
+	},
+		
+	"LANDING_PAGE" : {
+		"SUBTITLE" : "Tous cartographes !",
+		"SLOGAN" : "Partagez et affichez des informations utiles dans votre communauté pour réussir à avoir des améliorations",
+		"REGISTER_TITLE" : "Nous rejoindre ?",
+		"LOGIN_TITLE" : "Etes-vous deja enregistré(e) ?",
+		"STEP1" : "Partagez des informations utiles",
+		"STEP2" : "Activez la participation de votre communauté",
+		"STEP3" : "Affichez et utilisez des informations pour réussir à avoir des améliorations",
+		"STEP1B" : "Vous avez des informations pour améliorer votre ville ? Partagez-les !",
+		"STEP2B" : "Créez une initiative sur une cause importante",
+		"STEP3B" : "Naviguez et affichez des marqueurs dans la carte et graphiques",
+		"MORE_INFO_BTN" : "Plus d'informations",
+		"TRENDING" : "TENDANCES",
+		"DATEO_FEATURE" : "Carte du moment",
+		"FEATURED_INICIATIVES" : "INITIATIVES MISES EN AVANT",
+		"GOTO_INITIATIVES_BTN" : "Voir initiatives",
+		"FOLLOW_US" : "Suivez-nous"
+	},
+
+	"HOME" : {
+		"USER_LABEL" : "Profil",
+		"GOTO_PROFILE" : "Aller dans mon profil",
+		"TAGS_FOLLOWED" : "Etiquettes suivies",
+		"NO_TAGS_FOLLOWED_TITLE" : "Aucune étiquette suivie !",
+		"NO_TAGS_FOLLOWED_MSG" : "En suivant des étiquettes, vous pourrez participer aux thèmes qui vous intéressent. Pour cela, il faut cliquer sur Suivre",
+		"LAST_ACTIONS" : "Dernières actions",
+		"WELCOME" : "Bienvenue!",
+		"SEARCH_TITLE" : "Trouvez des sujets pour participer",
+		"SEARCH_PH" : "Rechercher",
+		"SEARCH_SUBTITLE" : "La localisation avec une nouvelle étiquette pour créer la carte",
+		"CAMPAIGNS_TITLE" : "Initiatives cartographiées",
+		"SEARCH_CAMPAIGNS" : "Rechercher initiatives",
+		"ABOUT_CAMPAIGNS" : "Qu'est-ce qu'une initiative ?",
+		"CREATE_CAMPAIGN" : "Créer une initiative",
+		"TRENDING_CAMPAIGNS" : "Initiatives mises en avant",
+		"FOLLOWED_CAMPAIGNS" : "Initiatives suivies",
+		"MORE_CAMPAIGNS_BTN" : "Voir d'autres initiatives"
+	},
+
+	"TAG" : {
+		"TAG" : "Etiquette",
+		"TAGS" : "Etiquettes",
+		"CAMPAIGNS_IN_TAG" : "Initiatives avec cette étiquette",
+		"MORE_RESULTS" : "Davantage d'initiatives",
+		"NO_RESULTS" : "Aucune initiative"
+	},
+
+	"FOLLOW" : {
+		"FOLLOW" : "Suivre",
+		"FOLLOW_THREAD" : "Suivre le fil",
+		"FOLLOWER" : "Suiveur",
+		"FOLLOWERS" : "Suiveurs",
+		"FOLLOW_ME" : "Me suivre"
+	},
+
+	"SHARE" : {
+		"SHARE" : "Partage",
+		"SHARE_ON" : "Partagez sur"
+	},
+
+	"DATEAR" : {
+		"DATEAR" : "Cartographier",
+		"TITLE_NEW" : "Localisez !",
+		"TITLE_EDIT" : "Modifier le lieu",
+		"STEP1_TITLE" : "Description de la localisation du marqueur",
+		"CONTENT_PH" : "Saisissez ici le contenu",
+		"MEDIA_LABEL" : "Télécharger une image ou fichier (optionnel)",
+		"DATE_LABEL" : "Indiquer date et heure (optionnel)",
+		"STEP2_TITLE" : "Rechercher la localisation",
+		"LOCATION_PH" : "Adresse ou description de l'endroit",
+		"MAP_DESC" : "Vous pouvez déplacer le marqueur à la position que vous souhaitez",
+		"STEP3_TITLE" : "Étiquettes",
+		"SUGGESTED_TAGS" : "Étiquettes suggérées",
+		"ADD_TAGS_LABEL" : "Rechercher / ajouter des étiquettes",
+		"ADD_BTN" : "Ajouter",
+		"SELECTED_TAGS" : "Etiquettes choisies",
+		"CANCEL_BTN" : "Annuler",
+		"CREATE_BTN" : "Créer",
+		"SAVE_BTN" : "Confirmer",
+		"SAVE" : "Confirmer",
+		"PUBLISHED" : "Publié",
+		"DELETE" : "Effacer",
+		"SUCCESS_TITLE" : "Bravo !", 
+		"SUCCESS_MSG" : "Localisation créée !",
+		"GOTO_DATEO" : "Voir sur la carte",
+		"CLOSE" : "Fermer",
+		"IMG" : "Image",
+		"FILE" : "Fichier",
+		"TITLE" : "Titre",
+		"LINK" : "Lien",
+		"LINK_DESC" : "Pour extraire automatiquement les informations, renseignez l'URL et valider.",
+		"URL" : "URL",
+		"URL_LOAD_BTN" : "Télécharger",
+		"DESC_LABEL" : "Description",
+		"LOCATION_NO_RESULTS" : "Aucun résultat :|",
+		"OUT_OF_ZONE" : "Hors de la zone de cette initiative",
+		"ERROR" : {
+			"UNKNOWN" : "Oups... Une erreur est survenue :( - Tentez à nouveau",
+			"NO_CONTENT" : "Du contenu semble manquer pour créer le lieu.",
+			"NO_TAG" : "Au moins une étiquette doit être choisie.",
+			"URL_LOAD" : "Cette adresse ne semble pas exister...",
+			"URL_FORMAT" : "Format de URL invalide. Il manque au début \"http..\" ?."
+		},
+		"DELETE_CONFIRM_MSG" : "Êtes-vous bien certain(e) de vouloir effacer ce marqueur ?"
+	},
+
+	"DATEO" : {
+		"DATEO" : "Carto",
+		"CREATED_ON" : "Date de création",
+		"SEE_IN_MAP" : "Afficher sur la carte",
+		"SEE_STANDALONE" : "Afficher en mode plein écran",
+		"SHARE" : "Partagez",
+		"REDATEA" : "Republiez",
+		"COMMENT" : "Commentez !",
+		"SUPPORT" : "Soutenir",
+		"LOCATION" : "Localisation",
+		"RELATED_CAMPAIGNS" : "Initiatives liées",
+		"UNPUBLISHED" : "Marqueur non-publié",
+		"CREATED_ON" : "Date de création",
+		"CLOSE" : "Fermer",
+		"PERMALINK" : "Permalink",
+		"COMMENT_TT" : "Commenter",
+		"SHARE_TT" : "Partager",
+		"LOCATION_LABEL" : "Localisation",
+		"GOTO_DETAIL" : "Voir détails",
+		"REVIEWED" : "Revu",
+		"SOLVED" : "Résolu",
+		"NEW" : "Nouveau"
+	},
+
+	"REDATEO" : {
+		"REDATEO" : "republication",
+		"REDATEOS" : "republications",
+		"BY" : "re-publié par",
+		"TT" : "Republié !"
+	},
+
+	"COMMENT" : {
+		"COMMENT" : "Commentaire",
+		"COMMENTS" : "Commentaires",
+		"COMMENT_PH" : "Votre commentaire",
+		"COMMENT_BTN" : "Commenter",
+		"COMMENTS" : "Commentaires",
+		"ON" : "el"
+	},
+
+	"FLAG" : {
+		"FLAG" : "Signaler",
+		"FLAGGED" : "Signalé !",
+		"TITLE" : "Signaler contenu inapproprié",
+		"LABEL" : "Veuillez décrire le motif du signalement.",
+		"LABEL_SR" : "Motif", 
+		"FLAG_PH" : "Veuillez mettre le contenu ici",
+		"CLOSE" : "Fermer",
+		"FLAG_BTN" : "Signaler",
+		"SUCCESS_MSG" : "Votre signalement est bien enregistré. Merci pour collaborer avec cette communauté!",
+		"INVALID" : "Debes primero llenar el campo de descripción."
+	},
+
+	"CAMPAIGN" : {
+		"CAMPAIGN" : "Initiative",
+		"CAMPAIGNS" : "Initiatives",
+		"ACTIVE" : "active",
+		"INACTIVE" : "inactif",
+		"CAMPAIGN_BY" : "Une initiative de",
+		"FOLLOWERS" : "Suiveurs",
+		"MISSION_TITLE" : "Quel est l'objectif de cette action ?",
+		"DATA_TITLE" : "À quoi servira l'information recueillie ?",
+		"UNPUBLISHED" : "Initiative non-publiée",
+		"MENU" : {
+			"CONFIG" : "Configuration",
+			"DATEO_ADMIN" : "Paramétrer carto",
+			"EMBED" : "Insérer (embed)",
+			"DOWNLOAD_DATA" : "Télécharger les donnés en format CSV"
+		},
+		"EXPIRED" : "Initiative expirée",
+		"LAST_DAY" : "Dernier jour pour cartographier !",
+		"DAYS_LEFT" : "Il reste {{days}} jours",
+		"MORE_RESULTS" : "Voir davantage de resultats",
+		"NO_RESULTS" : "Aucun résultat",
+		"NO_DATEOS" : "Aucun marqueur lié à cette initiative. Cartographiez !",
+		"SEE_ALL" : "Voir tous",
+		"CLOSE" : "Fermer",
+		"CHARTS" : {
+			"PIE" : "Camembert",
+			"BARS" : "Barres"
+		},
+		"RELATED_CAMPAIGNS" : "Initiatives liées"
+	},
+
+	"CAMPAIGNS" : {
+		"TITLE" : "Initiatives cartographiées",
+		"META_DESC" : "Trouvez les initiatives sur les thèmes qui vous intéressent.",
+		"SEARCH_PH" : "Chercher phrase",
+		"CATEGORY" : "Catégorie",
+		"ALL" : "Tous",
+		"ORDER_BY" : "Classer par",
+		"FEATURED" : "Mis en avant",
+		"RECENT" : "Récents",
+		"MOST_POSTS" : "Davantage de cartos",
+		"CREATE_BTN" : "Créer une nouvelle initiative",
+		"SEARCH_BTN" : "Chercher",
+		"RESULT" : "résultat",
+		"RESULTS" : "résultats"
+	},
+
+	"CAMPAIGN_FORM" : {
+		"TITLE_CREATE" : "Créer une nouvelle initiative",
+		"TITLE_EDIT" : "Éditer l'initiative",
+		"PAGE_TITLE_EDIT" : "Éditer l'initiative",
+		"MENU" : {
+			"GENERAL" : "Paramètres généraux",
+			"TAGS" : "Etiquettes",
+			"LOCATION" : "Options de localisation",
+			"VISUALIZATION" : "Options de visualisation"
+		},
+		"SECTION_TITLE1" : "Paramètres de l'initiative",
+		"TITLE" : {
+			"LABEL" : "Titre",
+			"HELP_MSG" : "Choisissez un titre attractif, qui aidera à identifier votre initiative."
+		},
+		"MAINTAG" : {
+			"LABEL" : "Catégorie (hashtag) principale",
+			"HELP_TITLE": "Catégorie principale",
+			"HELP_MSG" : "Cette catégorie identifie votre initiative dans la plateforme ainsi que dans les moteurs de recherche publics. Choisissez-le bien! Merci de rester simple, bien identifiable, pour ne pas être trop générique sauf si vous voulez le partager. Astuces pour le differencier : ajouter des sigles dans votre organisation, l'endroit, l'année."
+		},
+		"PUBLISHED" : {
+			"LABEL" : "Publiée",
+			"HELP_MSG" : "Les initiatives publiées se retrouveront sur nos listes et recherches."
+		},
+		"IMG_THUMB" : {
+			"LABEL" : "Image pour liste",
+			"DESC" : "Au minimum 400 sur 600 pixels (vertical et horizontal)",
+			"HELP_MSG" : "C'est l'image qui identifiera votre initiative dans les listes (recherche, accueil, etc). Nous vous recommandons une image authentique (logo, affiche, photo emblématique), ainsi que le contenu principal centré."
+		},
+		"IMG_LARGE" : {
+			"LABEL" : "Image pour bannière",
+			"DESC" : "Au minimum 400 sur 600 pixels (vertical et horizontal)",
+			"HELP_MSG" : "C'est l'image qui s'affichera comme bannière dans votre initiative (en haut à droite). Le format idéal pour la bannière respecte les proportions (16:9) pour occuper entièrement l'espace prévu pour la bannière."
+		},
+		"END_DATE" : {
+			"LABEL" : "Date de finalisation (optionnel)",
+			"HELP_MSG" : "Vous avez le choix d'ajouter dans chaque initiative une date de finalisation ."
+		},
+		"CATEGORY" : {
+			"LABEL" : "Catégorie générale",
+			"HELP_MSG" : "Cette catégorie vous aide à trouver votre initiative dans notre recherche d'initiatives."
+ 		},
+ 		"SHORT_DESC" : {
+ 			"LABEL" : "Description courte (max. 140 caractères)",
+ 			"HELP_MSG" : "Slogan, sous-titre ou description courte de votre initiative (max. 140 caractères)."
+ 		},
+ 		"MISSION" : {
+ 			"LABEL" : "Mission / Objectifs",
+ 			"HELP_MSG" : "Expliquer aux utilisateurs le but de participer à l'initiative."
+ 		},
+ 		"DATA": {
+ 			"LABEL" : "Qu'est-ce qu'il passe avec l'information reçue ?",
+ 			"HELP_MSG" : "Indiquez ce qu'il va se passer avec l'information, qui recevra les contributions, etc."
+ 		},
+
+		"SECTION_TITLE2" : "Catégorie (hashtags)",
+ 		"SECONDARY_TAGS" : {
+ 			 "DESC" : "Pour catégoriser les contributions de votre initiative.",
+ 			"LABEL" : "Introduire une catégorie et les agréger une par une.",
+ 			"ADD_BTN" : "Agréger",
+ 			"HELP_TITLE" : "Catégorie",
+ 			"HELP_MSG" : "Ces catégories seront suggérées aux utilisateurs pour catégoriser leurs contributions. Elles serviront à mieux analyser l'information. Nous vous recommandons de les choisir avec soin, et de réutiliser les étiquettes quand elles sont pertinentes, sans en abuser (pas plus de 7).",
+ 			"SELECTED_LABEL" : "Catégories sélectionnées"
+ 		},
+
+ 		"SECTION_TITLE3" : "Options de localisation",
+ 		"MAP" : {
+ 			"LABEL" : "Paramètres de la carte",
+ 			"HELP_TITLE" : "Options de localisation",
+ 			"HELP_MSG" : "Il faut choisir la position dans la carte, son niveau de zoom telle qu'elle doit apparaître. De manière optionnelle, vous pouvez délimiter la carte avec un polygone, avec le bouton correspondant en haut et à gauche de la carte."
+ 		},
+ 		"KML" : {
+ 			"LABEL" : "Télécharger un fichier kml ou geoJSON (optionnel)",
+ 			"HELP_TITLE" : "Fichier Kml/geoJSON",
+ 			"HELP_MSG" : "Si vous le souhaitez, vous pouvez télécharger des fichers KML ou JSON pour montrer des points, des lignes ou des polygones et des textes. Nous vous recommandons d'utiliser des fichiers geoJSON avec Mapbox, parce que c'est compatible avec ce site et le style est toujours conservé."
+ 		},
+
+ 		"SECTION_TITLE4" : "Options de visualisation",
+ 		"VISUALIZATION" : {
+ 			"LABEL" : "Visualisation par défaut",
+ 			"OPT1" : "Carte",
+ 			"OPT2" : "Ligne de temps",
+ 			"OPT3" : "Images",
+ 			"OPT4" : "Archives",
+ 			"HELP_MSG" : "Choisissez la visualisation qui apparaitra par défaut. Choisissez celle qui apporte le plus de sens à votre initiative."
+ 		},
+ 		"FILTERS" : {
+ 			"LABEL" : "Filtres",
+ 			"OPT1" : "Par défaut, voir uniquement mes publications ou republications",
+ 			"HELP_MSG" : "Si vous souhaitez modérer les contributions des autres utilisateurs, nous vous recommandons ce filtre. Ainsi n'apparaitront que vos contributions. Les autres utilisateurs peuvent désactiver cette fonction s'ils le souhaitent."
+ 		},
+ 		"SLUG" : {
+ 			"LABEL" : "Élément de l'URL",
+ 			"HELP_TITLE" : "Élément de l'URL",
+ 			"HELP_MSG" : "L'adresse URL se compose généralement de votre nom d'utilisateur et de l'étiquette principale. Si une intiative existe déjà avec cette étiquette, il faut en choisir une autre. Sont seulement acceptés les caractères alphanumériques et le tiret, sans accent, ni espace etc."
+ 		},
+ 		"SAVE" : "Sauver",
+ 		"DUPLICATE_MAINTAG" : "Cette étiquette est déjà utilisée pour une autre initiative. Sauf si vous voulez la partager, il faut en choisir une autre.",
+ 		"DUPLICATE_USER_MAINTAG" : "Cette étiquette est déjà utilisée sur une autre initiative. Si vous voulez la réutiliser, vous devez remplir le champs \"Élément de l'URL\". Sinon, il vaut mieux le changer.",
+ 		"SLUG_ERROR" : "Cette adresse est déjà utilisée. Merci d'en choisir une autre.",
+ 		"REQUIRED_FIELD" : "Champs obligatoire.",
+ 		"SAVE_BTN" : "SAUVER",
+ 		"GOTO_CAMPAIGN_BTN" : "VOIR INITIATIVE",
+ 		"ERROR_INVALID" : "OUPS ! Il semble qu'un champs n'ait pas été bien rempli... Merci de vérifier les champs qui apparaissent en rouge et de de retenter."
+	},
+
+	"CAMPAIGN_DASHBOARD" : {
+		"TITLE" : "Administration de l'initiative",
+		"CONFIG_TAB" : "Paramètres",
+		"INBOX_TAB" : "Administrateur des marqueurs",
+		"BACK" : "Retour à la carte",
+		"DATEOS_FROM" : "Marqueurs de",
+		"UNTIL" : "jusqu'à",
+		"MARK_AS" : "Marquer comme",
+		"NEW" : "Nouveau",
+		"REVIEWED" : "Revu",
+		"SOLVED" : "Résolu",
+		"SEARCH" : "Chercher",
+		"TAG_FILTER" : "filtrer par étiquette",
+		"STATUS_FILTER" : "filtrer par statut",
+		"STATUS_ALL" : "Tous les statuts",
+		"STATUS_NEW" : "Nouveaux marqueurs",
+		"STATUS_REVIEWED" : "Marqueurs revus",
+		"STATUS_SOLVED" : "Marqueurs résolus",
+		"COL_TAGS" : "Étiquette",
+		"COL_EXTRACT" : "Extrait",
+		"COL_USER" : "Utilisateur",
+		"COL_CREATED" : "Créé",
+		"COl_STATUS" : "Statut",
+		"ALL" : "Tous",
+		"NO_RESULTS" : "Aucun résultat",
+		"DATEOS_FROM" : "Marqueurs de",
+		"UNTIL" : "al"
+	},
+
+	"SEARCH_PAGE" : {
+		"TITLE" : "Chercher des marqueurs",
+		"RESULT" : "résultat",
+		"RESULTS" : "résultats",
+		"GOTO_TAG" : "Voir cette étiquette",
+		"MORE_RESULTS" : "Voir davantage de résultats",
+		"NO_RESULTS" : "Aucun résultat",
+		"FOUND_CAMPAIGNS" : "Initiatives trouvées"
+	},
+
+	"SEARCH_FILTER" : {
+		"VIEWING" : "vues",
+		"LAST" : "derniers",
+		"FILTER_DATE" : "Filtrer par date",
+		"APROVED_BY" : "Approuvés par",
+		"FILTER_DATE" : "Filtrer par date",
+		"FROM" : "de",
+		"UNTIL" : "jusqu'au",
+		"FILTER_TAG" : "Filtrer les étiquettes",
+		"ALL_TAGS" : "Tous",
+		"MAX_LOAD" : "Montrer tous les points",
+		"LOAD_NUM_DATEOS": "Montrer {{num}} points",
+		"ORDER_BY" : "Classer par",
+		"APPLY_BTN" : "Appliquer"
+	},
+
+	"LOGIN_PAGE" : {
+		"WELCOME" : "Bienvenue",
+		"WELCOME_SUBTITLE" : "Partagez des infos avec votre communauté",
+		"PAGE_DESC" : "Se connecter.",
+		"LOGIN" : "SE CONNECTER",
+		"LOGIN_FB_BTN" : "Connexion via Facebook",
+		"LOGIN_TW_BTN" : "Connexion via Twitter",
+		"LOGIN_DATEA_TITLE" : "Ou accédez avez votre compte",
+		"LOGIN_LABEL" : "Connectez-vous avec votre login et votre mot de passe",
+		"NOT_A_DATERO" : "Vous n'êtes pas membre ?",
+		"RECOVER_PASS_LINK" : "Mot de passe oublié ?",
+		"RECOVER_PASS_TITLE" : "Récupérer mot de passe",
+		"CONGRATS" : "Félicitations !",
+		"EMAIL_PH" : "Vérifiez vos nouveaux courriels" 
+	},
+
+	"REGISTER_PAGE" : {
+		"WELCOME" : "Rejoindre la plateforme",
+		"WELCOME_SUBTITLE" : "Commencez à partager des informations utiles parmi votre communauté",
+		"PAGE_DESC" : "Enregistrez-vous sur Datea",
+		"REGISTER_DATEA_BTN" : "Création d'un compte sur Datea",
+		"LOGIN_FB_BTN" : "Connexion via Facebook",
+		"LOGIN_TW_BTN" : "Connexion via Twitter",
+		"ALREADY_DATERO" : "Déjà membre ?",
+		"NOT_WITHOUT_CONSENT" : "Nous ne publions pas sur vos comptes sans votre autorisation",
+		"WHY_REGISTER" : "Pourquoi avoir un compte sur la plateforme ?",
+		"WHOS_INFO" : "A qui appartenait l'information que vous publiez ?",
+		"PRIVACY_INFO" : "Confidentialité"
+	},
+
+	"REGISTER_FORM_PAGE" : {
+		"TITLE" : "Créer un compte",
+		"PAGE_DESC" : "Registra tu cuenta en Datea.",
+		"USERNAME_LABEL" : "Nom d'utilisateur",
+		"USERNAME_DESC" : "Sont seulement acceptés les caractères alphanumériques et le tiret, sans accent, ni espace etc.",
+		"EMAIL_LABEL" : "Courriel électronique",
+		"PASS_LABEL" : "Mot de passe",
+		"PASS_DESC" : "Au moins 6 lettres et 1 chiffre",
+		"REPEAT_PASS" : "Confirmez votre mot de passe",
+		"CONFIRM_TITLE" : "Merci de vérifier vos nouveaux courriels.",
+		"CONFIRM1" : "Encore un dernier effort avant de contribuer... Il faut nous confirmer votre adresse de courriel.",
+		"CONFIRM2" : "Dès que l'activation est réalisée, vous pourrez vous connecter avec votre login et votre mot de passe."
+	},
+
+	"SETTINGS_PAGE" : {
+		"WELCOME" : "@:LOGIN_PAGE.WELCOME",
+		"GREETING" : "Cher utilisateur",
+		"CONGRATS" : "Bravo !",
+		"NEXT" : "Suivant",
+		"GOTO_PROFILE" : "Aller sur mon profil",
+		"TITLE" : "Mes paramètres",
+		"ACCOUNT_TAB" : "Compte d'utilisateur",
+		"USERNAME_LABEL" : "@:REGISTER_FORM_PAGE.USERNAME_LABEL",
+		"USERNAME_DESC" : "@:REGISTER_FORM_PAGE.USERNAME_DESC",
+		"EMAIL_LABEL" : "@:REGISTER_FORM_PAGE.EMAIL_LABEL",
+		"PROFILE_TAB" : "Modifier le profil",
+		"NAME_LABEL" : "Nom complet",
+		"AVATAR_LABEL" : "Télécharger une image",
+		"BG_LABEL" : "Télécharger une image comme fond de profil",
+		"MESSAGE_LABEL" : "Message personnel",
+		"MESSAGE_DESC" : "Maximum 140 caractères",
+		"URL_LABEL" : "URL personnelle ou de votre organisation",
+		"FOLLOW_FIELDS_TITLE" : "Les champs suivants sont pour les icones de vos suiveurs \"sígueme en...\"",
+		"FB_URL_LABEL" : "URL Facebook",
+		"TW_URL_LABEL" : "URL Twitter",
+		"YOUTUBE_URL_LABEL" : "Canal Youtube",
+		"NOTIFY" : {
+			"TAB" : "Notifications",
+			"DESC" : "Recevoir des notifications de mon courrier :",
+			"MY_CONTENT" : "Nouvelles interactions avec mes contenus :",
+			"THREADS" : "Nouveaux commentaires des conversations que je suis :",
+			"DATEOS_IN_TAGS" : "Nouveaux marqueurs des catégories suivies :",
+			"CAMPAIGN_MSG" : "Nouveaux messages des initiatives suivies :",
+			"NEWSLETTER" : "Message envoyé par Datea :"
+		},
+		"SUBMIT_BTN" : "Envoyer",
+		"SAVE_BTN" : "Confirmer"
+	},
+
+	"PROFILE_PAGE" : {
+		"NO_DATEOS" : "Aucun marqueur pour le moment",
+		"CREATE_CAMPAIGN" : "Créer une initiative",
+		"NO_CAMPAIGNS" : "Aucune initiative créée",
+		"FOLLOWS" : "Suivre",
+		"TAGS_I_FOLLOW" : "Étiquettes suivies",
+		"LAST_ACTIONS" : "Dernières actions"
+	},
+
+	"ACCOUNT_MSG" : {
+		"BLOCKED" :  "Votre compte a été bloqué. Si vous pensez que c'est une erreur, merci de nous contacter via le <a href=\"http://ayuda.datea.pe/contacto\">formulaire de contact</a>.",
+		"WELCOME_READY" : "Votre compte est validé et vous pouvez désormais contribuer. Si vous le souhaitez, vous pouvez modifier les paramètres de votre compte ci-dessous.",
+		"WELCOME_CONFIRM" : "Vous pouvez presque contribuer ! Il vous suffit de confirmer votre adresse de courriel.",
+		"DUPLICATE_EMAIL" : "Cette adresse de courriel est déjà utilisée. Merci d'en utiliser une autre. Si vous avez oublié votre mot de passe, vous pouvez le récupérer sur la page d'accès. Si vous avez utilisé un autre service pour authentifier votre accès (via un réseau social par exemple), merci de réutiliser ce service.",
+		"EMAIL_EXISTS" : "Cette adresse de courriel existe déjà dans notre base de données. Merci de réutiliser votre mot de passe !",
+		"EMAIL_INVALID" : "Merci d'indiquer une adresse correcte.",
+		"DUPLICATE_USER" : "Ce nom d'utilisateur existe déjà, vous devez donc en choisir un autre.",
+		"CHECK_EMAIL" : "Merci ! Vous pouvez maintenant vérifier vos courriels pour récupérer les instructions nécessaires à l'activation de votre compte. Vous pouvez fermer cette fenêtre.",
+		"CONFIRM_EMAIL" : "Avant de pouvoir contribuer, nous avons besoin de confirmer votre adresse de courriel. À tout de suite !",
+		"CONFIRM_MISSING" : "Encore un dernier effort avant de contribuer... Il faut nous confirmer votre adresse de courriel. Si vous n'avez pas encore reçu notre courriel d'activation, il suffit de cliquer sur \"Envoyer\" pour en recevoir un nouveau. Merci !",
+		"CONFIRM_SUCCESS" : "Votre compte est désormais activé. Si vous le souhaitez, vous pouvez modifier les paramètres de votre compte en dessous.",
+		"ACTIVATION_COMPLETE" : "Votre compte a été activé et vous pouvez désormais y accéder avec votre mot de passe.",
+		"PASS_RESET_SENT" : "Merci de vérifier votre courrier... Des instructions vont suivre pour récupérer votre mot de passe.",
+		"RESET_NOT_FOUND" : "Aucune donnée n'est associée à cette adresse.",
+		"LOGIN_ERROR" : "Votre nom d'utilisateur ou votre mot de passe n'est pas le bon. Merci de réessayer.",
+ 		"MODAL_CHECK_EMAIL" : "Merci de vérifier vos nouveaux courriels.",
+ 		"MODAL_CHECK_EMAIL2" : "Vous pouvez fermer cette fenêtre."
+ 	},
+
+ 	"PASSW_PAGE" : {
+ 		"TITLE" : "Indiquer votre nouveau mot de passe",
+ 		"PAGE_TITLE" : "Changer son mot de passe", 
+ 		"PASS_LABEL" : "Nouveau mot de passe",
+ 		"PASS_DESC" : "Vous devez choisir au minimum 6 lettres et un chiffre",
+ 		"REPEAT_LABEL" : "Confirmer le mot de passe",
+ 		"SAVE_BTN" : "CHANGER",
+ 		"SUCCESS_TITLE" : "Votre mot de passe a été modifié !",
+ 		"SUCCESS_MSG" : "Merci de vous identifier à nouveau :",
+ 		"ERROR_TITLE" : "Oups ! Une erreur est survenue",
+ 		"ERROR_MSG" : "Ce formulaire pour changer le mot de passe n'est plus valide. Il faut que nous vous en renvoyons un nouveau courriel.",
+ 		"STARTOVER_BTN" : "Renvoyer"
+ 	},
+
+ 	"EMBED_BUILDER" : {
+ 		"TITLE" : "Insérer le code",
+ 		"SUBTITLE" : "Copier et coller ce code dans votre page.",
+ 		"INSTRUCTIONS" : "Vous pouvez modifier les dimensions",
+ 		"WIDTH" : "Largeur",
+ 		"HEIGHT" : "Hauteur"
+ 	},
+
+ 	"FILEINPUT": {
+ 		"OR_PREFER" : "Ou si vous préférez",
+ 		"IMAGE" : {
+ 			"DRAG_MSG": "Déposez une <strong>image</strong> ici",
+ 			"BTN_MSG" : "Choisir une image à télécharger"
+ 		},
+ 		"IMAGES" : {
+ 			"DRAG_MSG": "Déposez des <strong>images</strong> ici",
+ 			"BTN_MSG" : "Choisir des images à télécharger"
+ 		},
+ 		"FILE" : {
+ 			"DRAG_MSG": "Déposez un <strong>fichier</strong> ici",
+ 			"BTN_MSG" : "Choisir un fichier à télécharger"
+ 		},
+ 		"FILES" : {
+ 			"DRAG_MSG": "Déposez des <strong>fichiers</strong> ici",
+ 			"BTN_MSG" : "Choisir des fichiers à télécharger"
+ 		}
+ 	},
+
+ 	"ERROR" : {
+ 		"UNKNOWN" : "Une erreur est survenue. Merci de vous identifier à nouveau. Si cela ne fonctionne pas, <a href=\"http://ayuda.datea.pe/contacto\">nous contacter</a>.",
+ 		"NOT_FOUND" : "Il semblerait que votre contenu soit introuvable. Serait-il parti sur Mars ?"
+ 	},
+
+ 	"REDIRECT_MSG" : "Merci de patienter... La page arrive à la vitesse de la lumière... Ou presque... :)"
+
+}
