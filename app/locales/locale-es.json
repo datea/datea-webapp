@@ -20,9 +20,9 @@
 	
 	"MENU_TOP" : {
 		"SEARCH" : "Buscar",
-		"CAMPAIGNS" : "Initiatives",
+		"CAMPAIGNS" : "Iniciativas",
 		"BLOG" : "Blog",
-		"ABOUT" : "About",
+		"ABOUT" : "Acerca",
 		"HELP" : "Ayuda"
 	},
 
@@ -41,7 +41,7 @@
 	
 	"LANDING_PAGE" : {
 		"SUBTITLE" : "Todos Somos Dateros",
-		"SLOGAN" : "Comparte y visualiza datos útiles con tu comunidad para lograr cambios",
+		"SLOGAN" : "Comparte y visualiza datos útiles para lograr cambios",
 		"REGISTER_TITLE" : "¿Quieres datear?",
 		"LOGIN_TITLE" : "¿Ya tienes cuenta?",
 		"STEP1" : "Comparte datos útiles",

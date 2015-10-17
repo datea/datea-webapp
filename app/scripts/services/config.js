@@ -12,7 +12,9 @@ angular
 				, imgUrl : 'http://api.datea.io'
 				// 	url    : 'http://127.0.0.1:8000/api/v2/'
 				//, imgUrl : 'http://127.0.0.1:8000'
-				} 
+				}
+	, defaultLocale : 'es'
+	, availableLocales : ['es', 'fr'] 
 	, selectFilter : { 'last'          : ''
 					 , 'mostVoted'     : '-vote_count,-created'
 					 , 'mostCommented' : '-comment_count,-created'

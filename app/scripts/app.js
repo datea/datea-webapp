@@ -23,30 +23,37 @@ angular.module( 'dateaWebApp'
   , 'angularMoment'
   , 'pascalprecht.translate'
 ])
-.run([ 'amMoment', function (amMoment) {
-	amMoment.changeLocale('es');
-}])
 .config(
 [ '$routeProvider'
 , '$httpProvider'
 , '$locationProvider'
 , 'localStorageServiceProvider'
 , '$translateProvider'
+, 'config'
 , function (
   $routeProvider
 , $httpProvider
 , $locationProvider
 , localStorageServiceProvider
 , $translateProvider
+, config
 ) {
 
+	localStorageServiceProvider.prefix = 'datea';
+
+	// LOAD DEFAULT LANGUAGE
 	$translateProvider.useStaticFilesLoader({
 	    prefix: 'locales/locale-',
 	    suffix: '.json'
 	});
-	$translateProvider.preferredLanguage('es');
 
-	console.log('navigator', navigator);
+	var lang = navigator.language || navigator.userLanguage;
+	lang = lang.split('_')[0];
+	lang = lang.split('-')[0];
+	if (localStorage.getItem('datea.locale')) lang = localStorage.getItem('datea.locale');
+	if (config.availableLocales.indexOf(lang) == -1) lang = config.defaultLocale;
+	$translateProvider.preferredLanguage(lang);
+
 
 	$httpProvider.defaults.useXDomain = true;
 	delete $httpProvider.defaults.headers.common['X-Requested-With'];
@@ -179,8 +186,13 @@ angular.module( 'dateaWebApp'
 	    } )
 	.otherwise( { redirectTo: '/404' } );
 
-	localStorageServiceProvider.prefix = 'datea';
-
 	$locationProvider.html5Mode(true);
 
-} ] );
+}])
+.run([ 'amMoment', 'localStorageService', '$translate', function (amMoment, localStorageService, $translate) {
+	amMoment.changeLocale('es');
+	if (localStorageService.get('locale')) {
+		$translate.use(localStorageService.get('locale'));
+	}
+}])
+;

@@ -1,0 +1,8 @@
+<div class="lang-switcher">
+	<div class="dropdown" uib-dropdown>
+		<a href class="dropdown-toggle" uib-dropdown-toggle>{{currentLocale}}</a>
+		<ul class="dropdown-menu" role="menu">
+			<li class="lang-opt" ng-repeat="lang in availableLocales" ng-click="switchLang($event, lang)" ng-show="lang != currentLocale">{{lang}}</li>
+		</ul>
+	</div>
+</div>
