@@ -10,6 +10,7 @@ angular.module( 'dateaWebApp' )
   , 'State'
   , 'config'
   , 'shareMetaData'
+  , '$translate'
 , function (
     $scope
   , Api
@@ -19,6 +20,7 @@ angular.module( 'dateaWebApp' )
   , State
   , config
   , shareMetaData
+  , $translate
 ) {
 	var ls = localStorageService
 		, msg
@@ -41,7 +43,10 @@ angular.module( 'dateaWebApp' )
 
 	User.isSignedIn() && $location.path( '/' );
 
-	shareMetaData.setData({title: "Datea | Ingresa", description: "Ingresa a tu cuenta en Datea."});
+	$translate(['LOGIN', 'LOGIN_PAGE.PAGE_DESC'])
+	.then(function(t) {
+		shareMetaData.setData({title: "Datea | "+t.LOGIN, description: t['LOGIN_PAGE.PAGE_DESC']});
+	});
 
 	if ($location.search().msg) {
 		msg = $location.search().msg;
@@ -79,7 +84,10 @@ angular.module( 'dateaWebApp' )
 				$scope.flow.loading = false;
 			}, function (reason) {
 				if (reason.status == 401) {
-					$scope.addAlert({type: 'danger', msg: config.accountMsgs.wrongUserOrPassword});
+					$translate('ACCOUNT_MSG.LOGIN_ERROR')
+					.then(function (msg) {
+						$scope.addAlert({type: 'danger', msg: msg});
+					});
 				}
 				$scope.flow.loading = false;
 			} );
@@ -131,11 +139,17 @@ angular.module( 'dateaWebApp' )
 		$scope.flow.loading = true;
 		User.resetPassword( resetGivens )
 		.then(function(response){
-			$scope.addAlert({type: 'success', msg: config.accountMsgs.PasswdResetEmailMsg})
+			$translate('ACCOUNT_MSG.PASS_RESET_SENT')
+			.then(function (msg) {
+				$scope.addAlert({type: 'success', msg: msg});
+			});
 			$scope.flow.loading = false;
 		}, function (reason) {
 			$scope.flow.loading = false;
-			$scope.addAlert({type: 'warning', msg: config.accountMsgs.PasswdResetNotFoundMsg});
+			$translate('ACCOUNT_MSG.RESET_NOT_FOUND')
+			.then(function (msg) {
+				$scope.addAlert({type: 'warning', msg: msg});
+			});
 		});
 	}
 

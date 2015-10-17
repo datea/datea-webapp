@@ -9,6 +9,7 @@ angular.module('dateaWebApp')
   , 'localStorageService'
   , 'Api'
   , 'shareMetaData'
+  , '$translate'
 , function (
     $scope
   , User
@@ -17,6 +18,7 @@ angular.module('dateaWebApp')
   , localStorageService
   , Api
   , shareMetaData
+  , $translate
 ) {
 
 	var ls = localStorageService;
@@ -25,8 +27,10 @@ angular.module('dateaWebApp')
 
 	User.isSignedIn() && $location.path( '/' );
 
-	shareMetaData.setData({title: "Datea | Regístrate", description: "Registra tu cuenta en Datea."});
-
+	$translate(['REGISTER', 'REGISTER_PAGE.PAGE_DESC']).then(function (t) {
+		shareMetaData.setData({title: "Datea | "+t.REGISTER, description: t['REGISTER_PAGE.PAGE_DESC']});
+	});
+	
 	$scope.flow.signIn = function () {
 		$location.path( '/signin' );
 	}

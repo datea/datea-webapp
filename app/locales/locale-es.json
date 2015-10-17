@@ -11,6 +11,8 @@
 	"TRENDS" : "Tendencias",
 	"DATERO_LABEL" : "dater@",
 	"OF" : "de",
+	"BACK" : "regresar",
+	"SUBMIT" : "Enviar",
 	"CLOSE": "Cerrar",
 	"VOTE" : "apoyo",
 	"VOTES" : "apoyos",
@@ -405,22 +407,28 @@
 	"LOGIN_PAGE" : {
 		"WELCOME" : "¡Bienvenido a Datea!",
 		"WELCOME_SUBTITLE" : "Comparte datos útiles con tu comunidad",
+		"PAGE_DESC" : "Ingresa a tu cuenta en Datea.",
 		"LOGIN" : "INGRESAR",
 		"LOGIN_FB_BTN" : "Ingresa con Facebook",
 		"LOGIN_TW_BTN" : "Ingresa con Twitter",
 		"LOGIN_DATEA_TITLE" : "O ingresa con tu cuenta en Datea",
+		"LOGIN_LABEL" : "Ingresa con tu usuario y contraseña",
 		"NOT_A_DATERO" : "¿No eres dater@?",
-		"RECOVER_PASSWORD" : "recuperar contraseña"
+		"RECOVER_PASS_LINK" : "recuperar contraseña",
+		"RECOVER_PASS_TITLE" : "Recuperar contraseña",
+		"CONGRATS" : "¡Felicidades!",
+		"EMAIL_PH" : "ingresa tu correo electrónico" 
 	},
 
 	"REGISTER_PAGE" : {
 		"WELCOME" : "¡Únete a Datea!",
 		"WELCOME_SUBTITLE" : "Comienza a compartir datos útiles con tu comunidad",
+		"PAGE_DESC" : "Registra tu cuenta en Datea.",
 		"REGISTER_DATEA_BTN" : "Registra tu cuenta en Datea",
-		"LOGIN_FB_BTN" : "Ingresa con Facebook",
-		"LOGIN_TW_BTN" : "Ingresa con Twitter",
+		"LOGIN_FB_BTN" : "@:LOGIN_PAGE.LOGIN_FB_BTN",
+		"LOGIN_TW_BTN" : "@:LOGIN_PAGE.LOGIN_TW_BTN",
 		"ALREADY_DATERO" : "¿Ya eres dater@?",
-		"NOT_WITHOUT_PERMIT" : "No publicamos en tus cuentas sin tu permiso",
+		"NOT_WITHOUT_CONSENT" : "No publicamos en tus cuentas sin tu permiso",
 		"WHY_REGISTER" : "¿Por qué registrar una cuenta en Datea?",
 		"WHOS_INFO" : "¿A quién le pertenece la información que publico en Datea?",
 		"PRIVACY_INFO" : "Información sobre privacidad"
@@ -428,12 +436,16 @@
 
 	"REGISTER_FORM_PAGE" : {
 		"TITLE" : "Crea una cuenta en Datea",
+		"PAGE_DESC" : "Registra tu cuenta en Datea.",
 		"USERNAME_LABEL" : "Nombre de usuario",
 		"USERNAME_DESC" : "Sólo números, letras y guiones (sin espacios, tildes, etc).",
 		"EMAIL_LABEL" : "Correo electrónico",
 		"PASS_LABEL" : "Contraseña",
 		"PASS_DESC" : "Mínimo 6 letras y mínimo 1 número",
-		"REPEAT_PASS" : "Repetir contraseña"
+		"REPEAT_PASS" : "Repetir contraseña",
+		"CONFIRM_TITLE" : "¡Gracias! Ahora por favor revisa tu correo.",
+		"CONFIRM1" : "Sólo falta completar un paso para poder datear. Debes validar tu dirección de correo para activar tu cuenta. Te hemos enviado un correo con instrucciones de cómo hacerlo.",
+		"CONFIRM2" : "Una vez que hayas completado la activación, puedes ingresar con tu usuario y contraseña."
 	},
 
 	"SETTINGS_PAGE" : {

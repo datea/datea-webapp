@@ -7,40 +7,40 @@
 					<div class="row form-wrap login-form-inner">
 						<div class="col-xs-12 col-md-8 main-content">
 							<div class="inner">
-								<h1>Únete a Datea!</h1>
-								<h4 class="subheading">Comienza a compartir datos útil con tu comunidad</h4>
+								<h1>{{'REGISTER_PAGE.WELCOME' | translate}}</h1>
+								<h4 class="subheading">{{'REGISTER_PAGE.WELCOME_SUBTITLE' | translate}}</h4>
 								
 								<div class="row">
 									<div class="register-btns">
 										<div class="col-xs-=12 col-sm-9">
-											<button class="btn btn-social btn-facebook btn-block btn-lg" ng-click="flow.withFacebook()" analytics-on="click" analytics-event="LoginFB"><i class="fa fa-facebook"></i>Ingresar con Facebook</button>
+											<button class="btn btn-social btn-facebook btn-block btn-lg" ng-click="flow.withFacebook()" analytics-on="click" analytics-event="LoginFB"><i class="fa fa-facebook"></i>{{'REGISTER_PAGE.LOGIN_FB_BTN' | translate}}</button>
 										</div>
 										<div class="col-xs-12 col-sm-9">
-											<button class="btn btn-social btn-twitter btn-block btn-lg" ng-click="flow.withTwitter()" analytics-on="click" analytics-event="LoginTW"><i class="fa fa-twitter"></i>Ingresar con Twitter</button>
+											<button class="btn btn-social btn-twitter btn-block btn-lg" ng-click="flow.withTwitter()" analytics-on="click" analytics-event="LoginTW"><i class="fa fa-twitter"></i>{{'REGISTER_PAGE.LOGIN_FB_BTN' | translate}}</button>
 										</div>
 										<div class="col-xs-12 col-sm-9">
-											<button class="btn datea-green-btn btn-block btn-social btn-block btn-lg" ng-click="flow.withEmail()" analytics-on="click" analytics-event="LoginDatea"><i class="fa fa-envelope-o"></i>Registra tu cuenta en Datea</button>
+											<button class="btn datea-green-btn btn-block btn-social btn-block btn-lg" ng-click="flow.withEmail()" analytics-on="click" analytics-event="LoginDatea"><i class="fa fa-envelope-o"></i>{{'REGISTER_PAGE.REGISTER_DATEA_BTN' | translate}}</button>
 										</div>
 									</div>
 								</div>
-								<p>[No publicamos en tus cuentas sin tu permiso]</p>
+								<p>[{{'REGISTER_PAGE.NOT_WITHOUT_CONSENT' | translate}}]</p>
 							</div>
 						</div>
 						<div class="hidden-xs hidden-sm col-md-4 sidebar">
 							<div class="inner">
 								<div class="well">
-									<p>Ya eres dater@?</p>
-									<button class="btn datea-btn" ng-click="flow.signIn()">Ingresa</button>
+									<p>{{'REGISTER_PAGE.ALREADY_DATERO' | translate}}</p>
+									<button class="btn datea-btn" ng-click="flow.signIn()">{{'LOGIN' | translate}}</button>
 								</div>
 								<div class="extra">
 									<a href="/">
-										<p>¿Por qué registrar una cuenta en Datea?</p>
+										<p>{{'REGISTER_PAGE.WHY_REGISTER' | translate}}</p>
 									</a>
 									<a href="/">
-										<p>¿A quién le pertenece la información que publico en datea?</p>
+										<p>{{'REGISTER_PAGE.WHOS_INFO' | translate}}</p>
 									</a>
 									<a href="/acerca/privacidad">
-										<p>Información sobre privacidad</p>
+										<p>{{'REGISTER_PAGE.PRIVACY_INFO' | translate}}</p>
 									</a>
 								</div>
 							</div>

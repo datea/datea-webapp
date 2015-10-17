@@ -10,6 +10,7 @@ angular.module('dateaWebApp')
 , '$location'
 , 'User'
 , 'shareMetaData'
+, '$translate'
 , function (
   $scope
 , $http
@@ -19,6 +20,7 @@ angular.module('dateaWebApp')
 , $location
 , User
 , shareMetaData
+, $translate
 ) {
 
 	var ls = localStorageService
@@ -38,8 +40,10 @@ angular.module('dateaWebApp')
 
 	User.isSignedIn() && $location.path( '/' );
 
-	shareMetaData.setData({title: "Datea | Regístrate", description: "Registra tu cuenta en Datea."});
-
+	$translate(['REGISTER' , 'REGISTER_FORM_PAGE.PAGE_DESC']).then(function (t) {
+		shareMetaData.setData({title: "Datea | "+t.REGISTER, description: t['REGISTER_FORM_PAGE.PAGE_DESC']});
+	});
+	
 	$scope.auth.checkUsername = function () {
 		if ( $scope.auth.bio ) {
 			$scope.auth.bio = $scope.auth.bio.replace(/ /g,'');
@@ -47,7 +51,7 @@ angular.module('dateaWebApp')
 			.usernameExists( { username: $scope.auth.bio } )
 			.then( function ( response ) {
 				$scope.flow.validInput.username = !response.result;
-				$scope.auth.messages.usernameExists = !$scope.flow.validInput.username ? config.signupForm.validationMsgs.usernameExists : null;
+				$scope.auth.messages.usernameExists = !$scope.flow.validInput.username;
 				$scope.form.$setValidity( 'usernameExists', $scope.flow.validInput.username );
 			}, function ( reason ) {
 				console.log( reason );
@@ -65,7 +69,7 @@ angular.module('dateaWebApp')
 			Api.account.register.emailExists({email: $scope.auth.email})
 			.then (function (response) {
 				$scope.flow.validInput.email = !response.result;
-				$scope.auth.messages.emailExists = !$scope.flow.validInput.email ? config.signupForm.validationMsgs.emailExists : null;
+				$scope.auth.messages.emailExists = !$scope.flow.validInput.email;
 				$scope.form.$setValidity( 'emailExists', $scope.flow.validInput.email );
 			})
 		}
@@ -100,13 +104,11 @@ angular.module('dateaWebApp')
 		       }
 
 		if ( isValid && $scope.flow.validInput.username ) {
-			$scope.auth.message = 'cargando..';
 			$scope.flow.loading = true;
 			Api.account.register.createUser( data )
 			.then( function ( response ) {
 				if ( response.status === 201 ) {
 					ls.set( 'user', response.user );
-					$scope.auth.message = 'usuario creado.';
 					$scope.flow.registerSuccess = true;
 					$scope.flow.loading = false;
 					//$location.path( '/signin' );
@@ -119,10 +121,7 @@ angular.module('dateaWebApp')
 				$scope.flow.loading = false;
 				console.log( 'reason', reason );
 			} )
-		} else {
-			$scope.auth.message = 'please check your inputs';
 		}
-
 	}
 
 } ] );

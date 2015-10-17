@@ -7,51 +7,51 @@
 					<div class="row signin login-form-inner">
 						<div class="col-xs-12 col-md-8">
 							<alert ng-repeat="alert in alerts" type="{{alert.type}}" close="closeAlert($index)">{{alert.msg}}</alert>
-							<h1 ng-hide="flow.hideSocial">Bienvenido a Datea</h1>
-							<h4 ng-hide="flow.hideSocial" class="subheading">Comparte datos útiles con tu comunidad</h4>
+							<h1 ng-hide="flow.hideSocial">{{'LOGIN_PAGE.WELCOME' | translate}}</h1>
+							<h4 ng-hide="flow.hideSocial" class="subheading">{{'LOGIN_PAGE.WELCOME_SUBTITLE' | translate}}</h4>
 							<div class="usr-msg hey" ng-show="flow.hideSocial">
 								<div class="msg inline">
-									<h3>¡Felicidades!</h3>
+									<h3>{{'LOGIN_PAGE.CONGRATS' | translate}}</h3>
 									<p>{{flow.activationMsg}}</p>
 								</div>
 							</div>
 							<div class="row" ng-hide="flow.hideSocial || auth.showResetPassword">
 								<div class="register-btns">
 									<div class=" col-xs-12 col-sm-9 col-md-9 col-lg-9">
-										<button class="btn btn-social btn-facebook btn-block btn-lg" ng-click="auth.withFacebook()" analytics-on="click" analytics-event="LoginFB"><i class="fa fa-facebook"></i>Ingresa con Facebook</button>
+										<button class="btn btn-social btn-facebook btn-block btn-lg" ng-click="auth.withFacebook()" analytics-on="click" analytics-event="LoginFB"><i class="fa fa-facebook"></i>{{'LOGIN_PAGE.LOGIN_FB_BTN' | translate}}</button>
 									</div>
 									<div class="col-xs-12 col-sm-9 col-md-9 col-lg-9">
-										<button class="btn btn-social btn-twitter btn-block btn-lg" ng-click="auth.withTwitter()" analytics-on="click" analytics-event="LoginTW"><i class="fa fa-twitter"></i>Ingresa con Twitter</button>
+										<button class="btn btn-social btn-twitter btn-block btn-lg" ng-click="auth.withTwitter()" analytics-on="click" analytics-event="LoginTW"><i class="fa fa-twitter"></i>{{'LOGIN_PAGE.LOGIN_TW_BTN' | translate}}</button>
 									</div>
 								</div>
 							</div>
 							<div class="row">
 								<div class="col-xs-12 col-md-9 col-sm-9 col-lg-9">
 									<form role="form" name="form" ng-submit="auth.signIn()" ng-show="!auth.showResetPassword">
-										<p ng-hide="flow.hideSocial">O ingresa con tu cuenta en Datea:</p>
-										<p ng-show="flow.hideSocial">Ingresa tu usuario y contraseña</p>
+										<p ng-hide="flow.hideSocial">{{'LOGIN_PAGE.LOGIN_DATEA_TITLE' | translate}}:</p>
+										<p ng-show="flow.hideSocial">{{'LOGIN_PAGE.LOGIN_LABEL'}}</p>
 										<div class="form-group" ng-show="!auth.resetPasswordCheckbox">
 											<!--<label for="username">Usuario</label>-->
-											<input placeholder="usuario" type="text" class="form-control" id="username" ng-required="auth.passwordRequired" ng-model="auth.username">
+											<input placeholder="{{'USER' | translate}}" type="text" class="form-control" id="username" ng-required="auth.passwordRequired" ng-model="auth.username">
 										</div>
 										<div class="form-group" ng-show="!auth.resetPasswordCheckbox">
 											<!--<label for="password">Contraseña</label>-->
-											<input placeholder="contraseña" type="password" class="form-control" id="password" ng-required="auth.passwordRequired" ng-model="auth.password">
+											<input placeholder="{{'PASSWORD' | translate}}" type="password" class="form-control" id="password" ng-required="auth.passwordRequired" ng-model="auth.password">
 										</div>
-										<button type="button" class="btn btn-sm btn-link pull-right btn-datea-link" ng-click="flow.toggleResetPassword()">recuperar contraseña</button>
-										<input type="submit" class="btn datea-datear-btn" value="Ingresar" ng-show="form.$valid">
-										<button class="btn datea-datear-btn" ng-disabled="true" analytics-on="click" analytics-event="LoginDatea">Ingresar</button>
+										<button type="button" class="btn btn-sm btn-link pull-right btn-datea-link" ng-click="flow.toggleResetPassword()">{{'LOGIN_PAGE.RECOVER_PASS_LINK' | translate}}</button>
+										<input type="submit" class="btn datea-datear-btn" value="{{'LOGIN' | translate}}" ng-show="form.$valid">
+										<button class="btn datea-datear-btn" ng-disabled="true" analytics-on="click" analytics-event="LoginDatea">{{'LOGIN' | translate}}</button>
 										<span ng-bind="auth.message"></span>
 									</form>
 									<form role="form" name="forgotMail" ng-submit="auth.resetPassword()" ng-show="auth.showResetPassword">
-										<p>Recuperar contraseña:</p>
+										<p>{{'LOGIN_PAGE.RECOVER_PASS_TITLE' | translate}}:</p>
 										<div class="form-group">
 											<!--<label for="email">correo electrónico</label>-->
-											<input placeholder="ingresa tu correo electrónico" type="email" class="form-control" id="email" ng-required="auth.passwordRequired" ng-model="reset.email">
+											<input placeholder="{{'LOGIN_PAGE.EMAIL_PH' | translate}}" type="email" class="form-control" id="email" ng-required="auth.passwordRequired" ng-model="reset.email">
 										</div>
-										<button type="button" class="btn btn-sm btn-link pull-right btn-datea-link" ng-click="flow.toggleResetPassword()">&lt; regresar</button>
+										<button type="button" class="btn btn-sm btn-link pull-right btn-datea-link" ng-click="flow.toggleResetPassword()">&lt; {{'BACK' | translate}}</button>
 										<input type="submit" class="btn datea-datear-btn" value="Enviar" ng-show="forgotMail.$valid">
-										<button class="btn datea-datear-btn" ng-disabled="true">Enviar</button>
+										<button class="btn datea-datear-btn" ng-disabled="true">{{'SUBMIT' | translate}}</button>
 									</form>
 								</div>
 							</div>
@@ -62,8 +62,8 @@
 						</div>
 						<div class="col-md-4 hidden-xs hidden-sm">
 							<div class="well">
-								<h4>¿No eres dater@?</h4>
-								<a href="/registrate" class="btn datea-btn-nopad">regístrate</a>
+								<h4>{{'LOGIN_PAGE.NOT_A_DATERO' | translate}}</h4>
+								<a href="/registrate" class="btn datea-btn-nopad">{{'REGISTER' | translate}}</a>
 							</div>
 						</div>
 					</div>
