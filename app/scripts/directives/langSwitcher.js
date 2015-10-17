@@ -1,5 +1,5 @@
 angular.module("dateaWebApp")
-	.directive("daLangSwitcher", ['localStorageService', '$translate', 'config', function(localStorageService, $translate, config) {
+	.directive("daLangSwitcher", ['localStorageService', '$translate', 'config', 'amMoment', function(localStorageService, $translate, config, amMoment) {
 		return {
     	 restrict    : "E"
     	,templateUrl : "/views/lang-switcher.html"
@@ -11,6 +11,7 @@ angular.module("dateaWebApp")
                 $translate.use(lang);
                 $scope.currentLocale = lang;
                 localStorageService.set('locale', lang);
+                amMoment.changeLocale(lang);
             }
         }
     }

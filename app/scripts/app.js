@@ -52,7 +52,7 @@ angular.module( 'dateaWebApp'
 	lang = lang.split('-')[0];
 	if (localStorage.getItem('datea.locale')) lang = localStorage.getItem('datea.locale');
 	if (config.availableLocales.indexOf(lang) == -1) lang = config.defaultLocale;
-	$translateProvider.preferredLanguage(lang);
+	$translateProvider.preferredLanguage('es');
 
 
 	$httpProvider.defaults.useXDomain = true;
@@ -190,9 +190,6 @@ angular.module( 'dateaWebApp'
 
 }])
 .run([ 'amMoment', 'localStorageService', '$translate', function (amMoment, localStorageService, $translate) {
-	amMoment.changeLocale('es');
-	if (localStorageService.get('locale')) {
-		$translate.use(localStorageService.get('locale'));
-	}
+	amMoment.changeLocale($translate.use());
 }])
 ;

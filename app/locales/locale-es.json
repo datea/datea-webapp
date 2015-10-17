@@ -562,6 +562,30 @@
  		"NOT_FOUND" : "Oops no pudimos encontrar lo que buscabas."
  	},
 
- 	"REDIRECT_MSG" : "Por favor, aguarda un momento mientras te redirigimos :)"
+ 	"REDIRECT_MSG" : "Por favor, aguarda un momento mientras te redirigimos :)",
+
+	"LOG" : {
+		"IN" : "en",
+		"ONUSER" : {
+			"DATEO" : "{{actor.username}} dateó {{tags}}",
+			"COMMENT" : "{{actor.username}} comentó tu dateo {{tags}}",
+			"VOTE" : "{{actor.username}} apoyó tu dateo {{tags}}",
+			"REDATEO" : "{{actor.username}} redateó tu dateo {{tags}}"
+		},
+		"BYUSER" : {
+			"DATEO" : "dateaste {{tags}}",
+			"COMMENT" : "comentaste el dateo de {{target_user.username}} {{tags}}",
+			"VOTE" : "apoyaste el dateo de {{target_user.username}} {{tags}}",
+			"REDATEO" : "redateaste a {{target_user.username}} {{tags}}",
+			"CAMPAIGN" : "creaste una iniciativa {{tags}}"
+		},
+		"ANYUSER" : {
+			"DATEO" : "{{actor.username}} dateó {{tags}}",
+			"COMMENT" : "{{actor.username}} comentó dateo de {{target_user.username}} {{tags}}",
+			"VOTE" : "{{actor.username}} apoyó dateo de {{target_user.username}} {{tags}}",
+			"REDATEO" : "{{actor.username}} redateó a {{target_user.username}} {{tags}}",
+			"CAMPAIGN" : "{{actor.username}} creó una iniciativa {{tags}}"
+		}
+	}
 
 }

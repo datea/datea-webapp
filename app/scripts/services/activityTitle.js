@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('dateaWebApp')
-.service('ActivityTitle', ['config', 'User', '$interpolate', function ActivityUrl(config, User, $interpolate) {
+.service('ActivityTitle', ['config', 'User', '$interpolate', '$translate', function ActivityUrl(config, User, $interpolate, $translate) {
 	var renderTitle
 		, renderTags
 		;
