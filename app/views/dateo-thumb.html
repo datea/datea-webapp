@@ -17,7 +17,7 @@
 				<span class="stat" ng-show="image.dateo.vote_count"><i class="glyphicon glyphicon-thumbs-up"></i> {{image.dateo.vote_count}}</span>
 				<span class="stat" ng-show="image.dateo.comments.length"><i class="glyphicon glyphicon-comment"></i> {{image.dateo.comments.length}}</span>
 				<span class="stat" ng-show="image.dateo.redateo_count"><i class="glyphicon glyphicon-retweet"></i> {{image.dateo.redateo_count}}</span>
-				<a href="/{{image.dateo.user.username}}/dateos/{{image.dateo.id}}" class="btn datea-btn btn-xs pull-right">ver detalle</a>
+				<a href="/{{image.dateo.user.username}}/dateos/{{image.dateo.id}}" class="btn datea-btn btn-xs pull-right">{{'DATEO.GOTO_DETAIL' | translate}}</a>
 			</div>
 		</div>
 	</div>

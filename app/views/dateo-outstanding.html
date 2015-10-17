@@ -5,13 +5,13 @@
 		</div>
 		<div class="uname">
 			<h4>{{dateo.user.username}}</h4>
-			<span class="date">el {{dateo.created | date:dateFormat}}</span>
+			<span class="date">{{'DATEO.CREATED_ON' | translate}} {{dateo.created | date:dateFormat}}</span>
 		</div>
 	</div>
 	<p class="tags"><a class="tag" ng-repeat="tag in dateo.tags" href="/tag/{{tag}}">#{{tag}}</a> </p>
 	<p class="extract" ng-bind-html="dateo.extract | linky:'_blank'"></p>
 	<div class="outstanding-dateo-img" bg-from-api="{{dateo.images[$index].image}}" ng-repeat="img in dateo.images"></div>
-	<a class="btn datea-btn pull-right outstanding-dateo-more-btn" href="/{{dateo.user.username}}/dateos/{{dateo.id}}">ver detalle</a>
+	<a class="btn datea-btn pull-right outstanding-dateo-more-btn" href="/{{dateo.user.username}}/dateos/{{dateo.id}}">{{'DATEO.GOTO_DETAIL' | translate}}</a>
 	<div class="stats">
 		<div class="icon-holder stat" ng-show="dateo.vote_count > 0">
 			<span class="glyphicon glyphicon-thumbs-up"></span> {{dateo.vote_count}}

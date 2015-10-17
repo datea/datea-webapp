@@ -1,30 +1,30 @@
 <div class="datear-modal-content" da-loading="flag.loading">
 	<div class="modal-header">
 		<button type="button" class="close" ng-click="$dismiss()"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
-		<h4>Denunciar contenido inapropiado</h4>
+		<h4>{{'FLAG.TITLE' | translate}}</h4>
 	</div>
 	<div class="modal-body">
 		<div class="flag-form" ng-hide="flow.success">
-			<p class="help">Por favor describe el motivo de la denuncia.</p>
+			<p class="help">{{'FLAG.LABEL' | translate}}</p>
 			<form class="form" name="flagform">
 				<div class="form-group" ng-class="{'has-error': flow.notValid}">
-					<label class="sr-only">Motivo</label>
-					<textarea required class="form-control" msd-elastic="\n" rows="2" placeholder="Ingresa aquí el contenido" ng-model="flag.comment"></textarea>
-					<p class="help-block" ng-show="flow.notValid">Debes primero llenar el campo de descripción.</p>
+					<label class="sr-only">{{'FLAG.LABEL_SR' | translate}}</label>
+					<textarea required class="form-control" msd-elastic="\n" rows="2" placeholder="{{'FLAG.FLAG_PH' | translate}}" ng-model="flag.comment"></textarea>
+					<p class="help-block" ng-show="flow.notValid">{{'FLAG.INVALID' | translate}}</p>
 				</div>
 			</form>
 		</div>
 		<div class="flag-success" ng-show="flow.success">
-			<p>Tu denuncia se ha realizado con éxito. Actuaremos a la brevedad. ¡Gracias por colaborar con esta comunidad!</p> 
+			<p>{{'FLAG.SUCCESS_MSG' | translate}}</p> 
 		</div>
 	</div>
 	<div class="modal-footer">
 		<div class="actions" ng-hide="flow.success">
-			<button type="button" class="btn btn-default" ng-click="$dismiss()">Cerrar</button>
-			<button ng-hide="flow.success" type="button" class="btn btn-danger" ng-click="flow.doFlag()">Denunciar</button>
+			<button type="button" class="btn btn-default" ng-click="$dismiss()">{{'FLAG.CLOSE' | translate}}</button>
+			<button ng-hide="flow.success" type="button" class="btn btn-danger" ng-click="flow.doFlag()">{{'FLAG.FLAG_BTN' | translate}}</button>
 		</div>
 		<div class="actions-success" ng-show="flow.success">
-			<button type="button" class="btn btn-default" ng-click="$close()">Cerrar</button>
+			<button type="button" class="btn btn-default" ng-click="$close()">{{'FLAG.CLOSE' | translate}}</button>
 		</div>
 	</div>
 </div>

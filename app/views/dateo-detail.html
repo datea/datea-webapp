@@ -15,7 +15,7 @@
 					<a href="/{{dateo.user.username}}">
 						<h4>{{dateo.user.username}}</h4>
 					</a>
-					<p class="ff1">dateado el {{dateo.created | date:createdFormat}}</p>
+					<p class="ff1">{{'DATEO.CREATED_ON' | translate}} {{dateo.created | date:createdFormat}}</p>
 				</div>
 			</div>
 			<div class="content-holder" ng-show="!dateo.message">
@@ -24,7 +24,7 @@
 				<div class="col-xs-12 col-md-75">
 					<div class="inner dateo dateo-detail">
 						<div class="admin">
-							<div class="unpublished-msg pull-left" ng-show="dateo.id && !dateo.published">dateo sin publicar</div>
+							<div class="unpublished-msg pull-left" ng-show="dateo.id && !dateo.published">{{'DATEO.UNPUBLISHED' | translate}}</div>
 							<button class="btn btn-link dateo-edit-btn" ng-show="flow.showEditBtn" ng-click="flow.editDateo()"><i class="fa fa-pencil-square-o"></i></button>
 						</div>
 						<div class="tag-row">
@@ -66,8 +66,11 @@
 									<da-vote vote-obj="dateo" vote-obj-type="dateo"></da-vote>
 
 									<div class="datea-glyph-holder hover-enabled" ng-click="flow.focusCommentForm()">	
-										<span class="glyphicon glyphicon-comment datea-glyph"></span> <span class="datea-glyph-text" ng-show="dateo.comment_count > 0"><p>{{dateo.comments.length}}</p><p><ng-pluralize count="dateo.comments.length" when="{'one':
-										'comentario','other':'comentarios'}"></ng-pluralize></p></span>
+										<span class="glyphicon glyphicon-comment datea-glyph"></span> 
+										<span class="datea-glyph-text" ng-show="dateo.comment_count > 0">
+											<p>{{dateo.comments.length}}</p>
+											<p>{{(dateo.comments.length == 1 ? 'COMMENT' : 'COMMENT.COMMENTS') | translate}}</p>
+										</span>
 									</div>
 
 									<da-redateo dateo="dateo"></da-redateo>
@@ -94,14 +97,14 @@
 						</div>
 						
 						<div class="comments-holder">
-							<h3 ng-show="dateo.comments.length > 0">Comentarios</h3>
+							<h3 ng-show="dateo.comments.length > 0">{{'COMMENT.COMMENTS' | translate}}</h3>
 
 							<div class="comments">
 								<div class="comment-holder" ng-repeat="comment in dateo.comments" ng-class="{'slidedown': comment.new}" da-on-last-repeat="slideDownComments()">
 									<div class="user">
 										<img class="img-circle" ng-src="{{comment.user.image_small | imgFromApi}}" alt="{{comment.user.username}}">
 										<a href="/{{comment.user.username}}"><span>{{comment.user.username}}</span></a>
-										<span class="date">el {{comment.created | date:dateFormat}}</span>
+										<span class="date">{{'COMMENT.ON' | translate}} {{comment.created | date:dateFormat}}</span>
 									</div>
 									
 									<p class="comment-content newline2br" ng-bind-html="comment.comment | linky:'_blank'"></p>
@@ -117,9 +120,9 @@
 									<div class="form-group">
 										<textarea id="comment-input" ng-disabled="flow.form.loading" class="form-control" msd-elastic="" rows="1" ng-model="flow.form.comment" placeholder="Tu comentario"></textarea>
 									</div>
-									<button type="submit" class="btn datea-btn" ng-click="flow.postComment()">Comentar</button> &nbsp;<i ng-show="flow.form.loading" class="fa fa-circle-o-notch fa-spin"></i>
+									<button type="submit" class="btn datea-btn" ng-click="flow.postComment()">{{'COMMENT.COMMENT_BTN' | translate}}</button> &nbsp;<i ng-show="flow.form.loading" class="fa fa-circle-o-notch fa-spin"></i>
 
-									<da-follow follow-obj="dateo" follow-id="{{dateo.id}}" follow-label="seguir hilo" btn-class="follow-dateo btn-link pull-right"></da-follow>
+									<da-follow follow-obj="dateo" follow-id="{{dateo.id}}" follow-label="{{'FOLLOW.FOLLOW_THREAD' | translate}}" btn-class="follow-dateo btn-link pull-right"></da-follow>
 
 								</form>
 							</div>
@@ -128,13 +131,13 @@
 				</div>
 				<div class="col-xs-12 col-md-45 sidebar" ng-show="!flow.message">
 					<div class="side-block" ng-show="dateo.position">
-						<h3>Ubicación</h3>
+						<h3>{{'DATEO.LOCATION_LABEL' | translate}}</h3>
 						<leaflet id="leafletDateo" defaults="flow.leaflet.defaults" markers="flow.leaflet.markers" center="flow.leaflet.center" height="260px" width="100%" tiles="flow.leaflet.tiles"></leaflet>
 						<p ng-if="dateo.address">{{dateo.address}}</p>
 						<p ng-if="dateo.admin_level1">{{dateo.admin_level1}} > {{dateo.admin_level2}} > {{dateo.admin_level3}}</p>
 					</div>
 					<div class="side-block related-campaigns" ng-show="flow.campaigns.length > 0">
-						<h3>Iniciativas relacionadas</h3>
+						<h3>{{'DATEO.RELATED_CAMPAIGNS' | translate}}</h3>
 						<div class="tag-row" ng-repeat="camp in flow.campaigns">
 							<a class="tag" href="/{{camp.user.username}}/{{camp.slug}}">{{camp.name}}</a>
 						</div>

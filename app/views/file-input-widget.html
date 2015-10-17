@@ -1,9 +1,9 @@
 <div class="file-input-widget" ng-class="{'dropit': flow.isOver}" da-loading="flow.loading">
-	<p class="drag-message" ng-bind-html="flow.dragMessage"></p>
+	<p class="drag-message" ng-bind-html="flow.dragMessage | translate"></p>
 
-	<p class="select-message">o si prefieres:</p>
+	<p class="select-message">{{'FILEINPUT.OR_PREFER' | translate}}:</p>
 	<label for="inputFileElement" class="btn btn-default">
-		{{flow.btnMessage}}
+		{{flow.btnMessage | translate}}
 		<input ng-if="maxNumber > 1" id="inputFileElement" name="inputFileElement" type="file" multiple accept="{{flow.accept}}">
 		<input ng-if="maxNumber == 1" id="inputFileElement" name="inputFileElement" type="file" accept="{{flow.accept}}">
 	</label>

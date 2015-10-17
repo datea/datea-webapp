@@ -45,7 +45,7 @@ angular.module( 'dateaWebApp'
 	    suffix: '.json'
 	});
 	$translateProvider.preferredLanguage('es');
-	
+
 	console.log('navigator', navigator);
 
 	$httpProvider.defaults.useXDomain = true;

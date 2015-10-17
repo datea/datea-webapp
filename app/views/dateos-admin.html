@@ -1,33 +1,35 @@
 <div class="dateos-admin-holder">
-	<nav class="navbar navbar-default campaign-form-nav admin-nav" ng-class="{fix: flow.fixMenu}">
+	<div class="navbar navbar-default campaign-form-nav admin-nav" ng-class="{fix: flow.fixMenu}">
 		<div class="container-fluid">
 			<div class="row">
 				<div class="col-xs-25 col-md-25 col-lg-25">
-					<a class="btn campaign-back-btn btn-link" href="/{{campaign.user.username}}/{{campaign.slug}}"><span class="glyphicon glyphicon-chevron-left"></span> Volver a la iniciativa</a>
+					<a class="btn campaign-back-btn btn-link" href="/{{campaign.user.username}}/{{campaign.slug}}"><span class="glyphicon glyphicon-chevron-left"></span> {{'CAMPAIGN_DASHBOARD.BACK' | translate}}</a>
 				</div>
 				<div class="col-xs-95 col-md-95 col-lg-95">
 					<div class="list-actions" ng-hide="flow.showDetail">
 						<div class="num-results" ng-hide="flow.loading">
-							dateos del <span class="num">{{(query.page -1)*query.itemsPerPage}}</span> al 
+							{{'CAMPAIGN_DASHBOARD.DATEOS_FROM' | translate}} 
+							<span class="num">{{(query.page -1)*query.itemsPerPage}}</span> 
+							{{'CAMPAIGN_DASHBOARD.UNTIL' | translate}}
 							<span class="num" ng-show="query.totalCount < query.itemsPerPage">{{query.totalCount}}</span>
 							<span ng-show="query.totalCount > query.itemsPerPage">
-								<span class="num">{{query.itemsPerPage}}</span> de <span class="num">{{query.totalCount}}</span>
+								<span class="num">{{query.itemsPerPage}}</span> {{'OF' | translate}} <span class="num">{{query.totalCount}}</span>
 							</span>
 						</div>
 					</div>
 					<div class="detail-actions" ng-show="flow.showDetail">
-						<button class="btn btn-default" ng-click="flow.closeDateo()"><span class="glyphicon glyphicon-chevron-left"></span> Cerrar</button>
+						<button class="btn btn-default" ng-click="flow.closeDateo()"><span class="glyphicon glyphicon-chevron-left"></span> {{'CLOSE' | translate}}</button>
 						<div class="form-inline set-status-control">
 							<div class="form-group">
-								<label class="control-label">Marcar como:</label>
+								<label class="control-label">{{'CAMPAIGN_DASHBOARD.MARK_AS' | translate}}:</label>
 								<label class="radio-inline">
-									<input type="radio" name="dateoStatus" value="new" checked="checked" ng-change="flow.setDateoStatus()" ng-model="flow.dateoStatus"/> Nuevo
+									<input type="radio" name="dateoStatus" value="new" checked="checked" ng-change="flow.setDateoStatus()" ng-model="flow.dateoStatus"/> {{'CAMPAIGN_DASHBOARD.NEW' | translate}}
 								</label>
 								<label class="radio-inline">
-									<input type="radio" name="dateoStatus" value="reviewed" ng-change="flow.setDateoStatus()" ng-model="flow.dateoStatus"/> Atendido
+									<input type="radio" name="dateoStatus" value="reviewed" ng-change="flow.setDateoStatus()" ng-model="flow.dateoStatus"/> {{'CAMPAIGN_DASHBOARD.REVIEWED' | translate}}
 								</label>
 								<label class="radio-inline">
-									<input type="radio" name="dateoStatus" value="solved" ng-change="flow.setDateoStatus()" ng-model="flow.dateoStatus"/> Solucionado
+									<input type="radio" name="dateoStatus" value="solved" ng-change="flow.setDateoStatus()" ng-model="flow.dateoStatus"/> {{'CAMPAIGN_DASHBOARD.SOLVED' | translate}}
 								</label>
 							</div>
 						</div>
@@ -35,7 +37,7 @@
 				</div> 
 			</div>
 		</div>
-	</nav>
+	</div>
 
 	<div class="admin-container container-fluid" ng-class="{fix: flow.fixMenu}">
 		<div class="row">
@@ -44,7 +46,7 @@
 				<div class="inner query-controls">
 					<div class="bg"></div>
 					<div class="form-group search-field">
-						<label class="sr-only">Buscar</label>
+						<label class="sr-only">{{'CAMPAIGN_DASHBOARD.SEARCH' | translate}}</label>
 						<div class="input-group">
 							<input type="text" class="form-control" ng-model="query.search" placeholder="buscar frase" ng-enter="flow.getDateos()">
 							<span class="input-group-btn">
@@ -54,14 +56,14 @@
 					</div>
 
 					<div class="form-group tag-field">
-						<label for="select-tag">Filtrar por etiqueta</label>
+						<label for="select-tag">{{'CAMPAIGN_DASHBOARD.TAG_FILTER' | translate}}</label>
 						<select class="form-control" ng-model="query.tag" ng-options="item.value as item.label for item in query.tagFilterOptions" ng-change="flow.getDateos()"></select>
 					</div>
 
 					<div class="form-group status-field">
-						<label for="select-status">Filtrar por estado</label>
+						<label for="select-status">{{'CAMPAIGN_DASHBOARD.STATUS_FILTER' | translate}}</label>
 						<select class="form-control" ng-model="query.status" ng-change="flow.getDateos()">
-							<option value="all" selected>-- todos los estados --</option>
+							<option value="all" selected>-- {{'CAMPAIGN_DASHBOARD.STATUS_ALL' | translate}} --</option>
 							<option value="new">Nuevos dateos</option>
 							<option value="reviewed">Dateos atendidos</option>
 							<option value="solved">Dateos solucionados</option>
@@ -69,14 +71,14 @@
 					</div>
 
 					<div class="form-group date-field">
-						<label>filtrar fecha</label>
+						<label>{{'SEARCH_FILTER.FILTER_DATE' | translate}}</label>
 						<div class="form-inline">
-							<label>del</label>
-							<input type="text" class="form-control since" ng-model="query.since" datepicker-popup="yyyy/MM/dd" is-open="flow.sincePopup" ng-focus="flow.sincePopup = true" ng-change="flow.getDateos()"/>
+							<label>{{'SEARCH_FILTER.FROM' | translate}}</label>
+							<input type="text" class="form-control since" ng-model="query.since" uib-datepicker-popup="dateInputFormat" is-open="flow.sincePopup" ng-focus="flow.openSincePopup($event)" ng-change="flow.getDateos()"/>
 						</div>
 						<div class="form-inline">
-							<label>al</label>
-							<input type="text" class="form-control until" ng-model="query.until" datepicker-popup="yyyy/MM/dd" is-open="flow.untilPopup" ng-focus="flow.untilPopup = true" ng-change="flow.getDateos()" />
+							<label>{{'SEARCH_FILTER.UNTIL' | translate}}</label>
+							<input type="text" class="form-control until" ng-model="query.until" uib-datepicker-popup="dateInputFormat" is-open="flow.untilPopup" ng-focus="flow.openUntilPopup($event)" ng-change="flow.getDateos()" />
 						</div>
 					</div>
 					<!--
@@ -109,18 +111,18 @@
 							<thead>
 								<tr>
 									<th>#</th>
-									<th>Etiquetas</th>
-									<th>Extracto</th>
-									<th>Usuario</th>
-									<th>Creado</th>
+									<th>{{'CAMPAIGN_DASHBOARD.COL_TAGS' | translate}}</th>
+									<th>{{'CAMPAIGN_DASHBOARD.COL_EXTRACT' | translate}}</th>
+									<th>{{'CAMPAIGN_DASHBOARD.COL_USER' | translate}}</th>
+									<th>{{'CAMPAIGN_DASHBOARD.COL_CREATED' | translate}}</th>
 									<th></th>
-									<th>Estado</th>
+									<th>{{'CAMPAIGN_DASHBOARD.COl_STATUS' | translate}}</th>
 								</tr>
 							</thead>
 							<tbody>
 								<tr class="dateo-listed" ng-repeat="dateo in campaign.dateos" ng-click="flow.openDateo($index)">
 									<td class="id">{{dateo.id}}</td>
-									<td class="tags"><div class="inner"><span class="tag label" ng-repeat="tag in dateo.tags | filter: '!'+campaign.main_tag.tag">#{{tag.tag}}</span></div></td>
+									<td class="tags"><div class="inner"><span class="tag label" ng-repeat="tag in dateo.tags | filter: '!'+campaign.main_tag.tag">#{{tag}}</span></div></td>
 									<td class="extract">{{dateo.extract}}</td>
 									<td class="username">{{dateo.user.username}}</td>
 									<td class="created">{{dateo.created | date:dateFormat}}</td>
@@ -134,8 +136,8 @@
 							</tbody>
 						</table>
 					</div>
-					<div class="no-results" ng-show="campaign.dateos.length === 0 && !flow.loading"><i class="fa fa-meh-o"></i> No se encontraron resultados.</div>
-					<pagination ng-show="query.totalCount > query.itemsPerPage && !flow.loading" boundary-links="true" items-per-page="query.itemsPerPage" total-items="query.totalCount" page="query.page" class="pagination pagination-lg" previous-text="&lsaquo;" next-text="&rsaquo;" first-text="&laquo;" last-text="&raquo;" max-size="10"></pagination>
+					<div class="no-results" ng-show="campaign.dateos.length === 0 && !flow.loading"><i class="fa fa-meh-o"></i> {{'CAMPAIGN_DASHBOARD.NO_RESULTS' | translate}}</div>
+					<uib-pagination ng-show="query.totalCount > query.itemsPerPage && !flow.loading" boundary-links="true" items-per-page="query.itemsPerPage" total-items="query.totalCount" page="query.page" class="pagination pagination-lg" previous-text="&lsaquo;" next-text="&rsaquo;" first-text="&laquo;" last-text="&raquo;" max-size="10"></uib-pagination>
 				</div>
 			</div>
 		</div>

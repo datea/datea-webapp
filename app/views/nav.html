@@ -10,14 +10,14 @@
 				<span class="icon-bar"></span>
 			</button>
 		</div>
-		<div class="navbar-collapse collapse pull-right" collapse="nav.isCollapsed">
+		<div class="navbar-collapse collapse pull-right" uib-collapse="!nav.isCollapsed">
 			<ul class="nav navbar-nav ff1">
-				<li ng-show="nav.visible"><a href="/buscar">Buscar</a></li>
-				<li ng-show="nav.visible"><a href="/iniciativas">Iniciativas</a></li>
+				<li ng-show="nav.visible"><a href="/buscar">{{'MENU_TOP.SEARCH' | translate}}</a></li>
+				<li ng-show="nav.visible"><a href="/iniciativas">{{'MENU_TOP.CAMPAIGNS' | translate}}</a></li>
 				<li ng-show="nav.isCampaign"><a href="" ng-click="nav.loadEmbedBuilder()">Embed</a></li>
-				<li ng-show="nav.visible"><a href="http://blog.datea.pe">Blog</a></li>
-				<li ng-show="nav.visible"><a href="/acerca">Acerca</a></li>
-				<li ng-show="nav.visible"><a href="http://ayuda.datea.pe">Ayuda</a></li>
+				<li ng-show="nav.visible"><a href="http://blog.datea.pe">{{'MENU_TOP.BLOG' | translate}}</a></li>
+				<li ng-show="nav.visible"><a href="/acerca">{{'MENU_TOP.ABOUT' | translate}}</a></li>
+				<li ng-show="nav.visible"><a href="http://ayuda.datea.pe">{{'MENU_TOP.HELP' | translate}}</a></li>
 <!-- 				<li ng-show="nav.visible"><button type="button" class="btn datea-datear-btn navbar-btn" ng-click="nav.datear()">Datea<i class="glyphicon glyphicon-map-marker"></i></button></li> -->
 <!-- 				<li ng-show="!nav.visible"><button type="button" class="btn btn-success navbar-btn" ng-click="nav.signIn()">Ingresa</button></li> --> 
 				<li ng-show="nav.isSignedIn" class="user-ctrl dropdown" dropdown>
@@ -27,20 +27,20 @@
 							<b class="caret"></b>
 						</a>
 						<ul class="dropdown-menu pull-right" role="menu">
-							<li><a href="/{{ user.username }}"><i class="fa fa-user"></i> Ver mi perfil</a></li>
-							<li><a href="/configuracion"><i class="fa fa-cog"></i> Configuración de cuenta</a></li>
+							<li><a href="/{{ user.username }}"><i class="fa fa-user"></i> {{'USER_MENU.GOTO_PROFILE' | translate}}</a></li>
+							<li><a href="/configuracion"><i class="fa fa-cog"></i> {{'USER_MENU.CONFIG' | translate}}</a></li>
 							<li class="divider"></li>
-							<li><a href="/crear-iniciativa">Crear iniciativa</a></li>
+							<li><a href="/crear-iniciativa">{{'USER_MENU.CREATE_CAMPAIGN' | translate}}</a></li>
 							<li class="divider"></li>
-							<li><a href="" ng-click="nav.signOut()" analytics-on="click" analytics-event="Logout"><i class="fa fa-sign-out"></i> Salir</a></li>
+							<li><a href="" ng-click="nav.signOut()" analytics-on="click" analytics-event="Logout"><i class="fa fa-sign-out"></i> {{'USER_MENU.LOGOUT' | translate}}</a></li>
 						</ul>
 				</li>
 				<li ng-show="!nav.isSignedIn" class="user-login">
-					<a class="btn btn-default btn-nav-login" href="/signin"><i class="fa fa-sign-in"></i> INGRESA</a>
+					<a class="btn btn-default btn-nav-login" href="/signin"><i class="fa fa-sign-in"></i> {{'LOGIN' | translate}}</a>
 				</li>
 			</ul>
 		</div>
-		<span ng-show="nav.isSignedIn"><datear-btn btn-class="nav-btn" btn-text=""></datear-btn></span>
+		<span ng-show="nav.isSignedIn"><datear-btn btn-class="nav-btn"></datear-btn></span>
 	</div>
 </nav>
 <alert class="general-alert" ng-repeat="alert in alerts" type="alert.type" close="closeAlert($index)">{{alert.msg}}</alert>

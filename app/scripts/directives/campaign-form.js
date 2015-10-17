@@ -10,7 +10,8 @@ angular.module("dateaWebApp")
 , '$document'
 , '$http'
 , 'geoJSONStyle'
-, function(Api, geo, config, leafletData, User, $location, $rootScope, $document, $http, geoJSONStyle) {
+, '$translate'
+, function(Api, geo, config, leafletData, User, $location, $rootScope, $document, $http, geoJSONStyle, $translate) {
 	return {
 	      restrict: "E"
 	    	, scope: {
@@ -285,14 +286,22 @@ angular.module("dateaWebApp")
 									return;
 								} else {
 									$scope.flow.validInput.mainTag     = !response.objects.length ? true : 'warning';
-									$scope.flow.messages.mainTagExists = !response.objects.length ? '' : config.dashboard.validationMsgs.mainTagExists;
+									if (!response.objects.length) {
+										$scope.flow.messages.mainTagExists = '';
+									}else {
+										$translate('CAMPAIGN_FORM.DUPLICATE_MAINTAG').then(function (msg) {
+											$scope.flow.messages.mainTagExists = msg;
+										});
+									}
 									$scope.flow.showSlugField = false;
 									campaignNeedsSlug = false;
 									if (!$scope.campaign.id) {
 										angular.forEach(response.objects, function (c) {
 											if (c.user.id === User.data.id) {
 												sameTagAndUser = true;
-												$scope.flow.messages.mainTagExists = config.dashboard.validationMsgs.duplicateUserTag;
+												$translate('CAMPAIGN_FORM.DUPLICATE_USER_MAINTAG').then(function (msg) {
+													$scope.flow.messages.mainTagExists = msg;
+												});
 												$scope.campaign.slug = null;
 												$scope.flow.showSlugField = true;
 												campaignNeedsSlug = true;
@@ -321,7 +330,13 @@ angular.module("dateaWebApp")
 									$scope.flow.messages.slugError = '';
 								}else{
 									$scope.flow.validInput.slug = !response.objects.length ? true : false;
-									$scope.flow.messages.slugError = !response.objects.length ? '' : config.dashboard.validationMsgs.slugError;
+									if (!response.objects.length) {
+										$scope.flow.messages.slugError = '';
+									}else {									
+										$translate('CAMPAIGN_FORM.SLUG_ERROR').then(function (msg) {
+											$scope.flow.messages.slugError = msg;
+										});
+									}
 								}
 							});
 						}else{
@@ -488,7 +503,9 @@ angular.module("dateaWebApp")
 						}
 
 						if (!isValid) {
-							$scope.flow.alerts = ["Uy, parece que te faltó llenar algún campo. Chequea los campos marcados en rojo y vuélvelo a intentar."];
+							$translate('CAMPAIGN_FORM.ERROR_INVALID').then(function(msg) {
+								$scope.flow.alerts = [msg]
+							});
 						}
 
 						return isValid;
@@ -513,80 +530,6 @@ angular.module("dateaWebApp")
 						Api.follow
 						.doFollow( { follow_key: 'tag.'+tagid} );
 					};
-
-					// HELP FOR INDIVIDUAL FIELDS/SECTIONS
-					$scope.help = {
-						  name : {
-						  	content : 'Escoge un título llamativo, que describa e identifique tu iniciativa.'
-						  }
-						, mainTag : {
-								title   : 'Tag principal'
-							,	content : 'Este tag identifica tu iniciativa dentro y fuera de Datea. ¡Escogelo bien! '
-											  + 'Toma en cuenta: que sea simple, identifique claramente tu iniciativa, no sea '
-											  + 'muy generico a menos que desees compartirlo. Tips para diferenciar: inluye siglas de tu organización, '
-											  + 'el lugar, año etc.'
-						}
-						, published : {
-							  content : 'Las iniciativas publicadas aparece en nuestra busqueda.'
-						}
-						, image : {
-							  content : 'La imágen que identifica a tu iniciativa en los listados (busqueda, inicio etc). '
-							          + 'Recomendamos una imagen distinctiva (logo, afiche, foto emblemática), y que el contenido principal se encuentre'
-							          + 'centrado.'
-						}
-						, image2 : {
-							  content : 'La imágen que sale en tu iniciativa en el banner (arriba a la derecha).'
-							          + 'Recomendamos una imagen con formato horizontal, de preferencia alargado (16:9), para que ocupe mas espacio en el banner.'
-						}
-						, endDate : {
-							  content : 'Opcionalmente puedes indicar una fecha de cierre de tu iniciativa.'
-						}
-						, category : {
-								content : 'Esta categoría ayuda a encontrar tu iniciativa en nuestra busqueda de iniciativas.'
-						}
-						, shortDescription : {
-								content : 'Slogan, subtítulo o descripción corta de iniciativa (max 140 caractéres).'
-						}
-						, mission : {
-							  content : 'Explícale a los usuarios la razón por la que deben participar de la iniciativa: objetivos, que se espera lograr.'
-						}
-						, informationDestiny : {
-							  content : 'Indica qué sucederá con la información que se recopila, si se va a mandar a algún lugar, quién la va a recibir etc.'
-						}
-						, secondaryTags : {
-							  title   : 'Etiquetas'
-							, content : 'Estas etiquetas le son sugeridas a los usuarios para categorizar sus dateos. ' 
-												+ 'Por ello, ayudan luego a analizar mejor la información. Recomendamos elegir ' 
-												+ 'con cuidado, reutilizar etiquetas cuando sea pertinente y no usar demasiadas (idealmente no más de 7).'
-						} 
-						, map : {
-								title   : 'Opciones de ubicación'
-							, content : 'Coloca el mapa en el lugar y nivel de zoom, en que quieres que aparezca. '
-							  				+ 'Opcionalmente puedes delimitar la zona de dateo con un polígono, '
-							  				+ 'utilizando el control respectivo en la parte superior izquierda del mapa. '
-						}
-						, layerFiles : {
-								title   : 'Archivos Kml/geoJSON'
-							, content : 'Opcionalmente puedes subir archivos kml o geoJSON para mostrar puntos, lineas y polígonos, incluyendo texto en popups. ' 
-												+	'Recomendamos para ello crear archivos geoJSON en Mapbox, '
-							  				+ 'porque son más compatibles con Datea y siempre conservan el estilo.'
-						}
-						, defaultVis : {
-							  content : 'Elige cual de las visualizaciones aparecerá por defecto. Elige la que tenga más sentido para tu iniciativa.'
-						}
-						, defaultFilter : {
-							  content : 'Si deseas moderar el contenido de tu iniciativa (aprobar dateos de otros usuarios), '
-							  				+ 'entonces te sugerimos que enciendas este filtro. Asi aparecerán por defecto sólo '
-							  				+ 'tus dateos y los que re-dateas. '
-							  				+ 'Los usuarios pueden desactivar el filtro si lo desean.'
-						}
-						, slug : {
-							  title   : 'Componente de URL'
-							, content : 'La URLs de iniciativas normalmente se compone de tu usuario y el tag principal. '
-							  				+ 'Como ya tienes una iniciativa con ese tag, es necesario que indiques una alternativa. '
-							  				+ 'Se aceptan letras, números y giones. Sin tildes, espacios, diéresis etc.'
-						}
-					}
 
 					buildCategories();
 					buildBoundariesMap();

@@ -3,17 +3,17 @@
 		<div class="container-fluid">
 			
 			<div class="btn-create-holder hidden-xs">
-				<a href="/crear-iniciativa" class="btn btn-success">Crear nueva iniciativa</a> 
+				<a href="/crear-iniciativa" class="btn btn-success">{{ 'CAMPAIGN_FORM.CREATE_BTN' | translate }}</a> 
 			</div>
 
-			<h1>Iniciativas dateras</h1>
+			<h1>{{ 'CAMPAIGN_FORM.TITLE' | translate }}</h1>
 
 			<form id="campaign-list-form" class="form" role="form">
 
 				<div class="form-group search-field">
-					<label class="sr-only" for="campaign-search-input">Buscar Frase</label>
+					<label class="sr-only" for="campaign-search-input">{{ 'CAMPAIGN_FORM.SEARCH_PH' | translate }}</label>
 					<div class="input-group search-input">
-						<input id="campaign-search-input" type="text" class="form-control" ng-model="query.search" placeholder="buscar frase">
+						<input id="campaign-search-input" type="text" class="form-control" ng-model="query.search" placeholder="{{ 'CAMPAIGN_FORM.SEARCH_PH' | translate }}">
 						<span class="input-group-btn">
 							<button class="btn" ng-click="flow.doQuery()">
 								<span class="glyphicon glyphicon-search"></span>
@@ -23,19 +23,19 @@
 				</div>
 
 				<div class="form-group category-field select-field">
-					<label for="category-select">Categoria: </label>
+					<label for="category-select">{{ 'CAMPAIGN_FORM.CATEGORY' | translate }}:</label>
 					<select class="form-control" ng-model="query.category" ng-options="category.id as category.name for category in flow.categories"></select>
 				</div>
 
 				<div class="form-group orderby-field select-field">
-					<label for="orderby-select">Ordenar por: </label>
+					<label for="orderby-select">{{ 'CAMPAIGN_FORM.ORDER_BY' | translate }}:</label>
 					<select class="form-control" ng-model="query.orderBy"  ng-options="opt.val as opt.label for opt in flow.orderByOptions"></select> 
 				</div>
 
-				<button class="btn btn-default btn-lg btn-search" ng-click="flow.doQuery()">BUSCAR</button>
+				<button class="btn btn-default btn-lg btn-search" ng-click="flow.doQuery()">{{ 'CAMPAIGN_FORM.SEARCH_BTN' | translate }}</button>
 
 			</form>
-			<div class="num-results" ng-hide="flow.loading">{{query.totalCount}} resultados</div>
+			<div class="num-results" ng-hide="flow.loading">{{query.totalCount}} {{ 'CAMPAIGN_FORM.RESULTS' | translate }}</div>
 		</div>
 	</div>
 

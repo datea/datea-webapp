@@ -1,15 +1,17 @@
 angular.module("dateaWebApp")
 .directive("daDateoTeaser", 
 [
-	'$rootScope'
-,	'$location'
+  '$rootScope'
+, '$location'
 , '$modal'
 , 'config'
+, '$translate'
 ,	function (
-		$rootScope
+	  $rootScope
 	, $location
 	, $modal
 	, config
+	, $translate
 ) {
 	return {
 			restrict    : "E"
@@ -43,17 +45,20 @@ angular.module("dateaWebApp")
 					if ($scope.campaignId && $scope.dateo.admin && $scope.dateo.admin[$scope.campaignId]) {
 						status = $scope.dateo.admin[$scope.campaignId].status;
 						if (status != 'new') {
-							$scope.flow.status = {
-								  msg    : status == 'reviewed' ? 'atendido' : 'solucionado'
+							$translate(['DATEO.SOLVED', 'DATEO.REVIEWED'])
+							.then(function(t) {
+								$scope.flow.status = {
+								  msg    : status == 'reviewed' ? t['DATEO.REVIEWED'] : t['DATEO.SOLVED']
 								, type   : status
 							} 
+							});
 						} 
 					}
-				}
+				};
 
 				$scope.focusDateo = function () {
 					$rootScope.$broadcast('focus-dateo', {id: $scope.dateo.id});
-				}
+				};
 
 				$scope.openDetail = function () {
 					if ($scope.detailInline) {
@@ -62,7 +67,7 @@ angular.module("dateaWebApp")
 						console.log($scope.dateo.user.username+'/dateos/'+$scope.dateo.id);
 						$location.path($scope.dateo.user.username+'/dateos/'+$scope.dateo.id);
 					}
-				}
+				};
 
 				$scope.teaser.imgDetail = function ( img ) {
 					var givens;
@@ -77,7 +82,7 @@ angular.module("dateaWebApp")
 					         }
 
 					$modal.open( givens );
-				}
+				};
 
 				checkStatus();
 		}

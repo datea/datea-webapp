@@ -7,7 +7,7 @@
 					<div class="block block-1">
 						<div class="user-info ff1">
 							<div class="inner">
-								<div class="datero ff1">dater@</div>
+								<div class="datero ff1">{{'DATERO_LABEL' | translate}}</div>
 								<div class="info-head">
 									<div class="uimg-cell">
 										<div class="uimg-wrap">
@@ -18,8 +18,7 @@
 									<div class="udata-cell">
 										<h3><a href="/{{user.username}}">{{user.username}}</a></h3>
 										<div class="stats">
-											<span class="dateos-count" ng-if="user.dateo_count > 0">{{user.dateo_count}} <ng-pluralize count="user.dateo_count" when="{'one':
-											'dateo','other':'dateos'}"></ng-pluralize> </span>
+											<span class="dateos-count" ng-if="user.dateo_count > 0">{{user.dateo_count}} {{(user.dateo_count == 1 ? 'DATEO' : 'DATEOS') | translate}}</span>
 											<!--<span class="votes-count" ng-if="user.votes.length > 0">{{user.votes.length}} <ng-pluralize count="user.votes.length" when="{'one':
 											'apoyo','other':'apoyos'}"></span>-->
 										</div>
@@ -31,7 +30,7 @@
 									</div>
 									<!--<a class="btn datea-btn ff1" href="#!/crear-niciativa">Crear iniciativa</a>-->
 									<div class="user-menu">
-										<a href="/{{user.username}}">Ir a mi perfil</a>
+										<a href="/{{user.username}}">{{'HOME.GOTO_PROFILE' | translate}}</a>
 									</div>
 								</div>
 							</div>
@@ -39,7 +38,7 @@
 					</div>
 					<div class="block block-2" ng-init="homeSI.showFollowHelp = true">
 						<div class="user-follows ff1" ng-show="homeSI.followingTags.length > 0">
-							<h4 class="bubble-title">etiquetas que sigo</h4>
+							<h4 class="bubble-title">{{'HOME.TAGS_FOLLOWED' | translate}}</h4>
 							<div class="tag-buttons">
 								<a class="datea-tag-btn user-tag" ng-href="/tag/{{tag.tag}}" ng-repeat="tag in homeSI.followingTags">
 									#{{tag.tag}}
@@ -47,14 +46,13 @@
 							</div>
 						</div>
 						<alert class="follow-welcome" type="datea" close="homeSI.showFollowHelp = false" ng-show="homeSI.followingTags.length === 0 && homeSI.showFollowHelp">
-							<h4>¡Aún no sigues etiquetas!</h4>
-							<p>Sigue etiquetas para visualizar y participar de los temas que te interesan. 
-							Para ello, cliquea sobre ellas y activa el botón seguir.</p>
+							<h4>{{'HOME.NO_TAGS_FOLLOWED_TITLE' | translate}}</h4>
+							<p>{{'HOME.NO_TAGS_FOLLOWED_MSG' | translate}}</p>
 						</alert>
 					</div>
 					<div class="block block-4 hidden-xs" ng-show="homeSI.history.length > 0">
 						<div class="user-history-holder ff1">
-							<h5>últimas acciones:</h5>
+							<h5>{{'HOME.LAST_ACTIONS' | translate}}</h5>
 							<ul class="user-history">
 								<li class="user-history-item" ng-repeat="item in homeSI.history">
 									<div class="head">
@@ -64,7 +62,7 @@
 									<p class="activity-extract">{{item.data.extract}}</p>
 								</li>
 							</ul>
-							<button class="btn btn-sm btn-link" ng-click="flow.showMoreHistory()" ng-show="flow.historyTotal > flow.historyResults">ver más</button>
+							<button class="btn btn-sm btn-link" ng-click="flow.showMoreHistory()" ng-show="flow.historyTotal > flow.historyResults">{{'MORE' | translate}}</button>
 						</div>
 					</div>
 				</div>
@@ -75,27 +73,27 @@
 
 					<div class="intro-holder">
 
-						<h1 class="ff1">¡Bienvenido a Datea!</h1>
+						<h1 class="ff1">{{'HOME.WELCOME' | translate}}</h1>
 
 						<div class="row">
 
 							<div class="col-xs-12">
 								<div class="search-holder">
-									<p class="ff1">Busca temas en los que quieras participar</p>
+									<p class="ff1">{{'HOME.SEARCH_TITLE' | translate}}</p>
 									<div class="input-group input-group-lg">
-										<input type="text" class="form-control" ng-model="query.search" placeholder="buscar" typeahead="tags for tags in homeSI.autocompleteSearch($viewValue) | filter:$viewValue" typeahead-loading="loadingSearchSuggestions" select-first="false" ng-enter="flow.searchDateos()">
+										<input type="text" class="form-control" ng-model="query.search" placeholder="{{'HOME.SEARCH_PH' | translate}}" typeahead="tags for tags in homeSI.autocompleteSearch($viewValue) | filter:$viewValue" typeahead-loading="loadingSearchSuggestions" select-first="false" ng-enter="flow.searchDateos()">
 										<span class="input-group-btn">
 											<button class="btn btn-default" type="button" ng-click="flow.searchDateos()"><i class="fa fa-search"></i></button>
 										</span>
 									</div>
-									<p class="ff1">o datea con una nueva etiqueta para crear un mapa.</p>
+									<p class="ff1">{{'HOME.SEARCH_SUBTITLE' | translate}}</p>
 								</div>
 							</div>
 
 							<div class="col-xs-12">
 								<div class="trending-tags-holder ff1" ng-show="homeSI.trendingTags.length > 0">
 									<div class="tag-buttons">
-										<h4 class="bubble-title">Tendencias</h4>
+										<h4 class="bubble-title">{{'TRENDS' | translate}}</h4>
 										<a class="datea-tag-btn trending-tag" ng-href="/tag/{{tag.tag}}" ng-class="{followable: tag._followable}" ng-repeat="tag in homeSI.trendingTags">
 											#{{tag.tag}}
 										</a>
@@ -108,16 +106,16 @@
 
 					<div class="campaign-list-holder" da-loading="homeSI.loading.campaigns">
 						<div class="campaign-title clearfix">
-							<h3 class="pull-left">INICIATIVAS DATERAS</h3>
+							<h3 class="pull-left">{{'HOME.CAMPAIGNS_TITLE' | translate}}</h3>
 							<div class="help-menu pull-right">
-								<a class="hidden-xs" href="/iniciativas">Buscar iniciativas</a><span class="separator"></span>
-								<a class="hidden-xs" href="http://ayuda.datea.pe/index/iniciativas/">¿Qué es una iniciativa?</a><span class="separator"></span>
-								<a class="hidden-xs" href="/crear-iniciativa">Crear iniciativa</a>
+								<a class="hidden-xs" href="/iniciativas">{{'HOME.SEARCH_CAMPAIGNS' | translate}}</a><span class="separator"></span>
+								<a class="hidden-xs" href="http://ayuda.datea.pe/index/iniciativas/">{{'HOME.ABOUT_CAMPAIGNS' | translate}}</a><span class="separator"></span>
+								<a class="hidden-xs" href="/crear-iniciativa">{{'HOME.CREATE_CAMPAIGN' | translate}}</a>
 								<!--<a class="btn datea-btn ff1" href="#!/iniciativas">VER TODAS</a>-->
 							</div>
 						</div>
 						<div class="campaign-block" ng-show="homeSI.campaignsFollowed.length">
-							<h4 class="bubble-title">Iniciativas que sigo</h4>
+							<h4 class="bubble-title">{{'HOME.FOLLOWED_CAMPAIGNS' | translate}}</h4>
 							<div class="campaign-list row">
 								<div class="col-lg-3 col-md-3 col-sm-4 col-xs-6 col-campaign-teaser" ng-repeat="campaign in homeSI.campaignsFollowed">
 									<da-campaign-teaser></da-campaign-teaser>
@@ -125,14 +123,14 @@
 							</div>
 						</div>
 						<div class="campaign-block">
-							<h4 class="bubble-title">Iniciativas destacadas</h4>
+							<h4 class="bubble-title">{{'HOME.TRENDING_CAMPAIGNS' | translate}}</h4>
 							<div class="campaign-list row">
 								<div class="col-lg-3 col-md-3 col-sm-4 col-xs-6 col-campaign-teaser" ng-repeat="campaign in homeSI.campaigns">
 									<da-campaign-teaser></da-campaign-teaser>
 								</div>
 							</div>
 							<p class="more-btn">
-								<a href="/iniciativas" class="btn btn-default btn-lg">Ver más iniciativas</a>
+								<a href="/iniciativas" class="btn btn-default btn-lg">{{'HOME.MORE_CAMPAIGNS_BTN' | translate}}</a>
 							</p>
 						</div>
 					</div>

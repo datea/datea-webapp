@@ -401,7 +401,7 @@ body {
 		}
 
 		.user-ctrl.dropdown {
-			margin-left: 60px;
+			margin-left: 145px;
 			a.dropdown-toggle {padding: 0;}
 			.dropdown-menu {
 				li {
@@ -433,7 +433,7 @@ body {
 	}
 	.datea-datear-btn {
 		position: absolute;
-		right: 125px;
+		right: 85px;
 		top: 5px;
 	}
 }
@@ -446,14 +446,14 @@ body {
 		.datea-datear-btn {
 				right: 80px;
 		}
-		.navbar-collapse.collapse .navbar-nav {
+		.navbar-collapse.collapsing .navbar-nav {
 
 			&.nav > li {
 				position: static;
 			}
 
-			.user-ctrl {
-				margin-left: 0;
+			.user-ctrl.dropdown {
+				margin-left: 0 !important;
 				margin-top: 15px;
 				border-top: 1px solid black;
 				padding-top: 15px;
@@ -496,9 +496,6 @@ body {
 		.navbar-brand {
 			padding: 5px 0 5px 15px;
 		}
-		.datea-datear-btn {
-				right: 85px;
-		}
 		.navbar-nav {
 			font-size: 18px;
 			margin: 5px 0px 0px 0px;
@@ -508,13 +505,10 @@ body {
 
 @media (min-width: @screen-lg-min) {
 	.datea-navbar.navbar {
-		padding: 0 4%;
+		padding: 0 15px;
 		.navbar-brand {
 			padding: 5px 0 5px 0px;
 			margin-left: 0;
-		}
-		.datea-datear-btn {
-				right: ~"calc(4% + 70px)";
 		}
 		.navbar-nav {
 			font-size: 18px;

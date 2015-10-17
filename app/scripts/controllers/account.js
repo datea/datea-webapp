@@ -10,6 +10,7 @@ angular.module('dateaWebApp')
   , 'localStorageService'
   , '$location'
   , 'shareMetaData'
+  , '$translate'
 , function (
     $scope
   , User
@@ -19,6 +20,7 @@ angular.module('dateaWebApp')
   , localStorageService
   , $location
   , shareMetaData
+  , $translate
 ) {
 
 	var ls = localStorageService
@@ -39,7 +41,9 @@ angular.module('dateaWebApp')
 	$scope.flow.statusBeingChecked  = !User.data.status;
 	$scope.flow.activeTab = $location.search().tab || 'user';
 
-	shareMetaData.setData({ title : 'Datea | configuración de cuenta'});
+	$translate("SETTINGS_PAGE.TITLE", function (t) {
+		shareMetaData.setData({ title : 'Datea | '+t});
+	});
 
 	$scope.flow.openTab = function (tab) {
 		$location.search({tab: tab});
@@ -60,8 +64,11 @@ angular.module('dateaWebApp')
 		$scope.flow.userStatus    = status;
 		$scope.flow.authProvider  = User.data.authProvider || null;
 		$scope.flow.statusChanged = statusChanged;
-		$scope.flow.submitLabel   = status === 1 ? 'Guardar' : 'Enviar';
 		$scope.flow.hasEmail      = !!User.data.email;
+
+		$translate(status === 1 ? 'SETTINGS_PAGE.SAVE_BTN' : 'SETTINGS_PAGE.SUBMIT_BTN').then(function (t) {
+		   	$scope.flow.submitLabel = t;
+		});
 	}
 
 	if (User.data.status === 1) buildUserMsgs(1, false);
@@ -123,9 +130,9 @@ angular.module('dateaWebApp')
 				// User.updateUserDataFromApi();
 				// $location.path( '/' );
 				} else if (!data.email) {
-					$scope.addAlert( { type : 'danger'
-					                 , msg  : 'Por favor indique un correo válido.'
-					                 } );
+					$translate('ACCOUNT_MSG.EMAIL_INVALID').then(function (msg) {
+						$scope.addAlert( { type : 'danger', msg  : msg});
+					});
 				} else {
 					$location.url("/"+data.username);
 				}
@@ -136,13 +143,20 @@ angular.module('dateaWebApp')
 					if (reason.data && reason.data.error && reason.data.error.length) {
 						error = reason.data.error;
 						if (error === 'Duplicate email') {
-							$scope.addAlert({type: 'warning', 'msg': config.accountMsgs.duplicateEmailMsg});
+							$translate('ACCOUNT_MSG.EMAIL_EXISTS', function (msg) {
+								$scope.addAlert({type: 'danger', 'msg': msg});
+							});
 						}
 						if (error === 'Duplicate username') {
-							$scope.addAlert({type: 'danger', 'msg': config.accountMsgs.duplicateUsernameMsg});
+							$translate('ACCOUNT_MSG.DUPLICATE_USER', function (msg) {
+								$scope.addAlert({type: 'danger', 'msg': msg});
+							});
 						}
 					}else{
 						$scope.addAlert({type:'danger', 'msg': config.unknownErrorMsg});
+						$translate('ERROR.UNKNOWN', function (msg) {
+							$scope.addAlert({type: 'danger', 'msg': msg});
+						});
 					}
 				}
 				$scope.loading = false;

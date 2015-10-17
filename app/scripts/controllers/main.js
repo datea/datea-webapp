@@ -73,9 +73,9 @@ angular.module( 'dateaWebApp' )
 	$scope.pagination     = {};
 
 	$scope.query.orderBy            = '-created';
-	$scope.query.orderByLabel       = 'últimos';
-	$scope.query.followFilter       = 'all';
-	$scope.query.followFilterLabel  = 'todos';
+	//$scope.query.orderByLabel       = 'últimos';
+	//$scope.query.followFilter       = 'all';
+	//$scope.query.followFilterLabel  = 'todos';
 	$scope.flow.historyResults      = 5;
 
 	$scope.dateFormat = config.defaultDateFormat;

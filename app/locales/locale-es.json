@@ -2,16 +2,18 @@
 	"DATEROS" : "dateros",
 	"DATERO" : "datero",
 	"DATEOS" : "dateos",
-	"DATEO" : "dateo",
-	"DATEAR" : "datear",
 	"GOTO_DETAIL" : "ver detalle",
 	"USER" : "usuario",
 	"PASSWORD" : "contraseña",
 	"LOGIN" : "Ingresa",
 	"REGISTER" : "Regístrate",
 	"MORE" : "ver más",
-	"TRENDING" : "Tendencias",
+	"TRENDS" : "Tendencias",
 	"DATERO_LABEL" : "dater@",
+	"OF" : "de",
+	"CLOSE": "Cerrar",
+	"VOTE" : "apoyo",
+	"VOTES" : "apoyos",
 	
 	"MENU_TOP" : {
 		"SEARCH" : "Buscar",
@@ -32,40 +34,6 @@
 		"CONFIG" : "Configuración de cuenta",
 		"CREATE_CAMPAIGN" : "Crear iniciativa",
 		"LOGOUT" : "Salir"
-	},
-
-	"LOGIN_PAGE" : {
-		"WELCOME" : "Bienvenido a Datea",
-		"WELCOME_SUBTITLE" : "Comparte datos útiles con tu comunidad",
-		"LOGIN" : "INGRESAR",
-		"LOGIN_FB_BTN" : "Ingresa con Facebook",
-		"LOGIN_TW_BTN" : "Ingresa con Twitter",
-		"LOGIN_DATEA_TITLE" : "O ingresa con tu cuenta en Datea",
-		"NOT_A_DATERO" : "¿No eres dater@?",
-		"RECOVER_PASSWORD" : "recuperar contraseña"
-	},
-
-	"REGISTER_PAGE" : {
-		"WELCOME" : "¡Únete a Datea!",
-		"WELCOME_SUBTITLE" : "Comienza a compartir datos útiles con tu comunidad",
-		"REGISTER_DATEA_BTN" : "Registra tu cuenta en Datea",
-		"LOGIN_FB_BTN" : "Ingresa con Facebook",
-		"LOGIN_TW_BTN" : "Ingresa con Twitter",
-		"ALREADY_DATERO" : "¿Ya eres dater@?",
-		"NOT_WITHOUT_PERMIT" : "No publicamos en tus cuentas sin tu permiso",
-		"WHY_REGISTER" : "¿Por qué registrar una cuenta en Datea?",
-		"WHOS_INFO" : "¿A quién le pertenece la información que publico en Datea?",
-		"PRIVACY_INFO" : "Información sobre privacidad"
-	},
-
-	"REGISTER_FORM_PAGE" : {
-		"TITLE" : "Crea una cuenta en Datea",
-		"USERNAME_LABEL" : "Nombre de usuario",
-		"USERNAME_DESC" : "Sólo números, letras y guiones (sin espacios, tildes, etc).",
-		"EMAIL_LABEL" : "Correo electrónico",
-		"PASS_LABEL" : "Contraseña",
-		"PASS_DESC" : "Mínimo 6 letras y mínimo 1 número",
-		"REPEAT_PASS" : "Repetir contraseña",
 	},
 	
 	"LANDING_PAGE" : {
@@ -91,6 +59,8 @@
 		"USER_LABEL" : "dater@",
 		"GOTO_PROFILE" : "Ir a mi perfil",
 		"TAGS_FOLLOWED" : "Etiquetas que sigo",
+		"NO_TAGS_FOLLOWED_TITLE" : "¡Aún no sigues etiquetas!",
+		"NO_TAGS_FOLLOWED_MSG" : "Sigue etiquetas para visualizar y participar de los temas que te interesan. Para ello, cliquea sobre ellas y activa el botón seguir.",
 		"LAST_ACTIONS" : "Últimas acciones",
 		"WELCOME" : "¡Bienvenido a Datea!",
 		"SEARCH_TITLE" : "Busca temas en los que quieras participar",
@@ -101,47 +71,8 @@
 		"ABOUT_CAMPAIGNS" : "¿Qué es una iniciativa?",
 		"CREATE_CAMPAIGN" : "Crear iniciativa",
 		"TRENDING_CAMPAIGNS" : "Iniciativas destacadas",
-		"INCIATIVAS QUE SIGO" : "Iniciativas que sigo",
+		"FOLLOWED_CAMPAIGNS" : "Iniciativas que sigo",
 		"MORE_CAMPAIGNS_BTN" : "Ver más iniciativas"
-	},
-
-	"CAMPAIGN" : {
-		"CAMPAIGN" : "iniciativa",
-		"CAMPAIGNS" : "iniciativas",
-		"ACTIVE" : "activo",
-		"CAMPAIGN_BY" : "Una iniciativa de",
-		"FOLLOWERS" : "seguidores",
-		"VIEWING" : "viendo",
-		"LAST" : "últimos",
-		"MISSION_TITLE" : "¿Qué buscamos con esta acción?",
-		"DATA_TITLE" : "¿Qué pasará con la información recolectada?",
-		"APROVED_BY" : "Aprobados por",
-		"FILTER_DATE" : "filtrar fecha",
-		"FROM" : "del",
-		"UNTIL" : "al",
-		"FILTER_TAG" : "filtrar etiqueta",
-		"ALL_TAGS" : "todas",
-		"MAX_LOAD" : "Cargar máximo",
-		"ORDER_BY" : "Ordenar por",
-		"APPLY_BTN" : "Aplicar",
-		"MENU" : {
-			"EMBED" : "Insertar (embed)",
-			"DOWNLOAD_DATA" : "Descargar dateos en CSV",
-		}
-	},
-
-	"CAMPAIGNS" : {
-		"TITLE" : "Iniciativas dateras",
-		"SEARCH_PH" : "buscar frase",
-		"CATEGORY" : "Categoría",
-		"ORDER_BY" : "Ordenar por",
-		"FEATURED" : "destacados",
-		"RECENT" : "recientes",
-		"MORE_POSTS" : "más dateadas",
-		"CREATE_BTN" : "Crear nueva iniciativa",
-		"SEARCH_BTN" : "BUSCAR",
-		"RESULT" : "resultado",
-		"RESULTS" : "resultados",
 	},
 
 	"TAG" : {
@@ -153,15 +84,20 @@
 	"FOLLOW" : {
 		"FOLLOW" : "seguir",
 		"FOLLOW_THREAD" : "seguir hilo",
+		"FOLLOWER" : "seguidor",
 		"FOLLOWERS" : "seguidores",
+		"FOLLOW_ME" : "sigueme en"
 	},
 
 	"SHARE" : {
+		"SHARE" : "¡comparte!",
 		"SHARE_ON" : "compartir en"
 	},
 
 	"DATEAR" : {
-		"TITLE" : "¡DATEA!",
+		"DATEAR" : "datear",
+		"TITLE_NEW" : "¡DATEA!",
+		"TITLE_EDIT" : "Editar dateo",
 		"STEP1_TITLE" : "Describe tu dateo",
 		"CONTENT_PH" : "ingresa aquí el contenido",
 		"MEDIA_LABEL" : "Sube una imagen o archivo (opcional)",
@@ -173,18 +109,39 @@
 		"SUGGESTED_TAGS" : "etiquetas sugeridas",
 		"ADD_TAGS_LABEL" : "buscar / agregar etiquetas",
 		"ADD_BTN" : "Agregar",
-		"SELECTED_TAG" : "Etiquetas seleccionadas",
+		"SELECTED_TAGS" : "Etiquetas seleccionadas",
 		"CANCEL_BTN" : "Cancelar",
-		"DATEAR" : "Datear",
+		"CREATE_BTN" : "Datear",
+		"SAVE_BTN" : "Guardar",
 		"SAVE" : "Guardar",
 		"PUBLISHED" : "publicado",
 		"DELETE" : "borrar",
+		"SUCCESS_TITLE" : "¡Gracias!", 
 		"SUCCESS_MSG" : "Tu dateo se ha creado existosamente.",
 		"GOTO_DATEO" : "Ver dateo",
-		"CLOSE" : "Cerrar" 
+		"CLOSE" : "Cerrar",
+		"IMG" : "Imagen",
+		"FILE" : "Archivo",
+		"TITLE" : "Título",
+		"LINK" : "Enlace",
+		"LINK_DESC" : "Para extraer automáticamente información del enlace, ingresa la url y pulsa cargar.",
+		"URL" : "URL",
+		"URL_LOAD_BTN" : "Cargar!",
+		"DESC_LABEL" : "Descripción",
+		"LOCATION_NO_RESULTS" : "No se encontraron resultados :|",
+		"OUT_OF_ZONE" : "Fuera de la zona de esta iniciativa",
+		"ERROR" : {
+			"UNKNOWN" : "Hubo un error al datear :( - Intentalo de nuevo",
+			"NO_CONTENT" : "¡Uy! Te falta agregar contenido a tu dateo.",
+			"NO_TAG" : "Debes elegir al menos una etiqueta.",
+			"URL_LOAD" : "No se pudo encontrar la dirección. Inténtalo denuevo.",
+			"URL_FORMAT" : "Formato de URL inválido. Falta \"http..\" ?."
+		},
+		"DELETE_CONFIRM_MSG" : "¿Estás seguro(a) de que quieres borrar este dateo?"
 	},
 
 	"DATEO" : {
+		"DATEO" : "dateo",
 		"CREATED_ON" : "dateado el",
 		"SEE_IN_MAP" : "ver en mapa",
 		"SEE_STANDALONE" : "ver en pantalla completa",
@@ -193,29 +150,100 @@
 		"COMMENT" : "commenta!",
 		"SUPPORT" : "apoya!",
 		"LOCATION" : "Ubicación",
-		"RELATED_CAMPAIGNS" : "Iniciativas relacionadas"
+		"RELATED_CAMPAIGNS" : "Iniciativas relacionadas",
+		"UNPUBLISHED" : "dateo sin publicar",
+		"CREATED_ON" : "dateado el",
+		"CLOSE" : "Cerrar",
+		"PERMALINK" : "permalink",
+		"COMMENT_TT" : "¡comenta!",
+		"SHARE_TT" : "¡comparte!",
+		"LOCATION_LABEL" : "Ubicación",
+		"GOTO_DETAIL" : "ver detalle",
+		"REVIEWED" : "atendido",
+		"SOLVED" : "solucionado",
+		"NEW" : "nuevo"
+	},
+
+	"REDATEO" : {
+		"REDATEO" : "redateo",
+		"REDATEOS" : "redateos",
+		"BY" : "re-dateado por",
+		"TT" : "¡redatea!"
 	},
 
 	"COMMENT" : {
+		"COMMENT" : "Comentario",
+		"COMMENTS" : "Comentarios",
 		"COMMENT_PH" : "Tu comentario",
 		"COMMENT_BTN" : "Comentar",
 		"COMMENTS" : "Comentarios",
-		"ON" : "el",
+		"ON" : "el"
 	},
 
 	"FLAG" : {
 		"FLAG" : "denunciar",
+		"FLAGGED" : "¡denunciado!",
 		"TITLE" : "Denunciar contenido inapropiado",
 		"LABEL" : "Por favor describe el motivo de la denuncia.",
+		"LABEL_SR" : "Motivo", 
 		"FLAG_PH" : "Ingresa aquí el contenido",
 		"CLOSE" : "Cerrar",
 		"FLAG_BTN" : "Denunciar",
-		"SUCCESS_MSG" : "Tu denuncia se ha realizado con éxito. Actuaremos a la brevedad. ¡Gracias por colaborar con esta comunidad!"
+		"SUCCESS_MSG" : "Tu denuncia se ha realizado con éxito. Actuaremos a la brevedad. ¡Gracias por colaborar con esta comunidad!",
+		"INVALID" : "Debes primero llenar el campo de descripción."
+	},
+
+	"CAMPAIGN" : {
+		"CAMPAIGN" : "iniciativa",
+		"CAMPAIGNS" : "iniciativas",
+		"ACTIVE" : "activo",
+		"INACTIVE" : "inactivo",
+		"CAMPAIGN_BY" : "Una iniciativa de",
+		"FOLLOWERS" : "seguidores",
+		"MISSION_TITLE" : "¿Qué buscamos con esta acción?",
+		"DATA_TITLE" : "¿Qué pasará con la información recolectada?",
+		"UNPUBLISHED" : "Iniciativa sin publicar",
+		"MENU" : {
+			"CONFIG" : "Configuración",
+			"DATEO_ADMIN" : "Administrar dateos",
+			"EMBED" : "Insertar (embed)",
+			"DOWNLOAD_DATA" : "Descargar dateos en CSV"
+		},
+		"EXPIRED" : "Iniciativa ha expirado",
+		"LAST_DAY" : "¡último dia para datear!",
+		"DAYS_LEFT" : "faltan {{days}} días",
+		"MORE_RESULTS" : "Ver más resultados",
+		"NO_RESULTS" : "No hay resultados",
+		"NO_DATEOS" : "Aún no hay dateos en esta iniciativa. ¡Datea!",
+		"SEE_ALL" : "ver todas",
+		"CLOSE" : "cerrar",
+		"CHARTS" : {
+			"PIE" : "Pie",
+			"BARS" : "Barras"
+		},
+		"RELATED_CAMPAIGNS" : "Inciativas relacionadas"
+	},
+
+	"CAMPAIGNS" : {
+		"TITLE" : "Iniciativas dateras",
+		"META_DESC" : "Busca iniciativas dateras sobre temas que te importan.",
+		"SEARCH_PH" : "buscar frase",
+		"CATEGORY" : "Categoría",
+		"ALL" : "todas",
+		"ORDER_BY" : "Ordenar por",
+		"FEATURED" : "destacados",
+		"RECENT" : "recientes",
+		"MOST_POSTS" : "más dateadas",
+		"CREATE_BTN" : "Crear nueva iniciativa",
+		"SEARCH_BTN" : "BUSCAR",
+		"RESULT" : "resultado",
+		"RESULTS" : "resultados"
 	},
 
 	"CAMPAIGN_FORM" : {
 		"TITLE_CREATE" : "Crear nueva iniciativa",
-		"TITLE_EDIT" : "Editar iniciativa",
+		"TITLE_EDIT" : "Administrador de Iniciativa",
+		"PAGE_TITLE_EDIT" : "editar iniciativa",
 		"MENU" : {
 			"GENERAL" : "Configuración general",
 			"TAGS" : "Etiquetas",
@@ -239,10 +267,12 @@
 		},
 		"IMG_THUMB" : {
 			"LABEL" : "Imágen para listado",
+			"DESC" : "mínimo 400 por 600px (vertical o horizontal)",
 			"HELP_MSG" : "La imagen que identifica a tu iniciativa en los listados (busqueda, inicio etc). Recomendamos una imagen distinctiva (logo, afiche, foto emblemática), y que el contenido principal se encuentre centrado."
 		},
 		"IMG_LARGE" : {
 			"LABEL" : "Imágen para banner",
+			"DESC" : "mínimo 600 por 800px (vertical o horizontal)",
 			"HELP_MSG" : "La imágen que sale en tu iniciativa en el banner (arriba a la derecha). Recomendamos una imagen con formato horizontal, de preferencia alargado (16:9), para que ocupe mas espacio en el banner."
 		},
 		"END_DATE" : {
@@ -268,7 +298,7 @@
 
  		"SECTION_TITLE2" : "Sub-etiquetas (hashtags)",
  		"SECONDARY_TAGS" : {
- 			 "DESC" : "Para categorizar los dateos de la iniciativa.",
+ 			"DESC" : "Para categorizar los dateos de la iniciativa.",
  			"LABEL" : "Introduce una etiqueta y agregalas una por una",
  			"ADD_BTN" : "Agregar",
  			"HELP_TITLE" : "Etiquetas",
@@ -311,11 +341,143 @@
  		"DUPLICATE_MAINTAG" : "La etiqueta ya está siendo usada en alguna iniciativa. Al menos que quieras compartirla, usa otra.",
  		"DUPLICATE_USER_MAINTAG" : "Ya has utilizado esta etiqueta en otra iniciativa. Si quieres reutilizarla, debes llenar el campo \"Componente de URL\". De otro modo mejor cámbiala.",
  		"SLUG_ERROR" : "Esta url ya esta siendo utilizada. Por favor, elige otra.",
- 		"REQUIRED_FIELD" : "Campo obligatorio"
+ 		"REQUIRED_FIELD" : "Campo obligatorio",
+ 		"SAVE_BTN" : "GUARDAR",
+ 		"GOTO_CAMPAIGN_BTN" : "VER INICIATIVA",
+ 		"ERROR_INVALID" : "Uy, parece que te faltó llenar algún campo. Chequea los campos marcados en rojo y vuélvelo a intentar."
+	},
+
+	"CAMPAIGN_DASHBOARD" : {
+		"TITLE" : "Administrador de iniciativa",
+		"CONFIG_TAB" : "Configuración",
+		"INBOX_TAB" : "Administrador de dateos",
+		"BACK" : "Volver a la iniciativa",
+		"DATEOS_FROM" : "dateos del",
+		"UNTIL" : "al",
+		"MARK_AS" : "Marcar como",
+		"NEW" : "Nuevo",
+		"REVIEWED" : "Atendido",
+		"SOLVED" : "Solucionado",
+		"SEARCH" : "Buscar",
+		"TAG_FILTER" : "Filtrar por etiqueta",
+		"STATUS_FILTER" : "Filtrar por estado",
+		"STATUS_ALL" : "todos los estados",
+		"STATUS_NEW" : "Nuevos dateos",
+		"STATUS_REVIEWED" : "Dateos atendidos",
+		"STATUS_SOLVED" : "Dateos solucionados",
+		"COL_TAGS" : "Etiquetas",
+		"COL_EXTRACT" : "Extracto",
+		"COL_USER" : "Usuario",
+		"COL_CREATED" : "Creado",
+		"COl_STATUS" : "Estado",
+		"ALL" : "todos",
+		"NO_RESULTS" : "No se encontraron resultados",
+		"DATEOS_FROM" : "dateos del",
+		"UNTIL" : "al"
 	},
 
 	"SEARCH_PAGE" : {
-		"TITLE" : "Buscar dateos"
+		"TITLE" : "Buscar dateos",
+		"RESULT" : "resultado",
+		"RESULTS" : "resultados",
+		"GOTO_TAG" : "ir a esta etiqueta",
+		"MORE_RESULTS" : "Ver más resultados",
+		"NO_RESULTS" : "No hay resultados",
+		"FOUND_CAMPAIGNS" : "Iniciativas en esta busqueda"
+	},
+
+	"SEARCH_FILTER" : {
+		"VIEWING" : "viendo",
+		"LAST" : "últimos",
+		"FILTER_DATE" : "filtrar fecha",
+		"APROVED_BY" : "Aprobados por",
+		"FILTER_DATE" : "filtrar fecha",
+		"FROM" : "del",
+		"UNTIL" : "al",
+		"FILTER_TAG" : "filtrar etiqueta",
+		"ALL_TAGS" : "todas",
+		"MAX_LOAD" : "Cargar máximo",
+		"LOAD_NUM_DATEOS": "Cargar {{num}} dateos",
+		"ORDER_BY" : "Ordenar por",
+		"APPLY_BTN" : "Aplicar"
+	},
+
+	"LOGIN_PAGE" : {
+		"WELCOME" : "¡Bienvenido a Datea!",
+		"WELCOME_SUBTITLE" : "Comparte datos útiles con tu comunidad",
+		"LOGIN" : "INGRESAR",
+		"LOGIN_FB_BTN" : "Ingresa con Facebook",
+		"LOGIN_TW_BTN" : "Ingresa con Twitter",
+		"LOGIN_DATEA_TITLE" : "O ingresa con tu cuenta en Datea",
+		"NOT_A_DATERO" : "¿No eres dater@?",
+		"RECOVER_PASSWORD" : "recuperar contraseña"
+	},
+
+	"REGISTER_PAGE" : {
+		"WELCOME" : "¡Únete a Datea!",
+		"WELCOME_SUBTITLE" : "Comienza a compartir datos útiles con tu comunidad",
+		"REGISTER_DATEA_BTN" : "Registra tu cuenta en Datea",
+		"LOGIN_FB_BTN" : "Ingresa con Facebook",
+		"LOGIN_TW_BTN" : "Ingresa con Twitter",
+		"ALREADY_DATERO" : "¿Ya eres dater@?",
+		"NOT_WITHOUT_PERMIT" : "No publicamos en tus cuentas sin tu permiso",
+		"WHY_REGISTER" : "¿Por qué registrar una cuenta en Datea?",
+		"WHOS_INFO" : "¿A quién le pertenece la información que publico en Datea?",
+		"PRIVACY_INFO" : "Información sobre privacidad"
+	},
+
+	"REGISTER_FORM_PAGE" : {
+		"TITLE" : "Crea una cuenta en Datea",
+		"USERNAME_LABEL" : "Nombre de usuario",
+		"USERNAME_DESC" : "Sólo números, letras y guiones (sin espacios, tildes, etc).",
+		"EMAIL_LABEL" : "Correo electrónico",
+		"PASS_LABEL" : "Contraseña",
+		"PASS_DESC" : "Mínimo 6 letras y mínimo 1 número",
+		"REPEAT_PASS" : "Repetir contraseña"
+	},
+
+	"SETTINGS_PAGE" : {
+		"WELCOME" : "@:LOGIN_PAGE.WELCOME",
+		"GREETING" : "Amig@ dater@",
+		"CONGRATS" : "¡Felicitaciones!",
+		"NEXT" : "seguir",
+		"GOTO_PROFILE" : "Ir a mi perfil",
+		"TITLE" : "Configuración de cuenta",
+		"ACCOUNT_TAB" : "Cuenta de usuario",
+		"USERNAME_LABEL" : "@:REGISTER_FORM_PAGE.USERNAME_LABEL",
+		"USERNAME_DESC" : "@:REGISTER_FORM_PAGE.USERNAME_DESC",
+		"EMAIL_LABEL" : "@:REGISTER_FORM_PAGE.EMAIL_LABEL",
+		"PROFILE_TAB" : "Personalizar perfil",
+		"NAME_LABEL" : "Nombre completo",
+		"AVATAR_LABEL" : "Sube tu imagen",
+		"BG_LABEL" : "Sube tu imagen de fondo de perfil",
+		"MESSAGE_LABEL" : "Mensaje personal/ Slogan",
+		"MESSAGE_DESC" : "máximo 140 caracteres",
+		"URL_LABEL" : "URL personal o de tu organización",
+		"FOLLOW_FIELDS_TITLE" : "Los siguiente campos son para los iconos de \"sígueme en...\"",
+		"FB_URL_LABEL" : "URL en Facebook",
+		"TW_URL_LABEL" : "URL en Twitter",
+		"YOUTUBE_URL_LABEL" : "Canal de Youtube",
+		"NOTIFY" : {
+			"TAB" : "Notificaciones",
+			"DESC" : "Recibir notificaciones en mi correo cuando hay:",
+			"MY_CONTENT" : "Nuevas interacciones que involucran mi contenido",
+			"THREADS" : "Nuevos comentarios en conversaciones que participo.",
+			"DATEOS_IN_TAGS" : "Nuevos dateos en etiquetas que sigo.",
+			"CAMPAIGN_MSG" : "Nuevos mensajes de iniciativas en etiquetas que sigo.",
+			"NEWSLETTER" : "Noticias ocasionales del equipo de Datea."
+		},
+		"SUBMIT_BTN" : "Enviar",
+		"SAVE_BTN" : "Guardar"
+	},
+
+	"PROFILE_PAGE" : {
+		"NO_DATEOS" : "No ha dateado todavia",
+		"CREATE_CAMPAIGN" : "Crear iniciativa",
+		"NO_CAMPAIGNS" : "no has creado iniciativas",
+		"FOLLOWS" : "sigue",
+		"TAGS_I_FOLLOW" : "Etiquetas que sigo",
+		"LAST_ACTIONS" : "últimas acciones"
 	},
 
 	"ACCOUNT_MSG" : {
@@ -324,14 +486,65 @@
 		"WELCOME_CONFIRM" : "Ya casi eres datero(a)! Falta que nos confirmes tu dirección de correo (Twitter no nos provee ese dato). Una vez confirmada tu cuenta estarás listo(a) para datear.",
 		"DUPLICATE_EMAIL" : "La dirección de correo ya existe. Por favor utiliza otra, o si no recuerdas tu usuario, puedes salir y recuperar tu clave. Si ingresaste con otro servico (Facebook), por favor vuelve a ingresar con ese servicio.",
 		"EMAIL_EXISTS" : "La dirección ya está siendo utilizada. ¡Recupera tu contraseña!",
+		"EMAIL_INVALID" : "Por favor indique un correo válido.",
 		"DUPLICATE_USER" : "El nombre de usuario ya existe. Por favor, elige otro.",
 		"CHECK_EMAIL" : "¡Gracias! Ahora revisa tu correo y sigue las instrucciones para activar tu cuenta. Si deseas, puedes cerrar esta ventana o pestaña.",
 		"CONFIRM_EMAIL" : "Antes de poder datear, necesitamos verificar tu dirección de correo. Ingrésala aquí abajo. ¡Gracias!",
-		"CONFIRM_MISSING" : "Falta que nos confirmes tu correo para activar tu cuenta. Por favor, chequea tu correo y sigue las instrucciones que te enviamos. Si deseas recibir otro correo de activación, vuelve a cliquear en "Enviar". ¡Gracias!",
+		"CONFIRM_MISSING" : "Falta que nos confirmes tu correo para activar tu cuenta. Por favor, chequea tu correo y sigue las instrucciones que te enviamos. Si deseas recibir otro correo de activación, vuelve a cliquear en \"Enviar\". ¡Gracias!",
 		"CONFIRM_SUCCESS" : "Tu cuenta ha sido plenamente activada y estas listo(a) para datear. Si deseas, puedes antes hacer ajustes a tu cuenta acá abajo.",
 		"ACTIVATION_COMPLETE" : "Tu cuenta ha sido activada. Ahora puedes ingresar con tu usuario y contraseña.",
 		"PASS_RESET_SENT" : "Por favor revisa tu correo y sigue las instrucciones para recuperar tu contraseña.",
 		"RESET_NOT_FOUND" : "No existen dateros con esa dirección ;)",
 		"LOGIN_ERROR" : "Tu usuario y/o contraseña no son válidos. Vuélvelo a intentar."
- 	}
+ 	},
+
+ 	"PASSW_PAGE" : {
+ 		"TITLE" : "Ingresa tu nueva contraseña",
+ 		"PAGE_TITLE" : "Cambio de contraseña", 
+ 		"PASS_LABEL" : "Nueva contraseña",
+ 		"PASS_DESC" : "Mínimo 6 letras y mínimo 1 número",
+ 		"REPEAT_LABEL" : "Repetir contraseña",
+ 		"SAVE_BTN" : "Cambiar",
+ 		"SUCCESS_TITLE" : "¡Tu clave ha sido cambiada!",
+ 		"SUCCESS_MSG" : "Ahora puedes ingresar con tu usuario y clave:",
+ 		"ERROR_TITLE" : "¡Uy! hubo un error",
+ 		"ERROR_MSG" : "Lo sentimos. Este formulario para cambiar tu clave ha expirado. Para generar otro, tenemos que mandarte nuevamente un correo con un nuevo enlace.",
+ 		"STARTOVER_BTN" : "Empezar de nuevo"
+ 	},
+
+ 	"EMBED_BUILDER" : {
+ 		"TITLE" : "Insertar código",
+ 		"SUBTITLE" : "Copia y pega este código en tu página.",
+ 		"INSTRUCTIONS" : "Puedes modificar el tamaño en cierto rango",
+ 		"WIDTH" : "Ancho",
+ 		"HEIGHT" : "Alto"
+ 	},
+
+ 	"FILEINPUT": {
+ 		"OR_PREFER" : "o si prefieres",
+ 		"IMAGE" : {
+ 			"DRAG_MSG": "suelta una <strong>imagen</strong> aquí",
+ 			"BTN_MSG" : "Elige una imagen para subir"
+ 		},
+ 		"IMAGES" : {
+ 			"DRAG_MSG": "suelta <strong>imágenes</strong> aquí",
+ 			"BTN_MSG" : "Elige imágenes para subir"
+ 		},
+ 		"FILE" : {
+ 			"DRAG_MSG": "suelta un <strong>archivo</strong> aquí",
+ 			"BTN_MSG" : "Elige un archivo para subir"
+ 		},
+ 		"FILES" : {
+ 			"DRAG_MSG": "suelta <strong>archivos</strong> aquí",
+ 			"BTN_MSG" : "Elige archivos para subir"
+ 		}
+ 	},
+
+ 	"ERROR" : {
+ 		"UNKNOWN" : "Hubo un error. Por favor revisa tus datos e intenta de nuevo. Si no funciona, <a href=\"http://ayuda.datea.pe/contacto\">contáctanos</a>.",
+ 		"NOT_FOUND" : "Oops no pudimos encontrar lo que buscabas."
+ 	},
+
+ 	"REDIRECT_MSG" : "Por favor, aguarda un momento mientras te redirigimos :)"
+
 }

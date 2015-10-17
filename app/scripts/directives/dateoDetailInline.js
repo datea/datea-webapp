@@ -6,12 +6,14 @@ angular.module("dateaWebApp")
 , 'User'
 , 'Api'
 , 'config'
+, '$translate'
 ,	function (
 		$rootScope
 	, $modal
 	, User
 	, Api
 	, config
+	, $translate
 ) {
 	return {
 			restrict    : "E"
@@ -38,32 +40,32 @@ angular.module("dateaWebApp")
 				$scope.flow.isUserSignedIn  = User.isSignedIn();
 				$scope.flow.showEditBtn     = false;
 
-    		$scope.$watch('dateo.id', function () {
-    			if ($scope.dateo && $scope.dateo.id) {
-    				$scope.flow.showEditBtn = User.data.id === $scope.dateo.user.id;
-    				$scope.flow.shareableUrl = config.app.url + '/'+$scope.dateo.user.username+'/dateos/'+$scope.dateo.id;
-    				checkStatus();
-    				$scope.dateo.comments = [];
-    				updateComments();
-    				if ($scope.mainTag && $scope.dateo.tags[0] != $scope.mainTag) {
-							var i = $scope.dateo.tags.indexOf($scope.mainTag);
-							$scope.dateo.tags.splice(i, 1);
-							$scope.dateo.tags.unshift($scope.mainTag); 					
-						}
-    			}
-    		});
+	    		$scope.$watch('dateo.id', function () {
+	    			if ($scope.dateo && $scope.dateo.id) {
+	    				$scope.flow.showEditBtn = User.data.id === $scope.dateo.user.id;
+	    				$scope.flow.shareableUrl = config.app.url + '/'+$scope.dateo.user.username+'/dateos/'+$scope.dateo.id;
+	    				checkStatus();
+	    				$scope.dateo.comments = [];
+	    				updateComments();
+	    				if ($scope.mainTag && $scope.dateo.tags[0] != $scope.mainTag) {
+								var i = $scope.dateo.tags.indexOf($scope.mainTag);
+								$scope.dateo.tags.splice(i, 1);
+								$scope.dateo.tags.unshift($scope.mainTag); 					
+							}
+	    			}
+	    		});
 
-    		$attrs.$observe('markerIndex', function (index) {
-    			$scope.markerIndex = index;
-    		} );
+	    		$attrs.$observe('markerIndex', function (index) {
+	    			$scope.markerIndex = index;
+	    		} );
 
 				$scope.focusDateo = function (index) {
 					$rootScope.$broadcast('focus-dateo', {id: $scope.dateo.id});
-				}
+				};
 
 				$scope.closeDetail = function () {
 					$rootScope.$broadcast('close-dateo-detail');
-				}
+				};
 
 				updateComments = function ( response ) {
 					var oldIds = $scope.dateo.comments.map(function (c) {return c.id;});
@@ -79,20 +81,23 @@ angular.module("dateaWebApp")
 					}, function (reason) {
 						console.log(reason);
 					});
-				}
+				};
 
 				checkStatus = function () {
 					var status;
 					if ($scope.campaignId && $scope.dateo.admin && $scope.dateo.admin[$scope.campaignId]) {
 						status = $scope.dateo.admin[$scope.campaignId].status;
 						if (status != 'new') {
-							$scope.flow.status = {
-								  msg    : status == 'reviewed' ? 'atendido' : 'solucionado'
+							$translate(['DATEO.SOLVED', 'DATEO.REVIEWED'])
+							.then(function(t) {
+								$scope.flow.status = {
+								  msg    : status == 'reviewed' ? t['DATEO.REVIEWED'] : t['DATEO.SOLVED']
 								, type   : status
 							} 
+							});
 						} 
 					}
-				}
+				};
 
 				$scope.flow.imgDetail = function ( img ) {
 					var givens;
@@ -107,7 +112,7 @@ angular.module("dateaWebApp")
 					         }
 
 					$modal.open( givens );
-				}
+				};
 
 				$scope.flow.postComment = function () {
 					var comment = {};
@@ -129,13 +134,13 @@ angular.module("dateaWebApp")
 							.then( updateComments );*/
 						} );
 					}
-				}
+				};
 
 				$scope.slideDownNewComment = function () {
 					$('.slidedown').slideDown('normal', function () {
 						$(this).removeClass('slidedown');
 					})
-				}
+				};
 
 				$scope.flow.share = function () {
 					var img = $scope.dateo.images.length ? config.api.imgUrl + $scope.dateo.images[0].image : config.app.url + '/static/images/logo-large.png';
@@ -149,7 +154,7 @@ angular.module("dateaWebApp")
 		                         , image       : img}
 		                 }
 		             } } );
-				}
+				};
 
 				$scope.flow.denounce = function ( type, ev ) {
 					Api.flag
@@ -160,11 +165,11 @@ angular.module("dateaWebApp")
 					}, function ( reason ) {
 						console.log( reason );
 					} );
-				}
+				};
 
 				$scope.flow.focusCommentForm = function () {
 					angular.element('#comment-input').focus();
-				}
+				};
 
 				$scope.flow.imgDetail = function ( img ) {
 					var givens;
@@ -179,7 +184,7 @@ angular.module("dateaWebApp")
 					         }
 
 					$modal.open( givens );
-				}
+				};
 
 				$scope.flow.editDateo = function () {
 					modalInstance = $modal.open( { templateUrl : 'views/datear.html'
@@ -192,7 +197,7 @@ angular.module("dateaWebApp")
 						               		}
 						               }
 						             } );
-				}
+				};
 							
 		}
 	}

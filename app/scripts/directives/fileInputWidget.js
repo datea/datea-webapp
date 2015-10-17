@@ -35,20 +35,20 @@ angular.module('dateaWebApp')
 				if (scope.fileType === 'image') {
 					scope.flow.accept = 'image/*';
 					if (!scope.maxNumber || scope.maxNumber > 1) {
-						scope.flow.dragMessage = 'suelta <strong>imágenes</strong> aquí';
-						scope.flow.btnMessage = 'Elige imágenes para subir';
+						scope.flow.dragMessage = 'FILEINPUT.IMAGES.DRAG_MSG';
+						scope.flow.btnMessage = 'FILEINPUT.IMAGES.BTN_MSG';
 					}else{
-						scope.flow.dragMessage = 'suelta una <strong>imagen</strong> aquí';
-						scope.flow.btnMessage = 'Elige una imagen para subir';
+						scope.flow.dragMessage = 'FILEINPUT.IMAGE.DRAG_MSG';
+						scope.flow.btnMessage = 'FILEINPUT.IMAGE.BTN_MSG';
 					}
 				}else{
 					scope.flow.accept = config.allowedMimetypes.join(',');
 					if (!scope.maxNumber || scope.maxNumber > 1) {
-						scope.flow.dragMessage = 'suelta <strong>archivos</strong> aquí';
-						scope.flow.btnMessage = 'Elige archivos para subir';
+						scope.flow.dragMessage = 'FILEINPUT.FILES.DRAG_MSG';
+						scope.flow.btnMessage = 'FILEINPUT.FILES.BTN_MSG';
 					}else{
-						scope.flow.dragMessage = 'suelta un <strong>archivo</strong> aquí';
-						scope.flow.btnMessage = 'Elige un archivo para subir';
+						scope.flow.dragMessage = 'FILEINPUT.FILE.DRAG_MSG';
+						scope.flow.btnMessage = 'FILEINPUT.FILE.BTN_MSG';
 					}
 				}
 			});

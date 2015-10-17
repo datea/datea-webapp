@@ -9,6 +9,7 @@ angular.module( 'dateaWebApp' )
 	, 'config'
 	, '$routeParams'
 	, 'shareMetaData'
+	, '$translate'
 , function (
 		$scope
 	, Api
@@ -17,6 +18,7 @@ angular.module( 'dateaWebApp' )
 	, config
 	, $routeParams
 	, shareMetaData
+	, $translate
 ) {
 
 	$scope.flow     = {};
@@ -30,7 +32,9 @@ angular.module( 'dateaWebApp' )
 
 	$scope.flow.changeSuccess           = null;
 
-	shareMetaData.setData({ title : 'Datea | cambio de contraseña'});
+	$translate('PASSW_PAGE.PAGE_TITLE').then(function (t) {
+		shareMetaData.setData({ title : 'Datea | '+t});
+	});
 
 	$scope.flow.checkPassword = function () {
 		if ( $scope.auth.password ) {

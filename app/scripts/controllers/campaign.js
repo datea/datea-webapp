@@ -24,6 +24,7 @@ angular.module('dateaWebApp')
   , 'localStorageService'
   , 'shareMetaData'
   , 'Datear'
+  , '$translate'
 , function (
     $scope
   , Api
@@ -47,6 +48,7 @@ angular.module('dateaWebApp')
   , localStorageService
   , shareMetaData
   , Datear
+  , $translate
 ) {
 
 	var sessionMarkersIdx = 0
@@ -116,7 +118,6 @@ angular.module('dateaWebApp')
 	};
 	$scope.query             = {};
 	$scope.campaign.leaflet.events = {enable: ['leafletDirectiveMarker.click']};
-
 
 	buildRelatedCampaigns = function () {
 		var tags = getTagsString( $scope.campaign );
@@ -334,11 +335,17 @@ angular.module('dateaWebApp')
 			now = moment();
 			ts = endDate.diff(now, 'days');
 			if (ts.days < 0) {
-				$scope.flow.endDate = {type: 'warning', msg: 'Iniciativa ha expirado'};
+				$translate('CAMPAIGN.EXPIRED').then(function (msg) {
+					$scope.flow.endDate = {type: 'warning', msg: msg};
+				});
 			}else if (ts.days === 0) {
-				$scope.flow.endDate = {type: 'normal', msg: '¡último dia para datear!'};
+				$translate('CAMPAIGN.LAST_DAY').then(function (msg) {
+					$scope.flow.endDate = {type: 'warning', msg: msg};
+				});
 			}else {
-				$scope.flow.endDate = {type: 'normal', msg: 'faltan '+ ts.days + ' días'};
+				$translate('CAMPAIGN.DAYS_LEFT', {days : ts.days}).then(function (msg) {
+					$scope.flow.endDate = {type: 'normal', msg: msg};
+				});
 			}
 		}
 	}
@@ -383,7 +390,9 @@ angular.module('dateaWebApp')
 	$scope.flow.queryDone = false;
 
 	$scope.$watch( 'query.limit', function () {
-		$scope.flow.queryLimitLabel = ($scope.query.limit < 1000) ? 'máximo '+$scope.query.limit : 'todos los';
+		$scope.flow.queryLimitLabel = {
+			num : ($scope.query.limit < 1000) ? 'máximo '+$scope.query.limit : 'todos los'
+		};
 	});
 
 	initQueryOptions = function () {

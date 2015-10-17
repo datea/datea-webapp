@@ -97,7 +97,7 @@ angular.module('dateaWebApp')
 	shareMetaData.setData({title : 'Datea | buscar dateos'});
 
 	$scope.$watch( 'query.limit', function () {
-		$scope.flow.limitLabel = ($scope.query.limit < 1000) ? 'máximo '+$scope.query.limit : 'todos los';
+		$scope.flow.limitLabel = { num : ($scope.query.limit < 1000) ? 'máximo '+$scope.query.limit : 'todos los'};
 	});
 
 	buildSearchParams = function () {

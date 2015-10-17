@@ -9,8 +9,8 @@
   	<span class="elippsis" ng-show="tags.length > 2">...</span>
   </div>
   <p ng-bind-html="dateo.extract | linky:'_blank'"></p>
-  <button class="popup-detail-btn btn datea-gray-btn btn-xs pull-right" ng-show="openDetail" ng-click="openDetail()">ver detalle</button>
-  <a ng-show="!openDetail" class="popup-detail-btn btn datea-gray-btn btn-xs pull-right" data-dateoid="{{dateo.id}}" href="/{{dateo.user.usernmame}}/dateos/{{dateo.id}}">ver detalle</a>
+  <button class="popup-detail-btn btn datea-gray-btn btn-xs pull-right" ng-show="openDetail" ng-click="openDetail()">{{'DATEO.GOTO_DETAIL' | translate}}</button>
+  <a ng-show="!openDetail" class="popup-detail-btn btn datea-gray-btn btn-xs pull-right" data-dateoid="{{dateo.id}}" href="/{{dateo.user.usernmame}}/dateos/{{dateo.id}}">{{'DATEO.GOTO_DETAIL' | translate}}</a>
   <div class="stats">
   	<span class="stat" ng-show="dateo.vote_count"><span class="glyphicon glyphicon-thumbs-up"></span>{{dateo.vote_count}}</span>
   	<span class="stat" ng-show="dateo.comment_count"><span class="glyphicon glyphicon-comment"></span>{{dateo.comment_count}}</span>

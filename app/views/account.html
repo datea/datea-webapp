@@ -8,62 +8,62 @@
 			<div class="wrapper" ng-show="!flow.statusBeingChecked">
 				<div class="usr-msg hey" ng-show="flow.userIsNew && flow.userStatus === 1">
 					<div class="msg">
-						<h3>Bienvenido a Datea!</h3>
+						<h3>{{ 'SETTINGS_PAGE.WELCOME' | translate }}</h3>
 						<p class="pull-right">
 							<a class="btn btn-success" href="/">Seguir <span class="glyphicon glyphicon-chevron-right"></span></a>
 						</p>
-						<p>{{accountMsgs.userWelcomeReadyMsg}}</p>
+						<p>{{ 'ACCOUNT_MSG.WELCOME_READY' | translate }}</p>
 					</div>
 				</div>
 
 				<div class="usr-msg hey" ng-show="flow.userIsNew && flow.userStatus === 0">
 					<div class="msg">
-						<h3>Bienvenido a Datea!</h3>
-						<p>{{accountMsgs.userWelcomeConfirmMsg}}</p> 
+						<h3>{{ 'SETTINGS_PAGE.WELCOME' | translate }}</h3>
+						<p>{{ 'ACCOUN_MSG.WELCOME_CONFIRM' | translate}}</p> 
 					</div>
 				</div>
 
 				<div class="usr-msg advice" ng-show="flow.userStatus === 0 && !flow.userIsNew">
 					<div class="msg inline">
-						<h3>Amigo@ dater@</h3>
-						<p ng-show="!flow.hasEmail">{{accountMsgs.userConfirmEmailMsg}}</p>
-						<p ng-show="flow.hasEmail">{{accountMsgs.userConfirmMissingMsg}}</p>
+						<h3>{{ 'SETTINGS_PAGE.GREETING' | translate}}</h3>
+						<p ng-show="!flow.hasEmail">{{ 'ACCOUNT_MSG.CONFIRM_EMAIL' | translate}}</p>
+						<p ng-show="flow.hasEmail">{{ 'ACCOUNT_MSG.CONFIRM_MISSING' | translate}}</p>
 					</div>
 				</div>
 
 				<div class="usr-msg advice" ng-show="flow.userStatus === 1 && flow.statusChanged && flow.authProvider == 'twitter'">
 					<div class="msg">
-						<h3>¡Felicitaciones!</h3>
+						<h3>{{ 'SETTINGS_PAGE.CONGRATS' | translate }}</h3>
 						<p class="pull-right">
-							<a class="btn btn-success" href="/">Seguir <span class="glyphicon glyphicon-chevron-right"></span></a>
+							<a class="btn btn-success" href="/">{{ 'SETTINGS_PAGE.NEXT' | translate }} <span class="glyphicon glyphicon-chevron-right"></span></a>
 						</p>
-						<p>{{accountMsgs.userConfirmSuccessMsg}}</p>
+						<p>{{ 'ACCOUNT_MSG.CONFIRM_SUCCESS' | translate }}</p>
 					</div>
 				</div>
 
 				<div class="user-banned" ng-show="flow.userStatus === 2">
-					<div class="alert alert-danger">{{accountMsgs.userBannedMsg}}</div>
+					<div class="alert alert-danger">{{ 'ACCOUNT_MSG.BLOCKED' | translate }}</div>
 				</div>
 
 				<div class="account-form-holder">
 					<div ng-hide="flow.userIsNew || flow.userStatus === 0 || flow.statusChanged">
-						<div class="pull-right"><a href="/{{account.username}}" class="btn btn-default">Ir a mi perfil</a></div>
-						<h2>Configuración de cuenta</h2>
+						<div class="pull-right"><a href="/{{account.username}}" class="btn btn-default">{{ 'SETTINGS_PAGE.GOTO_PROFILE' | translate }}</a></div>
+						<h2>{{ 'SETTINGS_PAGE.TITLE' | translate}}</h2>
 					</div>
 					<alert ng-repeat="alert in alerts" type="{{alert.type}}" close="closeAlert($index)">{{alert.msg}}</alert>
 					<form role="form" name="form" ng-submit="account.save()" class="form">
 						<tabset>
-							<tab heading="Cuenta de Usuario" active="flow.activeTab.user" select="flow.openTab('user')">
+							<tab heading="{{ 'SETTINGS_PAGE.ACCOUNT_TAB' | translate }}" active="flow.activeTab.user" select="flow.openTab('user')">
 								<div class="tab-body" da-loading="loading">
 									<div class="row">
 								 		<div class="col-xs-12 col-md-9 col-lg-7">
 											<div class="form-group">
-												<label for="username">Nombre de usuario</label>
+												<label for="username">{{ 'SETTINGS_PAGE.USERNAME_LABEL' | translate }}</label>
 												<input type="text" class="form-control" id="username" required pattern="^[A-Za-z0-9-_]{1,32}$" ng-model="account.username">
-												<p class="help-block">Sólo números, letras y guiones (sin espacios, tildes, etc)</p>
+												<p class="help-block">{{ 'SETTINGS_PAGE.USERNAME_DESC' | translate }}</p>
 											</div>
 											<div class="form-group">
-												<label for="email">Correo electrónico</label>
+												<label for="email">{{ 'SETTINGS_PAGE.EMAIL_LABEL' | translate }}</label>
 												<input type="email" class="form-control" id="email" required ng-model="account.email">
 											</div>
 											<div class="actions">
@@ -74,14 +74,14 @@
 									</div>
 								</div>
 							</tab>
-							<tab heading="Personalizar Perfil" ng-hide="flow.userStatus !== 1" active="flow.activeTab.profile" select="flow.openTab('profile')">
+							<tab heading="{{ 'SETTINGS_PAGE.PROFILE_TAB' | translate }}" ng-hide="flow.userStatus !== 1" active="flow.activeTab.profile" select="flow.openTab('profile')">
 								<div class="tab-body" da-loading="loading">
 									<div class="form-group">
-										<label for="fullname">Nombre completo</label>
+										<label for="fullname">{{ 'SETTINGS_PAGE.NAME_LABEL' | translate}}</label>
 										<input type="text" class="form-control" id="fullname" ng-model="account.full_name">
 									</div>
 									<div class="form-group img-field">
-										<label for="image">Sube tu imagen</label>
+										<label for="image">{{ 'SETTINGS_PAGE.AVATAR_LABEL' | translate }}</label>
 										<div class="user-img-wrap" ng-show="account.image_large" ng-hide="flow.img">
 											<img class="user-img" ng-src="{{account.image_large | imgFromApi}}">
 										</div>
@@ -91,7 +91,7 @@
 										<input type="file" fileread="flow.img" filedata="flow.imgData" accept="image/*">
 									</div>
 									<div class="form-group img-field">
-										<label for="image">Sube tu imagen de fondo de perfil</label>
+										<label for="image">{{ 'SETTINGS_PAGE.BG_LABEL' | translate }}</label>
 										<div class="user-bgimg-wrap" ng-hide="flow.bgImg || !account.bg_image">
 											<img class="bgimg" ng-src="{{account.bg_image | imgFromApi}}">
 										</div>
@@ -101,26 +101,26 @@
 										<input type="file" fileread="flow.bgImg" filedata="flow.bgImgData" accept="image/*">
 									</div>
 									<div class="form-group">
-										<label for="message">Mensaje personal/ Slogan</label>
+										<label for="message">{{ 'SETTINGS_PAGE.MESSAGE_LABEL' | translate }}</label>
 										<input type="text" class="form-control" id="message" ng-model="account.message">
-										<p class="help-block">máximo 140 caracteres</p>
+										<p class="help-block">{{ 'SETTINGS_PAGE.MESSAGE_DESC' | translate }}</p>
 									</div>
 									<div class="form-group">
-										<label for="url">URL personal o de tu organización</label>
+										<label for="url">{{ 'SETTINGS_PAGE.URL_LABEL' | translate }}</label>
 										<input type="text" class="form-control" id="url" pattern="https?://.+" ng-model="account.url">
 									</div>
 									<br />
-									<p>Los siguiente campos son para los iconos de "sígueme en..."</p>
+									<p>{{ 'SETTINGS_PAGE.FOLLOW_FIELDS_TITLE' | translate }}</p>
 									<div class="form-group">
-										<label for="facebookUrl">URL en facebook</label>
+										<label for="facebookUrl">{{ 'SETTINGS_PAGE.FB_URL_LABEL' | translate }}</label>
 										<input type="text" class="form-control" id="facebookUrl" pattern="https?://.+" ng-model="account.url_facebook">
 									</div>
 									<div class="form-group">
-										<label for="twitterUrl">URL en twitter</label>
+										<label for="twitterUrl">{{ 'SETTINGS_PAGE.TW_URL_LABEL' | translate }}</label>
 										<input type="text" class="form-control" id="twitterUrl" pattern="https?://.+" ng-model="account.url_twitter">
 									</div>
 									<div class="form-group">
-										<label for="youtubeUrl">Canal de youtube</label>
+										<label for="youtubeUrl">{{ 'SETTINGS_PAGE.YOUTUBE_URL_LABEL' | translate }}</label>
 										<input type="text" class="form-control" id="youtubeUrl" pattern="https?://.+" ng-model="account.url_youtube">
 									</div>
 
@@ -131,41 +131,41 @@
 
 								</div>
 							</tab>
-							<tab heading="Notificaciones" ng-hide="flow.userStatus !== 1" active="flow.activeTab.notifications" select="flow.openTab('notifications')">
+							<tab heading="{{ 'SETTINGS_PAGE.NOTIFY.TAB' | translate}}" ng-hide="flow.userStatus !== 1" active="flow.activeTab.notifications" select="flow.openTab('notifications')">
 								<div class="tab-body" da-loading="loading">
-									<p><strong>Recibir notificaciones en mi correo cuando hay:</strong></p>
+									<p><strong>{{ 'SETTINGS_PAGE.NOTIFY.DESC' | translate}}</strong></p>
 									<div class="form-group">
 										<div class="checkbox">
 											<label>
-												<input type="checkbox" ng-model="account.notify_settings.interaction" /> Nuevas interacciones que involucran mi contenido.
+												<input type="checkbox" ng-model="account.notify_settings.interaction" /> {{ 'SETTINGS_PAGE.NOTIFY.MY_CONTENT' | translate }}
 											</label>
 										</div>
 									</div>
 									<div class="form-group">
 										<div class="checkbox">
 											<label>
-												<input type="checkbox" ng-model="account.notify_settings.conversations" /> Nuevos comentarios en conversaciones que participo.
+												<input type="checkbox" ng-model="account.notify_settings.conversations" /> {{ 'SETTINGS_PAGE.NOTIFY.THREADS' | translate }}
 											</label>
 										</div>
 									</div>
 									<div class="form-group">
 										<div class="checkbox">
 											<label>
-												<input type="checkbox" ng-model="account.notify_settings.tags_dateos" /> Nuevos dateos en etiquetas que sigo.
+												<input type="checkbox" ng-model="account.notify_settings.tags_dateos" /> {{ 'SETTINGS_PAGE.NOTIFY.DATEOS_IN_TAGS' | translate }}
 											</label>
 										</div>
 									</div>
 									<div class="form-group">
 										<div class="checkbox">
 											<label>
-												<input type="checkbox" ng-model="account.notify_settings.tags_reports" /> Nuevos mensajes de iniciativas en etiquetas que sigo.
+												<input type="checkbox" ng-model="account.notify_settings.tags_reports" /> {{ 'SETTINGS_PAGE.NOTIFY.CAMPAIGN_MSG' | translate }}
 											</label>
 										</div>
 									</div>
 									<div class="form-group">
 										<div class="checkbox">
 											<label>
-												<input type="checkbox" ng-model="account.notify_settings.site_news" /> Noticias del equipo de Datea.
+												<input type="checkbox" ng-model="account.notify_settings.site_news" /> {{ 'SETTINGS_PAGE.NOTIFY.NEWSLETTER' | translate }}
 											</label>
 										</div>
 									</div>

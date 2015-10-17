@@ -16,6 +16,7 @@ angular.module('dateaWebApp')
 , '$location'
 , 'geoJSONStyle'
 , 'localStorageService'
+, '$translate'
 // , 'leafletEvents'
 , function (
   $scope
@@ -32,6 +33,7 @@ angular.module('dateaWebApp')
 , $location
 , geoJSONStyle
 , localStorageService
+, $translate
 // , leafletEvents
 ) {
 	var headers
@@ -77,12 +79,10 @@ $scope.datear.selectedTags  = [];
 $scope.datear.loading			  = false;
 $scope.datear.onFinished    = false;
 $scope.datear.isScrolling   = false;
-$scope.datear.modalTitle    = $scope.dateo.id ? 'Editar dateo' : '¡Datea!';
 $scope.datear.mode          = $scope.dateo.id ? 'edit' : 'new';
 $scope.datear.showFileInput = false;
-$scope.flow.datearBtnLabel  = $scope.dateo.id ? 'Guardar': 'Datear';
 $scope.alerts               = [];
-$scope.datear.step				  = 1;
+$scope.datear.step			= 1;
 
 if ($scope.datear.mode == 'new' || !$scope.dateo.position) {
 	markerIcon.className = 'datea-pin-icon pin-icon-not-set';
@@ -271,12 +271,15 @@ $scope.$on( 'leafletDirectiveMap.click', function ( event, args ) {
 			} 
 			if (boundary) {
 				if (leafletPip.pointInLayer(leafEvent.latlng, boundary).length === 0) {
-					L.popup({
-						offset: L.point(0, -30)
+					$translate('DATEAR.OUT_OF_ZONE')
+					.then(function (msg) {
+						L.popup({
+							offset: L.point(0, -30)
+						})
+	    			.setLatLng(leafEvent.latlng)
+	    			.setContent(msg)
+	    			.openOn(map);
 					})
-    			.setLatLng(leafEvent.latlng)
-    			.setContent('Fuera de la zona de esta iniciativa')
-    			.openOn(map);
 				}
 			}
 	} );
@@ -301,15 +304,18 @@ $scope.$on( 'leafletDirectiveMarker.dragend', function ( event, args ) {
 	if (boundary) {
 		var ll = L.latLng([$scope.datear.leaflet.markers.draggy.lat, $scope.datear.leaflet.markers.draggy.lng]);
 		if (leafletPip.pointInLayer(ll, boundary).length === 0) {
-			leafletData.getMap("leafletDatear")
-			.then( function ( map ) {
-				L.popup({
-					offset: L.point(0, -30)
-				})
-				.setLatLng([$scope.datear.leaflet.markers.draggy.lat, $scope.datear.leaflet.markers.draggy.lng])
-				.setContent('Fuera de la zona de esta iniciativa')
-				.openOn(map);
-			} );
+			$translate('DATEAR.OUT_OF_ZONE')
+			.then(function (msg) {
+				leafletData.getMap("leafletDatear")
+				.then( function ( map ) {
+					L.popup({
+						offset: L.point(0, -30)
+					})
+					.setLatLng([$scope.datear.leaflet.markers.draggy.lat, $scope.datear.leaflet.markers.draggy.lng])
+					.setContent(msg)
+					.openOn(map);
+				} );
+			})
 		}
 	}
 } );
@@ -481,7 +487,9 @@ $scope.datear.doDatear = function () {
 				User.writeDataToStorage();
 			} , function ( reason ) {
 				console.log( reason );
-				$scope.addAlert({type: 'danger', 'msg': 'Hubo un error al datear :( - Intentalo de nuevo'});
+				$translate('DATEAR.ERROR.UNKNOWN').then(function (msg) {
+					$scope.addAlert({type: 'danger', 'msg': msg});
+				});
 				$scope.datear.loading = false;
 			} );
 		}else {
@@ -495,39 +503,49 @@ $scope.datear.doDatear = function () {
 				$modalInstance.dismiss('cancel');
 			} , function ( reason ) {
 				console.log( reason );
-				$scope.addAlert({type: 'danger', 'msg': 'Hubo un error al datear :( - Intentalo de nuevo'});
+				$translate('DATEAR.ERROR.UNKNOWN').then(function (msg) {
+					$scope.addAlert({type: 'danger', 'msg': msg});
+				});
 				$scope.datear.loading = false;
 			} );
 		}
 	} else {
 		if ( !$scope.dateo.content ) {
-			$scope.addAlert({type: 'danger', 'msg': 'Por favor, agrega contenido a tu dateo.'});
+			$translate('DATEAR.ERROR.NO_CONTENT').then(function (msg) {
+				$scope.addAlert({type: 'danger', 'msg': msg});
+			});
 			$scope.flow.validateContent = false;
 			$('#modal-body').scrollTo(0,0);
 		} else if ( !$scope.dateo.tags.length ) {
-			$scope.addAlert({type: 'danger', 'msg': 'Debes elegir al menos una etiqueta.'});
+			$translate('DATEAR.ERROR.NO_TAG').then(function (msg) {
+				$scope.addAlert({type: 'danger', 'msg': msg});
+			});
 		} else {
-			$scope.addAlert({type: 'danger', 'msg': 'Hubo un error al datear :('});
+			$translate('DATEAR.ERROR.UNKNOWN').then(function (msg) {
+				$scope.addAlert({type: 'danger', 'msg': msg});
+			});
 		}
 	}
 };
 
 
 $scope.datear.delete = function () {
-	var amSure = window.confirm("¿Estás seguro(a) de que quieres borrar este dateo?");
-	if (amSure) {
-		$scope.datear.loading = true;
-		Api.dateo.delete({id: $scope.dateo.id})
-		.then(function (response) {
-				$scope.datear.loading = false;
-				$modalInstance.dismiss('cancel');
-				$rootScope.$broadcast( 'user:dateoDelete', {id: $scope.dateo.id});
-				User.data.dateo_count--;
-				User.writeDataToStorage();
-		}, function (reason) {
-			console.log(reason);
-		});
-	}
+	$translate('DATEAR.DELETE_CONFIRM_MSG', function (msg) {
+		var amSure = window.confirm(msg);
+		if (amSure) {
+			$scope.datear.loading = true;
+			Api.dateo.delete({id: $scope.dateo.id})
+			.then(function (response) {
+					$scope.datear.loading = false;
+					$modalInstance.dismiss('cancel');
+					$rootScope.$broadcast( 'user:dateoDelete', {id: $scope.dateo.id});
+					User.data.dateo_count--;
+					User.writeDataToStorage();
+			}, function (reason) {
+				console.log(reason);
+			});
+		}
+	});
 };
 
 
@@ -803,13 +821,17 @@ $scope.datear.link.loadUrl = function () {
 			$scope.datear.link.loading = false;
 		}).error(function (data, status) {
 			//console.log("ERROR IN LINK LOOKUP", data);
-			$scope.dateo.link.url = '';
-			$scope.datear.link.urlPH = 'No se pudo encontrar la dirección. Inténtalo denuevo.';
+			//$scope.dateo.link.url = '';
+			$translate('DATEAR.ERROR.URL_LOAD').then(function (msg) {
+				$scope.datear.link.urlPH = msg;
+			});
 			$scope.datear.link.loading = false;
 		});
 	}else {
-		$scope.dateo.link.url = '';
-		$scope.datear.link.urlPH = 'Dirección con formato inválido. Falta "http.." ?.';
+		//$scope.dateo.link.url = '';
+		$translate('DATEAR.ERROR.URL_FORMAT').then(function (msg) {
+				$scope.datear.link.urlPH = msg;
+		});
 	}
 }
 $scope.datear.link.prevImg = function () {

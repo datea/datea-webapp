@@ -17,7 +17,6 @@
     "angularjs-geolocation": "~0.1.0",
     "angular-i18n": "~1.2.6",
     "leaflet-dist": "~0.7.1",
-    "angular-ui-bootstrap-bower": "git://github.com/lafactura/bootstrap.git#master",
     "wxAngularFullscreen": "*",
     "angular-elastic": "~2.3.1",
     "leaflet.markerclusterer": "~0.4.0",
@@ -26,7 +25,7 @@
     "leaflet.draw": "~0.2.3",
     "angular-social": "*",
     "jquery": "~2.1.1",
-    "angular-bootstrap-select": "~0.0.3",
+    "angular-bootstrap-select": "~0.0.5",
     "bootstrap-select": "~1.6.2",
     "bootstrap": "~3.1.1",
     "angular-charts": "~0.2.4",
@@ -41,7 +40,6 @@
     "jcarousel": "~0.3.4",
     "FileAPI": "~2.0.8",
     "magnific-popup": "~1.0.0",
-    "angular-bootstrap": "git://github.com/angular-ui/bootstrap.git#master",
     "oauth-js": "~0.4.0",
     "lodash": "~3.10.1",
     "hamsterjs": "~1.1.0",
@@ -50,14 +48,15 @@
     "angulartics-google-analytics": "~0.1.1",
     "moment": "momentjs#~2.10.6",
     "angular-translate": "~2.8.1",
-    "angular-translate-loader-static-files": "~2.8.1"
+    "angular-translate-loader-static-files": "~2.8.1",
+    "angular-bootstrap": "~0.14.2"
   },
   "devDependencies": {
     "angular-mocks": "~1.2.0",
     "angular-scenario": "~1.2.0"
   },
   "resolutions": {
-    "angular": "1.2.23",
+    "angular": ">=1.2.0 <1.5.0",
     "magnific-popup": "~1.0.0"
   }
 }

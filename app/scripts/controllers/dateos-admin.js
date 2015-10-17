@@ -10,6 +10,7 @@ angular.module( 'dateaWebApp' )
   , '$document'
   , '$location'
   , 'shareMetaData'
+  , '$translate'
 , function (
     $scope
   , Api
@@ -19,6 +20,7 @@ angular.module( 'dateaWebApp' )
   , $document
   , $location
   , shareMetaData
+  , $translate
 ) {
 
 	var getCampaign
@@ -42,6 +44,7 @@ angular.module( 'dateaWebApp' )
 	$scope.dateFormat         = config.shortDateFormat;
 	$scope.campaignId         = $routeParams.campaignId;
 	$scope.campaign           = {};
+	$scope.dateInputFormat    = 'yyyy/MM/dd';
 
 	campaignResId  = '/api/v2/campaign/'+$scope.campaignId;
 
@@ -52,15 +55,31 @@ angular.module( 'dateaWebApp' )
 		, orderBy	      : '-created'
 		, status        : 'all'
 		, tag           : 'all'
-		, statusOptions : {
-				  'all'      : '-- todos --'
-				, 'new'      : 'nuevo'
-				, 'reviewed' : 'atendido'
-				, 'solved'   : 'solucionado'
-		}
+	};
+	var trans = [
+		  'CAMPAIGN_DASHBOARD.PAGE_TITLE'
+		, 'DATEO.NEW'
+		, 'DATEO.REVIEWED'
+		, 'DATEO.SOLVED'
+		, 'CAMPAIGN_DASHBOARD.ALL'
+	];
+	$translate(trans).then(function (t){
+		shareMetaData.setData({title: 'Datea | '+t['CAMPAIGN_DASHBOARD.PAGE_TITLE']});
+		$scope.query.statusOptions = {
+				  'all'      : '-- '+t['CAMPAIGN_DASHBOARD.ALL']+' --'
+				, 'new'      : t['DATEO.NEW']
+				, 'reviewed' : t['DATEO.REVIEWED']
+				, 'solved'   : t['DATEO.SOLVED']
+		};
+	});
+
+	$scope.flow.openSincePopup = function ($event) {
+		$scope.flow.sincePopup = true;
 	};
 
-	shareMetaData.setData({title: 'Datea | administrador de dateos'});
+	$scope.flow.openUntilPopup = function ($event) {
+		$scope.flow.untilPopup = true;
+	};
 
 	getCampaign = function () {
 		$scope.flow.loading = true;
@@ -88,10 +107,12 @@ angular.module( 'dateaWebApp' )
 	}
 
 	buildTagFilterOptions = function () {
-		$scope.query.tagFilterOptions = [{value: 'all', label: '-- todas --'}];
-		angular.forEach($scope.campaign.secondary_tags, function (tag){
-			$scope.query.tagFilterOptions.push({value: tag.tag, label: '#'+tag.tag });
-		});
+		$translate('SEARCH_FILTER.ALL_TAGS').then(function (t) {
+			$scope.query.tagFilterOptions = [{value: 'all', label: '-- todas --'}];
+			_.each($scope.campaign.secondary_tags, function (tag){
+				$scope.query.tagFilterOptions.push({value: tag.tag, label: '#'+tag.tag });
+			});
+		})
 	}
 
 	buildQueryParams = function () {

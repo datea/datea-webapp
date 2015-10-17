@@ -5,7 +5,7 @@
 			<div class="user-img img-circle" da-bg-from-api="{{dateo.user.image_small}}" da-img-size="cover" da-img-type="user"></div>
 			<div class="user-info">
 				<h4 class="username"><a href="/{{dateo.user.username}}">{{dateo.user.username}}</a></h4>
-				<div class="created"><a href="/{{dateo.user.username}}/dateos/{{dateo.id}}">dateado el {{dateo.created | date:createdFormat}}</a></div>
+				<div class="created"><a href="/{{dateo.user.username}}/dateos/{{dateo.id}}">{{'DATEO.CREATED_ON' | translate}} {{dateo.created | date:createdFormat}}</a></div>
 			</div>
 			<div class="admin-info">
 				<div class="label admin-status" ng-show="flow.status" ng-class="{'label-success': flow.status.type === 'solved', 'label-info': flow.status.type === 'reviewed'}">{{flow.status.msg}}</div>
@@ -44,15 +44,15 @@
 
 		<div class="social-holder">
 			<!--<a class="btn datea-gray-btn btn-sm pull-right" href="/{{dateo.user.username}}/dateos/{{dateo.id}}" >ver detalle</a>-->
-			<button class="btn datea-gray-btn btn-sm pull-right" ng-click="openDetail()">ver detalle</button>
+			<button class="btn datea-gray-btn btn-sm pull-right" ng-click="openDetail()">{{'DATEO.GOTO_DETAIL' | translate}}</button>
 			<div ng-show="mapPresent && dateo.position" class="pin pull-right" ng-click="focusDateo()" tooltip="ver en mapa" tooltip-trigger="mouseenter" tooltip-placement="left" tooltip-popup-delay="800">
 				<span class="glyphicon glyphicon-map-marker"></span>
 			</div>
-			<div class="unpublished-msg pull-right" ng-show="!dateo.published">dateo sin publicar</div>
+			<div class="unpublished-msg pull-right" ng-show="!dateo.published">{{'DATEO.UNPUBLISHED' | translate}}</div>
 			<span class="stat" ng-show="dateo.vote_count > 0"><span class="glyphicon glyphicon-thumbs-up"></span> {{dateo.vote_count}}</span>
 			<span class="stat" ng-show="dateo.comment_count > 0"><span class="glyphicon glyphicon-comment"></span> {{dateo.comment_count}}</span>
 			<span class="stat" ng-show="dateo.redateo_count > 0"><span class="glyphicon glyphicon-retweet"></span> {{dateo.redateo_count}}</span>
 		</div>
-		<div class="redateo-msg" ng-show="flow.showRedateoAuthor && dateo.user.username != flow.showRedateoAuthor">re-dateado por <a href="/{{flow.showRedateoAuthor}}">{{flow.showRedateoAuthor}}</a></div>
+		<div class="redateo-msg" ng-show="flow.showRedateoAuthor && dateo.user.username != flow.showRedateoAuthor">{{'REDATEO.BY' | translate}} <a href="/{{flow.showRedateoAuthor}}">{{flow.showRedateoAuthor}}</a></div>
 	</div>
 </div>

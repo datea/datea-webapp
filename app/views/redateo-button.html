@@ -3,6 +3,5 @@
 	<span class="delete">&times;</span>
 	<i class="fa fa-circle-o-notch fa-spin" ng-show="flow.loading"></i>
 	<i class="disabled-icon fa fa-ban"></i>
-	<span class="glyphicon glyphicon-retweet datea-glyph" ng-hide="flow.loading" tooltip="redatea!" tootltip-trigger="mouseenter" tooltip-placement="bottom" tooltip-popup-delay="500"></span> <span class="datea-glyph-text" ng-show="dateo.redateo_count > 0"><p>{{dateo.redateo_count}}</p> <p><ng-pluralize count="dateo.redateo_count" when="{'one':
-		'redateo','other':'redateos'}"></p></span>
+	<span class="glyphicon glyphicon-retweet datea-glyph" ng-hide="flow.loading" tooltip="{{'REDATEO.TT' | translate}}" tootltip-trigger="mouseenter" tooltip-placement="bottom" tooltip-popup-delay="500"></span> <span class="datea-glyph-text" ng-show="dateo.redateo_count > 0"><p>{{dateo.redateo_count}}</p> <p>{{(dateo.redateo_count == 1 ? 'REDATEO' : "REDATEO.REDATEOS") | translate}}</p></span>
 </div>

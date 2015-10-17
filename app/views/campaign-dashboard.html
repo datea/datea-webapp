@@ -1,11 +1,11 @@
 <div class="dashboard-holder">
 	<div class="container-fluid title-holder">
-		<h2>Administrador de Iniciativa</h2>
+		<h2>{{ 'CAMPAIGN_DASHBOARD.TITLE' | translate }}</h2>
 	</div>
 
 	<ul class="nav nav-tabs dashboard-tabs">
-		<li ng-class="{'active': flow.dashboardMode === 'edit'}"><a href="#!/iniciativas/{{campaignId}}/edit">Configuración</a></li>
-		<li ng-class="{'active': flow.dashboardMode === 'admin'}"><a href="#!/iniciativas/{{campaignId}}/admin">Administrador de dateos</a></li>
+		<li ng-class="{'active': flow.dashboardMode === 'edit'}"><a href="/iniciativas/{{campaignId}}/edit">{{ 'CAMPAIGN_DASHBOARD.CONFIG_TAB' | translate }}</a></li>
+		<li ng-class="{'active': flow.dashboardMode === 'admin'}"><a href="/iniciativas/{{campaignId}}/admin">{{ 'CAMPAIGN_DASHBOARD.INBOX_TAB' | translate }}</a></li>
 	</ul>
 
 	<div class="config-holder" ng-if="flow.dashboardMode === 'edit'">

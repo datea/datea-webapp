@@ -5,14 +5,18 @@ angular.module( 'dateaWebApp' )
 , [ '$scope'
 	, '$routeParams'
 	, 'shareMetaData'
+	, '$translate'
 , function (
 		$scope
 	, $routeParams
 	, shareMetaData
+	, $translate
 ) {
 	$scope.campaignId = $routeParams.campaignId;
 	$scope.flow = {};
 	$scope.flow.dashboardMode = 'edit';
 
-	shareMetaData.setData({ title : 'Datea | editar iniciativa'});
+	$translate('CAMPAIGN_FORM.PAGE_TITLE_EDIT').then(function (t) {
+		shareMetaData.setData({ title : 'Datea | '+t});
+	});
 } ] );

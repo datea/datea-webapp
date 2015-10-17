@@ -1,19 +1,19 @@
 <div class="modal-body embed-build-holder">
-<h3>Código embebible</h3>
+<h3>{{'EMBED_BUILDER.TITLE' | translate}}</h3>
 
-<p>Copia y pega este código en tu página.</p>
+<p>{{'EMBED_BUILDER.SUBTITLE' | translate}}</p>
 
 <textarea rows="3" class="form-control"><iframe width="{{embed.widthResult}}" height="{{embed.height}}" src="{{embed.baseUrl}}{{embed.path}}" frameborder="0" allowfullscreen></iframe> 
 </textarea>
 <br><br>
-<p>Puedes modificar el tamaño en cierto rango</p>
+<p>{{'EMBED_BUILDER.INSTRUCTIONS' | translate}}</p>
 <div class="form-group size-control">
-	<label>Ancho</label>
+	<label>{{'EMBED_BUILDER.WIDTH' | translate}}</label>
 	<input class="form-control number" type="text" ng-model="embed.widthResult" ng-blur="flow.changeWidthResult()" ng-enter="flow.changeWidthResult()"> <input type="range" name="width" step="50" class="slider" ng-model="embed.width" min="{{embed.minWidth}}" max="{{embed.maxWidth}}" >
 </div>
 
 <div class="form-group size-control">
-	<label>Alto</label>
+	<label>{{'EMBED_BUILDER.HEIGHT' | translate}}</label>
 	<input class="form-control number" type="text" ng-model="embed.height" ng-blur="flow.changeHeightResult()" ng-enter="flow.changeHeightResult()"> <input type="range" name="height" step="50" class="slider" ng-model="embed.height" min="{{embed.minHeight}}" max="{{embed.maxHeight}}" >
 </div>
 

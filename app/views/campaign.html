@@ -7,10 +7,10 @@
 						<div class="user-head">
 							<div class="user-img img-circle" da-bg-from-api="{{campaign.user.image}}" da-img-size="cover" da-img-type="user"></div>
 							<div class="user-info">
-								<div class="created">Una iniciativa de</div>
+								<div class="created">{{ 'CAMPAIGN.CAMPAIGN_BY' | translate }}</div>
 								<h4 class="username"><a href="/{{campaign.user.username}}">{{campaign.user.username}}</a></h4>
 							</div>
-							<div class="unpublished-msg" ng-show="campaign.id && !campaign.published">Iniciativa sin publicar</div>
+							<div class="unpublished-msg" ng-show="campaign.id && !campaign.published">{{ 'CAMPAIGN.UNPUBLISHED' | translate }}</div>
 						</div>
 						<div class="title-holder">
 							<h1 ng-class="{'title-fix' : flow.titleFix}">{{campaign.name}}</h1>
@@ -24,14 +24,15 @@
 						<p class="shortdesc">{{campaign.short_description}}</p>
 						<div class="stats" ng-show="campaign.dateo_count > 0 || campaign.follow_count > 0">
 							<div class="count-stats">
-								<div class="dateo-count stat" ng-if="campaign.dateo_count > 0">{{campaign.dateo_count}} <ng-pluralize count="campaign.dateo_count" when="{'one':'dateo','other':'dateos'}"></ng-pluralize></div>
-								<div class="follow-count stat" ng-if="campaign.follow_count > 0">{{campaign.follow_count}} <ng-pluralize count="campaign.follow_count" when="{'one':'seguidor','other':'seguidores'}"></ng-pluralize></div>
+								<div class="dateo-count stat" ng-if="campaign.dateo_count > 0">{{campaign.dateo_count}} {{ (campaign.dateo_count == 1 ? 'DATEO' : 'DATEOS') | translate }}</div>
+								<div class="follow-count stat" ng-if="campaign.follow_count > 0">{{campaign.follow_count}} {{ (campaign.follow_count == 1 ? 'FOLLOW.FOLLOWER' : 'FOLLOW.FOLLOWERS') | translate }}
+								</div>
 							</div>
 						</div>
 						<div class="main-btns">
 							<div class="main-btns-inner">
 								<div class="mbtn follow-camp-btn">
-									<da-follow follow-obj="tag" follow-id="{{campaign.main_tag.id}}" btn-class="follow-campaign" follow-label="seguir" follow-callback="flow.hey($value)"></da-follow>
+									<da-follow follow-obj="tag" follow-id="{{campaign.main_tag.id}}" btn-class="follow-campaign" follow-label="seguir"></da-follow>
 								</div>
 								<div class="mbtn datear-btn">
 									<datear-btn></datear-btn>
@@ -57,11 +58,11 @@
 			  			<span class="glyphicon glyphicon-cog"></span>
 			      </button>
 			      <ul class="dropdown-menu dropdown-menu-right" role="menu">
-			        <li ng-if="flow.userIsOwner"><a href="/iniciativas/{{campaign.id}}/edit">Configuración</a></li>
-			        <li ng-if="flow.userIsOwner"><a href="/iniciativas/{{campaign.id}}/admin">Administrar dateos</a></li>
-			        <li><a ng-click="flow.loadEmbedBuilder()" href>Insertar (embed)</a></li>
+			        <li ng-if="flow.userIsOwner"><a href="/iniciativas/{{campaign.id}}/edit">{{ 'CAMPAIGN.MENU.CONFIG' | translate }}</a></li>
+			        <li ng-if="flow.userIsOwner"><a href="/iniciativas/{{campaign.id}}/admin">{{ 'CAMPAIGN.MENU.DATEO_ADMIN' | translate }}</a></li>
+			        <li><a ng-click="flow.loadEmbedBuilder()" href>{{ 'CAMPAIGN.MENU.EMBED' | translate }}</a></li>
 			        <!--<li><a href="#" target="_blank">Imprimir reporte</a></li>-->
-			        <li><a href="https://api.datea.io/csv-export/dateos/tag/{{campaign.main_tag.id}}/" target="_blank">Descargar dateos en CSV</a></li>
+			        <li><a href="https://api.datea.io/csv-export/dateos/tag/{{campaign.main_tag.id}}/" target="_blank">{{ 'CAMPAIGN.MENU.DOWNLOAD_DATA' | translate }}</a></li>
 			      </ul>
 		    </div>
 
@@ -98,7 +99,7 @@
 			  <div class="filter-control" ng-click="flow.showFilter = !flow.showFilter">
 			  	<div class="filter-toggle-link" ng-class="{active: flow.showFilter}"><i class="fa fa-filter"></i></div>
 			  	<div class="query-text" ng-hide="flow.showFilter">
-			  		viendo: <span class="query-text-item" ng-repeat="text in flow.queryTextRep" ng-bind-html="text"></span>
+			  		{{ 'SEARCH_FILTER.VIEWING' | translate }}: <span class="query-text-item" ng-repeat="text in flow.queryTextRep" ng-bind-html="text"></span>
 			  	</div>
 			  </div>
 			</div>
@@ -109,7 +110,7 @@
 						<div class="col-xs-8 col-sm-7 col-md-7 col-lg-7">
 							<div class="owner-filter query-item">
 								<div class="form-group">
-									<label>Aprobados por</label>
+									<label>{{ 'SEARCH_FILTER.APROVED_BY' | translate }}</label>
 									<div class="checkbox">
 										<label>
 											<input type="checkbox" ng-model="query.owner" /> <strong>{{campaign.user.username}}</strong>
@@ -119,18 +120,18 @@
 							</div>
 							<div class="date-filter query-item">
 								<div class="form-group">
-									<label>filtrar fecha</label>
+									<label>{{ 'SEARCH_FILTER.FILTER_DATE' | translate }}</label>
 									<div class="form-inline">
-										<label>del</label>
+										<label>{{ 'SEARCH_FILTER.FROM' | translate }}</label>
 										<input type="text" class="form-control since" ng-model="query.since" datepicker-popup="yyyy/MM/dd" is-open="flow.sincePopup" ng-focus="flow.sincePopup = true" />
-										<label>al</label>
+										<label>{{ 'SEARCH_FILTER.UNTIL' | translate }}</label>
 										<input type="text" class="form-control until" ng-model="query.until" datepicker-popup="yyyy/MM/dd" is-open="flow.untilPopup" ng-focus="flow.untilPopup = true" />
 									</div>
 								</div>
 							</div>
 							<div class="category-filter query-item" ng-show="campaign.secondary_tags.length > 0">
 								<div class="form-group">
-									<label>filtrar etiqueta</label>
+									<label>{{ 'SEARCH_FILTER.FILTER_TAG' | translate }}</label>
 									<select class="form-control" ng-model="query.tag" ng-options="item.value as item.label for item in flow.tagFilterOptions"></select>
 								</div>
 							</div>
@@ -140,7 +141,7 @@
 							<div class="apply">
 								<div class="limit-slider query-item">
 									<div class="form-group">
-										<label>Cargar {{flow.queryLimitLabel}} dateos</label>
+										<label>{{ 'SEARCH_FILTER.LOAD_NUM_DATEOS' | translate: flow.queryLimitLabel}}</label>
 										<div class="slider">
 											<input type="range" name="points" min="50" max="500" step="50" ng-model="query.limit"> 
 										</div>
@@ -148,11 +149,11 @@
 								</div>
 								<div class="orderby-control query-item">
 									<div class="form-group">
-										<label>Ordenar por</label>
-										<select class="form-control" ng-model="query.order_by" ng-options="opt.val as opt.label for opt in query.orderByOptions"></select>
+										<label>{{ 'SEARCH_FILTER.ORDER_BY' | translate }}</label>
+										<select class="form-control" ng-model="query.order_by" ng-options="opt.val as opt.label for opt in flow.orderByOptions"></select>
 									</div>
 								</div>
-								<button class="btn btn-lg btn-success pull-left apply-btn" ng-click="flow.getSearch($event)">APLICAR</button> 
+								<button class="btn btn-lg btn-success pull-left apply-btn" ng-click="flow.getSearch($event)">{{ 'SEARCH_FILTER.APPLY_BTN' | translate }}</button> 
 							</div>
 						</div>
 					</div>
@@ -177,19 +178,17 @@
 										<da-dateo-teaser ng-repeat="dateo in campaign.dateos | limitTo:flow.dateoShowListNumResults" campaign-id="campaign.id" main-tag="campaign.main_tag.tag"></da-dateo-teaser>
 									</div>
 									<p class="dateos-more-results" ng-show="campaign.dateos.length > flow.dateoShowListNumResults">
-										<button class="btn btn-default btn-lg" ng-click="flow.showMoreListResults()">Ver más resultados</button>
+										<button class="btn btn-default btn-lg" ng-click="flow.showMoreListResults()">{{ 'CAMPAIGN.MORE_RESULTS' | translate }}</button>
 									</p>
-									<div class="no-results" ng-show="campaign.main_tag.dateo_count > 0 && !campaign.dateos.length && !flow.loading">No hay resultados <i class="fa fa-meh-o"></i></div>
-									<div class="no-results" ng-show="campaign.main_tag.dateo_count == 0 && !campaign.dateos.length && !flow.loading">
-									Aún no hay dateos en esta iniciativa. ¡Datea!
-									</div>
+									<div class="no-results" ng-show="campaign.main_tag.dateo_count > 0 && !campaign.dateos.length && !flow.loading">{{ 'CAMPAIGN.NO_RESULTS' | translate }} <i class="fa fa-meh-o"></i></div>
+									<div class="no-results" ng-show="campaign.main_tag.dateo_count == 0 && !campaign.dateos.length && !flow.loading">{{ 'CAMPAIGN.NO_DATEOS' | translate }}</div>
 							</div>
 						</div>
 						<div class="col-xs-12 col-sm-75 leaflet-map-holder" ng-class="{'has-legend': flow.hasLegend}">
 							<leaflet id="leafletCampaign" events="campaign.leaflet.events" defaults="campaign.leaflet.defaults" markers="campaign.leaflet.markers" center="campaign.leaflet.center" cluster-options="campaign.leaflet.clusterOptions" width="100%" tiles="campaign.leaflet.tiles"></leaflet>
 							<div class="legend-holder" ng-show="campaign.secondary_tags.length > 0">
-								<div class="expand" ng-click="flow.expandLegend()" ng-show="flow.showLegendExpandLink">ver todas</div>
-								<div class="contract" ng-click="flow.contractLegend()" ng-show="flow.showLegendContractLink">cerrar</div>
+								<div class="expand" ng-click="flow.expandLegend()" ng-show="flow.showLegendExpandLink">{{ 'CAMPAIGN.SEE_ALL' | translate }}</div>
+								<div class="contract" ng-click="flow.contractLegend()" ng-show="flow.showLegendContractLink">{{ 'CAMPAIGN.CLOSE' | translate }}</div>
 								<div class="tag-list">
 									<div class="tag-legend" ng-repeat="tag in subTags" da-on-last-repeat="flow.onLegendRender()">
 										<span class="color-sample" style="background-color: {{tag.color}}"></span>
@@ -216,8 +215,8 @@
 								<div class="inner" ng-if="chart.visible">
 									<div class="chart-type-select pull-right">
 										<select class="form-control" ng-model="chart.typeControl" ng-change="chart.changeChartType()">
-											<option value="pie">Pie</option>
-											<option value="bar">Barras</option>
+											<option value="pie">{{'CAMPAIGN.CHARTS.PIE' | translate}}</option>
+											<option value="bar">{{'CAMPAIGN.CHARTS.BARS' | translate }}</option>
 										</select>
 									</div>
 									<div data-ac-chart="chart.type" data-ac-data="chart.data" data-ac-config="chart.config" class="viz-simple-chart"></div>
@@ -231,8 +230,8 @@
 			<div class="viz-view viz-view-timeline" ng-if="flow.activeTab == 'timeline'">
 				<da-timeline dateos="campaign.dateos" tags="subTags" campaign="campaign" loading="flow.loading"></da-timeline>
 				<div class="legend-holder timeline-legend-holder" ng-show="campaign.secondary_tags.length > 0">
-					<div class="expand" ng-click="flow.expandLegend()" ng-show="flow.showLegendExpandLink">ver todas</div>
-					<div class="contract" ng-click="flow.contractLegend()" ng-show="flow.showLegendContractLink">cerrar</div>
+					<div class="expand" ng-click="flow.expandLegend()" ng-show="flow.showLegendExpandLink">{{'CAMPAIGN.CHARTS.SEE_ALL' | translate }}</div>
+					<div class="contract" ng-click="flow.contractLegend()" ng-show="flow.showLegendContractLink">{{'CAMPAIGN.CHARTS.CLOSE' | translate }}</div>
 					<div class="tag-list">
 						<div class="tag-legend" ng-repeat="tag in campaign.secondary_tags" da-on-last-repeat="flow.onLegendRender()">
 							<span class="color-sample" style="background-color: {{flow.colorRange[$index]}}"></span>
@@ -254,21 +253,21 @@
 								<a href="/{{campaign.user.username}}" class="user-img img-circle" da-bg-from-api="{{campaign.user.image}}" da-img-size="cover" da-img-type="user"></a>
 							</div>
 							<div class="part part-2">
-								<p>dater@</p>
+								<p>{{ 'DATERO_LABEL' | translate }}</p>
 								<h3><a href="/{{campaign.user.username}}">{{campaign.user.username}}</a></h3>
 							</div>
 						</div>
 						<h4>#{{campaign.main_tag.tag}}</h4>
-						<p class="question">¿Qué buscamos con esta acción?</p>
+						<p class="question">{{'CAMPAIGN.MISSION_TITLE' | translate }}</p>
 						<p class="answer answer1" ng-bind-html="campaign.mission | linky:'_blank'"></p>
-						<p class="question">¿Qué pasará con la información recolectada?</p>
+						<p class="question">{{'CAMPAIGN.DATA_TITLE' | translate }}</p>
 						<p class="answer answer2" ng-bind-html="campaign.information_destiny | linky:'_blank'"></p>
 					</div>
 				</div>
 			</div>
 			<div class="col-lg-4 col-md-4 col-sm-8 col-xs-8">
 				<div class="social">
-					<h5 ng-show="campaign.follow_count > 0">{{campaign.follow_count}} <ng-pluralize count="campaign.follow_count" when="{'one':'seguidor','other':'seguidores'}"></ng-pluralize></h5>
+					<h5 ng-if="locale.followers" ng-show="campaign.follow_count > 0">{{campaign.follow_count}} {{ (campaign.follow_count == 1 ? 'FOLLOW.FOLLOWER' : 'FOLLOW.FOLLOWERS') | translate }}</h5>
 					<!--<button class="btn datea-btn">invita a tus amigos</button>-->
 					<div class="followers-holder">
 						<a class="follower-image" target="_blank" ng-href="/{{follower.username}}" ng-repeat="follower in campaign.followers" tooltip="{{follower.username}}" tooltip-trigger="mouseenter">
@@ -278,7 +277,7 @@
 					<!--<button class="btn datea-btn datea-btn-xs see-more-peers">ver todos</button>-->
 
 					<div class="related" ng-if="campaign.relatedCampaigns.length > 0">
-						<h5>iniciativas relacionadas</h5>
+						<h5>{{'CAMPAIGN.RELATED_CAMPAIGNS' | translate }}</h5>
 						<span class="tags" ng-repeat="tag in campaign.relatedCampaigns">#{{tag.tag}}</span>
 					</div>
 				</div>

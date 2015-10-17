@@ -6,12 +6,13 @@ angular.module('dateaWebApp')
 	, 'Api'
 	, 'config'
 	, 'shareMetaData'
-
+	, '$translate'
 , function (
 		$scope
 	, Api
 	, config
 	, shareMetaData
+	, $translate
 ) {
 
 	var doQuery
@@ -28,27 +29,33 @@ angular.module('dateaWebApp')
 		, category	 : 'all'
 	};
 	$scope.flow  = {};
-	$scope.flow.orderByOptions = [
-		  {val: '-featured,-created', label: 'destacados'}
-		, {val: '-created', label: 'recientes'}
-		, {val: '-dateo_count,-created', label: 'más dateadas'}
-	];
 
 	$scope.dateFormat        = config.defaultDateFormat;
 
 	// SEO AND SOCIAL TAGS
-	shareData = {
-		  title       : 'Datea | Iniciativas'
-		, description : 'Busca iniciativas dateras sobre temas que te importan.'
-	}
-	shareMetaData.setData(shareData);
+	$translate(['CAMPAIGN.CAMPAIGNS', 'CAMPAIGNS.METADESC', 'CAMPAIGNS.FEATURED', 'CAMPAIGNS.RECENT', 'CAMPAIGNS.MOST_POSTS']).then(function (t) {
+		
+		shareData = {
+			  title       : 'Datea | '+t['CAMPAIGN.CAMPAIGNS']
+			, description : t['CAMPAIGNS.METADESC']
+			}
+		shareMetaData.setData(shareData);
+
+		$scope.flow.orderByOptions = [
+			  {val: '-featured,-created', label: t['CAMPAIGNS.FEATURED']}
+			, {val: '-created', label: t['CAMPAIGNS.RECENT']}
+			, {val: '-dateo_count,-created', label: t['CAMPAIGNS.MOST_POSTS']}
+		];
+	});
 
 	getCategories = function () {
 		Api.category
 		.getCategories( {} )
 		.then( function ( response ) {
 			$scope.flow.categories = response.objects;
-			$scope.flow.categories.unshift({id: 'all', 'name': '-- todas --'});
+			$translate('CAMPAIGNS.ALL', function (t) {
+				$scope.flow.categories.unshift({id: 'all', 'name': '-- '+t+' --'});
+			});
 		} );
 	}
 

@@ -4,11 +4,13 @@ angular.module("dateaWebApp")
 ,	'User' 
 ,	'$location' 
 ,	'localStorageService'
+,   '$translate'
 , function(
 	  Datear
 	, User
 	, $location
 	, localStorageService
+	, $translate
 ) {
 		return {
 		  restrict    : "E"
@@ -17,7 +19,9 @@ angular.module("dateaWebApp")
 
 		, controller: function ($scope, $element, $attrs) {
 
-			$scope.btnLabel = $attrs.btnText !== undefined ? $attrs.btnText : 'datear ';
+			$translate('DATEAR').then(function (t) {
+				$scope.btnLabel = $attrs.btnText !== undefined ? $attrs.btnText : t+' ';
+			});
 			$scope.btnClass = $attrs.btnClass !== undefined ? $attrs.btnClass : '';
 
 			$scope.datear = function () {

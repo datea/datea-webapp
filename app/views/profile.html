@@ -10,17 +10,19 @@
 					<h2>{{targetUser.username}}</h2>
 					<p class="message" ng-if="targetUser.message">{{targetUser.message}}</p>
 					<p ng-if="targetUser.dateo_count > 0 || targetUser.cote_count > 0">
-						<span class="dateo-count" ng-if="targetUser.dateo_count > 0">{{targetUser.dateo_count}} <ng-pluralize count="targetUser.dateo_count" when="{'one':'dateo','other':'dateos'}" /></ng-pluralize></span>
-						<span class="votes-count" ng-if="targetUser.vote_count > 0">{{targetUser.vote_count}} <ng-pluralize count="targetUser.vote_count" when="{'one':'apoyo','other':'apoyos'}" /></ng-pluralize></span>
+						<span class="dateo-count" ng-if="targetUser.dateo_count > 0">{{targetUser.dateo_count}} {{(targetUser.dateo_count == 1 ? 'DATEO' : "DATEOS") | translate}}
+						</span>
+						<span class="votes-count" ng-if="targetUser.vote_count > 0">{{targetUser.vote_count}} {{(targetUser.vote_count == 1 ? 'VOTE' : "VOTES") | translate}}
+						</span>
 					</p>
 					<p class="url" ng-if="targetUser.url"><a href="{{targetUser.url}}">{{targetUser.url}}</a></p>
 					<div class="social-share pull-right">
-						<div class="datea-glyph-holder hover-enabled" ng-click="targetUser.share()" tooltip="Compartir!" tootltip-trigger="mouseenter" tooltip-placement="bottom" tooltip-popup-delay="500">
+						<div class="datea-glyph-holder hover-enabled" ng-click="targetUser.share()" tooltip="{{'SHARE' | translate}}" tootltip-trigger="mouseenter" tooltip-placement="bottom" tooltip-popup-delay="500">
 							<i class="fa fa-share-alt"></i>
 						</div>
 					</div>
 					<div class="social-links" ng-show="targetUser.url_facebook || targetUser.url_twitter || targetUser.url_youtube">
-						<span class="social-links-label">sigueme en</span>
+						<span class="social-links-label">{{'FOLLOW.FOLLOW_ME' | translate}}</span>
 						<a class="social-link" ng-show="targetUser.url_facebook" href="{{targetUser.url_facebook}}"><i class="fa fa-facebook-square"></i></a>
 						<a class="social-link" ng-show="targetUser.url_twitter" href="{{targetUser.url_twitter}}"><i class="fa fa-twitter-square"></i></a>
 						<a class="social-link" ng-show="targetUser.url_youtube" href="{{targetUser.url_youtube}}"><i class="fa fa-youtube-square"></i></a>
@@ -43,7 +45,7 @@
 						<tab heading="dateos">
 							<div class="dateos-holder tab-body" da-loading="targetUser.dateoLoading">
 								<p class="msg no-results" ng-show="targetUser.dateos.length === 0 && targetUser.dateoLoading === false">
-								No ha dateado todavia <i class="fa fa-meh-o"></i> 
+								{{'PROFILE_PAGE.NO_DATEOS' | translate}} <i class="fa fa-meh-o"></i> 
 								</p>
 								<div class="dateos-list">
 									<da-dateo-teaser ng-repeat="dateo in targetUser.dateos" map-present="false" detail-inline="false"></da-dateo-teaser>
@@ -55,9 +57,9 @@
 						<tab heading="iniciativas" ng-show="targetUser.campaigns.length">
 							<div class="campaigns-holder tab-body" da-loading="targetUser.campaignLoading">
 								<div class="btn-create-holder hidden-xs clearfix">
-									<a href="/crear-iniciativa" class="pull-right btn btn-xs datea-gray-btn">Crear iniciativa</a> 
+									<a href="/crear-iniciativa" class="pull-right btn btn-xs datea-gray-btn">{{'PROFILE_PAGE.CREATE_CAMPAIGN' | translate}}</a> 
 								</div>
-								<div class="no-results" ng-show="!targetUser.campaigns.length && !targetUser.campaignLoading">no has creado iniciativas <i class="fa fa-meh-o"></i></div>
+								<div class="no-results" ng-show="!targetUser.campaigns.length && !targetUser.campaignLoading">{{'PROFILE_PAGE.NO_CAMPAIGNS' | translate}} <i class="fa fa-meh-o"></i></div>
 								<div class="campaign-list row">
 									<div class="col-lg-4 col-md-3 col-sm-6 col-xs-12" ng-repeat="campaign in targetUser.campaigns">
 										<da-campaign-teaser></da-campaign-teaser>
@@ -71,8 +73,8 @@
 			</div><div class="col-md-4">
 				<div class="sidebar-content">
 					<div class="block block-follow" ng-show="targetUser.follows.length">
-						<h4 ng-show="!targetUser.isSameAsUser">{{targetUser.username}} sigue:</h4>
-						<h4 ng-show="targetUser.isSameAsUser">Etiquetas que sigo:</h4>
+						<h4 ng-show="!targetUser.isSameAsUser">{{targetUser.username}} {{'PROFILE_PAGE.FOLLOWS' | translate}}:</h4>
+						<h4 ng-show="targetUser.isSameAsUser">{{'PROFILE_PAGE.TAGS_I_FOLLOW' | translate}}:</h4>
 						<div class="tag-buttons">
 							<a class="datea-tag-btn user-tag" ng-href="/tag/{{tag.tag}}" ng-repeat="tag in targetUser.follows">
 								#{{tag.tag}}
@@ -81,14 +83,14 @@
 					</div>
 					<hr ng-show="targetUser.follows.length">
 					<div class="block block-history" ng-show="targetUser.history.length">
-						<h4>últimas acciones:</h4>
+						<h4>{{'PROFILE_PAGE.LAST_ACTIONS' | translate}}:</h4>
 						<ul class="user-history">
 							<li class="user-history-item" ng-repeat="item in targetUser.history">
 								<a href="#{{item._url}}" >{{item._message}}</a>
 								<p>{{item.data.extract}}</p>
 							</li>
 						</ul>
-						<button class="btn btn-link btn-sm" ng-click="flow.showMoreHistory()" ng-show="flow.historyTotal > flow.historyResults">ver más</button>
+						<button class="btn btn-link btn-sm" ng-click="flow.showMoreHistory()" ng-show="flow.historyTotal > flow.historyResults">{{'MORE' | translate}}</button>
 					</div>
 				</div>
 			</div>

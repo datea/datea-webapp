@@ -1,14 +1,14 @@
 <nav class="navbar navbar-default campaign-form-nav" ng-class="{fix: flow.fixMenu}">
 	<div class="container-fluid">
 		<ul class="nav navbar-nav">
-			<li du-scrollspy="spy-step1" offset="200"><a href="#spy-step1" ng-click="scrollTo($event, 'spy-step1', 200)">Configuración general</a></li>
-			<li du-scrollspy="spy-step2" offset="200"><a href="#spy-step2" ng-click="scrollTo($event, 'spy-step2', 130)">etiquetas</a></li>
-			<li du-scrollspy="spy-step3" offset="200"><a href="#spy-step3" ng-click="scrollTo($event, 'spy-step3', 130)">opciones de ubicación</a></li>
-			<li du-scrollspy="spy-step4" offset="200"><a href="#spy-step4" ng-click="scrollTo($event, 'spy-step4', 130)">opciones de visualización</a></li>
+			<li du-scrollspy="spy-step1" offset="200"><a href="#spy-step1" ng-click="scrollTo($event, 'spy-step1', 200)">{{ 'CAMPAIGN_FORM.MENU.GENERAL' | translate }}</a></li>
+			<li du-scrollspy="spy-step2" offset="200"><a href="#spy-step2" ng-click="scrollTo($event, 'spy-step2', 130)">{{ 'CAMPAIGN_FORM.MENU.TAGS' | translate }}</a></li>
+			<li du-scrollspy="spy-step3" offset="200"><a href="#spy-step3" ng-click="scrollTo($event, 'spy-step3', 130)">{{ 'CAMPAIGN_FORM.MENU.LOCATION' | translate }}</a></li>
+			<li du-scrollspy="spy-step4" offset="200"><a href="#spy-step4" ng-click="scrollTo($event, 'spy-step4', 130)">{{ 'CAMPAIGN_FORM.MENU.VISUALIZATION' | translate }}</a></li>
 		</ul>
 		<div class="navbar-right">
-			<a class="btn btn-link btn-default" ng-if="flow.mode == 'edit'" href="/{{campaign.user.username}}/{{campaign.slug}}">VER INICIATIVA</a>
-			<button class="btn btn-success btn-lg" ng-click="flow.save()">GUARDAR</button>
+			<a class="btn btn-link btn-default" ng-if="flow.mode == 'edit'" href="/{{campaign.user.username}}/{{campaign.slug}}">{{ 'CAMPAIGN_FORM.GOTO_CAMPAIGN_BTN' | translate }}</a>
+			<button class="btn btn-success btn-lg" ng-click="flow.save()">{{ 'CAMPAIGN_FORM.SAVE_BTN' | translate }}</button>
 		</div>
 	</div>
 </nav>
@@ -19,11 +19,11 @@
 		<div class="row">
 			<div class="col-xs-8">
 				<div class="section" id="spy-step1">
-					<h4>Configuración de iniciativa</h4>
+					<h4>{{ 'CAMPAIGN_FORM.SECTION_TITLE1' | translate }}</h4>
 					<div class="form-group" 
-							 popover="{{help.name.content}}" popover-placement="right" popover-trigger="mouseenter" popover-popup-delay="600"
+							 popover="{{ 'CAMPAIGN_FORM.TITLE.HELP_MSG' | translate }}" popover-placement="right" popover-trigger="mouseenter" popover-popup-delay="600"
 							 ng-class="{null: '', false: 'has-error has-feedback'}[flow.validInput.name]">
-						<label for="title">Título</label>
+						<label for="title">{{ 'CAMPAIGN_FORM.TITLE.LABEL' | translate }}</label>
 						<div class="row">
 							<div class="col-xs-9">
 								<input type="text" class="form-control" id="title" ng-model="campaign.name">
@@ -32,9 +32,9 @@
 					</div>
 					<div class="form-group maintag-field"
 					     ng-class="{null: '',true: 'has-success has-feedback','warning': 'has-warning has-feedback', false: 'has-error has-feedback'}[flow.validInput.mainTag]"
-					     popover="{{help.mainTag.content}}" popover-title="{{help.mainTag.title}}" 
+					     popover="{{ 'CAMPAIGN_FORM.MAINTAG.HELP_MSG' | translate }}" popover-title="{{ 'CAMPAIGN_FORM.MAINTAG.HELP_TITLE' | translate }}" 
 					     popover-placement="right" popover-trigger="mouseenter" popover-popup-delay="600">
-						<label for="main-hashtag">Etiqueta (hashtag) principal</label>
+						<label for="main-hashtag">{{ 'CAMPAIGN_FORM.MAINTAG.LABEL' | translate }}</label>
 						<div class="input-group col-xs-5">
 							<span class="input-group-addon">#</span>
 							<span class="glyphicon form-control-feedback" ng-class="{null: '',true: 'glyphicon-ok',false: 'glyphicon-remove', 'warning': 'glyphicon-warning-sign'}[flow.validInput.mainTag]"></span>
@@ -45,9 +45,9 @@
 
 					<div class="form-group slug-field" ng-show="flow.showSlugField"
 					     ng-class="{null: '',true: 'has-success has-feedback', false: 'has-error has-feedback'}[flow.validInput.slug]"
-					     popover="{{help.slug.content}}" popover-title="{{help.slug.title}}" 
+					     popover="{{ 'CAMPAIGN_FORM.SLUG.HELP_MSG' | translate }}" popover-title="{{ 'CAMPAIGN_FORM.SLUG.HELP_TITLE' | translate }}" 
 					     popover-placement="right" popover-trigger="mouseenter" popover-popup-delay="600">
-						<label for="main-hashtag">Componente de URL</label>
+						<label for="main-hashtag">{{ 'CAMPAIGN_FORM.SLUG.LABEL' | translate }}</label>
 						<div class="input-group col-xs-9">
 							<span class="input-group-addon">{{flow.urlBase}}</span>
 							<span class="glyphicon form-control-feedback" ng-class="{null: '',true: 'glyphicon-ok',false: 'glyphicon-remove'}[flow.validInput.slug]"></span>
@@ -56,38 +56,38 @@
 						<p class="help-block" ng-show="flow.messages.slugError">{{ flow.messages.slugError }}</p>
 					</div>
 
-					<div class="form-group" popover="{{help.published.content}}" popover-placement="right" popover-trigger="mouseenter" popover-popup-delay="600">
+					<div class="form-group" popover="{{ 'CAMPAIGN_FORM.PUBLISHED.HELP_MSG' | translate }}" popover-placement="right" popover-trigger="mouseenter" popover-popup-delay="600">
 						<div class="checkbox">
 							<label>
-								<input type="checkbox" ng-model="campaign.published"> Publicado
+								<input type="checkbox" ng-model="campaign.published"> {{ 'CAMPAIGN_FORM.PUBLISHED.LABEL' | translate }}
 		    			</label>
 		  			</div>
 		  		</div>
 
-					<div class="form-group" popover="{{help.image.content}}" popover-placement="right" popover-trigger="mouseenter" popover-popup-delay="600">
-						<label>Imágen para listado</label>
+					<div class="form-group" popover="{{ 'CAMPAIGN_FORM.IMG_THUMB.HELP_MSG' | translate }}" popover-placement="right" popover-trigger="mouseenter" popover-popup-delay="600">
+						<label>{{ 'CAMPAIGN_FORM.IMG_THUMB.LABEL' | translate }}</label>
 						<div>
 							<label for="image" class="datea-custom-imgUL">
 								<input class="img-file-input" type="file" id="image" fileread="flow.img" filedata="flow.imgData" accept="image/*" ng-hide="flow.img" max-image-size="800">
 								<img class="uploaded-img" ng-show="flow.img" ng-src="{{flow.img}}" alt="{{flow.imgData.name}}" width="300px">
 							</label>
 						</div>
-						<p class="help-block">mínimo 400 por 600px (vertical o horizontal)</p>
+						<p class="help-block">{{ 'CAMPAIGN_FORM.IMG_THUMB.DESC' | translate }}</p>
 					</div>
 
-					<div class="form-group" popover="{{help.image2.content}}" popover-placement="right" popover-trigger="mouseenter" popover-popup-delay="600">
-						<label>Imágen para banner</label>
+					<div class="form-group" popover="{{ 'CAMPAIGN_FORM.IMG_LARGE.HELP_MSG' | translate }}" popover-placement="right" popover-trigger="mouseenter" popover-popup-delay="600">
+						<label>{{ 'CAMPAIGN_FORM.IMG_LARGE.LABEL' | translate }}</label>
 						<div>
 							<label for="image2" class="datea-custom-imgUL">
 								<input class="img-file-input" type="file" id="image2" fileread="flow.img2" filedata="flow.imgData2" accept="image/*" ng-hide="flow.img2" max-image-size="800">
 								<img class="uploaded-img" ng-show="flow.img2" ng-src="{{flow.img2}}" alt="{{flow.imgData2.name}}" width="300px">
 							</label>
 						</div>
-						<p class="help-block">mínimo 600 por 800px (vertical o horizontal)</p>
+						<p class="help-block">{{ 'CAMPAIGN_FORM.IMG_LARGE.DESC' | translate }}</p>
 					</div>
 
-					<div class="form-group" popover="{{help.endDate.content}}" popover-placement="right" popover-trigger="mouseenter" popover-popup-delay="600">
-						<label for="datepicker">Fecha de finalización (opcional)</label>
+					<div class="form-group" popover="{{ 'CAMPAIGN_FORM.END_DATE.HELP_MSG' | translate }}" popover-placement="right" popover-trigger="mouseenter" popover-popup-delay="600">
+						<label for="datepicker">{{ 'CAMPAIGN_FORM.END_DATE.LABEL' | translate }}</label>
 						<div class="form-inline">
 							<div class="form-group date-field-group">
 								<input type="text" class="form-control" id="datepicker" ng-model="flow.dp.endDate" is-open="flow.dp.opened" min="flow.dp.minDate" datepicker-options="flow.dp.dateOptions" date-disabled="flow.dp.disabled(date, mode)" close-text="Cerrar" ng-click="flow.dp.openDatepicker($event)" datepicker-popup="{{flow.dp.format}}">
@@ -98,51 +98,51 @@
 						</div>
 					</div>
 					<div class="form-group" 
-							 popover="{{help.category.content}}" popover-placement="right" popover-trigger="mouseenter" popover-popup-delay="600"
+							 popover="{{ 'CAMPAIGN_FORM.CATEGORY.HELP_MSG' | translate }}" popover-placement="right" popover-trigger="mouseenter" popover-popup-delay="600"
 							 ng-class="{null: '', false: 'has-error has-feedback'}[flow.validInput.category]">
 						<div class="row">
 							<div class="col-xs-5">
-								<label for="categories">Categoria General</label>
+								<label for="categories">{{ 'CAMPAIGN_FORM.CATEGORY.LABEL' | translate }}</label>
 								<select class="form-control" ng-model="flow.selectedCategory" ng-options="category.id as category.name for category in flow.categories">
 								</select>
 							</div>
 						</div>
 					</div>
 					<div class="form-group" 
-							 popover="{{help.shortDescription.content}}" popover-placement="right" popover-trigger="mouseenter" popover-popup-delay="600"
+							 popover="{{ 'CAMPAIGN_FORM.SHORT_DESC.HELP_MSG' | translate }}" popover-placement="right" popover-trigger="mouseenter" popover-popup-delay="600"
 							 ng-class="{null: '', false: 'has-error has-feedback'}[flow.validInput.short_description]">
-						<label for="short-description">Descripción corta (max 140 caracteres)</label>
+						<label for="short-description">{{ 'CAMPAIGN_FORM.SHORT_DESC.LABEL' | translate }}</label>
 						<textarea id="short-description" class="form-control" msd-elastic="\n" rows="1" ng-model="campaign.short_description" maxlength="140"></textarea>
 					</div>
 					<div class="form-group" 
-							 popover="{{help.mission.content}}" popover-placement="right" popover-trigger="mouseenter" popover-popup-delay="600"
+							 popover="{{ 'CAMPAIGN_FORM.MISSION.HELP_MSG' | translate }}" popover-placement="right" popover-trigger="mouseenter" popover-popup-delay="600"
 							 ng-class="{null: '', false: 'has-error has-feedback'}[flow.validInput.mission]">
-						<label for="mission">Misión / Objetivos</label>
+						<label for="mission">{{ 'CAMPAIGN_FORM.MISSION.LABEL' | translate }}</label>
 						<textarea id="mission" class="form-control" msd-elastic="\n" rows="3" ng-model="campaign.mission" maxlength="500"></textarea>
 					</div>
 					<div class="form-group" 
-							 popover="{{help.informationDestiny.content}}" popover-placement="right" popover-trigger="mouseenter" popover-popup-delay="600"
+							 popover="{{ 'CAMPAIGN_FORM.DATA.HELP_MSG' | translate }}" popover-placement="right" popover-trigger="mouseenter" popover-popup-delay="600"
 							 ng-class="{null: '', false: 'has-error has-feedback'}[flow.validInput.information_destiny]">
-						<label for="information-destiny">¿Qué sucede con la información recibida?</label>
+						<label for="information-destiny">{{ 'CAMPAIGN_FORM.DATA.LABEL' | translate }}</label>
 						<textarea id="information-destiny" class="form-control" msd-elastic="\n" rows="3" ng-model="campaign.information_destiny" maxlength="500"></textarea>
 					</div>
 				</div>
 				<hr>
-				<div class="section" id="spy-step2" popover="{{help.secondaryTags.content}}" popover-title="{{help.secondaryTags.title}}" popover-placement="right" popover-trigger="mouseenter" popover-popup-delay="600">
-					<h4>Sub-etiquetas (hashtags)</h4>
-					<p>Para categorizar los dateos de la iniciativa.</p>
+				<div class="section" id="spy-step2" popover="{{ 'CAMPAIGN_FORM.SECONDARY_TAGS.HELP_MSG' | translate }}" popover-title="{{ 'CAMPAIGN_FORM.SECONDARY_TAGS.HELP_TITLE' | translate }}" popover-placement="right" popover-trigger="mouseenter" popover-popup-delay="600">
+					<h4>{{ 'CAMPAIGN_FORM.SECTION_TITLE2' | translate }}</h4>
+					<p>{{ 'CAMPAIGN_FORM.SECONDARY_TAGS.DESC' | translate }}</p>
 					<div class="form-group">
-						<label for="new-tag">Introduce una etiqueta y agregalas una por una</label>
+						<label for="new-tag">{{ 'CAMPAIGN_FORM.SECONDARY_TAGS.LABEL' | translate }}</label>
 						<div class="input-group col-xs-5 autocomplete-group">
 							<input type="text" ng-model="flow.nextTag" class="form-control" ng-enter="flow.addTag()" typeahead="tags for tags in flow.autocompleteTag($viewValue) | filter:$viewValue" typeahead-loading="loadingLocations">
 							<i ng-show="loadingLocations" class="autocomplete-loading fa fa-circle-o-notch fa-spin"></i>
 							<span class="input-group-btn">
-								<button class="btn btn-default" type="button" ng-click="flow.addTag()">agregar</button>
+								<button class="btn btn-default" type="button" ng-click="flow.addTag()">{{ 'CAMPAIGN_FORM.SECONDARY_TAGS.ADD_BTN' | translate }}</button>
 							</span>
 						</div>
 					</div>
 					<div class="selected-tags-box">
-						<h5>Etiquetas seleccionadas</h5>
+						<h5>{{ 'CAMPAIGN_FORM.SECONDARY_TAGS.SELECTED_LABEL' | translate }}</h5>
 						<ul class="tags-holder input-list">
 							<li class="tag-holder" ng-repeat="tag in campaign.secondary_tags">
 								<div class="arrows part part-1">
@@ -164,16 +164,16 @@
 				</div>
 				<hr>
 				<div class="section" id="spy-step3">
-					<h4>Opciones de ubicación</h4>
+					<h4>{{ 'CAMPAIGN_FORM.SECTION_TITLE3' | translate }}</h4>
 
-					<div class="form-group" popover="{{help.map.content}}" popover-title="{{help.map.title}}" popover-placement="right" popover-trigger="mouseenter" popover-popup-delay="600">
-						<label>Configuración del mapa</label>
+					<div class="form-group" popover="{{ 'CAMPAIGN_FORM.MAP.HELP_MSG' | translate }}" popover-title="{{ 'CAMPAIGN_FORM.MAP.HELP_TITLE' | translate }}" popover-placement="right" popover-trigger="mouseenter" popover-popup-delay="600">
+						<label>{{ 'CAMPAIGN_FORM.MAP.LABEL' | translate }}</label>
 						<leaflet id="leafletNewCampaign" defaults="flow.leaflet.defaults" tiles="flow.leaflet.tiles" center="flow.leaflet.center" controls="flow.leaflet.controls" height="500px" width="100%"></leaflet>
 					</div>
 		
-					<div popover="{{help.layerFiles.content}}" popover-title="{{help.layerFiles.title}}" popover-placement="right" popover-trigger="mouseenter" popover-popup-delay="600">
+					<div popover="{{ 'CAMPAIGN_FORM.KML.HELP_MSG' | translate }}" popover-title="{{ 'CAMPAIGN_FORM.KML.HELP_TITLE' | translate }}" popover-placement="right" popover-trigger="mouseenter" popover-popup-delay="600">
 						<div class="form-group part part-1 layerfiles-input">
-							<label for="newFile">Sube archivos kml o geoJSON (opcional)</label>
+							<label for="newFile">{{ 'CAMPAIGN_FORM.KML.LABEL' | translate }}</label>
 							<input type="file" id="newFile" class="datea-custom-fileUL" fileread="flow.nextFile" filedata="flow.nextFileData" accept=".kml,.json">
 						</div>
 						<div class="layerfiles-holder">
@@ -193,30 +193,31 @@
 				</div>
 				<hr>
 				<div class="section" id="spy-step4">
-					<h4>Opciones de visualización</h4>
-					<div class="form-group viz-mode" popover="{{help.defaultVis.content}}" popover-placement="right" popover-trigger="mouseenter" popover-popup-delay="600">
-						<label>Visualización por defecto</label>
+					<h4>{{ 'CAMPAIGN_FORM.SECTION_TITLE4' | translate }}</h4>
+					<div class="form-group viz-mode" popover="{{ 'CAMPAIGN_FORM.VISUALIZATION.HELP_MSG' | translate }}" popover-placement="right" popover-trigger="mouseenter" popover-popup-delay="600">
+						<label>{{ 'CAMPAIGN_FORM.VISUALIZATION.LABEL' | translate }}</label>
 						<div class="radio-options">
 							<label class="radio-inline">
-								<input type="radio" ng-model="campaign.default_vis" name="default_vis" value="map"> Mapa
+								<input type="radio" ng-model="campaign.default_vis" name="default_vis" value="map"> {{ 'CAMPAIGN_FORM.VISUALIZATION.OPT1' | translate }}
 							</label>
 							<label class="radio-inline">
-								<input type="radio" ng-model="campaign.default_vis" name="default_vis" value="timeline"> Línea de tiempo
+								<input type="radio" ng-model="campaign.default_vis" name="default_vis" value="timeline"> {{ 'CAMPAIGN_FORM.VISUALIZATION.OPT2' | translate }}
 							</label>
 							<label class="radio-inline">
-								<input type="radio" ng-model="campaign.default_vis" name="default_vis" value="images"> Imágenes
+								<input type="radio" ng-model="campaign.default_vis" name="default_vis" value="images"> {{ 'CAMPAIGN_FORM.VISUALIZATION.OPT3' | translate }}
 							</label>
+							<!--
 							<label class="radio-inline">
-								<input type="radio" ng-model="campaign.default_vis" name="default_vis" value="files"> Archivos
-							</label>
+								<input type="radio" ng-model="campaign.default_vis" name="default_vis" value="files"> {{ 'CAMPAIGN_FORM.VISUALIZATION.OPT4' | translate }}
+							</label>-->
 						</div>
 					</div>
 
-					<div class="form-group" popover="{{help.defaultFilter.content}}" popover-placement="right" popover-trigger="mouseenter" popover-popup-delay="600">
-						<label>Filtros</label>
+					<div class="form-group" popover="{{ 'CAMPAIGN_FORM.FILTERS.HELP_MSG' | translate }}" popover-placement="right" popover-trigger="mouseenter" popover-popup-delay="600">
+						<label>{{ 'CAMPAIGN_FORM.FILTERS.LABEL' | translate }}</label>
 						<div class="checkbox">
 							<label>
-								<input type="checkbox" ng-model="campaign.default_filter" ng-true-value="'owner'"> Por defecto sólo ver dateos propios o redateados por mi
+								<input type="checkbox" ng-model="campaign.default_filter" ng-true-value="'owner'"> {{ 'CAMPAIGN_FORM.FILTERS.OPT1' | translate }}
 							</label>
 						</div>
 					</div>

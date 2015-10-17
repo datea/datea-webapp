@@ -1,5 +1,5 @@
 angular.module("dateaWebApp")
-	.directive("daFollow", ['Api', 'User', '$location', 'localStorageService', '$rootScope', function(Api, User, $location, localStorageService, $rootScope) {
+	.directive("daFollow", ['Api', 'User', '$location', 'localStorageService', '$rootScope', '$translate', function(Api, User, $location, localStorageService, $rootScope, $translate) {
 		return {
     	 restrict    : "E"
     	,templateUrl : "/views/follow-button.html"
@@ -31,7 +31,9 @@ angular.module("dateaWebApp")
     		$scope.flow.isFollowing       = false;
     		$scope.flow.loading           = true;
     		$scope.flow.followingChanged  = false;
-    		$scope.flow.followLabel       = $attrs.followLabel ? $attrs.followLabel : 'seguir';
+    		$translate('FOLLOW').then(function (txt) {
+    			$scope.flow.followLabel   = $attrs.followLabel ? $attrs.followLabel : txt;
+    		});
 
     		$attrs.$observe('followId', function (fid) {
     			if (angular.isDefined(fid)) {

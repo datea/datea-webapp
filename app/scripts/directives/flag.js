@@ -21,12 +21,10 @@ angular.module("dateaWebApp")
 			ls = localStorageService;
 
 			$scope.flow = {};
-			$scope.flow.flagLabel = 'denunciar';
 			$scope.flow.isFlagged = false
 
 			$scope.$watch('flagId', function () {
 				if ($scope.flagId) flagId = $scope.flagId;
-				$scope.flow.flagLabel = 'denunciar';
 				$scope.flow.isFlagged = false;
 			});
 
@@ -61,7 +59,6 @@ angular.module("dateaWebApp")
 		      })
 		      .result.then( function () {
          		$scope.flow.isFlagged = true;
-         		$scope.flow.flagLabel = 'denunciado!';
 		      });
 				}
 			}

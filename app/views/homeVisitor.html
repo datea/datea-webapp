@@ -4,17 +4,17 @@
 			<div class="row">
 				<div class="col-xs-12 posrel col">
 					<div class="social-holder hidden-xs">
-						Síguenos <a href="//facebook.com/somosdateros" target="_blank"><i class="fa fa-facebook-square fa-2x"></i></a> <a href="//twitter.com/somosdateros" target="_blank"><i class="fa fa-twitter-square fa-2x"></i></a>
+						{{'LANDING_PAGE.FOLLOW_US' | translate}} <a href="//facebook.com/somosdateros" target="_blank"><i class="fa fa-facebook-square fa-2x"></i></a> <a href="//twitter.com/somosdateros" target="_blank"><i class="fa fa-twitter-square fa-2x"></i></a>
 					</div>
 					<div class="main-menu-landing ff1">
-					  <a class="mml-link" href="/buscar">BUSCAR</a>
-						<a class="mml-link" href="/iniciativas">Iniciativas</a>
-						<a class="mml-link" href="/acerca">Acerca</a>
-						<a class="mml-link" href="/ayuda">Ayuda</a> 
+					  <a class="mml-link" href="/buscar">{{'MENU_TOP.SEARCH' | translate}}</a>
+						<a class="mml-link" href="/iniciativas">{{'MENU_TOP.CAMPAIGNS' | translate}}</a>
+						<a class="mml-link" href="/acerca">{{'MENU_TOP.ABOUT' | translate}}</a>
+						<a class="mml-link" href="/ayuda">{{'MENU_TOP.HELP' | translate}}</a> 
 					</div>
-					<h1 class="main-heading ff2 hidden-xs"><img src="static/images/logo.png" alt="datea"> todos somos dateros</h1>
+					<h1 class="main-heading ff2 hidden-xs"><img src="static/images/logo.png" alt="datea">{{'LANDING_PAGE.SUBTITLE' | translate}}</h1>
 					<h1 class="main-heading ff2 mobile visible-xs"><img src="static/images/logo.png" alt="datea">datea</h1>
-					<div class="slogan ff1">Comparte datos útiles con tu comunidad</div>
+					<div class="slogan ff1">{{'LANDING_PAGE.SLOGAN' | translate}}</div>
 				</div>
 			</div>
 		</div>
@@ -24,20 +24,20 @@
 			<div class="row">
 				<div class="col col-xs-6 col-md-4 col-md-offset-2 col-lg-offset-3 col-lg-3">
 					<div class="dateros ff1">
-						<img src="static/images/landing/dateros-count.png" alt="dateros"> <span class="number">{{landing.user_count}}</span> dateros
+						<img src="static/images/landing/dateros-count.png" alt="dateros"> <span class="number">{{landing.user_count}}</span> {{'DATEROS' | translate}}
 					</div>
-					<p class="question">¿Quieres datear?</p>
+					<p class="question">{{'LANDING_PAGE.REGISTER_TITLE' | translate}}</p>
 					<div><a href="/registrate" class="btn datea-btn btn-lg btn-login-landing ff1">
-						regístrate
+						{{'REGISTER' | translate}}
 					</a></div>
 				</div>
 				<div class="col col-xs-6 col-md-4 col-lg-3">
 					<div class="dateos ff1">
-						<img src="static/images/landing/dateo-count.png" alt="dateos"> <span class="number">{{landing.dateo_count}}</span> dateos
+						<img src="static/images/landing/dateo-count.png" alt="dateos"> <span class="number">{{landing.dateo_count}}</span> {{'DATEOS' | translat}}
 					</div>
-					<p class="question">¿Ya tienes cuenta?</p>
+					<p class="question">{{'LANDING_PAGE.LOGIN_TITLE' | translate}}</p>
 					<div><a href="/signin" class="btn datea-btn btn-lg btn-login-landing ff1">
-						ingresa
+						{{'LOGIN' | translate}}
 					</a></div>
 				</div>
 			</div>
@@ -49,17 +49,17 @@
 				<div class="col-lg-15 col-xs-12"><h3 style="padding-left: 0">DATEAR</h3></div>
 				<div class="col col-xs-4 col-lg-3">
 					<div class="icon icon-datear"></div>
-					Comparte datos útiles
+					{{'LANDING_PAGE.STEP1' | translate }}
 				</div>
 				<div class="col col-xs-4 col-lg-3">
 					<div class="arrow"></div>
 					<div class="icon icon-activar"></div>
-					Activa la participación de tu comunidad
+					{{'LANDING_PAGE.STEP2' | translate }}
 				</div>
 				<div class="col col-xs-4 col-lg-3">
 					<div class="arrow"></div>
 					<div class="icon icon-cambiar"></div>
-					Visualiza y usa los dateos para lograr cambios 
+					{{'LANDING_PAGE.STEP3' | translate }}
 				</div>
 			</div>
 		</div>
