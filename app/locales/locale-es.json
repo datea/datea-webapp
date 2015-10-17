@@ -511,7 +511,7 @@
 		"RESET_NOT_FOUND" : "No existen dateros con esa dirección ;)",
 		"LOGIN_ERROR" : "Tu usuario y/o contraseña no son válidos. Vuélvelo a intentar.",
  		"MODAL_CHECK_EMAIL" : "¡Gracias! Ahora revisa tu correo y sigue las instrucciones para activar tu cuenta.",
- 		"MODAL_CHECK_EMAIL2" : "Puedes cerrar esta ventana o pestaña en tu navegador.",
+ 		"MODAL_CHECK_EMAIL2" : "Puedes cerrar esta ventana o pestaña en tu navegador."
  	},
 
  	"PASSW_PAGE" : {
