@@ -19,9 +19,7 @@ angular.module("dateaWebApp")
 
 		, controller: function ($scope, $element, $attrs) {
 
-			$translate('DATEAR').then(function (t) {
-				$scope.btnLabel = $attrs.btnText !== undefined ? $attrs.btnText : t+' ';
-			});
+			$scope.btnLabel = $attrs.btnText !== undefined ? $attrs.btnText : 'DATEAR';
 			$scope.btnClass = $attrs.btnClass !== undefined ? $attrs.btnClass : '';
 
 			$scope.datear = function () {

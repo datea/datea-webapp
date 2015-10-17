@@ -10,7 +10,7 @@
 				<span class="icon-bar"></span>
 			</button>
 		</div>
-		<div class="navbar-collapse collapse pull-right" uib-collapse>
+		<div class="navbar-collapse collapse pull-right" uib-collapse="!nav.isCollapsed">
 			<ul class="nav navbar-nav ff1">
 				<li ng-show="nav.visible"><a href="/buscar">{{'MENU_TOP.SEARCH' | translate}}</a></li>
 				<li ng-show="nav.visible"><a href="/iniciativas">{{'MENU_TOP.CAMPAIGNS' | translate}}</a></li>
@@ -21,6 +21,7 @@
 				<li ng-show="nav.visible"><da-lang-switcher></da-lang-switcher></li>
 <!-- 				<li ng-show="nav.visible"><button type="button" class="btn datea-datear-btn navbar-btn" ng-click="nav.datear()">Datea<i class="glyphicon glyphicon-map-marker"></i></button></li> -->
 <!-- 				<li ng-show="!nav.visible"><button type="button" class="btn btn-success navbar-btn" ng-click="nav.signIn()">Ingresa</button></li> --> 
+				<li ng-show="nav.isSignedIn"><datear-btn btn-class="nav-btn"></datear-btn></li>
 				<li ng-show="nav.isSignedIn" class="user-ctrl dropdown" dropdown>
 						<a href class="dropdown-toggle" dropdown-toggle>
 							<img ng-src="{{ user.image | imgFromApi }}" alt="" height="38px" class="img-circle">
@@ -41,7 +42,6 @@
 				</li>
 			</ul>
 		</div>
-		<span ng-show="nav.isSignedIn"><datear-btn btn-class="nav-btn"></datear-btn></span>
 	</div>
 </nav>
 <alert class="general-alert" ng-repeat="alert in alerts" type="alert.type" close="closeAlert($index)">{{alert.msg}}</alert>
