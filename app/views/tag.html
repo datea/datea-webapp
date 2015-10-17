@@ -3,9 +3,9 @@
 		<div class="sub-title">{{'TAG' | translate}}</div>
 		<h2 class="title pull-left" ng-click="flow.dateoDetail.show = false">#{{tag.tag}}</h2>
 		<div class="stats pull-left">
-			<span class="dateo-count">{{tag.dateo_count}} <ng-pluralize count="tag.dateo_count" when="{'one': 'dateo','other':'dateos'}" /></span>
-			<span class="follow-count" ng-show="tag.follow_count > 0">{{tag.follow_count}} <ng-pluralize count="tag.follow_count" when="{'one': 'seguidor','other':'seguidores'}" /></span>
-			<a href="" ng-click="flow.scrollToCampaigns($event)" class="campaign-count" ng-show="campaignsInTag">{{campaignsInTag.length}} <ng-pluralize count="campaignsInTag.length" when="{'one': 'iniciativa','other':'iniciativas'}" /></a>
+			<span class="dateo-count">{{tag.dateo_count}} {{ (tag.dateo_count == 1 ? 'DATEO' : 'DATEOS') | translate }}</span>
+			<span class="follow-count" ng-show="tag.follow_count > 0">{{tag.follow_count}} {{ (tag.follow_count == 1 ? 'FOLLOW.FOLLOWER' : 'FOLLOW.FOLLOWERS') | translate }}</span>
+			<a href="" ng-click="flow.scrollToCampaigns($event)" class="campaign-count" ng-show="campaignsInTag">{{campaignsInTag.length}} {{ (campaignsInTag.length == 1 ? 'CAMPAIGN' : 'CAMPAIGN.CAMPAIGNS') | translate }}</a>
 		</div>
 		<div class="buttons pull-left">
 			<da-follow follow-obj="tag" follow-id="{{tag.id}}"></da-follow>
@@ -43,7 +43,7 @@
 				<div class="filter-control" ng-click="flow.showFilter = !flow.showFilter">
 			  	<div class="filter-toggle-link" ng-class="{active: flow.showFilter}"><i class="fa fa-filter"></i></div>
 			  	<div class="query-text" ng-hide="flow.showFilter">
-			  		viendo: <span class="query-text-item" ng-repeat="text in flow.queryTextRep" ng-bind-html="text"></span>
+			  		{{ 'SEARCH_FILTER.VIEWING' | translate }}: <span class="query-text-item" ng-repeat="text in flow.queryTextRep" ng-bind-html="text"></span>
 			  	</div>
 			  </div>
 			</div>
@@ -54,11 +54,11 @@
 						<div class="col-xs-4 col-sm-4 col-md-4 col-lg-3">
 							<div class="date-filter query-item">
 								<div class="form-group">
-									<label>filtrar fecha</label>
+									<label>{{ 'SEARCH_FILTER.FILTER_DATE' | translate }}</label>
 									<div class="form-inline">
-										<label>del</label>
+										<label>{{ 'SEARCH_FILTER.FROM' | translate }}</label>
 										<input type="text" class="form-control since" ng-model="query.since" datepicker-popup="yyyy/MM/dd" is-open="flow.sincePopup" ng-focus="flow.sincePopup = true" />
-										<label>al</label>
+										<label>{{ 'SEARCH_FILTER.UNTIL' | translate }}</label>
 										<input type="text" class="form-control until" ng-model="query.until" datepicker-popup="yyyy/MM/dd" is-open="flow.untilPopup" ng-focus="flow.untilPopup = true" />
 									</div>
 								</div>
@@ -69,7 +69,7 @@
 							<div class="apply">
 								<div class="limit-slider query-item">
 									<div class="form-group">
-										<label>Cargar {{flow.limitLabel}} dateos</label>
+										<label>{{ 'SEARCH_FILTER.LOAD_NUM_DATEOS' | translate: flow.queryLimitLabel}}</label>
 										<div class="slider">
 											<input type="range" name="points" min="50" max="500" step="50" ng-model="query.limit"> 
 										</div>
@@ -77,11 +77,11 @@
 								</div>
 								<div class="orderby-control query-item">
 									<div class="form-group">
-										<label>Ordenar por</label>
+										<label>{{ 'SEARCH_FILTER.ORDER_BY' | translate }}</label>
 										<select class="form-control" ng-model="query.order_by" ng-options="opt.val as opt.label for opt in flow.orderByOptions"></select>
 									</div>
 								</div>
-								<button class="btn btn-lg btn-success pull-left apply-btn" ng-click="flow.doSearch()">APLICAR</button> 
+								<button class="btn btn-lg btn-success pull-left apply-btn" ng-click="flow.doSearch()">{{ 'SEARCH_FILTER.APPLY_BTN' | translate }}</button> 
 							</div>
 						</div>
 					</div>
@@ -103,9 +103,9 @@
 									<da-dateo-teaser ng-repeat="dateo in tag.dateos | limitTo:flow.dateoShowListNumResults" main-tag="tag.tag"></da-dateo-teaser>
 								</div>
 								<p class="dateos-more-results" ng-show="tag.dateos.length > flow.dateoShowListNumResults">
-									<button class="btn btn-default btn-lg" ng-click="flow.showMoreListResults()">Ver más resultados</button>
+									<button class="btn btn-default btn-lg" ng-click="flow.showMoreListResults()">{{ 'TAG.MORE_RESULTS' | translate }}</button>
 								</p>
-								<div class="no-results" ng-show="!tag.dateos.length && !flow.loading">No hay resultados <i class="fa fa-meh-o"></i></div>
+								<div class="no-results" ng-show="!tag.dateos.length && !flow.loading">{{ 'TAG.NO_RESULTS' | translate }} <i class="fa fa-meh-o"></i></div>
 							</div>
 						</div>
 						<div class="col-xs-12 col-sm-75 col-md-75 leaflet-map-holder">
@@ -118,13 +118,13 @@
 				<div class="dateo-thumbs-holder">
 					<da-dateo-thumb ng-repeat="image in tag.dateoImages"></da-dateo-thumb>
 				</div>
-				<div class="no-results" ng-show="!tag.dateoImages.length && !flow.loading">No hay resultados <i class="fa fa-meh-o"></i></div>
+				<div class="no-results" ng-show="!tag.dateoImages.length && !flow.loading">{{ 'TAG.NO_RESULTS' | translate }} <i class="fa fa-meh-o"></i></div>
 			</div>
 		</div>
 	</div>
 	<div id="campaigns" class="campaign-teasers" ng-show="campaignsInTag">
 		<div class="container-fluid">
-			<h3>Iniciativas en esta etiqueta</h3>
+			<h3>{{ 'TAG.CAMPAIGNS_IN_TAG' | translate}}</h3>
 			<div class="campaign-list row">
 				<div class="col-lg-2 col-md-3 col-sm-4 col-xs-12" ng-repeat="campaign in campaignsInTag">
 					<da-campaign-teaser></da-campaign-teaser>

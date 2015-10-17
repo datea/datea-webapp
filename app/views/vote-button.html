@@ -3,6 +3,5 @@
 	<span class="delete">&times;</span>
 	<i class="fa fa-circle-o-notch fa-spin" ng-show="flow.loading"></i>
 	<i class="disabled-icon fa fa-ban"></i>
-	<span class="glyphicon glyphicon-thumbs-up datea-glyph" ng-hide="flow.loading" tooltip="apoya!" tootltip-trigger="mouseenter" tooltip-placement="bottom" tooltip-popup-delay="500"></span> <span class="datea-glyph-text" ng-show="voteObj.vote_count"><p>{{voteObj.vote_count}}</p> <p><ng-pluralize count="voteObj.vote_count" when="{'one':
-		'apoyo','other':'apoyos'}"></p></span>
+	<span class="glyphicon glyphicon-thumbs-up datea-glyph" ng-hide="flow.loading" tooltip="apoya!" tootltip-trigger="mouseenter" tooltip-placement="bottom" tooltip-popup-delay="500"></span> <span class="datea-glyph-text" ng-show="voteObj.vote_count"><p>{{voteObj.vote_count}}</p> <p>{{(voteObj.vote_count == 1 ? 'VOTE' : 'VOTES') | translate}}</p></span>
 </div>

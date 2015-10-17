@@ -80,7 +80,7 @@ angular.module('dateaWebApp')
 		, show  : false 
 	};
 	$scope.$watch( 'query.limit', function () {
-		$scope.flow.limitLabel = ($scope.query.limit < 1000) ? 'máximo '+$scope.query.limit : 'todos los';
+		$scope.flow.limitLabel = { num : ($scope.query.limit < 1000) ? 'máximo '+$scope.query.limit : 'todos los'};
 	});
 	$scope.flow.orderByOptions = [
 			  { val: '-created', label: 'últimos'}

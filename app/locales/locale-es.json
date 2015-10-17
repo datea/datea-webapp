@@ -80,7 +80,9 @@
 	"TAG" : {
 		"TAG" : "Etiqueta",
 		"TAGS" : "Etiquetas",
-		"CAMPAIGNS_IN_TAG" : "Iniciativas en esta etiqueta"
+		"CAMPAIGNS_IN_TAG" : "Iniciativas en esta etiqueta",
+		"MORE_RESULTS" : "@:CAMPAIGN.MORE_RESULTS",
+		"NO_RESULTS" : "@:CAMPAIGN.NO_RESULTS"
 	},
 
 	"FOLLOW" : {
@@ -507,7 +509,9 @@
 		"ACTIVATION_COMPLETE" : "Tu cuenta ha sido activada. Ahora puedes ingresar con tu usuario y contraseña.",
 		"PASS_RESET_SENT" : "Por favor revisa tu correo y sigue las instrucciones para recuperar tu contraseña.",
 		"RESET_NOT_FOUND" : "No existen dateros con esa dirección ;)",
-		"LOGIN_ERROR" : "Tu usuario y/o contraseña no son válidos. Vuélvelo a intentar."
+		"LOGIN_ERROR" : "Tu usuario y/o contraseña no son válidos. Vuélvelo a intentar.",
+ 		"MODAL_CHECK_EMAIL" : "¡Gracias! Ahora revisa tu correo y sigue las instrucciones para activar tu cuenta.",
+ 		"MODAL_CHECK_EMAIL2" : "Puedes cerrar esta ventana o pestaña en tu navegador.",
  	},
 
  	"PASSW_PAGE" : {
