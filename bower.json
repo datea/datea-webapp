@@ -36,7 +36,6 @@
     "datejs": "~1.0.0-rc1",
     "angular-animate": "~1.2.23",
     "leaflet-pip": "~0.1.0",
-    "da-angular-seo": "*",
     "jcarousel": "~0.3.4",
     "FileAPI": "~2.0.8",
     "magnific-popup": "~1.0.0",

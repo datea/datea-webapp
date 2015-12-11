@@ -33,8 +33,6 @@ angular.module( 'dateaWebApp' )
  	$scope.reset    = {};
 	$scope.nav      = {};
 	
-	$scope.flow.activationMsg = config.accountMsgs.registerActivationCompleteMsg;
-
 	$scope.nav.visible = true;
 	$scope.flow.hideSocial = false;
 

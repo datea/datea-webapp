@@ -180,7 +180,7 @@
 					<h5>{{'DATEAR.ADD_TAGS_LABEL' | translate}}</h5>
 					<div class="form-group">
 						<div class="input-group col-sm-7 tag-input-form autocomplete-group">
-							<input type="text" ng-model="datear.nextTag" ng-model="asyncSelected" typeahead="tags for tags in datear.autocompleteTag($viewValue) | filter:$viewValue" typeahead-loading="loadingLocations" class="form-control">
+							<input type="text" ng-model="datear.nextTag" ng-model="asyncSelected" uib-typeahead="tags for tags in datear.autocompleteTag($viewValue)" typeahead-loading="loadingLocations" class="form-control">
 							<i ng-show="loadingLocations" class="autocomplete-loading fa fa-circle-o-notch fa-spin"></i>
 							<span class="input-group-btn">
 								<button class="btn btn-default" type="button" ng-click="datear.addTag( datear.nextTag )">{{'DATEAR.ADD_BTN' | translate}}</span></button>

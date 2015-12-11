@@ -1,5 +1,5 @@
 angular.module("dateaWebApp")
-.directive("daDateoDetailInline", 
+.directive("daDateoDetailInline",
 [
 	'$rootScope'
 ,	'$modal'
@@ -26,7 +26,7 @@ angular.module("dateaWebApp")
 			, mainTag     : '=?'
 		}
 		, controller  : function ($scope, $element, $attrs) {
-				
+
 				var updateComments
 					, checkStatus
 					;
@@ -50,7 +50,7 @@ angular.module("dateaWebApp")
 	    				if ($scope.mainTag && $scope.dateo.tags[0] != $scope.mainTag) {
 								var i = $scope.dateo.tags.indexOf($scope.mainTag);
 								$scope.dateo.tags.splice(i, 1);
-								$scope.dateo.tags.unshift($scope.mainTag); 					
+								$scope.dateo.tags.unshift($scope.mainTag);
 							}
 	    			}
 	    		});
@@ -93,9 +93,9 @@ angular.module("dateaWebApp")
 								$scope.flow.status = {
 								  msg    : status == 'reviewed' ? t['DATEO.REVIEWED'] : t['DATEO.SOLVED']
 								, type   : status
-							} 
+							}
 							});
-						} 
+						}
 					}
 				};
 
@@ -198,7 +198,7 @@ angular.module("dateaWebApp")
 						               }
 						             } );
 				};
-							
+
 		}
 	}
 } ] );

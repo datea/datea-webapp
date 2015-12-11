@@ -134,7 +134,7 @@
 					<div class="form-group">
 						<label for="new-tag">{{ 'CAMPAIGN_FORM.SECONDARY_TAGS.LABEL' | translate }}</label>
 						<div class="input-group col-xs-5 autocomplete-group">
-							<input type="text" ng-model="flow.nextTag" class="form-control" ng-enter="flow.addTag()" typeahead="tags for tags in flow.autocompleteTag($viewValue) | filter:$viewValue" typeahead-loading="loadingLocations">
+							<input type="text" ng-model="flow.nextTag" class="form-control" ng-enter="flow.addTag()" uib-typeahead="tags for tags in flow.autocompleteTag($viewValue)" typeahead-loading="loadingLocations">
 							<i ng-show="loadingLocations" class="autocomplete-loading fa fa-circle-o-notch fa-spin"></i>
 							<span class="input-group-btn">
 								<button class="btn btn-default" type="button" ng-click="flow.addTag()">{{ 'CAMPAIGN_FORM.SECONDARY_TAGS.ADD_BTN' | translate }}</button>

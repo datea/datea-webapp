@@ -522,6 +522,7 @@ angular.module("dateaWebApp")
 							angular.forEach( response.suggestions, function( item ){
 								tags.push( item );
 							});
+							console.log(tags);
 							return tags;
 						} );
 					};

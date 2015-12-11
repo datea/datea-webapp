@@ -1,5 +1,5 @@
 angular.module("dateaWebApp")
-.directive("daDateoTeaser", 
+.directive("daDateoTeaser",
 [
   '$rootScope'
 , '$location'
@@ -23,7 +23,7 @@ angular.module("dateaWebApp")
 
 				$scope.teaser = {};
 
-				if ($scope.timeline && $scope.timeline.activeDateo) $scope.dateo = $scope.timeline.activeDateo; 
+				if ($scope.timeline && $scope.timeline.activeDateo) $scope.dateo = $scope.timeline.activeDateo;
 
 				$scope.mapPresent = ($attrs.mapPresent) ? $scope.$eval($attrs.mapPresent) : true;
 				$scope.detailInline = ($attrs.detailInline) ? $scope.$eval($attrs.detailInline) : true;
@@ -37,7 +37,7 @@ angular.module("dateaWebApp")
 				if ($scope.mainTag && $scope.dateo && $scope.dateo.tags.length && $scope.dateo.tags[0] != $scope.mainTag) {
 					var i = $scope.dateo.tags.indexOf($scope.mainTag);
 					$scope.dateo.tags.splice(i, 1);
-					$scope.dateo.tags.unshift($scope.mainTag); 					
+					$scope.dateo.tags.unshift($scope.mainTag);
 				}
 
 				checkStatus = function () {
@@ -50,9 +50,9 @@ angular.module("dateaWebApp")
 								$scope.flow.status = {
 								  msg    : status == 'reviewed' ? t['DATEO.REVIEWED'] : t['DATEO.SOLVED']
 								, type   : status
-							} 
+							}
 							});
-						} 
+						}
 					}
 				};
 

@@ -10,7 +10,7 @@ angular.module("dateaWebApp")
             $scope.switchLang = function ($event, lang) {
                 $translate.use(lang);
                 $scope.currentLocale = lang;
-                localStorageService.set('locale', lang);
+                localStorageServdespuesice.set('locale', lang);
                 amMoment.changeLocale(lang);
             }
         }
